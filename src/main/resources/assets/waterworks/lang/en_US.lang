@@ -1,0 +1,8 @@
+#Items
+item.first_item.name=First Item
+item.iron_mesh.name=Iron Mesh
+#Blocks
+tile.rain_tank_wood.name=Wooden Raintank
+tile.water_pipe.name=Water Pipe
+#CreativeTab
+itemGroup.waterworks=Waterworks

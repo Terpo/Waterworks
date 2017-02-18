@@ -1,0 +1,16 @@
+[
+{
+  "modid": "waterworks",
+  "name": "Waterworks",
+  "description": "Adds some agriculture and rain specific gadgets.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Terpo"],
+  "credits": "The Forge and FML guys, for supporting this game for years!",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

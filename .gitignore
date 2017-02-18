@@ -1,5 +1,13 @@
 .gradle
 build/
+.settings
+bin/
+libs
+run
+*.launch
+*.txt
+.classpath
+.project
 
 # Ignore Gradle GUI config
 gradle-app.setting

@@ -1,0 +1,13 @@
+{
+    "forge_marker": 1,
+
+    "variants":{
+    	"normal":[{
+    		"model":"waterworks:water_pipe",
+    		"textures": {
+        	    "all": "blocks/dirt"
+        	}
+        }],
+    	"inventory":[{}]
+    }
+}
