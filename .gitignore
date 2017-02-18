@@ -4,6 +4,7 @@ build/
 bin/
 libs
 run
+img/
 *.launch
 *.txt
 .classpath
