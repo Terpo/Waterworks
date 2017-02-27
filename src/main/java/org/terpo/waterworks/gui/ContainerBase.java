@@ -1,7 +1,8 @@
 package org.terpo.waterworks.gui;
 
+import org.terpo.waterworks.inventory.FluidSlotItemHandler;
+import org.terpo.waterworks.inventory.SlotDefinition;
 import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
-import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -19,10 +20,6 @@ public class ContainerBase extends Container {
 	public ContainerBase(IInventory playerInv, TileEntityRainTankWood te) {
 		this.te = te;
 
-		// This container references items out of our own inventory (the 9 slots we hold
-		// ourselves)
-		// as well as the slots from the player inventory so that the user can transfer
-		// items between
 		// both inventories. The two calls below make sure that slots are defined for both
 		// inventories.
 		addOwnSlots();
@@ -34,12 +31,15 @@ public class ContainerBase extends Container {
 		// Tile Entity, Slot 0-1, Slot IDs 0-1
 		// 0 - Input
 		// 1 - Output
-		addSlotToContainer(new SlotItemHandler(itemHandler, 0, 44, 35));
-		addSlotToContainer(new SlotItemHandler(itemHandler, 1, 116, 35));
+
+		final SlotItemHandler input = new FluidSlotItemHandler(itemHandler, 0, 44, 35, SlotDefinition.I);
+		final SlotItemHandler output = new FluidSlotItemHandler(itemHandler, 1, 116, 35, SlotDefinition.O);
+
+		addSlotToContainer(input);
+		addSlotToContainer(output);
 	}
 
 	private void addPlayerSlots(IInventory playerInv) {
-
 		final int SLOTWIDTH = 18;
 		// Slots for the main inventory
 		for (int row = 0; row < 3; ++row) {
@@ -68,12 +68,12 @@ public class ContainerBase extends Container {
 		if (slot != null && slot.getHasStack()) {
 			final ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
-
-			if (index < TileWaterworks.SIZE) {
-				if (!this.mergeItemStack(itemstack1, TileWaterworks.SIZE, this.inventorySlots.size(), true)) {
+			final int invsize = this.te.getINVSIZE();
+			if (index < invsize) {
+				if (!this.mergeItemStack(itemstack1, invsize, this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if (!this.mergeItemStack(itemstack1, 0, TileWaterworks.SIZE, false)) {
+			} else if (!this.mergeItemStack(itemstack1, 0, invsize, false)) {
 				return null;
 			}
 
@@ -91,5 +91,4 @@ public class ContainerBase extends Container {
 	public boolean canInteractWith(EntityPlayer playerIn) {
 		return this.te.canInteractWith(playerIn);
 	}
-
 }

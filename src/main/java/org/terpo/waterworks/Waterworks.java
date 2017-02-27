@@ -7,6 +7,7 @@ import org.terpo.waterworks.init.InitBlocks;
 import org.terpo.waterworks.init.InitItems;
 import org.terpo.waterworks.init.InitTileEntities;
 import org.terpo.waterworks.init.WaterworksCrafting;
+import org.terpo.waterworks.network.WaterworksPacketHandler;
 import org.terpo.waterworks.proxy.IProxy;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,6 +33,7 @@ public class Waterworks {
 	@Mod.EventHandler
 	public static void preInit(FMLPreInitializationEvent event) {
 		LOGGER.info("PreInit");
+		WaterworksPacketHandler.registerMessages(WaterworksReference.MODID);
 		InitItems.init();
 		InitBlocks.init();
 		proxy.preInit(event);

@@ -3,7 +3,7 @@
 **Waterworks** is a mod for Minecraft that adds serveral water collecting mechanics.
 
 Water mechanics in Minecraft were always quite boring, because it is simply infinite. 
-CodeChickenCore added a way to get finite water. This mod works with both option but for the
+CodeChickenCore added a way to get finite water. This mod works with both options but for the
 optimal experience, you should activate finite water. 
 
 Planned are the following blocks / mechanics:

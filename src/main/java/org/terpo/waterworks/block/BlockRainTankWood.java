@@ -2,7 +2,7 @@ package org.terpo.waterworks.block;
 
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.gui.GuiProxy;
-import org.terpo.waterworks.init.WaterworksItems;
+import org.terpo.waterworks.inventory.WaterworksInventoryHelper;
 import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
 
 import net.minecraft.block.Block;
@@ -18,6 +18,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class BlockRainTankWood extends Block implements ITileEntityProvider {
 
@@ -31,31 +33,30 @@ public class BlockRainTankWood extends Block implements ITileEntityProvider {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand,
 			ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (!world.isRemote) {// isRemote true = client
+		if (!world.isRemote && hand == EnumHand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTE(world, pos);
 			if (tileEntity instanceof TileEntityRainTankWood) {
 				final TileEntityRainTankWood tank = (TileEntityRainTankWood) tileEntity;
-
 				if (heldItem != null) {
-					if (heldItem.getItem() == WaterworksItems.iron_mesh) {
-						Waterworks.LOGGER.info("Current Tank Storage: " + tank.getDebugInfo());
-						return true;
-					}
 					if (heldItem.getItem() == Items.BUCKET) {
-						return true;
+						if (tank.onBlockActivated(playerIn, heldItem, playerIn.inventory.getSlotFor(heldItem))) {
+							return true;
+						}
 					}
 					playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, world, pos.getX(),
 							pos.getY(), pos.getZ());
 					return true;
-
 				}
+
 				playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, world, pos.getX(), pos.getY(),
 						pos.getZ());
 				return true;
 
 			}
 		}
-		return false;
+		return true;
+		// return super.onBlockActivated(world, pos, state, playerIn, hand, heldItem,
+		// side, hitX, hitY, hitZ);
 	}
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
@@ -77,9 +78,9 @@ public class BlockRainTankWood extends Block implements ITileEntityProvider {
 	}
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		// final TileEntityRainTankWood tileEntity = getTE(world, pos);
-		// InventoryHelper.dropInventoryItems(worldIn, pos, tileEntity); //TODO FIX DROP
-
+		final TileEntityRainTankWood tileEntity = getTE(world, pos);
+		final IItemHandler handler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		WaterworksInventoryHelper.dropItemsFromInventory(world, pos, handler);
 		super.breakBlock(world, pos, state);
 	}
 
