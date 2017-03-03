@@ -1,6 +1,7 @@
 package org.terpo.waterworks.helper;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -42,14 +43,14 @@ public class FluidItemStackHandler extends ItemStackHandler {
 		return this.outputSlots[slot];
 	}
 
-	public FluidItemStackHandler(ItemStack[] stacks) {
+	public FluidItemStackHandler(NonNullList<ItemStack> stacks) {
 		super(stacks);
 	}
 
 	@Override
 	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-		if (stack == null || stack.stackSize == 0) {
-			return null;
+		if (stack.isEmpty()) {
+			return ItemStack.EMPTY;
 		}
 
 		if (!isValidItemStack(stack)) {
@@ -60,34 +61,34 @@ public class FluidItemStackHandler extends ItemStackHandler {
 			return stack;
 		}
 
-		final ItemStack existing = this.stacks[slot];
+		final ItemStack existing = this.stacks.get(slot);
 
 		int limit = getStackLimit(slot, stack);
 
-		if (existing != null) {
+		if (!existing.isEmpty()) {
 			if (!ItemHandlerHelper.canItemStacksStack(stack, existing)) {
 				return stack;
 			}
 
-			limit -= existing.stackSize;
+			limit -= existing.getCount();
 		}
 
 		if (limit <= 0) {
 			return stack;
 		}
 
-		final boolean reachedLimit = stack.stackSize > limit;
+		final boolean reachedLimit = stack.getCount() > limit;
 
 		if (!simulate) {
-			if (existing == null) {
-				this.stacks[slot] = reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack;
+			if (existing.isEmpty()) {
+				this.stacks.set(slot, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack);
 			} else {
-				existing.stackSize += reachedLimit ? limit : stack.stackSize;
+				existing.grow(reachedLimit ? limit : stack.getCount());
 			}
 			onContentsChanged(slot);
 		}
 
-		return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.stackSize - limit) : null;
+		return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
 	}
 	private static boolean isValidItemStack(ItemStack stack) {
 		if (stack != null) {
@@ -99,31 +100,31 @@ public class FluidItemStackHandler extends ItemStackHandler {
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
 		if (amount == 0) {
-			return null;
+			return ItemStack.EMPTY;
 		}
 
 		if (!isOutputSlot(slot)) {
-			return null;
+			return ItemStack.EMPTY;
 		}
 
-		final ItemStack existing = this.stacks[slot];
+		final ItemStack existing = this.stacks.get(slot);
 
-		if (existing == null) {
-			return null;
+		if (existing.isEmpty()) {
+			return ItemStack.EMPTY;
 		}
 
 		final int toExtract = Math.min(amount, existing.getMaxStackSize());
 
-		if (existing.stackSize <= toExtract) {
+		if (existing.getCount() <= toExtract) {
 			if (!simulate) {
-				this.stacks[slot] = null;
+				this.stacks.set(slot, ItemStack.EMPTY);
 				onContentsChanged(slot);
 			}
 			return existing;
 		}
 
 		if (!simulate) {
-			this.stacks[slot] = ItemHandlerHelper.copyStackWithSize(existing, existing.stackSize - toExtract);
+			this.stacks.set(slot, ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
 			onContentsChanged(slot);
 		}
 
@@ -136,24 +137,24 @@ public class FluidItemStackHandler extends ItemStackHandler {
 			return null;
 		}
 
-		final ItemStack existing = this.stacks[slot];
+		final ItemStack existing = this.stacks.get(slot);
 
-		if (existing == null) {
-			return null;
+		if (existing.isEmpty()) {
+			return ItemStack.EMPTY;
 		}
 
 		final int toExtract = Math.min(amount, existing.getMaxStackSize());
 
-		if (existing.stackSize <= toExtract) {
+		if (existing.getCount() <= toExtract) {
 			if (!simulate) {
-				this.stacks[slot] = null;
+				this.stacks.set(slot, ItemStack.EMPTY);
 				onContentsChanged(slot);
 			}
 			return existing;
 		}
 
 		if (!simulate) {
-			this.stacks[slot] = ItemHandlerHelper.copyStackWithSize(existing, existing.stackSize - toExtract);
+			this.stacks.set(slot, ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
 			onContentsChanged(slot);
 		}
 

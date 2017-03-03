@@ -141,7 +141,7 @@ public class TileWaterworks extends TileEntity implements ITickable {
 	public final void update() {
 		this.currentTick++;
 
-		if (!this.worldObj.isRemote) {
+		if (!this.world.isRemote) {
 			updateServerSide();
 		} else {
 			updateClientSide();

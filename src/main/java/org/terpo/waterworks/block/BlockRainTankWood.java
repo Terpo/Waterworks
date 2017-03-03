@@ -31,11 +31,13 @@ public class BlockRainTankWood extends Block implements ITileEntityProvider {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand,
-			ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (!world.isRemote && hand == EnumHand.MAIN_HAND) {// isRemote true = client
-			final TileEntity tileEntity = getTE(world, pos);
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
+		if (!worldIn.isRemote && hand == EnumHand.MAIN_HAND) {// isRemote true = client
+			final TileEntity tileEntity = getTE(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainTankWood) {
+				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				final TileEntityRainTankWood tank = (TileEntityRainTankWood) tileEntity;
 				if (heldItem != null) {
 					if (heldItem.getItem() == Items.BUCKET) {
@@ -43,21 +45,20 @@ public class BlockRainTankWood extends Block implements ITileEntityProvider {
 							return true;
 						}
 					}
-					playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, world, pos.getX(),
+					playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, worldIn, pos.getX(),
 							pos.getY(), pos.getZ());
 					return true;
 				}
 
-				playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, world, pos.getX(), pos.getY(),
+				playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, worldIn, pos.getX(), pos.getY(),
 						pos.getZ());
 				return true;
 
 			}
 		}
 		return true;
-		// return super.onBlockActivated(world, pos, state, playerIn, hand, heldItem,
-		// side, hitX, hitY, hitZ);
 	}
+
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityRainTankWood();

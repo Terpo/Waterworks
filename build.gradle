@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
 
-version = "1.10.2-0.0.1"
+version = "${mc_version}-${mod_version}"
 group= "org.terpo.waterworks" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Waterworks"
 
@@ -29,13 +29,13 @@ minecraft {
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not allways work.
     // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20161111"
+    mappings = "${mappings_version}"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
 repositories {
     maven { url = "http://dvs1.progwml6.com/files/maven" }
-    maven { url = "http://mobiusstrip.eu/maven" }
+    maven { url = "http://tehnut.info/maven" }
 }
 
 
@@ -62,7 +62,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 	
 	deobfProvided "mezz.jei:jei_${mc_version}:${jei_version}"
-	deobfProvided "mcp.mobius.waila:Waila:${waila_version}_1.9.4"
+	deobfProvided "mcp.mobius.waila:Hwyla:${hwyla_version}"
 
 }
 

@@ -62,7 +62,7 @@ public class ContainerBase extends Container {
 	// @Nullable
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
-		ItemStack itemstack = null;
+		ItemStack itemstack = ItemStack.EMPTY;
 		final Slot slot = this.inventorySlots.get(index);
 
 		if (slot != null && slot.getHasStack()) {
@@ -77,7 +77,7 @@ public class ContainerBase extends Container {
 				return null;
 			}
 
-			if (itemstack1.stackSize == 0) {
+			if (itemstack1.isEmpty()) {
 				slot.putStack(null);
 			} else {
 				slot.onSlotChanged();

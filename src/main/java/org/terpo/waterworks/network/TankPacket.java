@@ -62,7 +62,7 @@ public class TankPacket implements IMessage {
 		@Override
 		public IMessage onMessage(TankPacket message, MessageContext ctx) {
 			final EntityPlayer player = Waterworks.proxy.getClientEntityPlayer();
-			final TileEntityRainTankWood tileEntity = getTileEntity(player.worldObj, message.getPos());
+			final TileEntityRainTankWood tileEntity = getTileEntity(player.world, message.getPos());
 			if (tileEntity == null) {
 				return null;
 			}

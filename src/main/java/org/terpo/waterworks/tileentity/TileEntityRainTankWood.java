@@ -42,7 +42,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		}
 
 		if (isDirty) {
-			this.worldObj.updateComparatorOutputLevel(this.pos, getBlockType());
+			this.world.updateComparatorOutputLevel(this.pos, getBlockType());
 			markAsDirty(getPos());
 			isDirty = false;
 		}
@@ -60,15 +60,15 @@ public class TileEntityRainTankWood extends TileWaterworks {
 
 	private boolean isRainingAtPosition(BlockPos posi) {
 		// copy of isRainingAt in World.class
-		if (!this.worldObj.isRaining()) {
+		if (!this.world.isRaining()) {
 			return false;
-		} else if (!this.worldObj.canBlockSeeSky(posi)) {
+		} else if (!this.world.canBlockSeeSky(posi)) {
 			return false;
-		} else if (this.worldObj.getPrecipitationHeight(posi).getY() > posi.getY()) {
+		} else if (this.world.getPrecipitationHeight(posi).getY() > posi.getY()) {
 			return false;
 		} else {
-			final Biome biome = this.worldObj.getBiome(posi);
-			return biome.getEnableSnow() ? false : (this.worldObj.canSnowAt(posi, false) ? false : biome.canRain());
+			final Biome biome = this.world.getBiome(posi);
+			return biome.getEnableSnow() ? false : (this.world.canSnowAt(posi, false) ? false : biome.canRain());
 		}
 	}
 
@@ -82,8 +82,8 @@ public class TileEntityRainTankWood extends TileWaterworks {
 				// Buckets
 				if (stackInput.getItem() == Items.BUCKET) {
 					if (internalFluidAmount >= 1000 && this.itemStackHandler.getStackInSlot(1) == null) {
-						if (stackInput.stackSize > 1) {
-							stackInput.stackSize--;
+						if (stackInput.getCount() > 1) {
+							stackInput.shrink(1);
 						} else {
 							this.itemStackHandler.setStackInSlot(0, null);
 						}
@@ -94,7 +94,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 					return false;
 				}
 				// Other containers with a current stackSize of 1
-				if (stackInput.stackSize == 1 && this.itemStackHandler.getStackInSlot(1) == null) {
+				if (stackInput.getCount() == 1 && this.itemStackHandler.getStackInSlot(1) == null) {
 					final IFluidTankProperties[] properties = capability.getTankProperties();
 					if (properties.length > 0) {
 						for (final IFluidTankProperties property : properties) {
@@ -122,8 +122,8 @@ public class TileEntityRainTankWood extends TileWaterworks {
 
 	public boolean onBlockActivated(EntityPlayer player, ItemStack itemStack, int slotIndex) {
 		if (this.fluidTank.getFluidAmount() >= 1000) {
-			if (itemStack.stackSize > 1) {
-				itemStack.stackSize--;
+			if (itemStack.getCount() > 1) {
+				itemStack.shrink(1);
 				if (player.inventory.addItemStackToInventory(new ItemStack(Items.WATER_BUCKET))) {
 					this.fluidTank.drain(new FluidStack(FluidRegistry.WATER, 1000), true);
 					return true;
@@ -156,9 +156,9 @@ public class TileEntityRainTankWood extends TileWaterworks {
 	private void markAsDirty(final BlockPos position) {
 		this.markDirty();
 
-		if (this.worldObj != null) {
-			final IBlockState state = this.worldObj.getBlockState(position);
-			this.worldObj.notifyBlockUpdate(position, state, state, 3);
+		if (this.world != null) {
+			final IBlockState state = this.world.getBlockState(position);
+			this.world.notifyBlockUpdate(position, state, state, 3);
 		}
 	}
 

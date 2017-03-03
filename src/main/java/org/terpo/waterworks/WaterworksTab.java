@@ -3,7 +3,7 @@ package org.terpo.waterworks;
 import org.terpo.waterworks.init.WaterworksItems;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class WaterworksTab extends CreativeTabs {
 
@@ -12,8 +12,8 @@ public class WaterworksTab extends CreativeTabs {
 	}
 
 	@Override
-	public Item getTabIconItem() {
-		return WaterworksItems.iron_mesh;
+	public ItemStack getTabIconItem() {
+		return new ItemStack(WaterworksItems.iron_mesh);
 	}
 
 }
