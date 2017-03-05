@@ -4,7 +4,7 @@ import static org.terpo.waterworks.init.WaterworksBlocks.rain_tank_wood;
 import static org.terpo.waterworks.init.WaterworksBlocks.water_pipe;
 
 import org.terpo.waterworks.Waterworks;
-import org.terpo.waterworks.WaterworksReference;
+import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.block.BlockRainTankWood;
 import org.terpo.waterworks.block.BlockWaterPipe;
 

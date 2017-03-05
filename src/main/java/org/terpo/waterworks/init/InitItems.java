@@ -4,7 +4,7 @@ import static org.terpo.waterworks.init.WaterworksItems.first_item;
 import static org.terpo.waterworks.init.WaterworksItems.iron_mesh;
 
 import org.terpo.waterworks.Waterworks;
-import org.terpo.waterworks.WaterworksReference;
+import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.item.ItemFirstItem;
 import org.terpo.waterworks.item.ItemIronMesh;
 

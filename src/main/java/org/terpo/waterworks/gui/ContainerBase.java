@@ -71,14 +71,14 @@ public class ContainerBase extends Container {
 			final int invsize = this.te.getINVSIZE();
 			if (index < invsize) {
 				if (!this.mergeItemStack(itemstack1, invsize, this.inventorySlots.size(), true)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 			} else if (!this.mergeItemStack(itemstack1, 0, invsize, false)) {
-				return null;
+				return ItemStack.EMPTY;
 			}
 
 			if (itemstack1.isEmpty()) {
-				slot.putStack(null);
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}

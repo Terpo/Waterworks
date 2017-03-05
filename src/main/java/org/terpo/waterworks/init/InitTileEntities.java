@@ -1,6 +1,6 @@
 package org.terpo.waterworks.init;
 
-import org.terpo.waterworks.WaterworksReference;
+import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
 
 import net.minecraft.tileentity.TileEntity;

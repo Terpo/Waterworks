@@ -2,10 +2,13 @@ package org.terpo.waterworks;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.gui.GuiProxy;
 import org.terpo.waterworks.init.InitBlocks;
 import org.terpo.waterworks.init.InitItems;
+import org.terpo.waterworks.init.InitModCompat;
 import org.terpo.waterworks.init.InitTileEntities;
+import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksCrafting;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 import org.terpo.waterworks.proxy.IProxy;
@@ -32,7 +35,8 @@ public class Waterworks {
 
 	@Mod.EventHandler
 	public static void preInit(FMLPreInitializationEvent event) {
-		LOGGER.info("PreInit");
+		WaterworksConfig.init(event);
+		WaterworksConfig.load();
 		WaterworksPacketHandler.registerMessages(WaterworksReference.MODID);
 		InitItems.init();
 		InitBlocks.init();
@@ -40,9 +44,8 @@ public class Waterworks {
 	}
 	@Mod.EventHandler
 	public static void init(FMLInitializationEvent event) {
-		LOGGER.info("Init");
 		proxy.init(event);
-
+		InitModCompat.init("init");
 		WaterworksCrafting.register();
 		InitTileEntities.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
@@ -50,7 +53,7 @@ public class Waterworks {
 	}
 	@Mod.EventHandler
 	public static void postInit(FMLPostInitializationEvent event) {
-		LOGGER.info("PostInit");
+		WaterworksConfig.save();
 		proxy.postInit(event);
 	}
 

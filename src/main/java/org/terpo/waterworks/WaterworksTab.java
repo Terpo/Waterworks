@@ -1,5 +1,6 @@
 package org.terpo.waterworks;
 
+import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.init.WaterworksItems;
 
 import net.minecraft.creativetab.CreativeTabs;

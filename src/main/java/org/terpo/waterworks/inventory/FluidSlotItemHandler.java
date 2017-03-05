@@ -25,8 +25,8 @@ public class FluidSlotItemHandler extends SlotItemHandler {
 		if (this.slotDefinition == SlotDefinition.O) {
 			return false;
 		}
-		if (stack != null) {
-			return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+		if (stack != ItemStack.EMPTY) {
+			return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 		}
 		return super.isItemValid(stack);
 	}
@@ -37,7 +37,7 @@ public class FluidSlotItemHandler extends SlotItemHandler {
 		if (handler instanceof FluidItemStackHandler) {
 			return ((FluidItemStackHandler) handler).extractItemByPlayer(this.index, 1, true) != null;
 		}
-		return handler.extractItem(this.index, 1, false) != null;
+		return handler.extractItem(this.index, 1, false) != ItemStack.EMPTY;
 	}
 
 	@Override

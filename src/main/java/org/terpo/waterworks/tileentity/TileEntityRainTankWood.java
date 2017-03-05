@@ -1,10 +1,10 @@
 package org.terpo.waterworks.tileentity;
 
+import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.network.TankPacket;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -17,19 +17,19 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class TileEntityRainTankWood extends TileWaterworks {
 
-	private static final int fillrate = 100;
-	private static final FluidStack RESOURCE_WATER = new FluidStack(FluidRegistry.WATER, fillrate);
-	private static final int capacity = 8000;
+	private FluidStack RESOURCE_WATER = null;
 	private static final int invSlots = 2;
 
 	public TileEntityRainTankWood() {
-		super(invSlots, capacity);
+		super(invSlots, WaterworksConfig.RAIN_TANK_SIMPLE_CAPACITY);
+		this.RESOURCE_WATER = new FluidStack(FluidRegistry.WATER, WaterworksConfig.RAIN_TANK_SIMPLE_FILLRATE);
 		this.fluidTank.setCanFill(false);
 		this.fluidTank.setTileEntity(this);
 
 		this.itemStackHandler.setInputFlagForIndex(0, true);
 		this.itemStackHandler.setInputFlagForIndex(1, false);
 		this.itemStackHandler.setOutputFlagForIndex(1, true);
+
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		final BlockPos position = getPos().up();
 
 		if (isRainingAtPosition(position)) {
-			this.fluidTank.fillInternal(RESOURCE_WATER, true);
+			this.fluidTank.fillInternal(this.RESOURCE_WATER, true);
 			return true;
 		}
 		return false;
@@ -76,16 +76,16 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		final int internalFluidAmount = this.fluidTank.getFluidAmount();
 		if (internalFluidAmount > 0) {
 			final ItemStack stackInput = this.itemStackHandler.getStackInSlot(0);
-			if (stackInput != null && stackInput.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-				final IFluidHandler capability = stackInput
-						.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+			if (!stackInput.isEmpty()
+					&& (stackInput.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+							|| stackInput.getItem() == Items.BUCKET)) {
 				// Buckets
 				if (stackInput.getItem() == Items.BUCKET) {
-					if (internalFluidAmount >= 1000 && this.itemStackHandler.getStackInSlot(1) == null) {
+					if (internalFluidAmount >= 1000 && this.itemStackHandler.getStackInSlot(1).isEmpty()) {
 						if (stackInput.getCount() > 1) {
 							stackInput.shrink(1);
 						} else {
-							this.itemStackHandler.setStackInSlot(0, null);
+							this.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
 						}
 						this.fluidTank.drain(new FluidStack(FluidRegistry.WATER, 1000), true);
 						this.itemStackHandler.setStackInSlot(1, new ItemStack(Items.WATER_BUCKET));
@@ -94,6 +94,8 @@ public class TileEntityRainTankWood extends TileWaterworks {
 					return false;
 				}
 				// Other containers with a current stackSize of 1
+				final IFluidHandler capability = stackInput
+						.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 				if (stackInput.getCount() == 1 && this.itemStackHandler.getStackInSlot(1) == null) {
 					final IFluidTankProperties[] properties = capability.getTankProperties();
 					if (properties.length > 0) {
@@ -120,27 +122,10 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		return false;
 	}
 
-	public boolean onBlockActivated(EntityPlayer player, ItemStack itemStack, int slotIndex) {
-		if (this.fluidTank.getFluidAmount() >= 1000) {
-			if (itemStack.getCount() > 1) {
-				itemStack.shrink(1);
-				if (player.inventory.addItemStackToInventory(new ItemStack(Items.WATER_BUCKET))) {
-					this.fluidTank.drain(new FluidStack(FluidRegistry.WATER, 1000), true);
-					return true;
-				}
-				return false;
-			}
-			player.inventory.setInventorySlotContents(slotIndex, new ItemStack(Items.WATER_BUCKET));
-			this.fluidTank.drain(new FluidStack(FluidRegistry.WATER, 1000), true);
-			return true;
-		}
-		return false;
-	}
-
 	private void fillCustomFluidContainer(final int internalFluidAmount, final IFluidHandler capability,
 			final int fluidCapacity, final FluidStack content) {
 		this.itemStackHandler.setStackInSlot(1, this.itemStackHandler.getStackInSlot(0));
-		this.itemStackHandler.setStackInSlot(0, null);
+		this.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
 		final int fillAmount = fluidCapacity - content.amount >= internalFluidAmount
 				? internalFluidAmount
 				: fluidCapacity - content.amount;

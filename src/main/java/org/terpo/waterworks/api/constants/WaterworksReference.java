@@ -1,4 +1,4 @@
-package org.terpo.waterworks;
+package org.terpo.waterworks.api.constants;
 
 public class WaterworksReference {
 	public static final String MODID = "waterworks";

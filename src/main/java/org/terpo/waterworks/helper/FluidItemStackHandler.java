@@ -92,7 +92,7 @@ public class FluidItemStackHandler extends ItemStackHandler {
 	}
 	private static boolean isValidItemStack(ItemStack stack) {
 		if (stack != null) {
-			return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+			return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 		}
 		return false;
 	}
