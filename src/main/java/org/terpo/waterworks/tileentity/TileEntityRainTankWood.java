@@ -17,34 +17,37 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class TileEntityRainTankWood extends TileWaterworks {
 
-	private FluidStack RESOURCE_WATER = null;
+	protected FluidStack RESOURCE_WATER = null;
 	private static final int invSlots = 2;
 
 	public TileEntityRainTankWood() {
-		super(invSlots, WaterworksConfig.RAIN_TANK_SIMPLE_CAPACITY);
-		this.RESOURCE_WATER = new FluidStack(FluidRegistry.WATER, WaterworksConfig.RAIN_TANK_SIMPLE_FILLRATE);
+		this(WaterworksConfig.RAIN_TANK_SIMPLE_FILLRATE, WaterworksConfig.RAIN_TANK_SIMPLE_CAPACITY);
+	}
+	public TileEntityRainTankWood(int fillrate, int capacity) {
+		super(invSlots, capacity);
+		this.RESOURCE_WATER = new FluidStack(FluidRegistry.WATER, fillrate);
+
 		this.fluidTank.setCanFill(false);
 		this.fluidTank.setTileEntity(this);
 
 		this.itemStackHandler.setInputFlagForIndex(0, true);
 		this.itemStackHandler.setInputFlagForIndex(1, false);
 		this.itemStackHandler.setOutputFlagForIndex(1, true);
-
 	}
 
 	@Override
 	protected void updateServerSide() {
-		boolean isDirty = false;
-		isDirty = fillFluid();
+
+		this.isDirty = fillFluid();
 
 		if (needsUpdate(20)) {
-			isDirty = isRefilling();
+			this.isDirty = isRefilling();
 		}
 
-		if (isDirty) {
+		if (this.isDirty) {
 			this.world.updateComparatorOutputLevel(this.pos, getBlockType());
 			markAsDirty(getPos());
-			isDirty = false;
+			this.isDirty = false;
 		}
 	}
 
@@ -134,7 +137,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		this.fluidTank.drain(filledWaterstack, true);
 	}
 
-	private static FluidStack getWaterFluidStack(int amount) {
+	protected static FluidStack getWaterFluidStack(int amount) {
 		return new FluidStack(FluidRegistry.WATER, amount);
 	}
 

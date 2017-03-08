@@ -12,4 +12,7 @@ public class BaseBlock extends Block {
 		this.setHarvestLevel("pickaxe", 2);
 	}
 
+	public BaseBlock() {
+		this(Material.IRON);
+	}
 }

@@ -1,8 +1,12 @@
 #Items
 item.first_item.name=First Item
 item.iron_mesh.name=Iron Mesh
+item.firework_rain.name=Silver Firework
+item.firework_charge_rain.name=Silver Firework Star
 #Blocks
-tile.rain_tank_wood.name=Wooden Raintank
+tile.rain_tank_wood.name=Wooden Rain Tank
 tile.water_pipe.name=Water Pipe
+tile.rain_collector.name=Collector Block
+tile.rain_collector_controller.name=Rain Collector Controller
 #CreativeTab
 itemGroup.waterworks=Waterworks

@@ -10,10 +10,14 @@ public class WaterworksConfig {
 
 	// Categories
 	private static final String CATEGORY_RAIN_TANK_SIMPLE = "Simple Rain Tank";
-
+	private static final String CATEGORY_ROCKETS = "Rain Rockets";
 	// Simple Rain Tank
 	public static int RAIN_TANK_SIMPLE_FILLRATE = 100;
 	public static int RAIN_TANK_SIMPLE_CAPACITY = 8000;
+
+	// Rain Rocket
+	public static int RAIN_DURATION = 240;
+	public static int RAIN_DURATION_MULTIPLIER_MAX = 8;
 
 	private static void initRainTankSimpleConfig() {
 		cfg.addCustomCategoryComment(CATEGORY_RAIN_TANK_SIMPLE, "Rain Tank Configuration");
@@ -23,6 +27,15 @@ public class WaterworksConfig {
 				1024000, "Tank capacity in mB");
 	}
 
+	private static void initRainRockets() {
+		cfg.addCustomCategoryComment(CATEGORY_ROCKETS, "Rain Rocket Configuration");
+		RAIN_DURATION = cfg.getInt("duration", CATEGORY_ROCKETS, RAIN_DURATION, 1, 3000,
+				"Rain duration with x1 multiplier");
+		RAIN_DURATION_MULTIPLIER_MAX = cfg.getInt("multiplier", CATEGORY_ROCKETS, RAIN_DURATION_MULTIPLIER_MAX, 1, 24,
+				"Rain duration multiplier");
+
+	}
+
 	public static void init(FMLPreInitializationEvent event) {
 		cfg = new Configuration(event.getSuggestedConfigurationFile());
 	}
@@ -30,6 +43,7 @@ public class WaterworksConfig {
 		try {
 			cfg.load();
 			initRainTankSimpleConfig();
+			initRainRockets();
 		} catch (final Exception ex) {
 			Waterworks.LOGGER.error("Problem loading config file!", ex);
 		} finally {

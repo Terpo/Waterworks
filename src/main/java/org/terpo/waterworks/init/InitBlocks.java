@@ -1,10 +1,9 @@
 package org.terpo.waterworks.init;
 
-import static org.terpo.waterworks.init.WaterworksBlocks.rain_tank_wood;
-import static org.terpo.waterworks.init.WaterworksBlocks.water_pipe;
-
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.api.constants.WaterworksReference;
+import org.terpo.waterworks.block.BlockRainCollector;
+import org.terpo.waterworks.block.BlockRainCollectorController;
 import org.terpo.waterworks.block.BlockRainTankWood;
 import org.terpo.waterworks.block.BlockWaterPipe;
 
@@ -19,13 +18,18 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class InitBlocks {
 
 	public static void init() {
-		rain_tank_wood = registerBlock(new BlockRainTankWood(), "rain_tank_wood");
-		water_pipe = registerBlock(new BlockWaterPipe(), "water_pipe");
+		WaterworksBlocks.rain_tank_wood = registerBlock(new BlockRainTankWood(), "rain_tank_wood");
+		WaterworksBlocks.water_pipe = registerBlock(new BlockWaterPipe(), "water_pipe");
+		WaterworksBlocks.rain_collector = registerBlock(new BlockRainCollector(), "rain_collector");
+		WaterworksBlocks.rain_collector_controller = registerBlock(new BlockRainCollectorController(),
+				"rain_collector_controller");
 
 	}
 	public static void registerRenders() {
-		registerRender(rain_tank_wood);
-		registerRender(water_pipe);
+		registerRender(WaterworksBlocks.rain_tank_wood);
+		registerRender(WaterworksBlocks.water_pipe);
+		registerRender(WaterworksBlocks.rain_collector);
+		registerRender(WaterworksBlocks.rain_collector_controller);
 	}
 	public static void registerRender(Block block) {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,

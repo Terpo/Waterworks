@@ -1,6 +1,7 @@
 package org.terpo.waterworks.proxy;
 
 import org.terpo.waterworks.init.InitBlocks;
+import org.terpo.waterworks.init.InitEntities;
 import org.terpo.waterworks.init.InitItems;
 
 import net.minecraft.client.Minecraft;
@@ -14,6 +15,7 @@ public class ClientProxy implements IProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		InitItems.registerRenders();
 		InitBlocks.registerRenders();
+		InitEntities.registerRenders();
 	}
 	@Override
 	public void init(FMLInitializationEvent event) {

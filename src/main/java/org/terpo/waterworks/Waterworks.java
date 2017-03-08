@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.gui.GuiProxy;
 import org.terpo.waterworks.init.InitBlocks;
+import org.terpo.waterworks.init.InitEntities;
 import org.terpo.waterworks.init.InitItems;
 import org.terpo.waterworks.init.InitModCompat;
 import org.terpo.waterworks.init.InitTileEntities;
@@ -40,6 +41,8 @@ public class Waterworks {
 		WaterworksPacketHandler.registerMessages(WaterworksReference.MODID);
 		InitItems.init();
 		InitBlocks.init();
+		InitEntities.init();
+		InitModCompat.init("pre");
 		proxy.preInit(event);
 	}
 	@Mod.EventHandler

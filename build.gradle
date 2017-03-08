@@ -15,9 +15,9 @@ version = "${mc_version}-${mod_version}"
 group= "org.terpo.waterworks" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Waterworks"
 
-sourceCompatibility = targetCompatibility = "1.6" // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
 compileJava {
-    sourceCompatibility = targetCompatibility = "1.6"
+    sourceCompatibility = targetCompatibility = "1.8"
 }
 
 minecraft {
@@ -36,6 +36,10 @@ minecraft {
 repositories {
     maven { url = "http://dvs1.progwml6.com/files/maven" }
     maven { url = "http://tehnut.info/maven" }
+	maven { // TOP
+        name 'tterrag maven'
+        url "http://maven.tterrag.com/"
+    }
 }
 
 
@@ -63,6 +67,7 @@ dependencies {
 	
 	deobfProvided "mezz.jei:jei_${mc_version}:${jei_version}"
 	deobfProvided "mcp.mobius.waila:Hwyla:${hwyla_version}"
+	deobfCompile "mcjty.theoneprobe:TheOneProbe:${top_version}"
 
 }
 

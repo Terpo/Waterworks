@@ -1,14 +1,16 @@
 package org.terpo.waterworks.block;
 
+import java.util.List;
+
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.gui.GuiProxy;
 import org.terpo.waterworks.inventory.WaterworksInventoryHelper;
-import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
+import org.terpo.waterworks.tileentity.TileEntityRainCollectorController;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -19,23 +21,40 @@ import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
+public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+		super.addInformation(stack, player, tooltip, advanced);
+		tooltip.add("Controller for the multiblock rain collector");
+	}
 
-	public BlockRainTankWood() {
-		super(Material.WOOD);
+	@Override
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		return new TileEntityRainCollectorController();
 	}
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-
 		if (!worldIn.isRemote && hand == EnumHand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTE(worldIn, pos);
-			if (tileEntity instanceof TileEntityRainTankWood) {
+			if (tileEntity instanceof TileEntityRainCollectorController) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
+				if (heldItem.getItem() == Items.CARROT_ON_A_STICK) {
+					((TileEntityRainCollectorController) tileEntity).findRainCollectors();
+					return true;
+				}
+				if (heldItem.getItem() == Items.STICK) {
+					((TileEntityRainCollectorController) tileEntity).debugCollectors();
+					return true;
+				}
+
 				if (!playerIn.isSneaking()) {
 					if (heldItem != ItemStack.EMPTY) {
 						if (tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
@@ -59,8 +78,16 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityRainTankWood();
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		final TileEntity tileEntity = getTE(world, pos);
+		if (tileEntity instanceof TileWaterworks) {
+			final IItemHandler handler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			WaterworksInventoryHelper.dropItemsFromInventory(world, pos, handler);
+		}
+		if (tileEntity instanceof TileEntityRainCollectorController) {
+			((TileEntityRainCollectorController) tileEntity).resetController();
+		}
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override
@@ -68,26 +95,4 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 		return true;
 	}
 
-	@Override
-	public boolean hasComparatorInputOverride(IBlockState bs) {
-		return true;
-	}
-
-	@Override
-	public int getComparatorInputOverride(IBlockState bs, World world, BlockPos pos) {
-		final TileEntity te = getTE(world, pos);
-		if (te instanceof TileEntityRainTankWood) {
-			return getTE(world, pos).getComparatorOutput();
-		}
-		return 0;
-	}
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		final TileEntity tileEntity = getTE(world, pos);
-		if (tileEntity instanceof TileWaterworks) {
-			final IItemHandler handler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			WaterworksInventoryHelper.dropItemsFromInventory(world, pos, handler);
-		}
-		super.breakBlock(world, pos, state);
-	}
 }

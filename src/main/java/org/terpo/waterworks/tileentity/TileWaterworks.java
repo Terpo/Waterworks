@@ -7,16 +7,14 @@ import org.terpo.waterworks.helper.FluidItemStackHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class TileWaterworks extends TileEntity implements ITickable {
+public class TileWaterworks extends BaseTileEntity implements ITickable {
+	protected boolean isDirty = false;
 
 	private static final Random random = new Random();
 	private int currentTick = random.nextInt(256);
@@ -105,34 +103,6 @@ public class TileWaterworks extends TileEntity implements ITickable {
 		}
 		return super.getCapability(capability, facing);
 	}
-
-	// Client Sync
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		// called when the tile entity itself wants to sync to the client
-		final NBTTagCompound nbtTagCompound = new NBTTagCompound();
-		writeToNBT(nbtTagCompound);
-		final int metadata = getBlockMetadata();
-		return new SPacketUpdateTileEntity(this.pos, metadata, nbtTagCompound);
-	}
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		readFromNBT(pkt.getNbtCompound());
-	}
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		// called whenever the chunkdata is sent to the client
-		final NBTTagCompound nbtTagCompound = new NBTTagCompound();
-		writeToNBT(nbtTagCompound);
-		return nbtTagCompound;
-	}
-
-	@Override
-	public void handleUpdateTag(NBTTagCompound tag) { // on chunk load CLIENT
-		this.readFromNBT(tag);
-	}
-	// Client Sync End
 
 	// TileEntity End
 
