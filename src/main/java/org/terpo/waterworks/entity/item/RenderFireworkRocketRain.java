@@ -10,19 +10,19 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 public class RenderFireworkRocketRain extends Render<EntityFireworkRocketRain> {
 
 	private final RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
-	protected RenderFireworkRocketRain(RenderManager renderManager) {
+	private final Item item = WaterworksItems.firework_rain;
+	public RenderFireworkRocketRain(RenderManager renderManager) {
 		super(renderManager);
 	}
 
-	/**
-	 * Renders the desired {@code T} type Entity.
-	 */
 	@Override
 	public void doRender(EntityFireworkRocketRain entity, double x, double y, double z, float entityYaw,
 			float partialTicks) {
@@ -41,8 +41,7 @@ public class RenderFireworkRocketRain extends Render<EntityFireworkRocketRain> {
 			GlStateManager.enableOutlineMode(this.getTeamColor(entity));
 		}
 
-		this.itemRenderer.renderItem(new ItemStack(WaterworksItems.firework_charge_rain),
-				ItemCameraTransforms.TransformType.GROUND);
+		this.itemRenderer.renderItem(getStackToRender(), ItemCameraTransforms.TransformType.GROUND);
 
 		if (this.renderOutlines) {
 			GlStateManager.disableOutlineMode();
@@ -54,15 +53,24 @@ public class RenderFireworkRocketRain extends Render<EntityFireworkRocketRain> {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 	}
 
-	public static ItemStack getStackToRender() {
-		return new ItemStack(WaterworksItems.firework_charge_rain);
+	public ItemStack getStackToRender() {
+		return new ItemStack(this.item);
 	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(EntityFireworkRocketRain entity) {
-		Waterworks.LOGGER.info("resourceLocation");
+		Waterworks.LOGGER.info("getEntityTexture ---> resourceLocation");
 		return new ResourceLocation("waterworks:textures/item/firework_rain.png");
 		// return TextureMap.LOCATION_BLOCKS_TEXTURE;
+	}
+
+	public static class Factory implements IRenderFactory<EntityFireworkRocketRain> {
+
+		@Override
+		public Render<? super EntityFireworkRocketRain> createRenderFor(RenderManager manager) {
+			return new RenderFireworkRocketRain(manager);
+		}
+
 	}
 
 }

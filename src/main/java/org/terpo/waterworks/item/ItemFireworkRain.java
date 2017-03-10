@@ -30,6 +30,8 @@ public class ItemFireworkRain extends ItemFirework {
 			final ItemStack itemstack = player.getHeldItem(hand);
 			final EntityFireworkRocketRain entityfireworkrocket = new EntityFireworkRocketRain(worldIn,
 					pos.getX() + hitX, pos.getY() + hitY, pos.getZ() + hitZ, itemstack);
+//			final EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(worldIn, pos.getX() + hitX,
+//					pos.getY() + hitY, pos.getZ() + hitZ, itemstack);
 			worldIn.spawnEntity(entityfireworkrocket);
 
 			if (!player.capabilities.isCreativeMode) {
@@ -49,6 +51,8 @@ public class ItemFireworkRain extends ItemFirework {
 			if (!worldIn.isRemote) {
 				final EntityFireworkRocketRain entityfireworkrocket = new EntityFireworkRocketRain(worldIn, itemstack,
 						playerIn);
+//				final EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(worldIn, itemstack,
+//						playerIn);
 				worldIn.spawnEntity(entityfireworkrocket);
 
 				if (!playerIn.capabilities.isCreativeMode) {

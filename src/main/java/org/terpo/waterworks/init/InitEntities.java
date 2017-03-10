@@ -3,7 +3,7 @@ package org.terpo.waterworks.init;
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.entity.item.EntityFireworkRocketRain;
-import org.terpo.waterworks.entity.item.FireworkRocketRainFactory;
+import org.terpo.waterworks.entity.item.RenderFireworkRocketRain;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -33,9 +33,12 @@ public class InitEntities {
 
 	@SideOnly(Side.CLIENT)
 	public static void registerRenders() {
+//		final RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
 		RenderingRegistry.registerEntityRenderingHandler(EntityFireworkRocketRain.class,
-				new FireworkRocketRainFactory());
+				new RenderFireworkRocketRain.Factory());
 		Waterworks.LOGGER.info("EntityRenderer ###########################");
+//		RenderingRegistry.registerEntityRenderingHandler(EntityFireworkRocketRain.class, new RenderSnowball(
+//				Minecraft.getMinecraft().getRenderManager(), WaterworksItems.firework_rain, itemRenderer));
 	}
 
 }
