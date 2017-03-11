@@ -5,7 +5,9 @@ import org.terpo.waterworks.init.WaterworksConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +21,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.walkers.ItemStackData;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -27,10 +30,11 @@ import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityFireworkRocketRain extends Entity {
-	protected static DataParameter<ItemStack> RAINROCKET_ITEM = EntityDataManager
+public class EntityFireworkRocketAntiRain extends Entity {
+
+	protected static DataParameter<ItemStack> ANTI_RAINROCKET_ITEM = EntityDataManager
 			.<ItemStack>createKey(EntityFireworkRocketRain.class, DataSerializers.OPTIONAL_ITEM_STACK);
-	protected static DataParameter<Integer> RAINROCKET_ITEM_INT = EntityDataManager
+	protected static DataParameter<Integer> ANTI_RAINROCKET_ITEM_INT = EntityDataManager
 			.<Integer>createKey(EntityFireworkRocketRain.class, DataSerializers.VARINT);
 	/** The age of the firework in ticks. */
 	private int fireworkAge;
@@ -41,13 +45,13 @@ public class EntityFireworkRocketRain extends Entity {
 	private int lifetime;
 	private EntityLivingBase entityPlacer;
 
-	private int rainDuration = WaterworksConfig.RAIN_DURATION;
-
-	public EntityFireworkRocketRain(World worldIn) {
+	private int clearSky = WaterworksConfig.ANTI_RAIN_DURATION;
+	private int antiRainMultiplier = -1;
+	public EntityFireworkRocketAntiRain(World worldIn) {
 		super(worldIn);
 		this.setSize(0.25F, 0.25F);
 	}
-	public EntityFireworkRocketRain(World worldIn, double x, double y, double z, ItemStack givenItem) {
+	public EntityFireworkRocketAntiRain(World worldIn, double x, double y, double z, ItemStack givenItem) {
 		super(worldIn);
 		this.fireworkAge = 0;
 		this.setSize(0.25F, 0.25F);
@@ -55,7 +59,7 @@ public class EntityFireworkRocketRain extends Entity {
 		int i = 1;
 
 		if (!givenItem.isEmpty() && givenItem.hasTagCompound()) {
-			this.dataManager.set(RAINROCKET_ITEM, givenItem.copy());
+			this.dataManager.set(ANTI_RAINROCKET_ITEM, givenItem.copy());
 			final NBTTagCompound nbttagcompound = givenItem.getTagCompound();
 			final NBTTagCompound nbttagcompound1 = nbttagcompound.getCompoundTag("Fireworks");
 			i += nbttagcompound1.getByte("Flight");
@@ -65,30 +69,29 @@ public class EntityFireworkRocketRain extends Entity {
 		this.motionZ = this.rand.nextGaussian() * 0.001D;
 		this.motionY = 0.05D;
 		this.lifetime = 10 * i + this.rand.nextInt(6) + this.rand.nextInt(7);
-
 		if (givenItem.hasTagCompound()) {
 			final NBTTagCompound tag = givenItem.getTagCompound();
-			int rainMultiplier = -1;
-			if (tag.hasKey("RAIN")) {
-				rainMultiplier = tag.getInteger("RAIN");
+			this.antiRainMultiplier = -1;
+			if (tag.hasKey("ANTIRAIN")) {
+				this.antiRainMultiplier = tag.getInteger("ANTIRAIN");
 			}
-			if (rainMultiplier != -1) {
-				this.rainDuration = WaterworksConfig.RAIN_DURATION * rainMultiplier;
+			if (this.antiRainMultiplier != -1) {
+				this.clearSky = WaterworksConfig.ANTI_RAIN_DURATION * this.antiRainMultiplier;
 			}
 		}
 
 	}
 
-	public EntityFireworkRocketRain(World worldIn, ItemStack itemStack, EntityLivingBase entityLivingbase) {
+	public EntityFireworkRocketAntiRain(World worldIn, ItemStack itemStack, EntityLivingBase entityLivingbase) {
 		this(worldIn, entityLivingbase.posX, entityLivingbase.posY, entityLivingbase.posZ, itemStack);
-		this.dataManager.set(RAINROCKET_ITEM_INT, Integer.valueOf(entityLivingbase.getEntityId()));
+		this.dataManager.set(ANTI_RAINROCKET_ITEM_INT, Integer.valueOf(entityLivingbase.getEntityId()));
 		this.entityPlacer = entityLivingbase;
 	}
 
 	@Override
 	protected void entityInit() {
-		this.dataManager.register(RAINROCKET_ITEM, ItemStack.EMPTY);
-		this.dataManager.register(RAINROCKET_ITEM_INT, Integer.valueOf(0));
+		this.dataManager.register(ANTI_RAINROCKET_ITEM, ItemStack.EMPTY);
+		this.dataManager.register(ANTI_RAINROCKET_ITEM_INT, Integer.valueOf(0));
 	}
 
 	/**
@@ -137,7 +140,8 @@ public class EntityFireworkRocketRain extends Entity {
 
 		if (this.getRocketIntValue()) {
 			if (this.entityPlacer == null) {
-				final Entity entity = this.world.getEntityByID(this.dataManager.get(RAINROCKET_ITEM_INT).intValue());
+				final Entity entity = this.world
+						.getEntityByID(this.dataManager.get(ANTI_RAINROCKET_ITEM_INT).intValue());
 
 				if (entity instanceof EntityLivingBase) {
 					this.entityPlacer = (EntityLivingBase) entity;
@@ -212,7 +216,7 @@ public class EntityFireworkRocketRain extends Entity {
 
 	private void damageEntities() {
 		float f = 0.0F;
-		final ItemStack itemstack = this.dataManager.get(RAINROCKET_ITEM);
+		final ItemStack itemstack = this.dataManager.get(ANTI_RAINROCKET_ITEM);
 		final NBTTagCompound nbttagcompound = itemstack.isEmpty() ? null : itemstack.getSubCompound("Fireworks");
 		final NBTTagList nbttaglist = nbttagcompound != null ? nbttagcompound.getTagList("Explosions", 10) : null;
 
@@ -257,14 +261,14 @@ public class EntityFireworkRocketRain extends Entity {
 	}
 
 	public boolean getRocketIntValue() {
-		return this.dataManager.get(RAINROCKET_ITEM_INT).intValue() > 0;
+		return this.dataManager.get(ANTI_RAINROCKET_ITEM_INT).intValue() > 0;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void handleStatusUpdate(byte id) {
 		if (id == 17 && this.world.isRemote) {
-			final ItemStack itemstack = this.dataManager.get(RAINROCKET_ITEM);
+			final ItemStack itemstack = this.dataManager.get(ANTI_RAINROCKET_ITEM);
 			final NBTTagCompound nbttagcompound = itemstack.isEmpty() ? null : itemstack.getSubCompound("Fireworks");
 			this.world.makeFireworks(this.posX, this.posY, this.posZ, this.motionX, this.motionY, this.motionZ,
 					nbttagcompound);
@@ -282,7 +286,7 @@ public class EntityFireworkRocketRain extends Entity {
 	public void writeEntityToNBT(NBTTagCompound compound) {
 		compound.setInteger("Life", this.fireworkAge);
 		compound.setInteger("LifeTime", this.lifetime);
-		final ItemStack itemstack = this.dataManager.get(RAINROCKET_ITEM);
+		final ItemStack itemstack = this.dataManager.get(ANTI_RAINROCKET_ITEM);
 
 		if (!itemstack.isEmpty()) {
 			compound.setTag("FireworksItem", itemstack.writeToNBT(new NBTTagCompound()));
@@ -299,7 +303,7 @@ public class EntityFireworkRocketRain extends Entity {
 			final ItemStack itemstack = new ItemStack(nbttagcompound);
 
 			if (!itemstack.isEmpty()) {
-				this.dataManager.set(RAINROCKET_ITEM, itemstack);
+				this.dataManager.set(ANTI_RAINROCKET_ITEM, itemstack);
 			}
 		}
 	}
@@ -313,12 +317,26 @@ public class EntityFireworkRocketRain extends Entity {
 	public void setDead() {
 		final World worldIn = this.getEntityWorld();
 		final WorldInfo worldinfo = worldIn.getWorldInfo();
-		worldinfo.setCleanWeatherTime(0);
-		worldinfo.setRainTime(this.rainDuration);
-		worldinfo.setThunderTime(this.rainDuration);
-		worldinfo.setRaining(true);
+		worldinfo.setCleanWeatherTime(this.clearSky);
+		worldinfo.setRainTime(0);
+		worldinfo.setThunderTime(0);
+		worldinfo.setRaining(false);
 		worldinfo.setThundering(false);
+		if (!worldIn.isRemote) {
+			final BlockPos pos = this.getPosition();
+			dropSponge(worldIn, pos);
+		}
 		this.isDead = true;
 	}
 
+	private void dropSponge(World worldIn, BlockPos pos) {
+
+		if (this.antiRainMultiplier >= 1) {
+			for (int i = 0; i < this.antiRainMultiplier; i++) {
+				worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + this.rand.nextDouble() * 2 - 1.0d,
+						pos.getY() + this.rand.nextDouble() * 2 - 1.0d, pos.getZ() + this.rand.nextDouble() * 2 - 1.0d,
+						new ItemStack(Blocks.SPONGE, 1, 1)));
+			}
+		}
+	}
 }

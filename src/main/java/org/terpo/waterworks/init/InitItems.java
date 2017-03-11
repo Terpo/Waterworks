@@ -1,13 +1,13 @@
 package org.terpo.waterworks.init;
 
-import static org.terpo.waterworks.init.WaterworksItems.firework_charge_rain;
+import static org.terpo.waterworks.init.WaterworksItems.firework_anti_rain;
 import static org.terpo.waterworks.init.WaterworksItems.firework_rain;
 import static org.terpo.waterworks.init.WaterworksItems.first_item;
 import static org.terpo.waterworks.init.WaterworksItems.iron_mesh;
 
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.api.constants.WaterworksReference;
-import org.terpo.waterworks.item.ItemFireworkChargeRain;
+import org.terpo.waterworks.item.ItemFireworkAntiRain;
 import org.terpo.waterworks.item.ItemFireworkRain;
 import org.terpo.waterworks.item.ItemFirstItem;
 import org.terpo.waterworks.item.ItemIronMesh;
@@ -29,15 +29,14 @@ public class InitItems {
 		first_item = registerItem(new ItemFirstItem(), "first_item");
 		iron_mesh = registerItem(new ItemIronMesh(), "iron_mesh");
 		firework_rain = registerItem(new ItemFireworkRain(), "firework_rain");
-		firework_charge_rain = registerItem(new ItemFireworkChargeRain(), "firework_charge_rain");
-
+		firework_anti_rain = registerItem(new ItemFireworkAntiRain(), "firework_anti_rain");
 	}
 
 	public static void registerRenders() {
 		registerRender(first_item);
 		registerRender(iron_mesh);
 		registerRender(firework_rain);
-		registerRender(firework_charge_rain);
+		registerRender(firework_anti_rain);
 	}
 
 	public static void registerRender(Item item) {

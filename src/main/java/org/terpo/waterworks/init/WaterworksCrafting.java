@@ -1,7 +1,8 @@
 package org.terpo.waterworks.init;
 
 import org.terpo.waterworks.api.constants.WaterworksReference;
-import org.terpo.waterworks.item.crafting.ChargeRain;
+import org.terpo.waterworks.item.crafting.AntiRainRocketRecipe;
+import org.terpo.waterworks.item.crafting.RainRocketRecipe;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -21,8 +22,11 @@ public class WaterworksCrafting {
 	}
 
 	public static void registerFireworks() {
-		GameRegistry.addRecipe(new ChargeRain());
-		RecipeSorter.register(WaterworksReference.DOMAIN + "shapeless_firework_rain", ChargeRain.class,
+		GameRegistry.addRecipe(new RainRocketRecipe());
+		RecipeSorter.register(WaterworksReference.DOMAIN + "shapeless_firework_rain", RainRocketRecipe.class,
+				Category.SHAPELESS, "after:minecraft:shapeless");
+		GameRegistry.addRecipe(new AntiRainRocketRecipe());
+		RecipeSorter.register(WaterworksReference.DOMAIN + "shapeless_firework_anti_rain", AntiRainRocketRecipe.class,
 				Category.SHAPELESS, "after:minecraft:shapeless");
 	}
 }

@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "waterworks:items/firework_charge_rain"
+        "layer0": "waterworks:items/firework_anti_rain"
     }
 }

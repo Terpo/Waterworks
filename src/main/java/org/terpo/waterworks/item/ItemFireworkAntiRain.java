@@ -2,7 +2,7 @@ package org.terpo.waterworks.item;
 
 import java.util.List;
 
-import org.terpo.waterworks.entity.item.EntityFireworkRocketRain;
+import org.terpo.waterworks.entity.item.EntityFireworkRocketAntiRain;
 import org.terpo.waterworks.init.WaterworksConfig;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,27 +18,25 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemFireworkRain extends ItemFirework {
+public class ItemFireworkAntiRain extends ItemFirework {
 
-	public ItemFireworkRain() {
+	public ItemFireworkAntiRain() {
 
 	}
+
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
 			EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!worldIn.isRemote) {
 			final ItemStack itemstack = player.getHeldItem(hand);
-			final EntityFireworkRocketRain entityfireworkrocket = new EntityFireworkRocketRain(worldIn,
+			final EntityFireworkRocketAntiRain entityfireworkrocket = new EntityFireworkRocketAntiRain(worldIn,
 					pos.getX() + hitX, pos.getY() + hitY, pos.getZ() + hitZ, itemstack);
-//			final EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(worldIn, pos.getX() + hitX,
-//					pos.getY() + hitY, pos.getZ() + hitZ, itemstack);
 			worldIn.spawnEntity(entityfireworkrocket);
 
 			if (!player.capabilities.isCreativeMode) {
 				itemstack.shrink(1);
 			}
 		}
-
 		return EnumActionResult.SUCCESS;
 	}
 
@@ -49,10 +47,8 @@ public class ItemFireworkRain extends ItemFirework {
 			final ItemStack itemstack = playerIn.getHeldItem(handIn);
 
 			if (!worldIn.isRemote) {
-				final EntityFireworkRocketRain entityfireworkrocket = new EntityFireworkRocketRain(worldIn, itemstack,
-						playerIn);
-//				final EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(worldIn, itemstack,
-//						playerIn);
+				final EntityFireworkRocketAntiRain entityfireworkrocket = new EntityFireworkRocketAntiRain(worldIn,
+						itemstack, playerIn);
 				worldIn.spawnEntity(entityfireworkrocket);
 
 				if (!playerIn.capabilities.isCreativeMode) {
@@ -73,12 +69,13 @@ public class ItemFireworkRain extends ItemFirework {
 		super.addInformation(stack, playerIn, tooltip, advanced);
 		if (stack.hasTagCompound()) {
 			final NBTTagCompound nbttagcompound = stack.getTagCompound();
-			if (nbttagcompound.hasKey("RAIN")) {
-				final int multi = nbttagcompound.getInteger("RAIN");
-				tooltip.add("Bad weather incoming");
-				tooltip.add("Rain duration x" + multi);
-				tooltip.add("Rain duration " + (WaterworksConfig.RAIN_DURATION * multi) + " ticks");
+			if (nbttagcompound.hasKey("ANTIRAIN")) {
+				final int multi = nbttagcompound.getInteger("ANTIRAIN");
+				tooltip.add("Brings back the sunshine");
+				tooltip.add("Anti rain duration x" + multi);
+				tooltip.add("Anti rain duration " + (WaterworksConfig.ANTI_RAIN_DURATION * multi) + " ticks");
 			}
 		}
+
 	}
 }

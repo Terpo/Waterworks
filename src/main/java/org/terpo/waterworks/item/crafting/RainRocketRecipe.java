@@ -12,7 +12,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class ChargeRain implements IRecipe {
+public class RainRocketRecipe implements IRecipe {
 	private ItemStack resultItem = ItemStack.EMPTY;
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {

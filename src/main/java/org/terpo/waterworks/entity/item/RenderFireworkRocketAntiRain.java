@@ -14,16 +14,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 
-public class RenderFireworkRocketRain extends Render<EntityFireworkRocketRain> {
+public class RenderFireworkRocketAntiRain extends Render<EntityFireworkRocketAntiRain> {
 
 	private final RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
-	private final Item item = WaterworksItems.firework_rain;
-	public RenderFireworkRocketRain(RenderManager renderManager) {
+	private final Item item = WaterworksItems.firework_anti_rain;
+	public RenderFireworkRocketAntiRain(RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(EntityFireworkRocketRain entity, double x, double y, double z, float entityYaw,
+	public void doRender(EntityFireworkRocketAntiRain entity, double x, double y, double z, float entityYaw,
 			float partialTicks) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float) x, (float) y, (float) z);
@@ -57,14 +57,14 @@ public class RenderFireworkRocketRain extends Render<EntityFireworkRocketRain> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityFireworkRocketRain entity) {
-		return new ResourceLocation("waterworks:textures/item/firework_rain.png");
+	protected ResourceLocation getEntityTexture(EntityFireworkRocketAntiRain entity) {
+		return new ResourceLocation("waterworks:textures/item/firework_anti_rain.png");
 	}
 
-	public static class Factory implements IRenderFactory<EntityFireworkRocketRain> {
+	public static class Factory implements IRenderFactory<EntityFireworkRocketAntiRain> {
 		@Override
-		public Render<? super EntityFireworkRocketRain> createRenderFor(RenderManager manager) {
-			return new RenderFireworkRocketRain(manager);
+		public Render<? super EntityFireworkRocketAntiRain> createRenderFor(RenderManager manager) {
+			return new RenderFireworkRocketAntiRain(manager);
 		}
 
 	}

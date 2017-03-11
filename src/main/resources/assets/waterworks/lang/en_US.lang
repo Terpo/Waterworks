@@ -1,8 +1,8 @@
 #Items
 item.first_item.name=First Item
 item.iron_mesh.name=Iron Mesh
-item.firework_rain.name=Silver Firework
-item.firework_charge_rain.name=Silver Firework Star
+item.firework_rain.name=Rain Rocket
+item.firework_anti_rain.name=Anti Rain Rocket
 #Blocks
 tile.rain_tank_wood.name=Wooden Rain Tank
 tile.water_pipe.name=Water Pipe
