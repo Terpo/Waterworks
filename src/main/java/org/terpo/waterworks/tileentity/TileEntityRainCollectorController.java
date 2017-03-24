@@ -2,6 +2,7 @@ package org.terpo.waterworks.tileentity;
 
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.helper.AreaHelper;
+import org.terpo.waterworks.init.WaterworksConfig;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -12,11 +13,16 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	private final int controllerRange = 2;
 	private final int areaCount = (int) Math.pow(this.controllerRange * 2 + 1, 2);
 	private BlockPos[] rainCollectorBlocks = new BlockPos[this.areaCount];
-	protected int fillMultiplier = 1;
+	protected int connectedCollectors = 1;
+
 	private boolean isReset = false;
 
+	protected int validCollectors = 0;
+	private int currentValidationPos = 0;
+	private int countValidCollectors = 0;
+
 	public TileEntityRainCollectorController() {
-		super(100, 32000);
+		super(WaterworksConfig.RAIN_COLLECTOR_FILLRATE, WaterworksConfig.RAIN_COLLECTOR_CAPACITY);
 	}
 
 	@Override
@@ -27,18 +33,51 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 			findRainCollectors();
 			this.isReset = false;
 		}
+		if (needsUpdate(15) && this.world.isRaining()) {
+			countValidCollectors();
+		}
 		super.updateServerSide();
+	}
+
+	@Override
+	protected boolean isRefilling() {
+		if (this.world.isRaining()) {
+			this.fluidTank.fillInternal(this.RESOURCE_WATER, true);
+			return true;
+		}
+		return false;
+	}
+
+	private void countValidCollectors() {
+		final int maxValid = (this.currentValidationPos + 5) > this.areaCount
+				? this.areaCount
+				: (this.currentValidationPos + 5);
+		int i;
+		for (i = this.currentValidationPos; i < maxValid; i++) {
+			if (this.rainCollectorBlocks[i] != null) {
+				if (isRainingAtPosition(this.rainCollectorBlocks[i].up())) {
+					this.countValidCollectors++;
+				}
+			}
+		}
+		this.currentValidationPos = maxValid;
+		if (this.currentValidationPos == this.areaCount) {
+			this.validCollectors = this.countValidCollectors;
+			this.RESOURCE_WATER = getWaterFluidStack(this.validCollectors * WaterworksConfig.RAIN_COLLECTOR_FILLRATE);
+			this.countValidCollectors = 0;
+			this.currentValidationPos = 0;
+		}
 	}
 
 	public void findRainCollectors() {
 		resetController();
-		this.fillMultiplier = getAllConnectedBlocks();
-		this.RESOURCE_WATER = getWaterFluidStack(this.fillMultiplier * 100);
+		this.connectedCollectors = getAllConnectedBlocks();
+		this.RESOURCE_WATER = getWaterFluidStack(this.connectedCollectors * WaterworksConfig.RAIN_COLLECTOR_FILLRATE);
 		// debugCollectors();
 	}
 
 	public void debugCollectors() {
-		Waterworks.LOGGER.info("Fill Multiplier @" + this.fillMultiplier);
+		Waterworks.LOGGER.info("Fill Multiplier @" + this.connectedCollectors);
 		for (final BlockPos blockPos : this.rainCollectorBlocks) {
 			if (blockPos != null) {
 				Waterworks.LOGGER.info("Collector @" + blockPos.toString());
@@ -62,6 +101,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 		}
 		compound.setInteger("connectedBlocks", connectedBlocks);
 		compound.setTag("collectorPosList", list);
+		compound.setInteger("validCollectors", this.validCollectors);
 		return compound;
 	}
 
@@ -69,8 +109,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		if (compound.hasKey("connectedBlocks")) {
-			this.fillMultiplier = compound.getInteger("connectedBlocks");
-			this.RESOURCE_WATER = getWaterFluidStack(this.fillMultiplier * 100);
+			this.connectedCollectors = compound.getInteger("connectedBlocks");
 			if (compound.hasKey("collectorPosList")) {
 				final NBTTagList list = compound.getTagList("collectorPosList", 10);
 				if (list.tagCount() > this.areaCount) {
@@ -81,6 +120,11 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 					final NBTTagCompound nbt = list.getCompoundTagAt(i);
 					this.rainCollectorBlocks[i] = (BlockPos.fromLong(nbt.getLong("collectorPos")));
 				}
+			}
+			if (compound.hasKey("validCollectors")) {
+				this.validCollectors = compound.getInteger("validCollectors");
+				this.RESOURCE_WATER = getWaterFluidStack(
+						this.validCollectors * WaterworksConfig.RAIN_COLLECTOR_FILLRATE);
 			}
 		}
 	}
@@ -166,7 +210,6 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	}
 
 	public void resetController() {
-		Waterworks.LOGGER.info("resetting for " + this.areaCount);
 		for (int i = 1; i < this.rainCollectorBlocks.length; i++) {
 			final BlockPos blockPos = this.rainCollectorBlocks[i];
 			if (blockPos != null) {
@@ -177,6 +220,10 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 			}
 		}
 		this.rainCollectorBlocks = new BlockPos[this.areaCount];
+	}
+
+	public int getConnectedCollectors() {
+		return this.connectedCollectors;
 	}
 
 }

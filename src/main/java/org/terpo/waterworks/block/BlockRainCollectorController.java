@@ -16,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidUtil;
@@ -27,6 +28,10 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
+
+	public BlockRainCollectorController() {
+		super();
+	}
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
@@ -51,7 +56,10 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 					return true;
 				}
 				if (heldItem.getItem() == Items.STICK) {
-					((TileEntityRainCollectorController) tileEntity).debugCollectors();
+					final TileEntityRainCollectorController controller = (TileEntityRainCollectorController) tileEntity;
+					// controller.debugCollectors();
+					final String out = controller.getConnectedCollectors() + "Collectors";
+					playerIn.sendMessage(new TextComponentString(out));
 					return true;
 				}
 

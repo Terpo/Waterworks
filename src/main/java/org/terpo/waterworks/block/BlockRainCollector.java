@@ -13,11 +13,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
+
+	public BlockRainCollector() {
+		super();
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -39,7 +44,11 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 			if (tileEntity instanceof TileEntityRainCollector) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				if (heldItem.getItem() == Items.STICK) {
-//					Waterworks.LOGGER.info("Has controller: " + ((TileEntityRainCollector) tileEntity).hasController());
+					final TileEntityRainCollector collector = (TileEntityRainCollector) tileEntity;
+					final String out = collector.hasController()
+							? collector.getController().getPos().toString()
+							: "No Controller";
+					playerIn.sendMessage(new TextComponentString(out));
 				}
 			}
 		}

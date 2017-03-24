@@ -51,7 +51,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		}
 	}
 
-	private boolean isRefilling() {
+	protected boolean isRefilling() {
 		final BlockPos position = getPos().up();
 
 		if (isRainingAtPosition(position)) {
@@ -61,7 +61,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		return false;
 	}
 
-	private boolean isRainingAtPosition(BlockPos posi) {
+	protected boolean isRainingAtPosition(BlockPos posi) {
 		// copy of isRainingAt in World.class
 		if (!this.world.isRaining()) {
 			return false;
