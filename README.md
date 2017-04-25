@@ -16,7 +16,7 @@ This collection will need some more materials and comes as an multiblock.
 It will generate water a bit more quickly and uses the area as multiplier.
 The shape of your structure is on your side but there is configurable maximum range from the controller block.
 
-***Ground Pump***
+***Groundwater Pump***
 This pump need clear sight to bedrock, to get the water from beneath.
 It will make use of forge energy or redstone flux.
 
@@ -28,10 +28,11 @@ Values for maximum ghast tear multiplier and rain duration are configurable.
 Craft some sponges with a Minecraft <a href="http://minecraft.gamepedia.com/Firework_Rocket">firework rocket</a> to get your own anti rain rocket.
 Values for maximum sponge multiplier and clear sky duration are configurable.
 This rocket drops wet sponges after usage.
+
 -----------------
 
 This mod is in an very early state of development. 
-Currently working for Minecraft 1.10.2 but release will be for 1.11.x.
+Release will be for Minecraft version 1.11.2.
  
 -----------------
 
