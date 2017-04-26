@@ -1,5 +1,6 @@
 package org.terpo.waterworks.tileentity;
 
+import org.terpo.waterworks.block.BlockRainTankWood;
 import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.network.TankPacket;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
@@ -8,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -45,10 +47,34 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		}
 
 		if (this.isDirty) {
+			final IBlockState iblockstate = this.world.getBlockState(this.pos);
+//			final ImmutableMap<IProperty<?>, Comparable<?>> properties = iblockstate.getProperties();
+//			properties.forEach((p, v) -> {
+//				Waterworks.LOGGER.info(p.getName());
+//				Waterworks.LOGGER.info(getStateLevel());
+//				if (p.getName().equals("level")) {
+//					this.world.setBlockState(this.pos,
+//							iblockstate.withProperty(p, Integer.valueOf(getStateLevel()), 2));
+//				}
+//			});
+			if (iblockstate.getBlock() instanceof BlockRainTankWood) {
+				// Waterworks.LOGGER.info(getStateLevel());
+				this.world.setBlockState(this.pos,
+						iblockstate.withProperty(BlockRainTankWood.LEVEL, Integer.valueOf(getStateLevel())));
+			}
 			this.world.updateComparatorOutputLevel(this.pos, getBlockType());
 			markAsDirty(getPos());
 			this.isDirty = false;
 		}
+	}
+
+	@Override
+	public boolean shouldRefresh(World worldIn, BlockPos posIn, IBlockState oldState, IBlockState newState) {
+		return oldState.getBlock() != newState.getBlock();
+	}
+
+	private int getStateLevel() {
+		return Math.round((this.fluidTank.getFluidAmount() * 4.0f / this.fluidTank.getCapacity()));
 	}
 
 	protected boolean isRefilling() {

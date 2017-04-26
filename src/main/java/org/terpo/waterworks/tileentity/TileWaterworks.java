@@ -163,4 +163,12 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 	public WaterworksTank getFluidTank() {
 		return this.fluidTank;
 	}
+
+	public boolean isDirty() {
+		return this.isDirty;
+	}
+
+	public void setDirty(boolean isDirty) {
+		this.isDirty = isDirty;
+	}
 }

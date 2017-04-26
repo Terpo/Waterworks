@@ -8,6 +8,7 @@ import org.terpo.waterworks.inventory.WaterworksInventoryHelper;
 import org.terpo.waterworks.tileentity.TileEntityRainCollectorController;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -29,6 +30,7 @@ import net.minecraftforge.items.IItemHandler;
 
 public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 
+	public static final PropertyInteger LEVEL = PropertyInteger.create("level", 0, 4);
 	public BlockRainCollectorController() {
 		super();
 	}

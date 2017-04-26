@@ -1,5 +1,7 @@
 package org.terpo.waterworks.block;
 
+import java.util.List;
+
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.gui.GuiProxy;
 import org.terpo.waterworks.inventory.WaterworksInventoryHelper;
@@ -8,12 +10,15 @@ import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidUtil;
@@ -23,6 +28,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump> {
+	private static final AxisAlignedBB boundingBox = new AxisAlignedBB(.25, 0, .25, .75, 1, .75);
+	private static final AxisAlignedBB collisionBox = new AxisAlignedBB(.1875, 0, .1875, .8125, 1, .8125);
+
 	public BlockGroundwaterPump() {
 		super(Material.IRON);
 	}
@@ -88,5 +96,30 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 			WaterworksInventoryHelper.dropItemsFromInventory(world, pos, handler);
 		}
 		super.breakBlock(world, pos, state);
+	}
+
+	@Override
+	public boolean isFullBlock(IBlockState state) {
+		return false;
+	}
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return boundingBox;
+	}
+
+	@SuppressWarnings("static-access")
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
+			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean p_185477_7_) {
+		super.addCollisionBoxToList(pos, entityBox, collidingBoxes, collisionBox);
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
 	}
 }
