@@ -2,6 +2,7 @@ package org.terpo.waterworks.init;
 
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.api.constants.WaterworksReference;
+import org.terpo.waterworks.block.BlockGroundwaterPump;
 import org.terpo.waterworks.block.BlockRainCollector;
 import org.terpo.waterworks.block.BlockRainCollectorController;
 import org.terpo.waterworks.block.BlockRainTankWood;
@@ -23,6 +24,7 @@ public class InitBlocks {
 		WaterworksBlocks.rain_collector = registerBlock(new BlockRainCollector(), "rain_collector");
 		WaterworksBlocks.rain_collector_controller = registerBlock(new BlockRainCollectorController(),
 				"rain_collector_controller");
+		WaterworksBlocks.groundwater_pump = registerBlock(new BlockGroundwaterPump(), "groundwater_pump");
 
 	}
 	public static void registerRenders() {
@@ -30,6 +32,7 @@ public class InitBlocks {
 		registerRender(WaterworksBlocks.water_pipe);
 		registerRender(WaterworksBlocks.rain_collector);
 		registerRender(WaterworksBlocks.rain_collector_controller);
+		registerRender(WaterworksBlocks.groundwater_pump);
 	}
 	public static void registerRender(Block block) {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,

@@ -15,7 +15,7 @@ public class WaterworksInventoryHelper {
 
 		for (int i = 0; i < inventory.getSlots(); ++i) {
 			final ItemStack itemstack = inventory.getStackInSlot(i);
-			if (itemstack != ItemStack.EMPTY) {
+			if (!itemstack.isEmpty()) {
 				InventoryHelper.spawnItemStack(world, x, y, z, itemstack);
 			}
 		}

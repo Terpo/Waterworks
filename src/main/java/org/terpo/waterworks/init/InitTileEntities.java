@@ -2,6 +2,7 @@ package org.terpo.waterworks.init;
 
 import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
+import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 import org.terpo.waterworks.tileentity.TileEntityRainCollector;
 import org.terpo.waterworks.tileentity.TileEntityRainCollectorController;
 import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
@@ -15,6 +16,7 @@ public class InitTileEntities {
 		registerTileEntity(TileEntityRainTankWood.class, "TileEntityRainTankWood");
 		registerTileEntity(TileEntityRainCollectorController.class, "TileEntityRainCollectorController");
 		registerTileEntity(TileEntityRainCollector.class, "TileEntityRainCollector");
+		registerTileEntity(TileEntityGroundwaterPump.class, "TileEntityGroundwaterPump");
 		registerTileEntity(BaseTileEntity.class, "BaseTileEntity");
 		registerTileEntity(TileWaterworks.class, "TileWaterworks");
 	}
