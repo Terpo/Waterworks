@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "waterworks:blocks/groundwater_pump"
+        "all": "waterworks:blocks/rain_tank_wood"
     }
 }
