@@ -6,16 +6,15 @@ import org.terpo.waterworks.network.TankPacket;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class TileEntityRainTankWood extends TileWaterworks {
 
@@ -106,42 +105,31 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		if (internalFluidAmount > 0) {
 			final ItemStack stackInput = this.itemStackHandler.getStackInSlot(0);
 			if (!stackInput.isEmpty()
-					&& (stackInput.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
-							|| stackInput.getItem() == Items.BUCKET)) {
-				// Buckets
-				if (stackInput.getItem() == Items.BUCKET) {
-					if (internalFluidAmount >= 1000 && this.itemStackHandler.getStackInSlot(1).isEmpty()) {
-						if (stackInput.getCount() > 1) {
-							stackInput.shrink(1);
-						} else {
-							this.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
-						}
-						this.fluidTank.drain(new FluidStack(FluidRegistry.WATER, 1000), true);
-						this.itemStackHandler.setStackInSlot(1, new ItemStack(Items.WATER_BUCKET));
-						return true;
-					}
-					return false;
-				}
-				// Other containers with a current stackSize of 1
-				final IFluidHandler capability = stackInput
-						.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-				if (stackInput.getCount() == 1 && this.itemStackHandler.getStackInSlot(1) == null) {
-					final IFluidTankProperties[] properties = capability.getTankProperties();
-					if (properties.length > 0) {
-						for (final IFluidTankProperties property : properties) {
-							final int fluidCapacity = property.getCapacity();
-							if (fluidCapacity > 0 && property.canFill()) {
-								final FluidStack content = property.getContents();
-								if (content == null) {
-									fillCustomFluidContainer(internalFluidAmount, capability, fluidCapacity,
-											getWaterFluidStack(0));
-									return true;
-								}
-								if (content.getFluid() == FluidRegistry.WATER) {
-									fillCustomFluidContainer(internalFluidAmount, capability, fluidCapacity, content);
-									return true;
-								}
+					&& (stackInput.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))) {
+
+				final FluidActionResult filledSimulated = FluidUtil.tryFillContainer(stackInput, this.fluidTank,
+						Integer.MAX_VALUE, null, false);
+				if (filledSimulated.isSuccess()) {
+					final ItemStack simResult = filledSimulated.getResult();
+					final ItemStack outputSlot = this.itemStackHandler.getStackInSlot(1);
+					final boolean isItemIdentical = outputSlot.getItem().equals(simResult.getItem());
+					final boolean hasSpace = outputSlot.getCount() < outputSlot.getMaxStackSize();
+					if (outputSlot.isEmpty() || (isItemIdentical) && (hasSpace)) {
+						final FluidActionResult fillResult = FluidUtil.tryFillContainer(stackInput, this.fluidTank,
+								Integer.MAX_VALUE, null, true);
+						if (fillResult.isSuccess()) {
+							final ItemStack realResult = fillResult.getResult();
+							if (outputSlot.isEmpty()) {
+								this.itemStackHandler.setStackInSlot(1, realResult);
+							} else {
+								outputSlot.grow(1);
 							}
+							if (stackInput.getCount() > 1) {
+								stackInput.shrink(1);
+							} else {
+								this.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
+							}
+							return true;
 						}
 					}
 				}
@@ -150,19 +138,6 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		}
 		return false;
 	}
-
-	private void fillCustomFluidContainer(final int internalFluidAmount, final IFluidHandler capability,
-			final int fluidCapacity, final FluidStack content) {
-		this.itemStackHandler.setStackInSlot(1, this.itemStackHandler.getStackInSlot(0));
-		this.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
-		final int fillAmount = fluidCapacity - content.amount >= internalFluidAmount
-				? internalFluidAmount
-				: fluidCapacity - content.amount;
-		final FluidStack filledWaterstack = getWaterFluidStack(fillAmount);
-		capability.fill(filledWaterstack, true);
-		this.fluidTank.drain(filledWaterstack, true);
-	}
-
 	protected static FluidStack getWaterFluidStack(int amount) {
 		return new FluidStack(FluidRegistry.WATER, amount);
 	}
