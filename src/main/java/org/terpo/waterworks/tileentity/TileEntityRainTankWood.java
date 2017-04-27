@@ -73,7 +73,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		return oldState.getBlock() != newState.getBlock();
 	}
 
-	private int getStateLevel() {
+	public int getStateLevel() {
 		return Math.round((this.fluidTank.getFluidAmount() * 4.0f / this.fluidTank.getCapacity()));
 	}
 

@@ -50,7 +50,8 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 									tileEntityFluidHandler, playerIn);
 							if (fluidActionResult.isSuccess()) {
 								playerIn.setHeldItem(hand, fluidActionResult.getResult());
-								((TileWaterworks) tileEntity).setDirty(true);
+								worldIn.setBlockState(pos, state.withProperty(BlockRainTankWood.LEVEL,
+										Integer.valueOf(((TileEntityRainTankWood) tileEntity).getStateLevel())));
 								return true;
 							}
 						}
