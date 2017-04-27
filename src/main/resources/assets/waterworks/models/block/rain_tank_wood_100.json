@@ -4,7 +4,8 @@
         "0": "blocks/jukebox_side",
         "1": "blocks/itemframe_background",
         "2": "blocks/jukebox_top",
-        "3": "blocks/water_overlay"
+        "3": "blocks/water_overlay",
+        "particle": "blocks/jukebox_side"
     },
           "display": {
         "gui": {

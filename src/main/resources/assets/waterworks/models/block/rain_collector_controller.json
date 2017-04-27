@@ -1,6 +1,7 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
+    "particle": "waterworks:models/rain_collector_controller",
         "0": "waterworks:models/rain_collector_controller"
     },      "display": {
         "gui": {
