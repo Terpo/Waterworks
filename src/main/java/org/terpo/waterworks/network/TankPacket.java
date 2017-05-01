@@ -1,7 +1,7 @@
 package org.terpo.waterworks.network;
 
 import org.terpo.waterworks.Waterworks;
-import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
+import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,14 +16,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class TankPacket implements IMessage {
 
-	private TileEntityRainTankWood tileEntity = null;
+	private TileWaterworks tileEntity = null;
 	BlockPos tileEntityPosition = null;
 	int fluidAmount = 0;
 	public TankPacket() {
 		// nothing 2do
 	}
 
-	public TankPacket(TileEntityRainTankWood tileEntity) {
+	public TankPacket(TileWaterworks tileEntity) {
 		this.tileEntity = tileEntity;
 		this.tileEntityPosition = this.tileEntity.getPos();
 		this.fluidAmount = this.tileEntity.getFluidTank().getFluidAmount();
@@ -62,7 +62,7 @@ public class TankPacket implements IMessage {
 		@Override
 		public IMessage onMessage(TankPacket message, MessageContext ctx) {
 			final EntityPlayer player = Waterworks.proxy.getClientEntityPlayer();
-			final TileEntityRainTankWood tileEntity = getTileEntity(player.world, message.getPos());
+			final TileWaterworks tileEntity = getTileEntity(player.world, message.getPos());
 			if (tileEntity == null) {
 				return null;
 			}
@@ -75,7 +75,7 @@ public class TankPacket implements IMessage {
 			return null;
 		}
 
-		public static TileEntityRainTankWood getTileEntity(World worldObj, BlockPos pos) {
+		public static TileWaterworks getTileEntity(World worldObj, BlockPos pos) {
 			if (worldObj == null) {
 				return null;
 			}
@@ -83,8 +83,8 @@ public class TankPacket implements IMessage {
 			if (te == null) {
 				return null;
 			}
-			if (te instanceof TileEntityRainTankWood) {
-				return (TileEntityRainTankWood) te;
+			if (te instanceof TileWaterworks) {
+				return (TileWaterworks) te;
 			}
 			return null;
 

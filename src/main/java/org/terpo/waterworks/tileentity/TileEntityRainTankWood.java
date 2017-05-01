@@ -1,20 +1,15 @@
 package org.terpo.waterworks.tileentity;
 
 import org.terpo.waterworks.block.BlockRainTankWood;
+import org.terpo.waterworks.helper.GeneralItemStackHandler;
 import org.terpo.waterworks.init.WaterworksConfig;
-import org.terpo.waterworks.network.TankPacket;
-import org.terpo.waterworks.network.WaterworksPacketHandler;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class TileEntityRainTankWood extends TileWaterworks {
 
@@ -30,6 +25,15 @@ public class TileEntityRainTankWood extends TileWaterworks {
 
 		this.fluidTank.setCanFill(false);
 		this.fluidTank.setTileEntity(this);
+
+		this.itemStackHandler = new GeneralItemStackHandler(this.INVSIZE) {
+			@Override
+			protected void onContentsChanged(int slot) {
+				// We need to tell the tile entity that something has changed so
+				// that the chest contents is persisted
+				TileEntityRainTankWood.this.markDirty();
+			}
+		};
 
 		this.itemStackHandler.setInputFlagForIndex(0, true);
 		this.itemStackHandler.setInputFlagForIndex(1, false);
@@ -47,17 +51,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 
 		if (this.isDirty) {
 			final IBlockState iblockstate = this.world.getBlockState(this.pos);
-//			final ImmutableMap<IProperty<?>, Comparable<?>> properties = iblockstate.getProperties();
-//			properties.forEach((p, v) -> {
-//				Waterworks.LOGGER.info(p.getName());
-//				Waterworks.LOGGER.info(getStateLevel());
-//				if (p.getName().equals("level")) {
-//					this.world.setBlockState(this.pos,
-//							iblockstate.withProperty(p, Integer.valueOf(getStateLevel()), 2));
-//				}
-//			});
 			if (iblockstate.getBlock() instanceof BlockRainTankWood) {
-				// Waterworks.LOGGER.info(getStateLevel());
 				this.world.setBlockState(this.pos,
 						iblockstate.withProperty(BlockRainTankWood.LEVEL, Integer.valueOf(getStateLevel())));
 			}
@@ -100,48 +94,6 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		}
 	}
 
-	private boolean fillFluid() {
-		final int internalFluidAmount = this.fluidTank.getFluidAmount();
-		if (internalFluidAmount > 0) {
-			final ItemStack stackInput = this.itemStackHandler.getStackInSlot(0);
-			if (!stackInput.isEmpty()
-					&& (stackInput.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))) {
-
-				final FluidActionResult filledSimulated = FluidUtil.tryFillContainer(stackInput, this.fluidTank,
-						Integer.MAX_VALUE, null, false);
-				if (filledSimulated.isSuccess()) {
-					final ItemStack simResult = filledSimulated.getResult();
-					final ItemStack outputSlot = this.itemStackHandler.getStackInSlot(1);
-					final boolean isItemIdentical = outputSlot.getItem().equals(simResult.getItem());
-					final boolean hasSpace = outputSlot.getCount() < outputSlot.getMaxStackSize();
-					if (outputSlot.isEmpty() || (isItemIdentical) && (hasSpace)) {
-						final FluidActionResult fillResult = FluidUtil.tryFillContainer(stackInput, this.fluidTank,
-								Integer.MAX_VALUE, null, true);
-						if (fillResult.isSuccess()) {
-							final ItemStack realResult = fillResult.getResult();
-							if (outputSlot.isEmpty()) {
-								this.itemStackHandler.setStackInSlot(1, realResult);
-							} else {
-								outputSlot.grow(1);
-							}
-							if (stackInput.getCount() > 1) {
-								stackInput.shrink(1);
-							} else {
-								this.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
-							}
-							return true;
-						}
-					}
-				}
-
-			}
-		}
-		return false;
-	}
-	protected static FluidStack getWaterFluidStack(int amount) {
-		return new FluidStack(FluidRegistry.WATER, amount);
-	}
-
 	private void markAsDirty(final BlockPos position) {
 		this.markDirty();
 
@@ -149,10 +101,5 @@ public class TileEntityRainTankWood extends TileWaterworks {
 			final IBlockState state = this.world.getBlockState(position);
 			this.world.notifyBlockUpdate(position, state, state, 3);
 		}
-	}
-
-	@Override
-	protected void sendUpdatePacket() {
-		WaterworksPacketHandler.sendToAllAround(new TankPacket(this), this);
 	}
 }

@@ -28,6 +28,10 @@ public class WaterworksConfig {
 	public static int ANTI_RAIN_DURATION = 2000;
 	public static int ANTI_RAIN_DURATION_MULTIPLIER_MAX = 12;
 
+	// Groundwater Pump
+	public static int GROUNDWATER_PUMP_CAPACITY = 32000;
+	public static int GROUNDWATER_PUMP_FILLRATE = 1000;
+
 	private static void initWaterCollectingConfig() {
 		cfg.addCustomCategoryComment(CATEGORY_WATER_COLLECTING, "Simple Rain Tank");
 		RAIN_TANK_SIMPLE_FILLRATE = cfg.getInt("Simple Rain Tank Fillrate", CATEGORY_WATER_COLLECTING,

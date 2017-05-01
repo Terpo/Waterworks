@@ -56,7 +56,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 							}
 						}
 					}
-					playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, worldIn, pos.getX(),
+					playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_GROUNDWATER_PUMP_GUI, worldIn, pos.getX(),
 							pos.getY(), pos.getZ());
 					return true;
 				}

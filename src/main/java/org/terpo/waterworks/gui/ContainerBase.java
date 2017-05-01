@@ -2,7 +2,7 @@ package org.terpo.waterworks.gui;
 
 import org.terpo.waterworks.inventory.FluidSlotItemHandler;
 import org.terpo.waterworks.inventory.SlotDefinition;
-import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
+import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -15,9 +15,9 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerBase extends Container {
 
-	private final TileEntityRainTankWood te;
+	private final TileWaterworks te;
 
-	public ContainerBase(IInventory playerInv, TileEntityRainTankWood te) {
+	public ContainerBase(IInventory playerInv, TileWaterworks te) {
 		this.te = te;
 
 		// both inventories. The two calls below make sure that slots are defined for both

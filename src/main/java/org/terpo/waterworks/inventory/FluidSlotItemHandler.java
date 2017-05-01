@@ -1,6 +1,6 @@
 package org.terpo.waterworks.inventory;
 
-import org.terpo.waterworks.helper.FluidItemStackHandler;
+import org.terpo.waterworks.helper.GeneralItemStackHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -34,8 +34,8 @@ public class FluidSlotItemHandler extends SlotItemHandler {
 	@Override
 	public boolean canTakeStack(EntityPlayer playerIn) {
 		final IItemHandler handler = this.getItemHandler();
-		if (handler instanceof FluidItemStackHandler) {
-			return ((FluidItemStackHandler) handler).extractItemByPlayer(this.index, 1, true) != null;
+		if (handler instanceof GeneralItemStackHandler) {
+			return ((GeneralItemStackHandler) handler).extractItemByPlayer(this.index, 1, true) != null;
 		}
 		return !(handler.extractItem(this.index, 1, false).isEmpty());
 	}
@@ -43,8 +43,8 @@ public class FluidSlotItemHandler extends SlotItemHandler {
 	@Override
 	public ItemStack decrStackSize(int amount) {
 		final IItemHandler handler = this.getItemHandler();
-		if (handler instanceof FluidItemStackHandler) {
-			return ((FluidItemStackHandler) handler).extractItemByPlayer(this.index, amount, false);
+		if (handler instanceof GeneralItemStackHandler) {
+			return ((GeneralItemStackHandler) handler).extractItemByPlayer(this.index, amount, false);
 		}
 		return handler.extractItem(this.index, amount, false);
 	}

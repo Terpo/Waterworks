@@ -12,7 +12,8 @@ public class GuiContainerBase extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		//
+		// TODO Auto-generated method stub
+
 	}
 
 }

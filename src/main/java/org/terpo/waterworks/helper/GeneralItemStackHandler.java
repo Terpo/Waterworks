@@ -6,16 +6,16 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class FluidItemStackHandler extends ItemStackHandler {
+public class GeneralItemStackHandler extends ItemStackHandler {
 
 	private boolean inputSlots[];
 	private boolean outputSlots[];
 
-	public FluidItemStackHandler() {
+	public GeneralItemStackHandler() {
 		super(1);
 	}
 
-	public FluidItemStackHandler(int size) {
+	public GeneralItemStackHandler(int size) {
 		super(size);
 		this.inputSlots = new boolean[size];
 		this.outputSlots = new boolean[size];
@@ -43,7 +43,7 @@ public class FluidItemStackHandler extends ItemStackHandler {
 		return this.outputSlots[slot];
 	}
 
-	public FluidItemStackHandler(NonNullList<ItemStack> stacks) {
+	public GeneralItemStackHandler(NonNullList<ItemStack> stacks) {
 		super(stacks);
 	}
 
@@ -53,7 +53,7 @@ public class FluidItemStackHandler extends ItemStackHandler {
 			return ItemStack.EMPTY;
 		}
 
-		if (!isValidItemStack(stack)) {
+		if (!isValidItemStack(stack, slot)) {
 			return stack;
 		}
 
@@ -90,11 +90,9 @@ public class FluidItemStackHandler extends ItemStackHandler {
 
 		return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
 	}
-	private static boolean isValidItemStack(ItemStack stack) {
-		if (stack != null) {
-			return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-		}
-		return false;
+	@SuppressWarnings({"unused", "static-method"})
+	protected boolean isValidItemStack(ItemStack stack, int slot) {
+		return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 	}
 
 	@Override

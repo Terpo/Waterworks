@@ -3,13 +3,20 @@ package org.terpo.waterworks.tileentity;
 import java.util.Random;
 
 import org.terpo.waterworks.fluid.WaterworksTank;
-import org.terpo.waterworks.helper.FluidItemStackHandler;
+import org.terpo.waterworks.helper.GeneralItemStackHandler;
+import org.terpo.waterworks.network.TankPacket;
+import org.terpo.waterworks.network.WaterworksPacketHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidActionResult;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -23,8 +30,8 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 	protected int INVSIZE;
 	protected int TANKSIZE;
 
-	// This item handler will hold our nine inventory slots
-	protected final FluidItemStackHandler itemStackHandler;
+	// This item handler will hold our two inventory slots
+	protected GeneralItemStackHandler itemStackHandler;
 	// TileEntity
 	public TileWaterworks(int inventorySize, int tankSize) {
 		super();
@@ -40,18 +47,10 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 				TileWaterworks.this.sendUpdatePacket();
 			}
 		};
-		this.itemStackHandler = new FluidItemStackHandler(this.INVSIZE) {
-			@Override
-			protected void onContentsChanged(int slot) {
-				// We need to tell the tile entity that something has changed so
-				// that the chest contents is persisted
-				TileWaterworks.this.markDirty();
-			}
-		};
 	}
 
 	protected void sendUpdatePacket() {
-		// do nothing
+		WaterworksPacketHandler.sendToAllAround(new TankPacket(this), this);
 	}
 
 	public TileWaterworks() {
@@ -171,4 +170,48 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 	public void setDirty(boolean isDirty) {
 		this.isDirty = isDirty;
 	}
+
+	// FluidStuff
+	protected boolean fillFluid() {
+		final int internalFluidAmount = this.fluidTank.getFluidAmount();
+		if (internalFluidAmount > 0) {
+			final ItemStack stackInput = this.itemStackHandler.getStackInSlot(0);
+			if (!stackInput.isEmpty()
+					&& (stackInput.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))) {
+
+				final FluidActionResult filledSimulated = FluidUtil.tryFillContainer(stackInput, this.fluidTank,
+						Integer.MAX_VALUE, null, false);
+				if (filledSimulated.isSuccess()) {
+					final ItemStack simResult = filledSimulated.getResult();
+					final ItemStack outputSlot = this.itemStackHandler.getStackInSlot(1);
+					final boolean isItemIdentical = outputSlot.getItem().equals(simResult.getItem());
+					final boolean hasSpace = outputSlot.getCount() < outputSlot.getMaxStackSize();
+					if (outputSlot.isEmpty() || (isItemIdentical) && (hasSpace)) {
+						final FluidActionResult fillResult = FluidUtil.tryFillContainer(stackInput, this.fluidTank,
+								Integer.MAX_VALUE, null, true);
+						if (fillResult.isSuccess()) {
+							final ItemStack realResult = fillResult.getResult();
+							if (outputSlot.isEmpty()) {
+								this.itemStackHandler.setStackInSlot(1, realResult);
+							} else {
+								outputSlot.grow(1);
+							}
+							if (stackInput.getCount() > 1) {
+								stackInput.shrink(1);
+							} else {
+								this.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
+							}
+							return true;
+						}
+					}
+				}
+
+			}
+		}
+		return false;
+	}
+	protected static FluidStack getWaterFluidStack(int amount) {
+		return new FluidStack(FluidRegistry.WATER, amount);
+	}
+
 }
