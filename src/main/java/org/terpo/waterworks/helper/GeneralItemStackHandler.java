@@ -34,6 +34,11 @@ public class GeneralItemStackHandler extends ItemStackHandler {
 		validateSlotIndex(slot);
 		this.outputSlots[slot] = allowed;
 	}
+	public void setIOFlagForIndex(int slot, boolean allowed) {
+		validateSlotIndex(slot);
+		this.inputSlots[slot] = allowed;
+		this.outputSlots[slot] = allowed;
+	}
 	public boolean isInputSlot(int slot) {
 		validateSlotIndex(slot);
 		return this.inputSlots[slot];

@@ -45,4 +45,5 @@ public class BlockWaterPipe extends Block {
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
+
 }

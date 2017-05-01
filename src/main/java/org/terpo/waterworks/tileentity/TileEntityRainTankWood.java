@@ -36,7 +36,6 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		};
 
 		this.itemStackHandler.setInputFlagForIndex(0, true);
-		this.itemStackHandler.setInputFlagForIndex(1, false);
 		this.itemStackHandler.setOutputFlagForIndex(1, true);
 	}
 

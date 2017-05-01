@@ -1,5 +1,8 @@
 package org.terpo.waterworks.helper;
 
+import org.terpo.waterworks.init.WaterworksBlocks;
+
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
@@ -8,7 +11,7 @@ public class PumpItemStackHandler extends GeneralItemStackHandler {
 	public PumpItemStackHandler() {
 		super(1);
 	}
-	PumpItemStackHandler(int size) {
+	public PumpItemStackHandler(int size) {
 		super(size);
 	}
 	@Override
@@ -16,7 +19,10 @@ public class PumpItemStackHandler extends GeneralItemStackHandler {
 		if (slot <= 1) {
 			return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 		}
-		return true;
+		if (stack.getItem().equals(Item.getItemFromBlock(WaterworksBlocks.water_pipe))) {
+			return true;
+		}
+		return false;
 
 	}
 }

@@ -16,24 +16,23 @@ import net.minecraftforge.items.SlotItemHandler;
 public class ContainerBase extends Container {
 
 	private final TileWaterworks te;
-
+	protected final IItemHandler itemHandler;
 	public ContainerBase(IInventory playerInv, TileWaterworks te) {
 		this.te = te;
-
+		this.itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		// both inventories. The two calls below make sure that slots are defined for both
 		// inventories.
 		addOwnSlots();
 		addPlayerSlots(playerInv);
 	}
 
-	private void addOwnSlots() {
-		final IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+	protected void addOwnSlots() {
 		// Tile Entity, Slot 0-1, Slot IDs 0-1
 		// 0 - Input
 		// 1 - Output
 
-		final SlotItemHandler input = new FluidSlotItemHandler(itemHandler, 0, 44, 35, SlotDefinition.I);
-		final SlotItemHandler output = new FluidSlotItemHandler(itemHandler, 1, 116, 35, SlotDefinition.O);
+		final SlotItemHandler input = new FluidSlotItemHandler(this.itemHandler, 0, 44, 35, SlotDefinition.I);
+		final SlotItemHandler output = new FluidSlotItemHandler(this.itemHandler, 1, 116, 35, SlotDefinition.O);
 
 		addSlotToContainer(input);
 		addSlotToContainer(output);

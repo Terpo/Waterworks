@@ -31,6 +31,7 @@ public class WaterworksConfig {
 	// Groundwater Pump
 	public static int GROUNDWATER_PUMP_CAPACITY = 32000;
 	public static int GROUNDWATER_PUMP_FILLRATE = 1000;
+	public static boolean GROUNDWATER_PUMP_SAFETY = true;
 
 	private static void initWaterCollectingConfig() {
 		cfg.addCustomCategoryComment(CATEGORY_WATER_COLLECTING, "Simple Rain Tank");
@@ -45,6 +46,13 @@ public class WaterworksConfig {
 				RAIN_COLLECTOR_CAPACITY, 8000, 1024000, "Tank capacity in mB");
 		RAIN_COLLECTOR_RANGE = cfg.getInt("Multiblock Rain Collector Radius", CATEGORY_WATER_COLLECTING,
 				RAIN_COLLECTOR_RANGE, 0, 7, "Radius of the Controller block");
+		cfg.addCustomCategoryComment(CATEGORY_WATER_COLLECTING, "Groundwater Pump Configuration");
+		GROUNDWATER_PUMP_FILLRATE = cfg.getInt("Groundwater Pump Fillrate", CATEGORY_WATER_COLLECTING,
+				GROUNDWATER_PUMP_FILLRATE, 1, 8000, "Amount of water per second");
+		GROUNDWATER_PUMP_CAPACITY = cfg.getInt("Groundwater Pump Capacity", CATEGORY_WATER_COLLECTING,
+				GROUNDWATER_PUMP_CAPACITY, 8000, 1024000, "Pump capacity in mB");
+		GROUNDWATER_PUMP_SAFETY = cfg.getBoolean("Groundwater Pump Safety Block", CATEGORY_WATER_COLLECTING,
+				GROUNDWATER_PUMP_SAFETY, "Should the Groundwater Pump spawn a slab to close the hole?");
 	}
 
 	private static void initRainRockets() {

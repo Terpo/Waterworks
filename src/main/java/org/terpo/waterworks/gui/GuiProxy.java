@@ -2,6 +2,7 @@ package org.terpo.waterworks.gui;
 
 import org.terpo.waterworks.gui.collector.GuiCollectorsContainer;
 import org.terpo.waterworks.gui.pump.GuiPumpContainer;
+import org.terpo.waterworks.gui.pump.PumpContainer;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +27,7 @@ public class GuiProxy implements IGuiHandler {
 		if (ID == WATERWORKS_GROUNDWATER_PUMP_GUI) {
 			final TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
 			if (tileEntity instanceof TileWaterworks) {
-				return new ContainerBase(player.inventory, (TileWaterworks) tileEntity);
+				return new PumpContainer(player.inventory, (TileWaterworks) tileEntity);
 			}
 		}
 		return null;
@@ -44,7 +45,7 @@ public class GuiProxy implements IGuiHandler {
 		if (ID == WATERWORKS_GROUNDWATER_PUMP_GUI) {
 			final TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
 			if (tileEntity instanceof TileWaterworks) {
-				return new GuiPumpContainer(new ContainerBase(player.inventory, (TileWaterworks) tileEntity),
+				return new GuiPumpContainer(new PumpContainer(player.inventory, (TileWaterworks) tileEntity),
 						(TileWaterworks) tileEntity);
 			}
 		}

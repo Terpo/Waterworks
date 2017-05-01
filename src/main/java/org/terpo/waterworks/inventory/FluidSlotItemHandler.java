@@ -22,13 +22,24 @@ public class FluidSlotItemHandler extends SlotItemHandler {
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
-		if (this.slotDefinition == SlotDefinition.O) {
+		if (!isSlotValid()) {
 			return false;
 		}
 		if (!stack.isEmpty()) {
-			return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+			return (isFilteredItemValid(stack));
 		}
 		return super.isItemValid(stack);
+	}
+
+	@SuppressWarnings("static-method")
+	protected boolean isFilteredItemValid(ItemStack stack) {
+		return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+	}
+	protected boolean isSlotValid() {
+		if (this.slotDefinition == SlotDefinition.O) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override

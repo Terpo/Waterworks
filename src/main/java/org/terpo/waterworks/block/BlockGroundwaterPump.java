@@ -4,14 +4,18 @@ import java.util.List;
 
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.gui.GuiProxy;
+import org.terpo.waterworks.init.WaterworksBlocks;
+import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.inventory.WaterworksInventoryHelper;
 import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
+import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -95,7 +99,34 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 			final IItemHandler handler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			WaterworksInventoryHelper.dropItemsFromInventory(world, pos, handler);
 		}
+		BlockGroundwaterPump.breakPipes(world, pos);
 		super.breakBlock(world, pos, state);
+	}
+
+	@SuppressWarnings("deprecation")
+	private static void breakPipes(World world, BlockPos pos) {
+		int y = pos.getY() - 1;
+		int count = 0;
+		while (y > 0) {
+			final BlockPos position = new BlockPos(pos.getX(), y, pos.getZ());
+			final IBlockState state = world.getBlockState(position);
+			if (state.getBlock().equals(WaterworksBlocks.water_pipe)) {
+				world.destroyBlock(position, false);
+				count++;
+				y--;
+			} else {
+				break;
+			}
+		}
+		if (count > 0) {
+			spawnAsEntity(world, pos, new ItemStack(WaterworksBlocks.water_pipe, count));
+			if (WaterworksConfig.GROUNDWATER_PUMP_SAFETY) {
+				// TODO remove deprecated call
+				world.setBlockState(pos.down(),
+						Blocks.STONE_SLAB.getStateFromMeta(BlockStoneSlab.EnumType.COBBLESTONE.getMetadata()));
+			}
+		}
+
 	}
 
 	@Override
