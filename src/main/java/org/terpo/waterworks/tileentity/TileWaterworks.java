@@ -214,4 +214,8 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 		return new FluidStack(FluidRegistry.WATER, amount);
 	}
 
+	public int getCurrentTick() {
+		return this.currentTick;
+	}
+
 }

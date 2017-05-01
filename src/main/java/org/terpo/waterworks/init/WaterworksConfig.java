@@ -31,6 +31,11 @@ public class WaterworksConfig {
 	// Groundwater Pump
 	public static int GROUNDWATER_PUMP_CAPACITY = 32000;
 	public static int GROUNDWATER_PUMP_FILLRATE = 1000;
+	public static int GROUNDWATER_PUMP_ENERGY_BASEUSAGE = 160;
+	public static int GROUNDWATER_PUMP_ENERGY_PIPEMULTIPLIER = 4;
+	public static int GROUNDWATER_PUMP_ENERGY_CAPACITY = 16000;
+	public static int GROUNDWATER_PUMP_ENERGY_MAXINPUT = 500;
+
 	public static boolean GROUNDWATER_PUMP_SAFETY = true;
 
 	private static void initWaterCollectingConfig() {
@@ -47,10 +52,23 @@ public class WaterworksConfig {
 		RAIN_COLLECTOR_RANGE = cfg.getInt("Multiblock Rain Collector Radius", CATEGORY_WATER_COLLECTING,
 				RAIN_COLLECTOR_RANGE, 0, 7, "Radius of the Controller block");
 		cfg.addCustomCategoryComment(CATEGORY_WATER_COLLECTING, "Groundwater Pump Configuration");
+		// FLUID
 		GROUNDWATER_PUMP_FILLRATE = cfg.getInt("Groundwater Pump Fillrate", CATEGORY_WATER_COLLECTING,
 				GROUNDWATER_PUMP_FILLRATE, 1, 8000, "Amount of water per second");
-		GROUNDWATER_PUMP_CAPACITY = cfg.getInt("Groundwater Pump Capacity", CATEGORY_WATER_COLLECTING,
-				GROUNDWATER_PUMP_CAPACITY, 8000, 1024000, "Pump capacity in mB");
+		GROUNDWATER_PUMP_CAPACITY = cfg.getInt("Groundwater Pump Water Capacity", CATEGORY_WATER_COLLECTING,
+				GROUNDWATER_PUMP_CAPACITY, 8000, 1024000, "Pump water capacity in mB");
+		// Energy
+		GROUNDWATER_PUMP_ENERGY_CAPACITY = cfg.getInt("Groundwater Pump Energy Capacity", CATEGORY_WATER_COLLECTING,
+				GROUNDWATER_PUMP_ENERGY_CAPACITY, 8000, 1024000, "Pump energy capacity in forge energy units");
+		GROUNDWATER_PUMP_ENERGY_MAXINPUT = cfg.getInt("Groundwater Pump Energy Input Rate", CATEGORY_WATER_COLLECTING,
+				GROUNDWATER_PUMP_ENERGY_MAXINPUT, 20, 1024000, "Pump energy input rate in forge energy units");
+		GROUNDWATER_PUMP_ENERGY_BASEUSAGE = cfg.getInt("Groundwater Pump Energy Base Usage", CATEGORY_WATER_COLLECTING,
+				GROUNDWATER_PUMP_ENERGY_BASEUSAGE, 20, 1024000,
+				"Pump energy base usage in forge energy units. Needed For each pump operation.");
+		GROUNDWATER_PUMP_ENERGY_PIPEMULTIPLIER = cfg.getInt("Groundwater Pump Energy Pipemultiplier",
+				CATEGORY_WATER_COLLECTING, GROUNDWATER_PUMP_ENERGY_PIPEMULTIPLIER, 0, 1024000,
+				"Additional to base usage. Each used pipe will multiplied with this value.");
+		// Misc
 		GROUNDWATER_PUMP_SAFETY = cfg.getBoolean("Groundwater Pump Safety Block", CATEGORY_WATER_COLLECTING,
 				GROUNDWATER_PUMP_SAFETY, "Should the Groundwater Pump spawn a slab to close the hole?");
 	}

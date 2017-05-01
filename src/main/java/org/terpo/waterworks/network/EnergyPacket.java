@@ -1,6 +1,7 @@
 package org.terpo.waterworks.network;
 
 import org.terpo.waterworks.Waterworks;
+import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import io.netty.buffer.ByteBuf;
@@ -8,25 +9,23 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class TankPacket implements IMessage {
+public class EnergyPacket implements IMessage {
 
-	private TileWaterworks tileEntity = null;
+	private TileEntityGroundwaterPump tileEntity = null;
 	BlockPos tileEntityPosition = null;
-	int fluidAmount = 0;
-	public TankPacket() {
+	int energyAmount = 0;
+	public EnergyPacket() {
 		// nothing 2do
 	}
 
-	public TankPacket(TileWaterworks tileEntity) {
+	public EnergyPacket(TileEntityGroundwaterPump tileEntity) {
 		this.tileEntity = tileEntity;
 		this.tileEntityPosition = this.tileEntity.getPos();
-		this.fluidAmount = this.tileEntity.getFluidTank().getFluidAmount();
+		this.energyAmount = this.tileEntity.getBattery().getEnergyStored();
 	}
 
 	@Override
@@ -37,7 +36,7 @@ public class TankPacket implements IMessage {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
-		this.fluidAmount = buf.readInt();
+		this.energyAmount = buf.readInt();
 		this.tileEntityPosition = new BlockPos(x, y, z);
 	}
 
@@ -47,42 +46,34 @@ public class TankPacket implements IMessage {
 		buf.writeInt(this.tileEntityPosition.getX());
 		buf.writeInt(this.tileEntityPosition.getY());
 		buf.writeInt(this.tileEntityPosition.getZ());
-		buf.writeInt(this.fluidAmount);
+		buf.writeInt(this.energyAmount);
 	}
 
 	public BlockPos getPos() {
 		return this.tileEntityPosition;
 	}
 
-	public static class Handler implements IMessageHandler<TankPacket, IMessage> {
+	public static class Handler implements IMessageHandler<EnergyPacket, IMessage> {
 
 		public Handler() {
 			// default constructor
 		}
 		@Override
-		public IMessage onMessage(TankPacket message, MessageContext ctx) {
+		public IMessage onMessage(EnergyPacket message, MessageContext ctx) {
 			final EntityPlayer player = Waterworks.proxy.getClientEntityPlayer();
-			final TileWaterworks tileEntity = getTileEntity(player.world, message.getPos());
-			if (tileEntity == null) {
-				return null;
-			}
+			final TileEntityGroundwaterPump pump = getTileEntity(player.world, message.getPos());
 			// write new NBT Values
-			if (message.fluidAmount > 0) {
-				tileEntity.getFluidTank().setFluid(new FluidStack(FluidRegistry.WATER, message.fluidAmount));
-			} else {
-				tileEntity.getFluidTank().setFluid(null);
-			}
+			pump.getBattery().setEnergyAmount(message.energyAmount);
 			return null;
 		}
 
-		public static TileWaterworks getTileEntity(World worldObj, BlockPos pos) {
+		public static TileEntityGroundwaterPump getTileEntity(World worldObj, BlockPos pos) {
 			if (worldObj == null) {
 				return null;
 			}
 			final TileEntity te = worldObj.getTileEntity(pos);
-
 			if (te instanceof TileWaterworks) {
-				return (TileWaterworks) te;
+				return (TileEntityGroundwaterPump) te;
 			}
 			return null;
 

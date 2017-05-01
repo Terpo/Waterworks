@@ -2,10 +2,15 @@ package org.terpo.waterworks.block;
 
 import java.util.List;
 
+import org.terpo.waterworks.Waterworks;
+import org.terpo.waterworks.init.WaterworksBlocks;
+import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -44,6 +49,30 @@ public class BlockWaterPipe extends Block {
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
+	}
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		BlockPos newPos = pos;
+		while (true) {
+			newPos = newPos.up();
+			final Block block = worldIn.getBlockState(newPos).getBlock();
+			if (block.equals(WaterworksBlocks.water_pipe)) {
+				Waterworks.LOGGER.info("a pipe");
+				continue;
+			}
+			if (block.equals(WaterworksBlocks.groundwater_pump)) {
+				if (block.hasTileEntity(state)) {
+					final TileEntity tE = worldIn.getTileEntity(newPos);
+					if (tE instanceof TileEntityGroundwaterPump) {
+						((TileEntityGroundwaterPump) tE).setStructureComplete(false);
+					}
+					break;
+				}
+			}
+			break;
+
+		}
+		super.breakBlock(worldIn, pos, state);
 	}
 
 }

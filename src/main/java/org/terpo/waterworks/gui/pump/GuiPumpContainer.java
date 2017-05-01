@@ -22,6 +22,7 @@ public class GuiPumpContainer extends GuiFluidContainer {
 		this.drawTexturedModalRect(getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
 
 		drawTank(80, 52, 69, 16);
+		drawBattery(8, 52, 69, 16);
 	}
 
 	@Override
@@ -30,11 +31,27 @@ public class GuiPumpContainer extends GuiFluidContainer {
 		this.fontRendererObj.drawString(s, 88 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752); // #404040
 		this.fontRendererObj.drawString("Player Inventory", 8, 72, 4210752); // #404040
 
+		drawTankTooltip(mouseX, mouseY);
+		drawBatteryTooltip(mouseX, mouseY);
 		// draw Tooltip
+	}
+
+	protected void drawTankTooltip(int mouseX, int mouseY) {
 		final String tooltip = this.fluidTank.getFluidAmount() + "/" + this.fluidTank.getCapacity() + " mB";
 		final int stringWidth = this.fontRendererObj.getStringWidth(tooltip);
 
 		if (getGuiLeft() + 80 < mouseX && mouseX < getGuiLeft() + 96 && mouseY > getGuiTop() + 16
+				&& mouseY < getGuiTop() + 69) {
+			drawRect(mouseX - getGuiLeft() + 5, mouseY - getGuiTop() - 5, mouseX - getGuiLeft() + 15 + stringWidth,
+					mouseY - getGuiTop() + 15, 0xFF000000);// this.fluidTank.getFluid().getFluid().getColor()
+			this.fontRendererObj.drawString(tooltip, mouseX - getGuiLeft() + 10, mouseY - getGuiTop(), 0xAAAAAA); // #404040
+		}
+	}
+	protected void drawBatteryTooltip(int mouseX, int mouseY) {
+		final String tooltip = this.battery.getEnergyStored() + "/" + this.battery.getMaxEnergyStored() + " RF";
+		final int stringWidth = this.fontRendererObj.getStringWidth(tooltip);
+
+		if (getGuiLeft() + 8 < mouseX && mouseX < getGuiLeft() + 24 && mouseY > getGuiTop() + 16
 				&& mouseY < getGuiTop() + 69) {
 			drawRect(mouseX - getGuiLeft() + 5, mouseY - getGuiTop() - 5, mouseX - getGuiLeft() + 15 + stringWidth,
 					mouseY - getGuiTop() + 15, 0xFF000000);// this.fluidTank.getFluid().getFluid().getColor()

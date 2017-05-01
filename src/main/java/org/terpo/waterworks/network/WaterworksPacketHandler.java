@@ -28,6 +28,7 @@ public class WaterworksPacketHandler {
 	public static void registerMessages() {
 		// Register messages which are sent from the client to the server here:
 		INSTANCE.registerMessage(TankPacket.Handler.class, TankPacket.class, nextID(), Side.CLIENT);
+		INSTANCE.registerMessage(EnergyPacket.Handler.class, EnergyPacket.class, nextID(), Side.CLIENT);
 	}
 
 	public static void sendToAllAround(IMessage message, TileEntity tileEntity, int range) {
