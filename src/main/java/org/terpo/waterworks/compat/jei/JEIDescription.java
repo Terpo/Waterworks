@@ -3,10 +3,12 @@ package org.terpo.waterworks.compat.jei;
 import java.util.HashMap;
 
 import org.terpo.waterworks.init.WaterworksBlocks;
+import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksItems;
 
 import mezz.jei.api.IModRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -25,7 +27,12 @@ public class JEIDescription {
 		descriptionMap.put(WaterworksBlocks.water_pipe, "tile.water_pipe.description");
 		descriptionMap.put(WaterworksItems.firework_rain, "item.firework_rain.description");
 		descriptionMap.put(WaterworksItems.firework_anti_rain, "item.firework_anti_rain.description");
-
+		if (WaterworksConfig.FIREWORK_CHARGE_DESCRIPTION) {
+			descriptionMap.put(Items.FIREWORK_CHARGE, "item.firework_charge.description");
+		}
+		if (WaterworksConfig.FIREWORKS_DESCRIPTION) {
+			descriptionMap.put(Items.FIREWORKS, "item.fireworks.description");
+		}
 		descriptionMap.forEach((obj, descriptionKey) -> {
 			if (obj instanceof Block) {
 				JEIDescription.add((Block) obj, descriptionKey);

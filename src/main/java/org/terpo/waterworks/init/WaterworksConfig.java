@@ -28,6 +28,10 @@ public class WaterworksConfig {
 	public static int ANTI_RAIN_DURATION = 2000;
 	public static int ANTI_RAIN_DURATION_MULTIPLIER_MAX = 12;
 
+	// Vanilla Firework
+	public static boolean FIREWORK_CHARGE_DESCRIPTION = true;
+	public static boolean FIREWORKS_DESCRIPTION = true;
+
 	// Groundwater Pump
 	public static int GROUNDWATER_PUMP_CAPACITY = 32000;
 	public static int GROUNDWATER_PUMP_FILLRATE = 1000;
@@ -79,11 +83,17 @@ public class WaterworksConfig {
 				"Rain duration with x1 multiplier");
 		RAIN_DURATION_MULTIPLIER_MAX = cfg.getInt("Maximum Rain Duration Multiplier", CATEGORY_ROCKETS,
 				RAIN_DURATION_MULTIPLIER_MAX, 1, 24, "Rain duration multiplier");
+
 		ANTI_RAIN_DURATION = cfg.getInt("Clear Sky Duration", CATEGORY_ROCKETS, ANTI_RAIN_DURATION, 100, 6000,
 				"Clear sky duration with x1 multiplier");
 		ANTI_RAIN_DURATION_MULTIPLIER_MAX = cfg.getInt("Maximum Clear Sky Duration Multiplier", CATEGORY_ROCKETS,
 				ANTI_RAIN_DURATION_MULTIPLIER_MAX, 1, 24, "Clear sky duration multiplier");
 
+		// VANILLA
+		FIREWORK_CHARGE_DESCRIPTION = cfg.getBoolean("Add Minecraft Firework Star Description", CATEGORY_ROCKETS,
+				FIREWORK_CHARGE_DESCRIPTION, "Adds a small description for firework star");
+		FIREWORKS_DESCRIPTION = cfg.getBoolean("Add Minecraft Fireworks Description", CATEGORY_ROCKETS,
+				FIREWORKS_DESCRIPTION, "Adds a small description for fireworks");
 	}
 
 	public static void init(FMLPreInitializationEvent event) {
