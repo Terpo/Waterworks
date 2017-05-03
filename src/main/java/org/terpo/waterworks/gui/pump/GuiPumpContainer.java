@@ -30,18 +30,12 @@ public class GuiPumpContainer extends GuiFluidContainer {
 		final String s = this.fluidTank.getFluidAmount() + " mB";
 		this.fontRendererObj.drawString(s, 88 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752); // #404040
 		this.fontRendererObj.drawString("Player Inventory", 8, 72, 4210752); // #404040
-
-		// drawTankTooltip(mouseX, mouseY);
-		// drawBatteryTooltip(mouseX, mouseY);
 		// draw Tooltip
-	}
-
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		super.drawScreen(mouseX, mouseY, partialTicks);
 		drawTankTooltip(mouseX, mouseY);
 		drawBatteryTooltip(mouseX, mouseY);
+
 	}
+
 	protected void drawTankTooltip(int mouseX, int mouseY) {
 		final String tooltip = this.fluidTank.getFluidAmount() + "/" + this.fluidTank.getCapacity() + " mB";
 		final int stringWidth = this.fontRendererObj.getStringWidth(tooltip);
