@@ -2,14 +2,15 @@ package org.terpo.waterworks.init;
 
 import static org.terpo.waterworks.init.WaterworksItems.firework_anti_rain;
 import static org.terpo.waterworks.init.WaterworksItems.firework_rain;
-import static org.terpo.waterworks.init.WaterworksItems.iron_mesh;
+import static org.terpo.waterworks.init.WaterworksItems.materials;
 import static org.terpo.waterworks.init.WaterworksItems.pipe_wrench;
 
 import org.terpo.waterworks.Waterworks;
+import org.terpo.waterworks.api.constants.EnumItemMaterials;
 import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.item.ItemFireworkAntiRain;
 import org.terpo.waterworks.item.ItemFireworkRain;
-import org.terpo.waterworks.item.ItemIronMesh;
+import org.terpo.waterworks.item.ItemMaterials;
 import org.terpo.waterworks.item.ItemPipeWrench;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -27,21 +28,28 @@ public class InitItems {
 
 	public static void registerItems() {
 		pipe_wrench = registerItem(new ItemPipeWrench(), "pipe_wrench");
-		iron_mesh = registerItem(new ItemIronMesh(), "iron_mesh");
 		firework_rain = registerItem(new ItemFireworkRain(), "firework_rain");
 		firework_anti_rain = registerItem(new ItemFireworkAntiRain(), "firework_anti_rain");
+		materials = registerItem(new ItemMaterials(), "materials");
 	}
 
 	public static void registerRenders() {
 		registerRender(pipe_wrench);
-		registerRender(iron_mesh);
 		registerRender(firework_rain);
 		registerRender(firework_anti_rain);
+		registerRenderMaterials(materials);
 	}
 
 	public static void registerRender(Item item) {
 		ModelLoader.setCustomModelResourceLocation(item, 0,
 				new ModelResourceLocation(item.getRegistryName(), "inventory"));
+	}
+	public static void registerRenderMaterials(Item item) {
+		for (int i = 0; i < EnumItemMaterials.VALUES.length; i++) {
+			final ResourceLocation loc = item.getRegistryName();
+			ModelLoader.setCustomModelResourceLocation(item, i,
+					new ModelResourceLocation(loc + "_" + EnumItemMaterials.VALUES[i], "inventory"));
+		}
 	}
 
 	public static Item registerItem(Item item, String name) {

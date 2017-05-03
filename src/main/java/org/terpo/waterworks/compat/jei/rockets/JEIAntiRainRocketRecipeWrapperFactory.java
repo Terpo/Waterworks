@@ -29,11 +29,7 @@ public class JEIAntiRainRocketRecipeWrapperFactory implements IRecipeWrapperFact
 
 				inputFirst.add(new ItemStack(Items.FIREWORKS));
 				inputFirst.add(new ItemStack(WaterworksItems.firework_anti_rain));
-				// for (int i = 0; i <
-				// JEIAntiRainRocketRecipeWrapperFactory.this.multiplier; i++) {
 				inputOthers.add(new ItemStack(Blocks.SPONGE));
-				// }
-
 				inputs.add(inputFirst);
 				inputs.add(inputOthers);
 

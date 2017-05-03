@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "waterworks:items/iron_mesh"
+        "layer0": "waterworks:items/materials_energy_adapter"
     }
 }

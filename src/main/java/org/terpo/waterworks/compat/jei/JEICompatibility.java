@@ -16,12 +16,11 @@ public class JEICompatibility extends BlankModPlugin {
 	public void register(IModRegistry registry) {
 
 		// Add Rocket Recipe Handler
-		for (int i = 1; i < 9; i++) {
-			registry.handleRecipes(RainRocketRecipe.class, new JEIRainRocketRecipeWrapperFactory(),
-					VanillaRecipeCategoryUid.CRAFTING);
-			registry.handleRecipes(AntiRainRocketRecipe.class, new JEIAntiRainRocketRecipeWrapperFactory(),
-					VanillaRecipeCategoryUid.CRAFTING);
-		}
+		registry.handleRecipes(RainRocketRecipe.class, new JEIRainRocketRecipeWrapperFactory(),
+				VanillaRecipeCategoryUid.CRAFTING);
+		registry.handleRecipes(AntiRainRocketRecipe.class, new JEIAntiRainRocketRecipeWrapperFactory(),
+				VanillaRecipeCategoryUid.CRAFTING);
+
 		// Add Descriptions
 		JEIDescription.addJEIDescriptions(registry);
 	}

@@ -1,7 +1,7 @@
 package org.terpo.waterworks;
 
 import org.terpo.waterworks.api.constants.WaterworksReference;
-import org.terpo.waterworks.init.WaterworksItems;
+import org.terpo.waterworks.init.WaterworksBlocks;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -14,7 +14,7 @@ public class WaterworksTab extends CreativeTabs {
 
 	@Override
 	public ItemStack getTabIconItem() {
-		return new ItemStack(WaterworksItems.iron_mesh);
+		return new ItemStack(WaterworksBlocks.groundwater_pump);
 	}
 
 }

@@ -1,8 +1,9 @@
 #Items
 item.pipe_wrench.name=Pipe Wrench
-item.iron_mesh.name=Iron Mesh
 item.firework_rain.name=Rain Rocket
 item.firework_anti_rain.name=Anti Rain Rocket
+item.materials.energy_adapter.name=Energy Adapter
+item.materials.collector_controller.name=Controller
 #Blocks
 tile.rain_tank_wood.name=Wooden Rain Tank
 tile.water_pipe.name=Water Pipe
