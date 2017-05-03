@@ -2,12 +2,12 @@ package org.terpo.waterworks.block;
 
 import java.util.List;
 
+import org.terpo.waterworks.init.WaterworksItems;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
 import org.terpo.waterworks.tileentity.TileEntityRainCollector;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -43,11 +43,16 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 			final TileEntity tileEntity = getTE(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainCollector) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (heldItem.getItem() == Items.STICK) {
+				if (heldItem.getItem() == WaterworksItems.pipe_wrench) {
 					final TileEntityRainCollector collector = (TileEntityRainCollector) tileEntity;
-					final String out = collector.hasController()
-							? collector.getController().getPos().toString()
-							: "No Controller";
+					String out;
+					if (collector.hasController()) {
+						final BlockPos controllerPos = collector.getController().getPos();
+						out = "Found Controller at " + controllerPos.getX() + "," + controllerPos.getY() + ","
+								+ controllerPos.getZ();
+					} else {
+						out = "No Controller";
+					}
 					playerIn.sendMessage(new TextComponentString(out));
 				}
 			}

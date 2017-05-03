@@ -2,15 +2,15 @@ package org.terpo.waterworks.init;
 
 import static org.terpo.waterworks.init.WaterworksItems.firework_anti_rain;
 import static org.terpo.waterworks.init.WaterworksItems.firework_rain;
-import static org.terpo.waterworks.init.WaterworksItems.first_item;
 import static org.terpo.waterworks.init.WaterworksItems.iron_mesh;
+import static org.terpo.waterworks.init.WaterworksItems.pipe_wrench;
 
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.item.ItemFireworkAntiRain;
 import org.terpo.waterworks.item.ItemFireworkRain;
-import org.terpo.waterworks.item.ItemFirstItem;
 import org.terpo.waterworks.item.ItemIronMesh;
+import org.terpo.waterworks.item.ItemPipeWrench;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,14 +26,14 @@ public class InitItems {
 	}
 
 	public static void registerItems() {
-		first_item = registerItem(new ItemFirstItem(), "first_item");
+		pipe_wrench = registerItem(new ItemPipeWrench(), "pipe_wrench");
 		iron_mesh = registerItem(new ItemIronMesh(), "iron_mesh");
 		firework_rain = registerItem(new ItemFireworkRain(), "firework_rain");
 		firework_anti_rain = registerItem(new ItemFireworkAntiRain(), "firework_anti_rain");
 	}
 
 	public static void registerRenders() {
-		registerRender(first_item);
+		registerRender(pipe_wrench);
 		registerRender(iron_mesh);
 		registerRender(firework_rain);
 		registerRender(firework_anti_rain);

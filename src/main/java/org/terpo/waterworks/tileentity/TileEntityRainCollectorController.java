@@ -69,11 +69,11 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 		}
 	}
 
-	public void findRainCollectors() {
+	public int findRainCollectors() {
 		resetController();
 		this.connectedCollectors = getAllConnectedBlocks();
 		this.RESOURCE_WATER = getWaterFluidStack(this.connectedCollectors * WaterworksConfig.RAIN_COLLECTOR_FILLRATE);
-		// debugCollectors();
+		return this.connectedCollectors;
 	}
 
 	public void debugCollectors() {
@@ -224,6 +224,18 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 
 	public int getConnectedCollectors() {
 		return this.connectedCollectors;
+	}
+
+	public boolean isCollectorListed(BlockPos collectorPos) {
+		if (this.rainCollectorBlocks != null) {
+			for (int i = 0; i < this.rainCollectorBlocks.length; i++) {
+				if (this.rainCollectorBlocks[i] != null && this.rainCollectorBlocks[i].equals(collectorPos)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		return false;
 	}
 
 }

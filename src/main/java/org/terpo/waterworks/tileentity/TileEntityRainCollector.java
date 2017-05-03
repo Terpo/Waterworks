@@ -56,8 +56,11 @@ public class TileEntityRainCollector extends BaseTileEntity {
 	private boolean getController(BlockPos position) {
 		final TileEntity tile = this.world.getTileEntity(position);
 		if (tile instanceof TileEntityRainCollectorController) {
-			this.controller = (TileEntityRainCollectorController) tile;
-			return true;
+			final TileEntityRainCollectorController tileEntity = (TileEntityRainCollectorController) tile;
+			if (tileEntity.isCollectorListed(this.pos)) {
+				this.controller = tileEntity;
+				return true;
+			}
 		}
 		return false;
 	}

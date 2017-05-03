@@ -27,6 +27,7 @@ public class JEIDescription {
 		descriptionMap.put(WaterworksBlocks.water_pipe, "tile.water_pipe.description");
 		descriptionMap.put(WaterworksItems.firework_rain, "item.firework_rain.description");
 		descriptionMap.put(WaterworksItems.firework_anti_rain, "item.firework_anti_rain.description");
+		descriptionMap.put(WaterworksItems.pipe_wrench, "item.pipe_wrench.description");
 		if (WaterworksConfig.FIREWORK_CHARGE_DESCRIPTION) {
 			descriptionMap.put(Items.FIREWORK_CHARGE, "item.firework_charge.description");
 		}

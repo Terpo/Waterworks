@@ -1,5 +1,5 @@
 #Items
-item.first_item.name=First Item
+item.pipe_wrench.name=Pipe Wrench
 item.iron_mesh.name=Iron Mesh
 item.firework_rain.name=Rain Rocket
 item.firework_anti_rain.name=Anti Rain Rocket
@@ -19,5 +19,6 @@ tile.rain_tank_wood.description=A simply rain tank that collects water when its 
 tile.water_pipe.description=A decorative block that is needed for the Groundwater Pump to work properly
 item.firework_rain.description=Use a Minecraft Rocket and some Ghast Tears to craft a Rain Rocket. More Tears equals a longer duration.
 item.firework_anti_rain.description=Use a Minecraft Rocket and some dry Sponges to craft an Anti Rain Rocket. More Sponges will increase the good weather duration. You will get back your Sponges as wet version.
+item.pipe_wrench.description=Use this wrench with a right click on a Rain Collector Controller to let it search for Rain Collectors. Use it with a right click on a Rain Collector to find out if it has a Controller.
 item.firework_charge.description=To create a star put Gunpowder and any Minecraft dye in your crafting grid. For a shape effect add one of these: Fire Charge, Gold Nugget, Head (any), Feather. For additional effects add Glowstone Dust and/or a Diamond.
 item.fireworks.description=The minimum ingredients for Firework Rockets is one Paper and up to three Gunpowder. Gunpowder determines the flight duration. Up to seven Firework Stars can be added. Without a Firework Star there is no explosion effect.

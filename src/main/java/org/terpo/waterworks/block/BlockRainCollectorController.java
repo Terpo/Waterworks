@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.gui.GuiProxy;
+import org.terpo.waterworks.init.WaterworksItems;
 import org.terpo.waterworks.inventory.WaterworksInventoryHelper;
 import org.terpo.waterworks.tileentity.TileEntityRainCollectorController;
 import org.terpo.waterworks.tileentity.TileWaterworks;
@@ -11,7 +12,6 @@ import org.terpo.waterworks.tileentity.TileWaterworks;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -53,18 +53,12 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 			final TileEntity tileEntity = getTE(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainCollectorController) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (heldItem.getItem() == Items.CARROT_ON_A_STICK) {
-					((TileEntityRainCollectorController) tileEntity).findRainCollectors();
-					return true;
-				}
-				if (heldItem.getItem() == Items.STICK) {
-					final TileEntityRainCollectorController controller = (TileEntityRainCollectorController) tileEntity;
-					// controller.debugCollectors();
-					final String out = controller.getConnectedCollectors() + "Collectors";
+				if (heldItem.getItem() == WaterworksItems.pipe_wrench) {
+					final int collectors = ((TileEntityRainCollectorController) tileEntity).findRainCollectors();
+					final String out = collectors - 1 + " Collectors found";
 					playerIn.sendMessage(new TextComponentString(out));
 					return true;
 				}
-
 				if (!playerIn.isSneaking()) {
 					if (!heldItem.isEmpty()) {
 						if (tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {

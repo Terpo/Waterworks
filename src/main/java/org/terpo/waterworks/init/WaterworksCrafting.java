@@ -14,10 +14,17 @@ import net.minecraftforge.oredict.RecipeSorter.Category;
 public class WaterworksCrafting {
 
 	public static void register() {
+		// BLOCKS
 		GameRegistry.addShapedRecipe(new ItemStack(WaterworksBlocks.water_pipe, 8), "IBI", "IBI", "IBI", 'I',
 				Items.IRON_INGOT, 'B', Blocks.IRON_BARS);
 		GameRegistry.addShapedRecipe(new ItemStack(WaterworksBlocks.rain_tank_wood, 1), "P P", "PSP", "BBB", 'P',
 				Blocks.PLANKS, 'S', Blocks.WOODEN_SLAB, 'B', Blocks.STONE);
+		GameRegistry.addShapedRecipe(new ItemStack(WaterworksBlocks.groundwater_pump, 1), "ABA", "STS", "SPS", 'P',
+				WaterworksBlocks.water_pipe, 'I', Items.IRON_INGOT, 'S', Blocks.IRON_BLOCK, 'A', Blocks.IRON_BARS, 'T',
+				WaterworksBlocks.rain_tank_wood, 'B', Items.APPLE);
+		// ITEMS
+		GameRegistry.addShapedRecipe(new ItemStack(WaterworksItems.pipe_wrench, 1), " II", "  L", "  I", 'I',
+				Items.IRON_INGOT, 'L', new ItemStack(Items.DYE, 1, 4));
 		registerFireworks();
 	}
 

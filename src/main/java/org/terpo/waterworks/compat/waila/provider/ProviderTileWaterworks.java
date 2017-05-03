@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.terpo.waterworks.api.constants.Compat;
 import org.terpo.waterworks.block.BaseBlockTE;
+import org.terpo.waterworks.energy.WaterworksBattery;
 import org.terpo.waterworks.fluid.WaterworksTank;
+import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -46,6 +48,14 @@ public class ProviderTileWaterworks implements IWailaDataProvider {
 				final int capacity = tank.getCapacity();
 				final int amount = tank.getFluidAmount();
 				currenttip.add(amount + "/" + capacity + " mB");
+			}
+			if (tileEntity instanceof TileEntityGroundwaterPump) {
+				final TileEntityGroundwaterPump pump = (TileEntityGroundwaterPump) tileEntity;
+				final WaterworksBattery battery = pump.getBattery();
+
+				final int capacity = battery.getMaxEnergyStored();
+				final int amount = battery.getEnergyStored();
+				currenttip.add(amount + "/" + capacity + " RF");
 			}
 		}
 		return currenttip;
