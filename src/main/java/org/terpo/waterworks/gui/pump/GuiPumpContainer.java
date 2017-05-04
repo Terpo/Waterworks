@@ -9,6 +9,16 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiPumpContainer extends GuiFluidContainer {
 
+	private final int TANK_POS_X = 80;
+	private final int TANK_SIZE_X = 16;
+	private final int TANK_POS_Y = 17;
+	private final int TANK_SIZE_Y = 52;
+
+	private final int BATTERY_POS_X = 8;
+	private final int BATTERY_SIZE_X = 16;
+	private final int BATTERY_POS_Y = 17;
+	private final int BATTERY_SIZE_Y = 52;
+
 	public GuiPumpContainer(Container inventorySlotsIn, TileWaterworks te) {
 		super(inventorySlotsIn, te);
 	}
@@ -21,41 +31,15 @@ public class GuiPumpContainer extends GuiFluidContainer {
 				.bindTexture(new ResourceLocation("waterworks:textures/gui/container/groundwater_pump.png"));
 		this.drawTexturedModalRect(getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
 
-		drawTank(80, 52, 69, 16);
-		drawBattery(8, 52, 69, 16);
+		drawTank(this.TANK_POS_X, this.TANK_SIZE_X, this.TANK_POS_Y, this.TANK_SIZE_Y);
+		drawBattery(this.BATTERY_POS_X, this.BATTERY_SIZE_X, this.BATTERY_POS_Y, this.BATTERY_SIZE_Y);
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		final String s = this.fluidTank.getFluidAmount() + " mB";
-		this.fontRendererObj.drawString(s, 88 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752); // #404040
-		this.fontRendererObj.drawString("Player Inventory", 8, 72, 4210752); // #404040
 		// draw Tooltip
-		drawTankTooltip(mouseX, mouseY);
-		drawBatteryTooltip(mouseX, mouseY);
-
-	}
-
-	protected void drawTankTooltip(int mouseX, int mouseY) {
-		final String tooltip = this.fluidTank.getFluidAmount() + "/" + this.fluidTank.getCapacity() + " mB";
-		final int stringWidth = this.fontRendererObj.getStringWidth(tooltip);
-
-		if (getGuiLeft() + 80 < mouseX && mouseX < getGuiLeft() + 96 && mouseY > getGuiTop() + 16
-				&& mouseY < getGuiTop() + 69) {
-			drawRect(mouseX - getGuiLeft() + 5, mouseY - getGuiTop() - 5, mouseX - getGuiLeft() + 15 + stringWidth,
-					mouseY - getGuiTop() + 15, 0xFF000000);// this.fluidTank.getFluid().getFluid().getColor()
-			this.fontRendererObj.drawString(tooltip, mouseX - getGuiLeft() + 10, mouseY - getGuiTop(), 0xAAAAAA); // #404040
-		}
-	}
-	protected void drawBatteryTooltip(int mouseX, int mouseY) {
-		final String tooltip = this.battery.getEnergyStored() + "/" + this.battery.getMaxEnergyStored() + " RF";
-		final int stringWidth = this.fontRendererObj.getStringWidth(tooltip);
-
-		if (getGuiLeft() + 8 < mouseX && mouseX < getGuiLeft() + 24 && mouseY > getGuiTop() + 16
-				&& mouseY < getGuiTop() + 69) {
-			drawRect(mouseX - getGuiLeft() + 5, mouseY - getGuiTop() - 5, mouseX - getGuiLeft() + 15 + stringWidth,
-					mouseY - getGuiTop() + 15, 0xFF000000);// this.fluidTank.getFluid().getFluid().getColor()
-			this.fontRendererObj.drawString(tooltip, mouseX - getGuiLeft() + 10, mouseY - getGuiTop(), 0xAAAAAA); // #404040
-		}
+		drawTankTooltip(mouseX, mouseY, this.TANK_POS_X, this.TANK_SIZE_X, this.TANK_POS_Y, this.TANK_SIZE_Y);
+		drawBatteryTooltip(mouseX, mouseY, this.BATTERY_POS_X, this.BATTERY_SIZE_X, this.BATTERY_POS_Y,
+				this.BATTERY_SIZE_Y);
 	}
 }
