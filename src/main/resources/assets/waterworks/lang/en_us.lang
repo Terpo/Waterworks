@@ -12,10 +12,21 @@ tile.rain_collector_controller.name=Rain Collector Controller
 tile.groundwater_pump.name=Groundwater Pump
 #CreativeTab
 itemGroup.waterworks=Waterworks
+#Tooltips
+tooltip.rain_collector=Used to increase size of multiblock rain collector
+tooltip.rain_collector_controller=Controller for the multiblock rain collector
+tooltip.rain_rocket.bad_weather=Bad weather incoming
+tooltip.rain_rocket.rain_duration=Rain duration
+tooltip.anti_rain_rocket.good_weather=Brings back the sunshine
+tooltip.anti_rain_rocket.sunshine_duration=Anti rain duration
+#WrenchTextOutput
+pipe_wrench.collectors_found=Collectors found
+pipe_wrench.found_controller=Found Controller at
+pipe_wrench.no_controller=No Controller found
 #JEI
 tile.groundwater_pump.description=The Groundwater Pump needs clear sight to bedrock. Place water pipes into its inventory and give it some power to run.
 tile.rain_collector.description=These blocks increase the yield of a controller block. Its a free form multiblock. Only a face needs to be connected to the controller block.
-tile.rain_collector_controller.description=The heart of the rain collector multiblock structure. Add collectors on the faces to increase the yield. Start a search for valid collectors by clicking with a Stick on it.
+tile.rain_collector_controller.description=The heart of the rain collector multiblock structure. Add collectors on the faces to increase the yield. Start a search for valid collectors by right clicking with a Pipe Wrench on it.
 tile.rain_tank_wood.description=A simply rain tank that collects water when its raining.
 tile.water_pipe.description=A decorative block that is needed for the Groundwater Pump to work properly
 item.firework_rain.description=Use a Minecraft Rocket and some Ghast Tears to craft a Rain Rocket. More Tears equals a longer duration.

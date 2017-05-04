@@ -5,6 +5,7 @@ import java.util.List;
 import org.terpo.waterworks.entity.item.EntityFireworkRocketRain;
 import org.terpo.waterworks.init.WaterworksConfig;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFirework;
 import net.minecraft.item.ItemStack;
@@ -75,9 +76,10 @@ public class ItemFireworkRain extends ItemFirework {
 			final NBTTagCompound nbttagcompound = stack.getTagCompound();
 			if (nbttagcompound.hasKey("RAIN")) {
 				final int multi = nbttagcompound.getInteger("RAIN");
-				tooltip.add("Bad weather incoming");
-				tooltip.add("Rain duration x" + multi);
-				tooltip.add("Rain duration " + (WaterworksConfig.RAIN_DURATION * multi) + " ticks");
+				tooltip.add(I18n.format("tooltip.rain_rocket.bad_weather"));
+				tooltip.add(I18n.format("tooltip.rain_rocket.rain_duration") + " x" + multi);
+				tooltip.add(I18n.format("tooltip.rain_rocket.rain_duration") + " "
+						+ (WaterworksConfig.RAIN_DURATION * multi) + " ticks");
 			}
 		}
 	}

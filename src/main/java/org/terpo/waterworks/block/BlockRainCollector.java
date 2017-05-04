@@ -7,6 +7,7 @@ import org.terpo.waterworks.tileentity.BaseTileEntity;
 import org.terpo.waterworks.tileentity.TileEntityRainCollector;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -28,7 +29,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 		super.addInformation(stack, player, tooltip, advanced);
-		tooltip.add("Used to increase size of multiblock rain collector");
+		tooltip.add(I18n.format("tooltip.rain_collector"));
 	}
 
 	@Override
@@ -48,10 +49,10 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 					String out;
 					if (collector.hasController()) {
 						final BlockPos controllerPos = collector.getController().getPos();
-						out = "Found Controller at " + controllerPos.getX() + "," + controllerPos.getY() + ","
-								+ controllerPos.getZ();
+						out = I18n.format("pipe_wrench.found_controller") + " " + controllerPos.getX() + ","
+								+ controllerPos.getY() + "," + controllerPos.getZ();
 					} else {
-						out = "No Controller";
+						out = I18n.format("pipe_wrench.no_controller");
 					}
 					playerIn.sendMessage(new TextComponentString(out));
 				}

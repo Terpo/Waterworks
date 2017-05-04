@@ -11,6 +11,7 @@ import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -38,7 +39,7 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 		super.addInformation(stack, player, tooltip, advanced);
-		tooltip.add("Controller for the multiblock rain collector");
+		tooltip.add(I18n.format("tooltip.rain_collector_controller"));
 	}
 
 	@Override
@@ -55,7 +56,7 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				if (heldItem.getItem() == WaterworksItems.pipe_wrench) {
 					final int collectors = ((TileEntityRainCollectorController) tileEntity).findRainCollectors();
-					final String out = collectors - 1 + " Collectors found";
+					final String out = collectors - 1 + " " + I18n.format("pipe_wrench.collectors_found");
 					playerIn.sendMessage(new TextComponentString(out));
 					return true;
 				}

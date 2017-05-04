@@ -5,6 +5,7 @@ import java.util.List;
 import org.terpo.waterworks.entity.item.EntityFireworkRocketAntiRain;
 import org.terpo.waterworks.init.WaterworksConfig;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFirework;
 import net.minecraft.item.ItemStack;
@@ -71,9 +72,10 @@ public class ItemFireworkAntiRain extends ItemFirework {
 			final NBTTagCompound nbttagcompound = stack.getTagCompound();
 			if (nbttagcompound.hasKey("ANTIRAIN")) {
 				final int multi = nbttagcompound.getInteger("ANTIRAIN");
-				tooltip.add("Brings back the sunshine");
-				tooltip.add("Anti rain duration x" + multi);
-				tooltip.add("Anti rain duration " + (WaterworksConfig.ANTI_RAIN_DURATION * multi) + " ticks");
+				tooltip.add(I18n.format("tooltip.anti_rain_rocket.good_weather"));
+				tooltip.add(I18n.format("tooltip.anti_rain_rocket.sunshine_duration") + " x" + multi);
+				tooltip.add(I18n.format("tooltip.anti_rain_rocket.sunshine_duration") + " "
+						+ (WaterworksConfig.ANTI_RAIN_DURATION * multi) + " ticks");
 			}
 		}
 
