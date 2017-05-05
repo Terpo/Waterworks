@@ -19,20 +19,36 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class InitBlocks {
 
 	public static void init() {
-		WaterworksBlocks.rain_tank_wood = registerBlock(new BlockRainTankWood(), "rain_tank_wood");
-		WaterworksBlocks.water_pipe = registerBlock(new BlockWaterPipe(), "water_pipe");
-		WaterworksBlocks.rain_collector = registerBlock(new BlockRainCollector(), "rain_collector");
-		WaterworksBlocks.rain_collector_controller = registerBlock(new BlockRainCollectorController(),
-				"rain_collector_controller");
-		WaterworksBlocks.groundwater_pump = registerBlock(new BlockGroundwaterPump(), "groundwater_pump");
+		if (WaterworksConfig.REGISTER_RAIN_TANK) {
+			WaterworksBlocks.rain_tank_wood = registerBlock(new BlockRainTankWood(), "rain_tank_wood");
+		}
+		if (WaterworksConfig.REGISTER_WATER_PIPE) {
+			WaterworksBlocks.water_pipe = registerBlock(new BlockWaterPipe(), "water_pipe");
+		}
+		if (WaterworksConfig.REGISTER_RAIN_COLLECTING_MULTIBLOCK) {
+			WaterworksBlocks.rain_collector = registerBlock(new BlockRainCollector(), "rain_collector");
+			WaterworksBlocks.rain_collector_controller = registerBlock(new BlockRainCollectorController(),
+					"rain_collector_controller");
+		}
+		if (WaterworksConfig.REGISTER_GROUNDWATER_PUMP) {
+			WaterworksBlocks.groundwater_pump = registerBlock(new BlockGroundwaterPump(), "groundwater_pump");
+		}
 
 	}
 	public static void registerRenders() {
-		registerRender(WaterworksBlocks.rain_tank_wood);
-		registerRender(WaterworksBlocks.water_pipe);
-		registerRender(WaterworksBlocks.rain_collector);
-		registerRender(WaterworksBlocks.rain_collector_controller);
-		registerRender(WaterworksBlocks.groundwater_pump);
+		if (WaterworksConfig.REGISTER_RAIN_TANK) {
+			registerRender(WaterworksBlocks.rain_tank_wood);
+		}
+		if (WaterworksConfig.REGISTER_WATER_PIPE) {
+			registerRender(WaterworksBlocks.water_pipe);
+		}
+		if (WaterworksConfig.REGISTER_RAIN_COLLECTING_MULTIBLOCK) {
+			registerRender(WaterworksBlocks.rain_collector);
+			registerRender(WaterworksBlocks.rain_collector_controller);
+		}
+		if (WaterworksConfig.REGISTER_GROUNDWATER_PUMP) {
+			registerRender(WaterworksBlocks.groundwater_pump);
+		}
 	}
 	public static void registerRender(Block block) {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,

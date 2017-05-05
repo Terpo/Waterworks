@@ -15,23 +15,36 @@ public class WaterworksCrafting {
 
 	public static void register() {
 		// BLOCKS
-		// Waterpipe
-		GameRegistry.addShapedRecipe(new ItemStack(WaterworksBlocks.water_pipe, 8), "IBI", "IBI", "IBI", 'I',
-				Items.IRON_INGOT, 'B', Blocks.IRON_BARS);
+		// Water Pipe
+		if (WaterworksConfig.RECIPE_WATER_PIPE && WaterworksConfig.REGISTER_WATER_PIPE) {
+			GameRegistry.addShapedRecipe(new ItemStack(WaterworksBlocks.water_pipe, 8), "IBI", "IBI", "IBI", 'I',
+					Items.IRON_INGOT, 'B', Blocks.IRON_BARS);
+		}
 		// Raintank
-		GameRegistry.addShapedRecipe(new ItemStack(WaterworksBlocks.rain_tank_wood, 1), "P P", "PSP", "BBB", 'P',
-				Blocks.PLANKS, 'S', Blocks.WOODEN_SLAB, 'B', Blocks.STONE);
-		// Collector
-		GameRegistry.addShapedRecipe(new ItemStack(WaterworksBlocks.rain_collector, 1), "IMI", "T T", "III", 'T',
-				WaterworksBlocks.water_pipe, 'I', Items.IRON_INGOT, 'M', Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
-		// Collector Controller
-		GameRegistry.addShapedRecipe(new ItemStack(WaterworksBlocks.rain_collector_controller, 1), "ICI", "PTP", "III",
-				'P', WaterworksBlocks.water_pipe, 'T', WaterworksBlocks.rain_tank_wood, 'I', Items.IRON_INGOT, 'C',
-				new ItemStack(WaterworksItems.materials, 1, 1));
+		if (WaterworksConfig.RECIPE_RAIN_TANK && WaterworksConfig.REGISTER_RAIN_TANK) {
+			GameRegistry.addShapedRecipe(new ItemStack(WaterworksBlocks.rain_tank_wood, 1), "P P", "PSP", "BBB", 'P',
+					Blocks.PLANKS, 'S', Blocks.WOODEN_SLAB, 'B', Blocks.STONE);
+		}
+
+		if (WaterworksConfig.RECIPE_RAIN_COLLECTING_MULTIBLOCK && WaterworksConfig.REGISTER_RAIN_COLLECTING_MULTIBLOCK
+				&& WaterworksConfig.REGISTER_WATER_PIPE) {
+			// Collector
+			GameRegistry.addShapedRecipe(new ItemStack(WaterworksBlocks.rain_collector, 1), "IMI", "T T", "III", 'T',
+					WaterworksBlocks.water_pipe, 'I', Items.IRON_INGOT, 'M', Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
+			// Collector Controller
+			if (WaterworksConfig.REGISTER_RAIN_TANK) {
+				GameRegistry.addShapedRecipe(new ItemStack(WaterworksBlocks.rain_collector_controller, 1), "ICI", "PTP",
+						"III", 'P', WaterworksBlocks.water_pipe, 'T', WaterworksBlocks.rain_tank_wood, 'I',
+						Items.IRON_INGOT, 'C', new ItemStack(WaterworksItems.materials, 1, 1));
+			}
+		}
 		// Groundwater Pump
-		GameRegistry.addShapedRecipe(new ItemStack(WaterworksBlocks.groundwater_pump, 1), "ABA", "STS", "SPS", 'P',
-				WaterworksBlocks.water_pipe, 'I', Items.IRON_INGOT, 'S', Blocks.IRON_BLOCK, 'A', Blocks.IRON_BARS, 'T',
-				WaterworksBlocks.rain_tank_wood, 'B', new ItemStack(WaterworksItems.materials, 1, 0));
+		if (WaterworksConfig.RECIPE_GROUNDWATER_PUMP && WaterworksConfig.REGISTER_GROUNDWATER_PUMP
+				&& WaterworksConfig.REGISTER_RAIN_TANK && WaterworksConfig.REGISTER_WATER_PIPE) {
+			GameRegistry.addShapedRecipe(new ItemStack(WaterworksBlocks.groundwater_pump, 1), "ABA", "STS", "SPS", 'P',
+					WaterworksBlocks.water_pipe, 'I', Items.IRON_INGOT, 'S', Blocks.IRON_BLOCK, 'A', Blocks.IRON_BARS,
+					'T', WaterworksBlocks.rain_tank_wood, 'B', new ItemStack(WaterworksItems.materials, 1, 0));
+		}
 		// ITEMS
 		GameRegistry.addShapedRecipe(new ItemStack(WaterworksItems.materials, 1, 0), " G ", "GRG", " G ", 'G',
 				Items.GOLD_NUGGET, 'R', Items.REDSTONE);
@@ -43,11 +56,15 @@ public class WaterworksCrafting {
 	}
 
 	public static void registerFireworks() {
-		GameRegistry.addRecipe(new RainRocketRecipe());
-		RecipeSorter.register(WaterworksReference.DOMAIN + "shapeless_firework_rain", RainRocketRecipe.class,
-				Category.SHAPELESS, "after:minecraft:shapeless");
-		GameRegistry.addRecipe(new AntiRainRocketRecipe());
-		RecipeSorter.register(WaterworksReference.DOMAIN + "shapeless_firework_anti_rain", AntiRainRocketRecipe.class,
-				Category.SHAPELESS, "after:minecraft:shapeless");
+		if (WaterworksConfig.RECIPE_RAIN_ROCKET && WaterworksConfig.REGISTER_RAIN_ROCKET) {
+			GameRegistry.addRecipe(new RainRocketRecipe());
+			RecipeSorter.register(WaterworksReference.DOMAIN + "shapeless_firework_rain", RainRocketRecipe.class,
+					Category.SHAPELESS, "after:minecraft:shapeless");
+		}
+		if (WaterworksConfig.RECIPE_ANTI_RAIN_ROCKET && WaterworksConfig.REGISTER_ANTI_RAIN_ROCKET) {
+			GameRegistry.addRecipe(new AntiRainRocketRecipe());
+			RecipeSorter.register(WaterworksReference.DOMAIN + "shapeless_firework_anti_rain",
+					AntiRainRocketRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
+		}
 	}
 }

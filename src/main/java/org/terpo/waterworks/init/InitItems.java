@@ -28,15 +28,23 @@ public class InitItems {
 
 	public static void registerItems() {
 		pipe_wrench = registerItem(new ItemPipeWrench(), "pipe_wrench");
-		firework_rain = registerItem(new ItemFireworkRain(), "firework_rain");
-		firework_anti_rain = registerItem(new ItemFireworkAntiRain(), "firework_anti_rain");
+		if (WaterworksConfig.REGISTER_RAIN_ROCKET) {
+			firework_rain = registerItem(new ItemFireworkRain(), "firework_rain");
+		}
+		if (WaterworksConfig.REGISTER_ANTI_RAIN_ROCKET) {
+			firework_anti_rain = registerItem(new ItemFireworkAntiRain(), "firework_anti_rain");
+		}
 		materials = registerItem(new ItemMaterials(), "materials");
 	}
 
 	public static void registerRenders() {
 		registerRender(pipe_wrench);
-		registerRender(firework_rain);
-		registerRender(firework_anti_rain);
+		if (WaterworksConfig.REGISTER_RAIN_ROCKET) {
+			registerRender(firework_rain);
+		}
+		if (WaterworksConfig.REGISTER_ANTI_RAIN_ROCKET) {
+			registerRender(firework_anti_rain);
+		}
 		registerRenderMaterials(materials);
 	}
 

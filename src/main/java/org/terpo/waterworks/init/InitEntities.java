@@ -23,8 +23,12 @@ public class InitEntities {
 	}
 
 	public static void registerEntities() {
-		registerEntity(EntityFireworkRocketRain.class, "firework_rocket_rain");
-		registerEntity(EntityFireworkRocketAntiRain.class, "firework_rocket_anti_rain");
+		if (WaterworksConfig.REGISTER_RAIN_ROCKET) {
+			registerEntity(EntityFireworkRocketRain.class, "firework_rocket_rain");
+		}
+		if (WaterworksConfig.REGISTER_ANTI_RAIN_ROCKET) {
+			registerEntity(EntityFireworkRocketAntiRain.class, "firework_rocket_anti_rain");
+		}
 	}
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public static void registerEntity(Class entityClass, String name) {
