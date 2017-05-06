@@ -33,8 +33,8 @@ Further information can be found in the <a href="https://github.com/Terpo/Waterw
 
 -----------------
 
-This mod is in an very early state of development. 
-Release will be for Minecraft version 1.11.2.
+<a href="https://minecraft.curseforge.com/projects/waterworks">Download this mod on Curseforge</a>
+Do not trust other download sites! I will only offer Curseforge as Download source.
  
 -----------------
 
