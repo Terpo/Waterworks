@@ -2,13 +2,13 @@
 {
   "modid": "waterworks",
   "name": "Waterworks",
-  "description": "Adds some agriculture and rain specific gadgets.",
+  "description": "Waterworks adds serveral water collecting mechanics and other gadgets.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://github.com/Terpo/Waterworks",
   "updateUrl": "",
   "authorList": ["Terpo"],
-  "credits": "The Forge and FML guys, for supporting this game for years!",
+  "credits": "Kunole for some fancy models!",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
