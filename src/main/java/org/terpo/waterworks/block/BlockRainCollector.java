@@ -50,10 +50,10 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 					String out;
 					if (collector.hasController()) {
 						final BlockPos controllerPos = collector.getController().getPos();
-						out = I18n.format("pipe_wrench.found_controller") + " " + controllerPos.getX() + ","
-								+ controllerPos.getY() + "," + controllerPos.getZ();
+						out = "Found Controller at" + " " + controllerPos.getX() + "," + controllerPos.getY() + ","
+								+ controllerPos.getZ();
 					} else {
-						out = I18n.format("pipe_wrench.no_controller");
+						out = "No Controller found";
 					}
 					playerIn.sendMessage(new TextComponentString(out));
 				}

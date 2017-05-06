@@ -53,15 +53,6 @@ public class BaseBlockTE<T extends BaseTileEntity> extends BaseBlock implements 
 	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
 			IBlockState blockState, IProbeHitData data) {
 		final TileEntity te = world.getTileEntity(data.getPos());
-//		if (te instanceof TileWaterworks) {
-//			final TileWaterworks tileWaterworks = (TileWaterworks) te;
-//			final WaterworksTank tank = tileWaterworks.getFluidTank();
-//
-//			final int capacity = tank.getCapacity();
-//			final int amount = tank.getFluidAmount();
-//			probeInfo.horizontal().icon(FluidRegistry.WATER.getStill(), -1, -1, 16, 16)
-//					.text(amount + "/" + capacity + " mB");
-//		}
 		if (player.isSneaking()) {
 			if (te instanceof TileEntityRainCollectorController) {
 				final TileEntityRainCollectorController tile = (TileEntityRainCollectorController) te;

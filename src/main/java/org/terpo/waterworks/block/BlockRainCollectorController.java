@@ -57,7 +57,7 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				if (heldItem.getItem() == WaterworksItems.pipe_wrench) {
 					final int collectors = ((TileEntityRainCollectorController) tileEntity).findRainCollectors();
-					final String out = collectors - 1 + " " + I18n.format("pipe_wrench.collectors_found");
+					final String out = collectors - 1 + " " + "Collectors found";
 					playerIn.sendMessage(new TextComponentString(out));
 					return true;
 				}
