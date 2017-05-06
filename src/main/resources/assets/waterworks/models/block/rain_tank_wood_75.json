@@ -3,8 +3,8 @@
     "textures": {
         "0": "blocks/jukebox_side",
         "1": "blocks/itemframe_background",
-        "2": "blocks/jukebox_top",
-        "3": "blocks/water_overlay",
+        "2": "waterworks:models/rain_tank_bottom",
+        "3": "blocks/water_still",
         "particle": "blocks/jukebox_side"
     },
           "display": {

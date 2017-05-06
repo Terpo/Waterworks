@@ -32,8 +32,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump> {
-	private static final AxisAlignedBB boundingBox = new AxisAlignedBB(.25, 0, .25, .75, 1, .75);
-	private static final AxisAlignedBB collisionBox = new AxisAlignedBB(.1875, 0, .1875, .8125, 1, .8125);
+	private static final AxisAlignedBB boundingBox = new AxisAlignedBB(0, 0, .125, 1, 0.8125, .875);
+	private static final AxisAlignedBB collisionBox = new AxisAlignedBB(0, 0, .125, 1, 0.8125, .875);
 
 	public BlockGroundwaterPump() {
 		super(Material.IRON);

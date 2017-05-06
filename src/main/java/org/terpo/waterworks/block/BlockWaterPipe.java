@@ -18,8 +18,8 @@ import net.minecraft.world.World;
 
 public class BlockWaterPipe extends Block {
 
-	private static final AxisAlignedBB boundingBox = new AxisAlignedBB(.25, 0, .25, .75, 1, .75);
-	private static final AxisAlignedBB collisionBox = new AxisAlignedBB(.1875, 0, .1875, .8125, 1, .8125);
+	private static final AxisAlignedBB boundingBox = new AxisAlignedBB(.375, 0, .375, .625, 1, .625);
+	private static final AxisAlignedBB collisionBox = new AxisAlignedBB(.3125, 0, .3125, .7375, 1, .7375);
 	public BlockWaterPipe() {
 		super(Material.IRON);
 		this.setResistance(2F);
