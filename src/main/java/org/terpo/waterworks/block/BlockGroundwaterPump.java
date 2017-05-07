@@ -16,6 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -58,6 +59,12 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 								playerIn.setHeldItem(hand, fluidActionResult.getResult());
 								return true;
 							}
+							// Try Glass Bottle handling
+							if (heldItem.getItem().equals(Items.GLASS_BOTTLE)) {
+								fillWaterBottle(worldIn, pos, state, playerIn, heldItem, hand,
+										(TileEntityGroundwaterPump) tileEntity);
+							}
+							return true;
 						}
 					}
 					playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_GROUNDWATER_PUMP_GUI, worldIn, pos.getX(),

@@ -12,6 +12,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -54,7 +55,14 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 										Integer.valueOf(((TileEntityRainTankWood) tileEntity).getStateLevel())));
 								return true;
 							}
+							// Try Glass Bottle handling
+							if (heldItem.getItem().equals(Items.GLASS_BOTTLE)) {
+								fillWaterBottle(worldIn, pos, state, playerIn, heldItem, hand,
+										(TileEntityRainTankWood) tileEntity);
+							}
+							return true;
 						}
+
 					}
 					playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, worldIn, pos.getX(),
 							pos.getY(), pos.getZ());
