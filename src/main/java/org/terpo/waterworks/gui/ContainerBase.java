@@ -1,10 +1,11 @@
 package org.terpo.waterworks.gui;
 
-import org.terpo.waterworks.inventory.FluidSlotItemHandler;
+import org.terpo.waterworks.inventory.FilteredFluidSlotItemHandler;
 import org.terpo.waterworks.inventory.SlotDefinition;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -31,8 +32,11 @@ public class ContainerBase extends Container {
 		// 0 - Input
 		// 1 - Output
 
-		final SlotItemHandler input = new FluidSlotItemHandler(this.itemHandler, 0, 44, 35, SlotDefinition.I);
-		final SlotItemHandler output = new FluidSlotItemHandler(this.itemHandler, 1, 116, 35, SlotDefinition.O);
+		final SlotItemHandler input = new FilteredFluidSlotItemHandler(this.itemHandler, 0, 44, 35, SlotDefinition.I);
+		final SlotItemHandler output = new FilteredFluidSlotItemHandler(this.itemHandler, 1, 116, 35, SlotDefinition.O);
+
+		((FilteredFluidSlotItemHandler) input).addItemToFilter(Items.GLASS_BOTTLE);
+		((FilteredFluidSlotItemHandler) input).addItemToFilter(Items.POTIONITEM);
 
 		addSlotToContainer(input);
 		addSlotToContainer(output);

@@ -1,5 +1,11 @@
 package org.terpo.waterworks.helper;
 
+import java.util.HashMap;
+
+import org.terpo.waterworks.inventory.SlotDefinition;
+
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -10,6 +16,7 @@ public class GeneralItemStackHandler extends ItemStackHandler {
 
 	private boolean inputSlots[];
 	private boolean outputSlots[];
+	HashMap<Item, SlotDefinition> filter = new HashMap<>();
 
 	public GeneralItemStackHandler() {
 		super(1);
@@ -19,6 +26,10 @@ public class GeneralItemStackHandler extends ItemStackHandler {
 		super(size);
 		this.inputSlots = new boolean[size];
 		this.outputSlots = new boolean[size];
+
+		this.filter.put(Items.GLASS_BOTTLE, SlotDefinition.I);
+		this.filter.put(Items.POTIONITEM, SlotDefinition.O);
+
 		for (int i = 0; i < size; i++) {
 			this.inputSlots[i] = false;
 			this.outputSlots[i] = false;
@@ -95,9 +106,38 @@ public class GeneralItemStackHandler extends ItemStackHandler {
 
 		return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
 	}
-	@SuppressWarnings({"unused", "static-method"})
+
 	protected boolean isValidItemStack(ItemStack stack, int slot) {
-		return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+		if (slot <= 1) {
+			return (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)
+					|| additionalFilters(stack, slot));
+		}
+		return false;
+	}
+
+	protected boolean additionalFilters(ItemStack stack, int slot) {
+		final Item item = stack.getItem();
+		if (!this.filter.isEmpty()) {
+			SlotDefinition def;
+			if (this.filter.containsKey(item)) {
+				def = this.filter.get(item);
+				return checkSlotDefinitionForSlot(def, slot);
+			}
+		}
+		return false;
+	}
+
+	private boolean checkSlotDefinitionForSlot(SlotDefinition def, int slot) {
+		switch (def) {
+			case I :
+				return (isInputSlot(slot));
+			case O :
+				return (isOutputSlot(slot));
+			case IO :
+				return (isInputSlot(slot) && isOutputSlot(slot));
+			default :
+				return false;
+		}
 	}
 
 	@Override

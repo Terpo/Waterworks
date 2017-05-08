@@ -31,10 +31,16 @@ public class FluidSlotItemHandler extends SlotItemHandler {
 		return super.isItemValid(stack);
 	}
 
-	@SuppressWarnings("static-method")
 	protected boolean isFilteredItemValid(ItemStack stack) {
-		return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+		return (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)
+				|| additionalFilters(stack));
 	}
+
+	@SuppressWarnings({"static-method", "unused"})
+	protected boolean additionalFilters(ItemStack stack) {
+		return false;
+	}
+
 	protected boolean isSlotValid() {
 		if (this.slotDefinition == SlotDefinition.O) {
 			return false;
