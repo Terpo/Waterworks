@@ -8,8 +8,11 @@ import org.terpo.waterworks.network.TankPacket;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
@@ -176,39 +179,60 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 		final int internalFluidAmount = this.fluidTank.getFluidAmount();
 		if (internalFluidAmount > 0) {
 			final ItemStack stackInput = this.itemStackHandler.getStackInSlot(0);
-			if (!stackInput.isEmpty()
-					&& (stackInput.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))) {
+			if (!stackInput.isEmpty()) {
+				if (stackInput.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
 
-				final FluidActionResult filledSimulated = FluidUtil.tryFillContainer(stackInput, this.fluidTank,
-						Integer.MAX_VALUE, null, false);
-				if (filledSimulated.isSuccess()) {
-					final ItemStack simResult = filledSimulated.getResult();
-					final ItemStack outputSlot = this.itemStackHandler.getStackInSlot(1);
-					final boolean isItemIdentical = outputSlot.getItem().equals(simResult.getItem());
-					final boolean hasSpace = outputSlot.getCount() < outputSlot.getMaxStackSize();
-					if (outputSlot.isEmpty() || (isItemIdentical) && (hasSpace)) {
-						final FluidActionResult fillResult = FluidUtil.tryFillContainer(stackInput, this.fluidTank,
-								Integer.MAX_VALUE, null, true);
-						if (fillResult.isSuccess()) {
-							final ItemStack realResult = fillResult.getResult();
-							if (outputSlot.isEmpty()) {
-								this.itemStackHandler.setStackInSlot(1, realResult);
-							} else {
-								outputSlot.grow(1);
+					final FluidActionResult filledSimulated = FluidUtil.tryFillContainer(stackInput, this.fluidTank,
+							Integer.MAX_VALUE, null, false);
+					if (filledSimulated.isSuccess()) {
+						final ItemStack simResult = filledSimulated.getResult();
+						final ItemStack outputSlot = this.itemStackHandler.getStackInSlot(1);
+						if (checkOutputSlot(outputSlot, simResult)) {
+							final FluidActionResult fillResult = FluidUtil.tryFillContainer(stackInput, this.fluidTank,
+									Integer.MAX_VALUE, null, true);
+							if (fillResult.isSuccess()) {
+								final ItemStack realResult = fillResult.getResult();
+								moveFilledInputToOutput(stackInput, outputSlot, realResult);
+								return true;
 							}
-							if (stackInput.getCount() > 1) {
-								stackInput.shrink(1);
-							} else {
-								this.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
-							}
+						}
+					}
+				}
+				if (stackInput.getItem().equals(Items.GLASS_BOTTLE)) {
+					if (internalFluidAmount >= 1000) {
+						final ItemStack outputSlot = this.itemStackHandler.getStackInSlot(1);
+						final ItemStack outputStack = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM),
+								PotionTypes.WATER);
+						if (checkOutputSlot(outputSlot, outputStack)) {
+							this.fluidTank.drainInternal(1000, true);
+							moveFilledInputToOutput(stackInput, outputSlot, outputStack);
 							return true;
 						}
 					}
 				}
-
 			}
 		}
 		return false;
+	}
+
+	private static boolean checkOutputSlot(ItemStack outputSlot, ItemStack stack) {
+		final boolean isItemIdentical = outputSlot.getItem().equals(stack.getItem());
+		final boolean hasSpace = outputSlot.getCount() < outputSlot.getMaxStackSize();
+		return (outputSlot.isEmpty() || (isItemIdentical) && (hasSpace));
+	}
+
+	private void moveFilledInputToOutput(final ItemStack stackInput, final ItemStack outputSlot,
+			final ItemStack realResult) {
+		if (outputSlot.isEmpty()) {
+			this.itemStackHandler.setStackInSlot(1, realResult);
+		} else {
+			outputSlot.grow(1);
+		}
+		if (stackInput.getCount() > 1) {
+			stackInput.shrink(1);
+		} else {
+			this.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
+		}
 	}
 	protected static FluidStack getWaterFluidStack(int amount) {
 		return new FluidStack(FluidRegistry.WATER, amount);
