@@ -63,7 +63,9 @@ public class EnergyPacket implements IMessage {
 			final EntityPlayer player = Waterworks.proxy.getClientEntityPlayer();
 			final TileEntityGroundwaterPump pump = getTileEntity(player.world, message.getPos());
 			// write new NBT Values
-			pump.getBattery().setEnergyAmount(message.energyAmount);
+			if (pump != null) {
+				pump.getBattery().setEnergyAmount(message.energyAmount);
+			}
 			return null;
 		}
 
