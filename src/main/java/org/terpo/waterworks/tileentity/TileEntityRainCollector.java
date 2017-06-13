@@ -50,7 +50,7 @@ public class TileEntityRainCollector extends BaseTileEntity {
 		super.readFromNBT(compound);
 		if (compound.hasKey("controllerPos")) {
 			this.controllerPosition = (BlockPos.fromLong(compound.getLong("controllerPos")));
-			setController(this.controllerPosition);
+			// setController(this.controllerPosition);
 		}
 	}
 
