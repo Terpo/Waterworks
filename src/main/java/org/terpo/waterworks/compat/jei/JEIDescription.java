@@ -44,6 +44,7 @@ public class JEIDescription {
 		});
 	}
 
+	// TODO 1.12
 	private static void add(Item item, String descriptionKey) {
 		registry.addDescription(new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE), descriptionKey);
 	}
