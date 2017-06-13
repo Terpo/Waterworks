@@ -75,7 +75,7 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 							}
 							// Try Glass Bottle handling
 							if (heldItem.getItem().equals(Items.GLASS_BOTTLE)) {
-								fillWaterBottle(worldIn, pos, state, playerIn, heldItem, hand,
+								fillWaterBottle(worldIn, pos, playerIn, heldItem, hand,
 										(TileEntityRainCollectorController) tileEntity);
 							}
 							return true;

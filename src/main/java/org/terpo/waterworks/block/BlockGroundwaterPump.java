@@ -61,7 +61,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 							}
 							// Try Glass Bottle handling
 							if (heldItem.getItem().equals(Items.GLASS_BOTTLE)) {
-								fillWaterBottle(worldIn, pos, state, playerIn, heldItem, hand,
+								fillWaterBottle(worldIn, pos, playerIn, heldItem, hand,
 										(TileEntityGroundwaterPump) tileEntity);
 							}
 							return true;

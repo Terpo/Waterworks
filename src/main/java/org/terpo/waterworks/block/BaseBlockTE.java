@@ -82,8 +82,8 @@ public class BaseBlockTE<T extends BaseTileEntity> extends BaseBlock implements 
 		}
 	}
 
-	protected static void fillWaterBottle(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			ItemStack itemstack, EnumHand hand, TileWaterworks tileEntity) {
+	protected static void fillWaterBottle(World worldIn, BlockPos pos, EntityPlayer playerIn, ItemStack itemstack,
+			EnumHand hand, TileWaterworks tileEntity) {
 		final WaterworksTank tank = tileEntity.getFluidTank();
 		if (tank.getFluidAmount() >= 1000) {
 			if (!playerIn.capabilities.isCreativeMode) {
