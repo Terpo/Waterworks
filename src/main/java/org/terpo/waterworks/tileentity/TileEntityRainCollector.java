@@ -19,7 +19,7 @@ public class TileEntityRainCollector extends BaseTileEntity {
 		if (this.controller != null) {
 			return true;
 		}
-		if (this.controllerPosition != null && getController(this.controllerPosition)) {
+		if (this.controllerPosition != null && verifyControllerPosition(this.controllerPosition)) {
 			return true;
 		}
 		return false;
@@ -50,10 +50,11 @@ public class TileEntityRainCollector extends BaseTileEntity {
 		super.readFromNBT(compound);
 		if (compound.hasKey("controllerPos")) {
 			this.controllerPosition = (BlockPos.fromLong(compound.getLong("controllerPos")));
+			setController(this.controllerPosition);
 		}
 	}
 
-	private boolean getController(BlockPos position) {
+	private boolean verifyControllerPosition(BlockPos position) {
 		final TileEntity tile = this.world.getTileEntity(position);
 		if (tile instanceof TileEntityRainCollectorController) {
 			final TileEntityRainCollectorController tileEntity = (TileEntityRainCollectorController) tile;
@@ -75,7 +76,7 @@ public class TileEntityRainCollector extends BaseTileEntity {
 
 	public boolean setController(BlockPos position) {
 		if (!this.hasController()) {
-			return getController(position);
+			return verifyControllerPosition(position);
 		}
 		return false;
 	}
@@ -93,7 +94,7 @@ public class TileEntityRainCollector extends BaseTileEntity {
 		return super.hasCapability(capability, facing);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked"})
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
@@ -102,7 +103,6 @@ public class TileEntityRainCollector extends BaseTileEntity {
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return (T) this.controller.fluidTank;
 		}
-
 		return super.getCapability(capability, facing);
 	}
 
