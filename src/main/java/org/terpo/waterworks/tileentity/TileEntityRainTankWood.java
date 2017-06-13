@@ -1,6 +1,5 @@
 package org.terpo.waterworks.tileentity;
 
-import org.terpo.waterworks.block.BlockRainTankWood;
 import org.terpo.waterworks.helper.GeneralItemStackHandler;
 import org.terpo.waterworks.init.WaterworksConfig;
 
@@ -49,11 +48,6 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		}
 
 		if (this.isDirty) {
-			final IBlockState iblockstate = this.world.getBlockState(this.pos);
-			if (iblockstate.getBlock() instanceof BlockRainTankWood) {
-				this.world.setBlockState(this.pos,
-						iblockstate.withProperty(BlockRainTankWood.LEVEL, Integer.valueOf(getStateLevel())));
-			}
 			this.world.updateComparatorOutputLevel(this.pos, getBlockType());
 			markAsDirty(getPos());
 			this.isDirty = false;

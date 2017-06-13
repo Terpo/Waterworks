@@ -5,7 +5,6 @@ import org.terpo.waterworks.fluid.WaterworksTank;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
 import org.terpo.waterworks.tileentity.TileEntityRainCollector;
 import org.terpo.waterworks.tileentity.TileEntityRainCollectorController;
-import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import mcjty.theoneprobe.api.IIconStyle;
@@ -101,11 +100,6 @@ public class BaseBlockTE<T extends BaseTileEntity> extends BaseBlock implements 
 				}
 			}
 			worldIn.playSound((EntityPlayer) null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			if (tileEntity instanceof TileEntityRainTankWood
-					&& !(tileEntity instanceof TileEntityRainCollectorController)) {
-				worldIn.setBlockState(pos, state.withProperty(BlockRainTankWood.LEVEL,
-						Integer.valueOf(((TileEntityRainTankWood) tileEntity).getStateLevel())));
-			}
 		}
 	}
 

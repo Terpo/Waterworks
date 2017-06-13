@@ -1,10 +1,5 @@
 {
-    "forge_marker": 1,
-    "variants": {
-        "level=0": { "model": "waterworks:rain_tank_wood_0" },
-        "level=1": { "model": "waterworks:rain_tank_wood_25" },
-        "level=2": { "model": "waterworks:rain_tank_wood_50" },
-        "level=3": { "model": "waterworks:rain_tank_wood_75" },
-        "level=4": { "model": "waterworks:rain_tank_wood_100" }
+    "variants":{
+        "normal":{"model": "waterworks:rain_tank_wood"}
     }
 }

@@ -7,9 +7,6 @@ import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -27,11 +24,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
-
-	public static final PropertyInteger LEVEL = PropertyInteger.create("level", 0, 4);
 	public BlockRainTankWood() {
 		super(Material.WOOD);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(LEVEL, Integer.valueOf(0)));
 	}
 
 	@Override
@@ -51,8 +45,6 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 									tileEntityFluidHandler, playerIn);
 							if (fluidActionResult.isSuccess()) {
 								playerIn.setHeldItem(hand, fluidActionResult.getResult());
-								worldIn.setBlockState(pos, state.withProperty(BlockRainTankWood.LEVEL,
-										Integer.valueOf(((TileEntityRainTankWood) tileEntity).getStateLevel())));
 								return true;
 							}
 							// Try Glass Bottle handling
@@ -106,24 +98,4 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 		super.breakBlock(world, pos, state);
 	}
 
-	/**
-	 * Convert the given metadata into a BlockState for this Block
-	 */
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(LEVEL, Integer.valueOf(meta));
-	}
-
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(LEVEL).intValue();
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{LEVEL});
-	}
 }
