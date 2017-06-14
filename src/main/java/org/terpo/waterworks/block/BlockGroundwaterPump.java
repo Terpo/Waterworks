@@ -48,8 +48,8 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 			final TileEntity tileEntity = getTE(worldIn, pos);
 			if (tileEntity instanceof TileEntityGroundwaterPump) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (!playerIn.isSneaking()) {
-					if (!heldItem.isEmpty()) {
+				if (!heldItem.isEmpty()) {
+					if (!playerIn.isSneaking()) {
 						if (tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 							final IFluidHandler tileEntityFluidHandler = tileEntity
 									.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
@@ -63,14 +63,14 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 							if (heldItem.getItem().equals(Items.GLASS_BOTTLE)) {
 								fillWaterBottle(worldIn, pos, playerIn, heldItem, hand,
 										(TileEntityGroundwaterPump) tileEntity);
+								return true;
 							}
-							return true;
 						}
 					}
-					playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_GROUNDWATER_PUMP_GUI, worldIn, pos.getX(),
-							pos.getY(), pos.getZ());
-					return true;
 				}
+				playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_GROUNDWATER_PUMP_GUI, worldIn, pos.getX(),
+						pos.getY(), pos.getZ());
+				return true;
 			}
 		}
 		return true;

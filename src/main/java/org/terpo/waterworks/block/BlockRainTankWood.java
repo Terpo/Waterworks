@@ -48,8 +48,8 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 			final TileEntity tileEntity = getTE(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainTankWood) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (!playerIn.isSneaking()) {
-					if (!heldItem.isEmpty()) {
+				if (!heldItem.isEmpty()) {
+					if (!playerIn.isSneaking()) {
 						if (tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 							final IFluidHandler tileEntityFluidHandler = tileEntity
 									.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
@@ -63,15 +63,14 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 							if (heldItem.getItem().equals(Items.GLASS_BOTTLE)) {
 								fillWaterBottle(worldIn, pos, playerIn, heldItem, hand,
 										(TileEntityRainTankWood) tileEntity);
+								return true;
 							}
-							return true;
 						}
-
 					}
-					playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, worldIn, pos.getX(),
-							pos.getY(), pos.getZ());
-					return true;
 				}
+				playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, worldIn, pos.getX(), pos.getY(),
+						pos.getZ());
+				return true;
 			}
 		}
 		return true;

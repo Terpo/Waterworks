@@ -62,8 +62,8 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 					playerIn.sendMessage(new TextComponentString(out));
 					return true;
 				}
-				if (!playerIn.isSneaking()) {
-					if (!heldItem.isEmpty()) {
+				if (!heldItem.isEmpty()) {
+					if (!playerIn.isSneaking()) {
 						if (tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 							final IFluidHandler tileEntityFluidHandler = tileEntity
 									.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
@@ -77,14 +77,15 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 							if (heldItem.getItem().equals(Items.GLASS_BOTTLE)) {
 								fillWaterBottle(worldIn, pos, playerIn, heldItem, hand,
 										(TileEntityRainCollectorController) tileEntity);
+								return true;
 							}
-							return true;
+
 						}
 					}
-					playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, worldIn, pos.getX(),
-							pos.getY(), pos.getZ());
-					return true;
 				}
+				playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, worldIn, pos.getX(), pos.getY(),
+						pos.getZ());
+				return true;
 			}
 		}
 		return true;
