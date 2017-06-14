@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -107,6 +108,11 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public boolean shouldRefresh(World worldIn, BlockPos posIn, IBlockState oldState, IBlockState newState) {
+		return oldState.getBlock() != newState.getBlock();
 	}
 
 	private void checkStructure() {

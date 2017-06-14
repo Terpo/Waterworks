@@ -6,14 +6,19 @@ import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.gui.GuiProxy;
 import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.init.WaterworksConfig;
+import org.terpo.waterworks.init.WaterworksItems;
 import org.terpo.waterworks.inventory.WaterworksInventoryHelper;
 import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -35,9 +40,11 @@ import net.minecraftforge.items.IItemHandler;
 public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump> {
 	private static final AxisAlignedBB boundingBox = new AxisAlignedBB(0, 0, .125, 1, 0.8125, .875);
 	private static final AxisAlignedBB collisionBox = new AxisAlignedBB(0, 0, .125, 1, 0.8125, .875);
-
+	public static final PropertyDirection PROPERTYFACING = PropertyDirection.create("facing",
+			EnumFacing.Plane.HORIZONTAL);
 	public BlockGroundwaterPump() {
 		super(Material.IRON);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(PROPERTYFACING, EnumFacing.NORTH));
 	}
 
 	@Override
@@ -48,6 +55,10 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 			final TileEntity tileEntity = getTE(worldIn, pos);
 			if (tileEntity instanceof TileEntityGroundwaterPump) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
+				if (heldItem.getItem() == WaterworksItems.pipe_wrench) {
+					turnPumpModel(worldIn, pos, state);
+					return true;
+				}
 				if (!heldItem.isEmpty()) {
 					if (!playerIn.isSneaking()) {
 						if (tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
@@ -74,6 +85,14 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
+			ItemStack stack) {
+		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+		final int dir = placer.getHorizontalFacing().getHorizontalIndex();
+		worldIn.setBlockState(pos, getStateFromMeta(dir), 2);
 	}
 
 	@Override
@@ -159,5 +178,28 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
+	}
+
+	// ModelTurning
+	private void turnPumpModel(World worldIn, BlockPos pos, IBlockState state) {
+		final int meta = getMetaFromState(state);
+		EnumFacing facing = EnumFacing.getHorizontal(meta);
+		facing = facing.rotateY();
+		worldIn.setBlockState(pos, state.withProperty(PROPERTYFACING, facing), 2);
+
+	}
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		final EnumFacing facing = EnumFacing.getHorizontal(meta);
+		return this.getDefaultState().withProperty(PROPERTYFACING, facing);
+	}
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		final EnumFacing facing = state.getValue(PROPERTYFACING);
+		return facing.getHorizontalIndex();
+	}
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[]{PROPERTYFACING});
 	}
 }
