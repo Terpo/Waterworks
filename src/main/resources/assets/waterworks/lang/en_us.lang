@@ -19,6 +19,8 @@ tooltip.rain_rocket.bad_weather=Bad weather incoming
 tooltip.rain_rocket.rain_duration=Rain duration
 tooltip.anti_rain_rocket.good_weather=Brings back the sunshine
 tooltip.anti_rain_rocket.sunshine_duration=Anti rain duration
+tooltip.anti_rain_rocket.sunshine_multiplier=Anti rain multiplier
+tooltip.anti_rain_rocket.max_additional_days=Maximum random additional days
 #WrenchTextOutput #solve client sync first
 #pipe_wrench.collectors_found=Collectors found
 #pipe_wrench.found_controller=Found Controller at

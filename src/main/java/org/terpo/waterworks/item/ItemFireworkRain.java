@@ -52,8 +52,6 @@ public class ItemFireworkRain extends ItemFirework {
 			if (!worldIn.isRemote) {
 				final EntityFireworkRocketRain entityfireworkrocket = new EntityFireworkRocketRain(worldIn, itemstack,
 						playerIn);
-//				final EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(worldIn, itemstack,
-//						playerIn);
 				worldIn.spawnEntity(entityfireworkrocket);
 
 				if (!playerIn.capabilities.isCreativeMode) {
@@ -77,8 +75,9 @@ public class ItemFireworkRain extends ItemFirework {
 			if (nbttagcompound.hasKey("RAIN")) {
 				final int multi = nbttagcompound.getInteger("RAIN");
 				tooltip.add(I18n.format("tooltip.rain_rocket.bad_weather"));
-				tooltip.add(I18n.format("tooltip.rain_rocket.rain_duration") + " x" + multi);
-				tooltip.add(I18n.format("tooltip.rain_rocket.rain_duration") + " "
+				tooltip.add(I18n.format("tooltip.rain_rocket.rain_duration") + ": " + multi + "/"
+						+ WaterworksConfig.RAIN_DURATION_MULTIPLIER_MAX);
+				tooltip.add(I18n.format("tooltip.rain_rocket.rain_duration") + ": "
 						+ (WaterworksConfig.RAIN_DURATION * multi) + " ticks");
 			}
 		}

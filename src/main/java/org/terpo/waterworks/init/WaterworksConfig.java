@@ -44,7 +44,7 @@ public class WaterworksConfig {
 	 * CONFIG ROCKETS
 	 */
 	// Rain Rocket
-	public static int RAIN_DURATION = 240;
+	public static int RAIN_DURATION = 3000;
 	public static int RAIN_DURATION_MULTIPLIER_MAX = 8;
 
 	// Anti Rain Rocket
@@ -161,7 +161,7 @@ public class WaterworksConfig {
 	}
 	private static void initRainRocketsConfig() {
 		cfg.addCustomCategoryComment(CATEGORY_ROCKETS, "Configuration for Rockets");
-		RAIN_DURATION = cfg.getInt("Rain Duration", CATEGORY_ROCKETS, RAIN_DURATION, 1, 3000,
+		RAIN_DURATION = cfg.getInt("Rain Duration", CATEGORY_ROCKETS, RAIN_DURATION, 1, 12000,
 				"Rain duration with x1 multiplier");
 		RAIN_DURATION_MULTIPLIER_MAX = cfg.getInt("Maximum Rain Duration Multiplier", CATEGORY_ROCKETS,
 				RAIN_DURATION_MULTIPLIER_MAX, 1, 24, "Rain duration multiplier");
