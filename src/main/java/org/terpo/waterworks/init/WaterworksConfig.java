@@ -60,10 +60,10 @@ public class WaterworksConfig {
 	 * CONFIG RAIN COLLECTION
 	 */
 	// Simple Rain Tank
-	public static int RAIN_TANK_SIMPLE_FILLRATE = 100;
+	public static int RAIN_TANK_SIMPLE_FILLRATE = 10;
 	public static int RAIN_TANK_SIMPLE_CAPACITY = 8000;
 	// Multiblock Rain Collector
-	public static int RAIN_COLLECTOR_FILLRATE = 100;
+	public static int RAIN_COLLECTOR_FILLRATE = 20;
 	public static int RAIN_COLLECTOR_CAPACITY = 32000;
 	public static int RAIN_COLLECTOR_RANGE = 2;
 
@@ -71,11 +71,12 @@ public class WaterworksConfig {
 	 * CONFIG GROUNDWATER PUMP
 	 */
 	public static int GROUNDWATER_PUMP_CAPACITY = 32000;
-	public static int GROUNDWATER_PUMP_FILLRATE = 1000;
-	public static int GROUNDWATER_PUMP_ENERGY_BASEUSAGE = 160;
-	public static int GROUNDWATER_PUMP_ENERGY_PIPEMULTIPLIER = 4;
+	public static int GROUNDWATER_PUMP_FILLRATE = 500;
+	public static int GROUNDWATER_PUMP_ENERGY_BASEUSAGE = 1600;
+	public static int GROUNDWATER_PUMP_ENERGY_PIPEMULTIPLIER = 20;
 	public static int GROUNDWATER_PUMP_ENERGY_CAPACITY = 16000;
 	public static int GROUNDWATER_PUMP_ENERGY_MAXINPUT = 500;
+	public static int GROUNDWATER_PUMP_PIPE_PLACEMENT_ENERGY = 2500;
 	public static boolean GROUNDWATER_PUMP_SAFETY = true;
 
 	/**
@@ -155,6 +156,9 @@ public class WaterworksConfig {
 		GROUNDWATER_PUMP_ENERGY_PIPEMULTIPLIER = cfg.getInt("Groundwater Pump Energy Pipe Multiplier",
 				CATEGORY_GROUND_WATER, GROUNDWATER_PUMP_ENERGY_PIPEMULTIPLIER, 0, 1024000,
 				"Additional to base usage. Each used pipe will multiplied with this value.");
+		GROUNDWATER_PUMP_PIPE_PLACEMENT_ENERGY = cfg.getInt("Groundwater Pump Pipe Placement Energy",
+				CATEGORY_GROUND_WATER, GROUNDWATER_PUMP_PIPE_PLACEMENT_ENERGY, 0, 1024000,
+				"Energy used to place a pipe.");
 		// Misc
 		GROUNDWATER_PUMP_SAFETY = cfg.getBoolean("Groundwater Pump Safety Block", CATEGORY_GROUND_WATER,
 				GROUNDWATER_PUMP_SAFETY, "Should the Groundwater Pump spawn a slab to close the hole?");

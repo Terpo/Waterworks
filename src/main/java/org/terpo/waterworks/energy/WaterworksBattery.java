@@ -26,6 +26,10 @@ public class WaterworksBattery extends EnergyStorage {
 		return 0;
 	}
 
+	public boolean hasEnoughEnergy(int energyAmount) {
+		return this.getEnergyStored() >= energyAmount;
+	}
+
 	@Override
 	public int receiveEnergy(int maximumReceive, boolean simulate) {
 		onContentsChanged();

@@ -136,10 +136,12 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 						+ WaterworksConfig.GROUNDWATER_PUMP_ENERGY_PIPEMULTIPLIER * this.pipeCounter;
 				break;
 			} else if (block.equals(Blocks.AIR)) {
-				if (placePipe(currentPos)) {
+				if (this.battery.hasEnoughEnergy(WaterworksConfig.GROUNDWATER_PUMP_PIPE_PLACEMENT_ENERGY)
+						&& placePipe(currentPos)) {
+					this.battery.extractInternal(WaterworksConfig.GROUNDWATER_PUMP_PIPE_PLACEMENT_ENERGY, false);
 					count++;
 					y--;
-					continue;
+					break;
 				}
 			}
 			this.structureComplete = false;
