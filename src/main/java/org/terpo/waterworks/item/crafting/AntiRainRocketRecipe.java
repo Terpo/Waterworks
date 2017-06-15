@@ -37,7 +37,7 @@ public class AntiRainRocketRecipe implements IRecipe {
 				rocketStack = i;
 				continue;
 			}
-			if (itemstack.getItem() == Item.getItemFromBlock(Blocks.SPONGE)) {
+			if (itemstack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && itemstack.getMetadata() == 0) {
 				multiplierAdd++;
 			}
 		}
