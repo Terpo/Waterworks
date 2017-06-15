@@ -48,8 +48,9 @@ public class WaterworksConfig {
 	public static int RAIN_DURATION_MULTIPLIER_MAX = 8;
 
 	// Anti Rain Rocket
-	public static int ANTI_RAIN_DURATION = 2000;
+	public static int ANTI_RAIN_DURATION = 4000;
 	public static int ANTI_RAIN_DURATION_MULTIPLIER_MAX = 12;
+	public static int ANTI_RAIN_MAX_RANDOM_ADDITIONAL_DAYS = 3;
 
 	// Vanilla Firework
 	public static boolean FIREWORK_CHARGE_DESCRIPTION = true;
@@ -169,6 +170,9 @@ public class WaterworksConfig {
 				"Clear sky duration with x1 multiplier");
 		ANTI_RAIN_DURATION_MULTIPLIER_MAX = cfg.getInt("Maximum Clear Sky Duration Multiplier", CATEGORY_ROCKETS,
 				ANTI_RAIN_DURATION_MULTIPLIER_MAX, 1, 24, "Clear sky duration multiplier");
+		ANTI_RAIN_MAX_RANDOM_ADDITIONAL_DAYS = cfg.getInt("Maximum Random Additional Days", CATEGORY_ROCKETS,
+				ANTI_RAIN_MAX_RANDOM_ADDITIONAL_DAYS, 0, 7,
+				"Maximum days of clear sky that will added to the calculated time");
 
 		// VANILLA
 		FIREWORK_CHARGE_DESCRIPTION = cfg.getBoolean("Add Minecraft Firework Star Description", CATEGORY_ROCKETS,
