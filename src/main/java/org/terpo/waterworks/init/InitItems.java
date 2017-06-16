@@ -6,18 +6,15 @@ import static org.terpo.waterworks.init.WaterworksItems.materials;
 import static org.terpo.waterworks.init.WaterworksItems.pipe_wrench;
 
 import org.terpo.waterworks.Waterworks;
-import org.terpo.waterworks.api.constants.EnumItemMaterials;
 import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.item.ItemFireworkAntiRain;
 import org.terpo.waterworks.item.ItemFireworkRain;
 import org.terpo.waterworks.item.ItemMaterials;
 import org.terpo.waterworks.item.ItemPipeWrench;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class InitItems {
@@ -35,29 +32,6 @@ public class InitItems {
 			firework_anti_rain = registerItem(new ItemFireworkAntiRain(), "firework_anti_rain");
 		}
 		materials = registerItem(new ItemMaterials(), "materials");
-	}
-
-	public static void registerRenders() {
-		registerRender(pipe_wrench);
-		if (WaterworksConfig.REGISTER_RAIN_ROCKET) {
-			registerRender(firework_rain);
-		}
-		if (WaterworksConfig.REGISTER_ANTI_RAIN_ROCKET) {
-			registerRender(firework_anti_rain);
-		}
-		registerRenderMaterials(materials);
-	}
-
-	public static void registerRender(Item item) {
-		ModelLoader.setCustomModelResourceLocation(item, 0,
-				new ModelResourceLocation(item.getRegistryName(), "inventory"));
-	}
-	public static void registerRenderMaterials(Item item) {
-		for (int i = 0; i < EnumItemMaterials.VALUES.length; i++) {
-			final ResourceLocation loc = item.getRegistryName();
-			ModelLoader.setCustomModelResourceLocation(item, i,
-					new ModelResourceLocation(loc + "_" + EnumItemMaterials.VALUES[i], "inventory"));
-		}
 	}
 
 	public static Item registerItem(Item item, String name) {
