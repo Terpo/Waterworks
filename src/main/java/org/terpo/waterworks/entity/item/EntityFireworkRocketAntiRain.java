@@ -1,5 +1,6 @@
 package org.terpo.waterworks.entity.item;
 
+import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.init.WaterworksConfig;
 
 import net.minecraft.entity.Entity;
@@ -25,8 +26,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -77,11 +80,23 @@ public class EntityFireworkRocketAntiRain extends Entity {
 			}
 			if (this.antiRainMultiplier != -1) {
 				this.minimumClearSky = WaterworksConfig.ANTI_RAIN_DURATION * this.antiRainMultiplier;
-				this.realClearSky = calculateRealClearSky(this.antiRainMultiplier);
+				this.realClearSky = this.minimumClearSky + calculateRealClearSky(this.antiRainMultiplier);
+				if (!worldIn.isRemote) {
+					announceRocket(this.realClearSky);
+				}
 			}
 		}
 	}
 
+	private static void announceRocket(int time) {
+		final int days = time / 24000;
+		final int hours = (time % 24000) / 1000;
+		final int min = ((time % 24000) % 1000) / 17;
+		final String announcement = "Anti Rain Rocket was launched. Clear sky for the next " + time + " Ticks (" + days
+				+ " Days " + hours + " Hours " + min + " Minutes)";
+		FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
+				.sendMessage(new TextComponentString(announcement));
+	}
 	public EntityFireworkRocketAntiRain(World worldIn, ItemStack itemStack, EntityLivingBase entityLivingbase) {
 		this(worldIn, entityLivingbase.posX, entityLivingbase.posY, entityLivingbase.posZ, itemStack);
 		this.dataManager.set(ANTI_RAINROCKET_ITEM_INT, Integer.valueOf(entityLivingbase.getEntityId()));
@@ -103,7 +118,11 @@ public class EntityFireworkRocketAntiRain extends Entity {
 		final int maxClearTicks = MAX_CLEAR_DAYS * DAYTICKS;
 		final float multi = (WaterworksConfig.ANTI_RAIN_DURATION_MULTIPLIER_MAX) / ((multiplier + 0.001f) * 6);
 		final float randomMultiplier = multi * (this.rand.nextFloat() * 48) + 1;
-		final double log = Math.log(randomMultiplier) / 4;
+		double log = Math.log(randomMultiplier) / 4;
+		if (log > 1) {
+			log = 1;
+		}
+		Waterworks.LOGGER.info(" Log: " + log);
 		return (int) Math.round((maxClearTicks - maxClearTicks * log));
 	}
 
@@ -330,7 +349,7 @@ public class EntityFireworkRocketAntiRain extends Entity {
 	public void setDead() {
 		final World worldIn = this.getEntityWorld();
 		final WorldInfo worldinfo = worldIn.getWorldInfo();
-		worldinfo.setCleanWeatherTime(this.minimumClearSky + this.realClearSky);
+		worldinfo.setCleanWeatherTime(this.realClearSky);
 		worldinfo.setRainTime(0);
 		worldinfo.setThunderTime(0);
 		worldinfo.setRaining(false);

@@ -22,8 +22,10 @@ import net.minecraft.util.datafix.walkers.ItemStackData;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -74,6 +76,9 @@ public class EntityFireworkRocketRain extends Entity {
 			}
 			if (rainMultiplier != -1) {
 				this.rainDuration = WaterworksConfig.RAIN_DURATION * rainMultiplier;
+				if (!worldIn.isRemote) {
+					announceRocket(this.rainDuration);
+				}
 			}
 		}
 
@@ -83,6 +88,16 @@ public class EntityFireworkRocketRain extends Entity {
 		this(worldIn, entityLivingbase.posX, entityLivingbase.posY, entityLivingbase.posZ, itemStack);
 		this.dataManager.set(RAINROCKET_ITEM_INT, Integer.valueOf(entityLivingbase.getEntityId()));
 		this.entityPlacer = entityLivingbase;
+	}
+
+	private static void announceRocket(int time) {
+		final int days = time / 24000;
+		final int hours = (time % 24000) / 1000;
+		final int min = ((time % 24000) % 1000) / 17;
+		final String announcement = "Rain Rocket was launched. Bad weather for the next " + time + " Ticks (" + days
+				+ " Days " + hours + " Hours " + min + " Minutes)";
+		FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
+				.sendMessage(new TextComponentString(announcement));
 	}
 
 	@Override
