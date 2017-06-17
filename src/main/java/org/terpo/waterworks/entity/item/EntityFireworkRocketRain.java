@@ -326,13 +326,9 @@ public class EntityFireworkRocketRain extends Entity {
 
 	@Override
 	public void setDead() {
-		final World worldIn = this.getEntityWorld();
-		final WorldInfo worldinfo = worldIn.getWorldInfo();
-		worldinfo.setCleanWeatherTime(0);
+		final WorldInfo worldinfo = this.getEntityWorld().getWorldInfo();
 		worldinfo.setRainTime(this.rainDuration);
-		worldinfo.setThunderTime(this.rainDuration);
 		worldinfo.setRaining(true);
-		worldinfo.setThundering(false);
 		this.isDead = true;
 	}
 

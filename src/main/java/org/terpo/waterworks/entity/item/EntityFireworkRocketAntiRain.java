@@ -350,8 +350,6 @@ public class EntityFireworkRocketAntiRain extends Entity {
 		final World worldIn = this.getEntityWorld();
 		final WorldInfo worldinfo = worldIn.getWorldInfo();
 		worldinfo.setCleanWeatherTime(this.realClearSky);
-		worldinfo.setRainTime(0);
-		worldinfo.setThunderTime(0);
 		worldinfo.setRaining(false);
 		worldinfo.setThundering(false);
 		if (!worldIn.isRemote) {
