@@ -10,10 +10,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -57,6 +59,8 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 									tileEntityFluidHandler, playerIn);
 							if (fluidActionResult.isSuccess()) {
 								playerIn.setHeldItem(hand, fluidActionResult.getResult());
+								worldIn.playSound((EntityPlayer) null, pos, SoundEvents.ITEM_BUCKET_FILL,
+										SoundCategory.BLOCKS, 1.0F, 1.0F);
 								((TileEntityRainTankWood) tileEntity).setDirty(true);
 								return true;
 							}

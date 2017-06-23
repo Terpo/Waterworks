@@ -22,10 +22,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -68,6 +70,8 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 									tileEntityFluidHandler, playerIn);
 							if (fluidActionResult.isSuccess()) {
 								playerIn.setHeldItem(hand, fluidActionResult.getResult());
+								worldIn.playSound((EntityPlayer) null, pos, SoundEvents.ITEM_BUCKET_FILL,
+										SoundCategory.BLOCKS, 1.0F, 1.0F);
 								((TileWaterworks) tileEntity).setDirty(true);
 								return true;
 							}
