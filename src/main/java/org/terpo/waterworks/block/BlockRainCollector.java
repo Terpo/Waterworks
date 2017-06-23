@@ -59,7 +59,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 				}
 			}
 		}
-		return true;
+		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
 	}
 
 	@Override
