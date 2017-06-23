@@ -68,12 +68,15 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 									tileEntityFluidHandler, playerIn);
 							if (fluidActionResult.isSuccess()) {
 								playerIn.setHeldItem(hand, fluidActionResult.getResult());
+								((TileWaterworks) tileEntity).setDirty(true);
 								return true;
 							}
 							// Try Glass Bottle handling
 							if (heldItem.getItem().equals(Items.GLASS_BOTTLE)) {
-								fillWaterBottle(worldIn, pos, playerIn, heldItem, hand,
-										(TileEntityGroundwaterPump) tileEntity);
+								if (fillWaterBottle(worldIn, pos, playerIn, heldItem, hand,
+										(TileEntityGroundwaterPump) tileEntity)) {
+									((TileWaterworks) tileEntity).setDirty(true);
+								}
 								return true;
 							}
 						}

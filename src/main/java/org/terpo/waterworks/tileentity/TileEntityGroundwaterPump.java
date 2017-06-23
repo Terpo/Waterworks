@@ -70,7 +70,9 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	@Override
 	protected void updateServerSide() {
 		if (needsUpdate(5)) {
-			this.isDirty = fillFluid();
+			if (fillFluid()) {
+				this.isDirty = true;
+			}
 		}
 
 		if (needsUpdate(20)) {
@@ -81,12 +83,15 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 					checkStructure(); // validation
 				}
 				// we can create water now
-				this.isDirty = refill();
+				if (refill()) {
+					this.isDirty = true;
+				}
 			}
 		}
 
 		if (this.isDirty) {
 			this.markDirty();
+			this.sendUpdatePacket();
 			this.isDirty = false;
 		}
 	}

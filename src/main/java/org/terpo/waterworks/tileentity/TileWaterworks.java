@@ -47,7 +47,7 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 				// We need to tell the tile entity that something has changed so
 				// that the chest contents is persisted
 				TileWaterworks.this.markDirty();
-				TileWaterworks.this.sendUpdatePacket();
+				// TileWaterworks.this.sendUpdatePacket();
 			}
 		};
 	}

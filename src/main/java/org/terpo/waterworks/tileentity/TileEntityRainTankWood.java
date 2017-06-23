@@ -41,7 +41,9 @@ public class TileEntityRainTankWood extends TileWaterworks {
 	@Override
 	protected void updateServerSide() {
 
-		this.isDirty = fillFluid();
+		if (fillFluid()) {
+			this.isDirty = true;
+		}
 
 		if (needsUpdate(20)) {
 			this.isDirty = isRefilling();
@@ -49,6 +51,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 
 		if (this.isDirty) {
 			this.world.updateComparatorOutputLevel(this.pos, getBlockType());
+			this.sendUpdatePacket();
 			markAsDirty(getPos());
 			this.isDirty = false;
 		}

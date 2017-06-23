@@ -82,7 +82,7 @@ public class BaseBlockTE<T extends BaseTileEntity> extends BaseBlock implements 
 		}
 	}
 
-	protected static void fillWaterBottle(World worldIn, BlockPos pos, EntityPlayer playerIn, ItemStack itemstack,
+	protected static boolean fillWaterBottle(World worldIn, BlockPos pos, EntityPlayer playerIn, ItemStack itemstack,
 			EnumHand hand, TileWaterworks tileEntity) {
 		final WaterworksTank tank = tileEntity.getFluidTank();
 		if (tank.getFluidAmount() >= 1000) {
@@ -100,7 +100,9 @@ public class BaseBlockTE<T extends BaseTileEntity> extends BaseBlock implements 
 				}
 			}
 			worldIn.playSound((EntityPlayer) null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			return true;
 		}
+		return false;
 	}
 
 }
