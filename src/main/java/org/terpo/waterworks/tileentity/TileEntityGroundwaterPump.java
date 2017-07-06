@@ -48,14 +48,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		this.fluidTank.setCanFill(false);
 		this.fluidTank.setTileEntity(this);
 
-		this.itemStackHandler = new PumpItemStackHandler(this.INVSIZE) {
-			@Override
-			protected void onContentsChanged(int slot) {
-				// We need to tell the tile entity that something has changed so
-				// that the chest contents is persisted
-				TileEntityGroundwaterPump.this.markDirty();
-			}
-		};
+		this.itemStackHandler = new PumpItemStackHandler(this.INVSIZE, this);
 
 		// FluidItems Slots
 		this.itemStackHandler.setInputFlagForIndex(0, true);
@@ -88,12 +81,8 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 				}
 			}
 		}
+		super.updateServerSide();
 
-		if (this.isDirty) {
-			this.markDirty();
-			this.sendUpdatePacket();
-			this.isDirty = false;
-		}
 	}
 	private boolean refill() {
 		if (this.battery.getEnergyStored() >= this.energyUsage) {

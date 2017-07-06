@@ -25,14 +25,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		this.fluidTank.setCanFill(false);
 		this.fluidTank.setTileEntity(this);
 
-		this.itemStackHandler = new GeneralItemStackHandler(this.INVSIZE) {
-			@Override
-			protected void onContentsChanged(int slot) {
-				// We need to tell the tile entity that something has changed so
-				// that the chest contents is persisted
-				TileEntityRainTankWood.this.markDirty();
-			}
-		};
+		this.itemStackHandler = new GeneralItemStackHandler(this.INVSIZE, this);
 
 		this.itemStackHandler.setInputFlagForIndex(0, true);
 		this.itemStackHandler.setOutputFlagForIndex(1, true);
@@ -46,15 +39,11 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		}
 
 		if (needsUpdate(20)) {
-			this.isDirty = isRefilling();
+			if (isRefilling()) {
+				this.isDirty = true;
+			}
 		}
-
-		if (this.isDirty) {
-			this.world.updateComparatorOutputLevel(this.pos, getBlockType());
-			this.sendUpdatePacket();
-			markAsDirty(getPos());
-			this.isDirty = false;
-		}
+		super.updateServerSide();
 	}
 
 	@Override
@@ -87,15 +76,6 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		} else {
 			final Biome biome = this.world.getBiome(posi);
 			return biome.getEnableSnow() ? false : (this.world.canSnowAt(posi, false) ? false : biome.canRain());
-		}
-	}
-
-	private void markAsDirty(final BlockPos position) {
-		this.markDirty();
-
-		if (this.world != null) {
-			final IBlockState state = this.world.getBlockState(position);
-			this.world.notifyBlockUpdate(position, state, state, 3);
 		}
 	}
 }

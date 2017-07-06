@@ -3,10 +3,12 @@ package org.terpo.waterworks.helper;
 import java.util.HashMap;
 
 import org.terpo.waterworks.inventory.SlotDefinition;
+import org.terpo.waterworks.tileentity.BaseTileEntity;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -17,12 +19,13 @@ public class GeneralItemStackHandler extends ItemStackHandler {
 	private boolean inputSlots[];
 	private boolean outputSlots[];
 	HashMap<Item, SlotDefinition> filter = new HashMap<>();
+	protected TileEntity tile;
 
 	public GeneralItemStackHandler() {
 		super(1);
 	}
 
-	public GeneralItemStackHandler(int size) {
+	public GeneralItemStackHandler(int size, TileEntity tE) {
 		super(size);
 		this.inputSlots = new boolean[size];
 		this.outputSlots = new boolean[size];
@@ -33,6 +36,19 @@ public class GeneralItemStackHandler extends ItemStackHandler {
 		for (int i = 0; i < size; i++) {
 			this.inputSlots[i] = false;
 			this.outputSlots[i] = false;
+		}
+
+		this.tile = tE;
+	}
+
+	public void setTileEntity(TileEntity tile) {
+		this.tile = tile;
+	}
+
+	@Override
+	protected void onContentsChanged(int slot) {
+		if (this.tile instanceof BaseTileEntity) {
+			((BaseTileEntity) this.tile).setDirty(true);
 		}
 	}
 

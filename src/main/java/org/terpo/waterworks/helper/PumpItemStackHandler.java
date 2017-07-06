@@ -4,14 +4,15 @@ import org.terpo.waterworks.init.WaterworksBlocks;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 
 public class PumpItemStackHandler extends GeneralItemStackHandler {
 
 	public PumpItemStackHandler() {
-		super(1);
+		super(1, null);
 	}
-	public PumpItemStackHandler(int size) {
-		super(size);
+	public PumpItemStackHandler(int size, TileEntity tE) {
+		super(size, tE);
 	}
 	@Override
 	protected boolean isValidItemStack(ItemStack stack, int slot) {

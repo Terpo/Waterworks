@@ -40,17 +40,7 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 		this.INVSIZE = inventorySize;
 		this.TANKSIZE = tankSize;
 
-		this.fluidTank = new WaterworksTank(this.TANKSIZE)
-//		{
-//			@Override
-//			protected void onContentsChanged() {
-//				// We need to tell the tile entity that something has changed so
-//				// that the chest contents is persisted
-//				TileWaterworks.this.markDirty();
-//				// TileWaterworks.this.sendUpdatePacket();
-//			}
-//		}
-		;
+		this.fluidTank = new WaterworksTank(this.TANKSIZE);
 	}
 
 	protected void sendUpdatePacket() {
@@ -126,7 +116,11 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 	}
 
 	protected void updateServerSide() {
-		// to be implemented
+		if (this.isDirty) {
+			this.markDirty();
+			this.sendUpdatePacket();
+			this.isDirty = false;
+		}
 	}
 
 	protected boolean needsUpdate(int tickInterval) {
