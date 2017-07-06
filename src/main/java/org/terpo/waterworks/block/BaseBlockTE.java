@@ -1,11 +1,9 @@
 package org.terpo.waterworks.block;
 
 import org.terpo.waterworks.compat.top.provider.TOPInfoProvider;
-import org.terpo.waterworks.fluid.WaterworksTank;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
 import org.terpo.waterworks.tileentity.TileEntityRainCollector;
 import org.terpo.waterworks.tileentity.TileEntityRainCollectorController;
-import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import mcjty.theoneprobe.api.IIconStyle;
 import mcjty.theoneprobe.api.IProbeHitData;
@@ -15,16 +13,8 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
-import net.minecraft.init.PotionTypes;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -80,29 +70,6 @@ public class BaseBlockTE<T extends BaseTileEntity> extends BaseBlock implements 
 				}
 			}
 		}
-	}
-
-	protected static boolean fillWaterBottle(World worldIn, BlockPos pos, EntityPlayer playerIn, ItemStack itemstack,
-			EnumHand hand, TileWaterworks tileEntity) {
-		final WaterworksTank tank = tileEntity.getFluidTank();
-		if (tank.getFluidAmount() >= 1000) {
-			if (!playerIn.capabilities.isCreativeMode) {
-				tank.drainInternal(1000, true);
-				final ItemStack stackWaterBottle = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM),
-						PotionTypes.WATER);
-				itemstack.shrink(1);
-				if (itemstack.isEmpty()) {
-					playerIn.setHeldItem(hand, stackWaterBottle);
-				} else if (!playerIn.inventory.addItemStackToInventory(stackWaterBottle)) {
-					playerIn.dropItem(stackWaterBottle, false);
-				} else if (playerIn instanceof EntityPlayerMP) {
-					((EntityPlayerMP) playerIn).sendContainerToPlayer(playerIn.inventoryContainer);
-				}
-			}
-			worldIn.playSound((EntityPlayer) null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			return true;
-		}
-		return false;
 	}
 
 }

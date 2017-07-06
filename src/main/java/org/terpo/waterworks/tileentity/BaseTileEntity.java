@@ -6,6 +6,8 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 public class BaseTileEntity extends TileEntity {
+	protected boolean isDirty = false;
+
 	public BaseTileEntity() {
 		// constructor
 	}
@@ -36,4 +38,8 @@ public class BaseTileEntity extends TileEntity {
 		this.readFromNBT(tag);
 	}
 	// Client Sync End
+
+	public void setDirty(boolean isDirty) {
+		this.isDirty = isDirty;
+	}
 }

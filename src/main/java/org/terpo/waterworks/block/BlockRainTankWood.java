@@ -2,6 +2,7 @@ package org.terpo.waterworks.block;
 
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.gui.GuiProxy;
+import org.terpo.waterworks.helper.FluidHelper;
 import org.terpo.waterworks.inventory.WaterworksInventoryHelper;
 import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
 import org.terpo.waterworks.tileentity.TileWaterworks;
@@ -9,19 +10,13 @@ import org.terpo.waterworks.tileentity.TileWaterworks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidActionResult;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -45,35 +40,16 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-
 		if (!worldIn.isRemote && hand == EnumHand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTE(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainTankWood) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (!heldItem.isEmpty()) {
-					if (!playerIn.isSneaking()) {
-						if (tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-							final IFluidHandler tileEntityFluidHandler = tileEntity
-									.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-							final FluidActionResult fluidActionResult = FluidUtil.interactWithFluidHandler(heldItem,
-									tileEntityFluidHandler, playerIn);
-							if (fluidActionResult.isSuccess()) {
-								playerIn.setHeldItem(hand, fluidActionResult.getResult());
-								worldIn.playSound((EntityPlayer) null, pos, SoundEvents.ITEM_BUCKET_FILL,
-										SoundCategory.BLOCKS, 1.0F, 1.0F);
-								((TileEntityRainTankWood) tileEntity).setDirty(true);
-								return true;
-							}
-							// Try Glass Bottle handling
-							if (heldItem.getItem().equals(Items.GLASS_BOTTLE)) {
-								if (fillWaterBottle(worldIn, pos, playerIn, heldItem, hand,
-										(TileEntityRainTankWood) tileEntity)) {
-									((TileEntityRainTankWood) tileEntity).setDirty(true);
-								}
-								return true;
-							}
-						}
-					}
+				if (!heldItem.isEmpty() && !playerIn.isSneaking()
+						&& tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity,
+								heldItem)) {
+					((TileWaterworks) tileEntity).setDirty(true);
+					return true;
 				}
 				playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, worldIn, pos.getX(), pos.getY(),
 						pos.getZ());

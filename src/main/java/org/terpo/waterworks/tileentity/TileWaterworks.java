@@ -24,7 +24,6 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TileWaterworks extends BaseTileEntity implements ITickable {
-	protected boolean isDirty = false;
 
 	private static final Random random = new Random();
 	private int currentTick = random.nextInt(256);
@@ -168,10 +167,6 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 
 	public boolean isDirty() {
 		return this.isDirty;
-	}
-
-	public void setDirty(boolean isDirty) {
-		this.isDirty = isDirty;
 	}
 
 	// FluidStuff

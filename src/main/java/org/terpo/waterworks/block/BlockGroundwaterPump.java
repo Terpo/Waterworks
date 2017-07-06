@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.gui.GuiProxy;
+import org.terpo.waterworks.helper.FluidHelper;
 import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksItems;
@@ -21,21 +22,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidActionResult;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -61,30 +56,12 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 					turnPumpModel(worldIn, pos, state);
 					return true;
 				}
-				if (!heldItem.isEmpty()) {
-					if (!playerIn.isSneaking()) {
-						if (tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-							final IFluidHandler tileEntityFluidHandler = tileEntity
-									.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-							final FluidActionResult fluidActionResult = FluidUtil.interactWithFluidHandler(heldItem,
-									tileEntityFluidHandler, playerIn);
-							if (fluidActionResult.isSuccess()) {
-								playerIn.setHeldItem(hand, fluidActionResult.getResult());
-								worldIn.playSound((EntityPlayer) null, pos, SoundEvents.ITEM_BUCKET_FILL,
-										SoundCategory.BLOCKS, 1.0F, 1.0F);
-								((TileWaterworks) tileEntity).setDirty(true);
-								return true;
-							}
-							// Try Glass Bottle handling
-							if (heldItem.getItem().equals(Items.GLASS_BOTTLE)) {
-								if (fillWaterBottle(worldIn, pos, playerIn, heldItem, hand,
-										(TileEntityGroundwaterPump) tileEntity)) {
-									((TileWaterworks) tileEntity).setDirty(true);
-								}
-								return true;
-							}
-						}
-					}
+				if (!heldItem.isEmpty() && !playerIn.isSneaking()
+						&& tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity,
+								heldItem)) {
+					((TileWaterworks) tileEntity).setDirty(true);
+					return true;
 				}
 				playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_GROUNDWATER_PUMP_GUI, worldIn, pos.getX(),
 						pos.getY(), pos.getZ());
