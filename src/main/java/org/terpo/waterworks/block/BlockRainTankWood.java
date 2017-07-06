@@ -48,7 +48,6 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 						&& tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
 						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity,
 								heldItem)) {
-					((TileWaterworks) tileEntity).setDirty(true);
 					return true;
 				}
 				playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, worldIn, pos.getX(), pos.getY(),

@@ -60,9 +60,9 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 						&& tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
 						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity,
 								heldItem)) {
-					((TileWaterworks) tileEntity).setDirty(true);
 					return true;
 				}
+
 				playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_GROUNDWATER_PUMP_GUI, worldIn, pos.getX(),
 						pos.getY(), pos.getZ());
 				return true;

@@ -63,7 +63,6 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 						&& tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
 						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity,
 								heldItem)) {
-					((TileWaterworks) tileEntity).setDirty(true);
 					return true;
 
 				}
