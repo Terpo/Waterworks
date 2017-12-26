@@ -1,0 +1,21 @@
+{
+	"result": {
+		"item": "waterworks:materials",
+		"data": 1
+	},
+	"pattern": [
+		" G ",
+		"GEG",
+		" G "
+	],
+	"type": "forge:ore_shaped",
+	"key": {
+		"G": {
+			"type": "forge:ore_dict",
+			"ore": "nuggetGold"
+		},
+		"E": {
+			"item": "minecraft:ender_pearl"
+		}
+	}
+}

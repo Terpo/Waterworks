@@ -1,0 +1,21 @@
+{
+	"result": {
+		"item": "waterworks:pipe_wrench"
+	},
+	"pattern": [
+		" II",
+		"  L",
+		"  I"
+	],
+	"type": "forge:ore_shaped",
+	"key": {
+		"I": {
+			"type": "forge:ore_dict",
+			"ore": "ingotIron"
+		},
+		"L": {
+			"type": "forge:ore_dict",
+			"ore": "dyeBlue"
+		}
+	}
+}

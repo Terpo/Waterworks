@@ -1,0 +1,23 @@
+{
+	"result": {
+		"item": "waterworks:rain_collector"
+	},
+	"pattern": [
+		"IMI",
+		"T T",
+		"III"
+	],
+	"type": "forge:ore_shaped",
+	"key": {
+		"I": {
+			"type": "forge:ore_dict",
+			"ore": "ingotIron"
+		},
+		"T": {
+			"item": "waterworks:water_pipe"
+		},
+		"M": {
+			"item": "minecraft:heavy_weighted_pressure_plate"
+		}
+	}
+}

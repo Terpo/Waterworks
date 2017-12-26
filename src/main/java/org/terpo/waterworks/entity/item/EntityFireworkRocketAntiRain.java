@@ -1,6 +1,5 @@
 package org.terpo.waterworks.entity.item;
 
-import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.init.WaterworksConfig;
 
 import net.minecraft.entity.Entity;
@@ -36,7 +35,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EntityFireworkRocketAntiRain extends Entity {
 
 	protected static DataParameter<ItemStack> ANTI_RAINROCKET_ITEM = EntityDataManager
-			.<ItemStack>createKey(EntityFireworkRocketRain.class, DataSerializers.OPTIONAL_ITEM_STACK);
+			.<ItemStack>createKey(EntityFireworkRocketRain.class, DataSerializers.ITEM_STACK);
 	protected static DataParameter<Integer> ANTI_RAINROCKET_ITEM_INT = EntityDataManager
 			.<Integer>createKey(EntityFireworkRocketRain.class, DataSerializers.VARINT);
 	/** The age of the firework in ticks. */
@@ -122,7 +121,6 @@ public class EntityFireworkRocketAntiRain extends Entity {
 		if (log > 1) {
 			log = 1;
 		}
-		Waterworks.LOGGER.info(" Log: " + log);
 		return (int) Math.round((maxClearTicks - maxClearTicks * log));
 	}
 
@@ -183,12 +181,9 @@ public class EntityFireworkRocketAntiRain extends Entity {
 			if (this.entityPlacer != null) {
 				if (this.entityPlacer.isElytraFlying()) {
 					final Vec3d vec3d = this.entityPlacer.getLookVec();
-					this.entityPlacer.motionX += vec3d.xCoord * 0.1D
-							+ (vec3d.xCoord * 1.5D - this.entityPlacer.motionX) * 0.5D;
-					this.entityPlacer.motionY += vec3d.yCoord * 0.1D
-							+ (vec3d.yCoord * 1.5D - this.entityPlacer.motionY) * 0.5D;
-					this.entityPlacer.motionZ += vec3d.zCoord * 0.1D
-							+ (vec3d.zCoord * 1.5D - this.entityPlacer.motionZ) * 0.5D;
+					this.entityPlacer.motionX += vec3d.x * 0.1D + (vec3d.x * 1.5D - this.entityPlacer.motionX) * 0.5D;
+					this.entityPlacer.motionY += vec3d.y * 0.1D + (vec3d.y * 1.5D - this.entityPlacer.motionY) * 0.5D;
+					this.entityPlacer.motionZ += vec3d.z * 0.1D + (vec3d.z * 1.5D - this.entityPlacer.motionZ) * 0.5D;
 				}
 
 				this.setPosition(this.entityPlacer.posX, this.entityPlacer.posY, this.entityPlacer.posZ);
@@ -258,15 +253,15 @@ public class EntityFireworkRocketAntiRain extends Entity {
 
 		if (f > 0.0F) {
 			if (this.entityPlacer != null) {
-				this.entityPlacer.attackEntityFrom(DamageSource.field_191552_t,
+				this.entityPlacer.attackEntityFrom(DamageSource.FIREWORKS,
 						5 + ((nbttaglist != null) ? nbttaglist.tagCount() : 1) * 2);
 			}
 
 			final Vec3d vec3d = new Vec3d(this.posX, this.posY, this.posZ);
 
 			for (final EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class,
-					this.getEntityBoundingBox().expandXyz(5.0D))) {
-				if (entitylivingbase != this.entityPlacer && this.getDistanceSqToEntity(entitylivingbase) <= 25.0D) {
+					this.getEntityBoundingBox().grow(5.0D))) {
+				if (entitylivingbase != this.entityPlacer && this.getDistanceSq(entitylivingbase) <= 25.0D) {
 					boolean flag = false;
 
 					for (int i = 0; i < 2; ++i) {
@@ -283,9 +278,8 @@ public class EntityFireworkRocketAntiRain extends Entity {
 					}
 
 					if (flag) {
-						final float f1 = f
-								* (float) Math.sqrt((5.0D - this.getDistanceToEntity(entitylivingbase)) / 5.0D);
-						entitylivingbase.attackEntityFrom(DamageSource.field_191552_t, f1);
+						final float f1 = f * (float) Math.sqrt((5.0D - this.getDistance(entitylivingbase)) / 5.0D);
+						entitylivingbase.attackEntityFrom(DamageSource.FIREWORKS, f1);
 					}
 				}
 			}
@@ -348,10 +342,12 @@ public class EntityFireworkRocketAntiRain extends Entity {
 	@Override
 	public void setDead() {
 		final World worldIn = this.getEntityWorld();
-		final WorldInfo worldinfo = worldIn.getWorldInfo();
-		worldinfo.setCleanWeatherTime(this.realClearSky);
-		worldinfo.setRaining(false);
-		worldinfo.setThundering(false);
+		final WorldInfo worldInfo = worldIn.getWorldInfo();
+		worldInfo.setCleanWeatherTime(this.realClearSky);
+		worldInfo.setRainTime(0);
+		worldInfo.setThunderTime(0);
+		worldInfo.setRaining(false);
+		worldInfo.setThundering(false);
 		if (!worldIn.isRemote) {
 			final BlockPos pos = this.getPosition();
 			dropSponge(worldIn, pos);

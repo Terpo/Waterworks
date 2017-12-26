@@ -1,0 +1,27 @@
+{
+	"result": {
+		"item": "waterworks:rain_collector_controller"
+	},
+	"pattern": [
+		"ICI",
+		"PTP",
+		"III"
+	],
+	"type": "forge:ore_shaped",
+	"key": {
+		"I": {
+			"type": "forge:ore_dict",
+			"ore": "ingotIron"
+		},
+		"P": {
+			"item": "waterworks:water_pipe"
+		},
+		"T": {
+			"item": "waterworks:rain_tank_wood"
+		},
+		"C": {
+			"item": "waterworks:materials",
+			"data": 1
+		}
+	}
+}

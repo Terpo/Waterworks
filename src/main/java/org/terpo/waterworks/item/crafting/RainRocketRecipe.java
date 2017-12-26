@@ -11,8 +11,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class RainRocketRecipe implements IRecipe {
+public class RainRocketRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 	private ItemStack resultItem = ItemStack.EMPTY;
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
@@ -88,11 +89,6 @@ public class RainRocketRecipe implements IRecipe {
 	}
 
 	@Override
-	public int getRecipeSize() {
-		return 10;
-	}
-
-	@Override
 	public ItemStack getRecipeOutput() {
 		return this.resultItem;
 	}
@@ -102,4 +98,8 @@ public class RainRocketRecipe implements IRecipe {
 		return ForgeHooks.defaultRecipeGetRemainingItems(inv);
 	}
 
+	@Override
+	public boolean canFit(int width, int height) {
+		return width * height >= 1;
+	}
 }

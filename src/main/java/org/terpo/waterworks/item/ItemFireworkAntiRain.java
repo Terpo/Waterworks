@@ -6,6 +6,7 @@ import org.terpo.waterworks.entity.item.EntityFireworkRocketAntiRain;
 import org.terpo.waterworks.init.WaterworksConfig;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFirework;
 import net.minecraft.item.ItemStack;
@@ -66,8 +67,8 @@ public class ItemFireworkAntiRain extends ItemFirework {
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-		super.addInformation(stack, playerIn, tooltip, advanced);
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+		super.addInformation(stack, player, tooltip, advanced);
 		if (stack.hasTagCompound()) {
 			final NBTTagCompound nbttagcompound = stack.getTagCompound();
 			if (nbttagcompound.hasKey("ANTIRAIN")) {

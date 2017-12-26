@@ -5,13 +5,13 @@ import org.terpo.waterworks.compat.jei.rockets.JEIRainRocketRecipeWrapperFactory
 import org.terpo.waterworks.item.crafting.AntiRainRocketRecipe;
 import org.terpo.waterworks.item.crafting.RainRocketRecipe;
 
-import mezz.jei.api.BlankModPlugin;
+import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 
 @JEIPlugin
-public class JEICompatibility extends BlankModPlugin {
+public class JEICompatibility implements IModPlugin {
 	@Override
 	public void register(IModRegistry registry) {
 

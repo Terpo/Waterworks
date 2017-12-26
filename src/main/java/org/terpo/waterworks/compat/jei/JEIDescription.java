@@ -44,12 +44,13 @@ public class JEIDescription {
 		});
 	}
 
-	// TODO 1.12
 	private static void add(Item item, String descriptionKey) {
-		registry.addDescription(new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE), descriptionKey);
+		registry.addIngredientInfo(new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE), ItemStack.class,
+				descriptionKey);
 	}
 
 	private static void add(Block block, String descriptionKey) {
-		registry.addDescription(new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE), descriptionKey);
+		registry.addIngredientInfo(new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE), ItemStack.class,
+				descriptionKey);
 	}
 }

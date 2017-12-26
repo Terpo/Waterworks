@@ -1,10 +1,5 @@
 package org.terpo.waterworks.proxy;
 
-import static org.terpo.waterworks.init.WaterworksItems.firework_anti_rain;
-import static org.terpo.waterworks.init.WaterworksItems.firework_rain;
-import static org.terpo.waterworks.init.WaterworksItems.materials;
-import static org.terpo.waterworks.init.WaterworksItems.pipe_wrench;
-
 import org.terpo.waterworks.api.constants.EnumItemMaterials;
 import org.terpo.waterworks.entity.item.EntityFireworkRocketAntiRain;
 import org.terpo.waterworks.entity.item.EntityFireworkRocketRain;
@@ -12,6 +7,7 @@ import org.terpo.waterworks.entity.item.RenderFireworkRocketAntiRain;
 import org.terpo.waterworks.entity.item.RenderFireworkRocketRain;
 import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.init.WaterworksConfig;
+import org.terpo.waterworks.init.WaterworksItems;
 import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
 import org.terpo.waterworks.tileentity.specialrenderer.TileEntityWaterRenderer;
 
@@ -21,32 +17,44 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
-public class ClientProxy implements IProxy {
+@Mod.EventBusSubscriber(Side.CLIENT)
+public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
-		registerItemRenders();
-		registerBlockRenders();
-		registerEntityRenders();
-
+		super.preInit(event);
 	}
 	@Override
 	public void init(FMLInitializationEvent event) {
-		//
+		super.init(event);
+
 	}
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
-		//
+		super.postInit(event);
+
 	}
 	@Override
 	public EntityPlayer getClientEntityPlayer() {
 		return Minecraft.getMinecraft().player;
+	}
+
+	@SuppressWarnings("unused")
+	@SubscribeEvent
+	public static void registerModels(ModelRegistryEvent event) {
+		registerItemRenders();
+		registerBlockRenders();
+		registerEntityRenders();
 	}
 
 	// INIT BLOCKS
@@ -76,14 +84,14 @@ public class ClientProxy implements IProxy {
 	 * INIT ITEMS
 	 */
 	public static void registerItemRenders() {
-		registerItemRender(pipe_wrench);
+		registerItemRender(WaterworksItems.pipe_wrench);
 		if (WaterworksConfig.REGISTER_RAIN_ROCKET) {
-			registerItemRender(firework_rain);
+			registerItemRender(WaterworksItems.firework_rain);
 		}
 		if (WaterworksConfig.REGISTER_ANTI_RAIN_ROCKET) {
-			registerItemRender(firework_anti_rain);
+			registerItemRender(WaterworksItems.firework_anti_rain);
 		}
-		registerItemRenderMaterials(materials);
+		registerItemRenderMaterials(WaterworksItems.materials);
 	}
 
 	public static void registerItemRender(Item item) {

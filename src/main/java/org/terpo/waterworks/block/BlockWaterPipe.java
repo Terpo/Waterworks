@@ -2,7 +2,6 @@ package org.terpo.waterworks.block;
 
 import java.util.List;
 
-import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 
@@ -57,7 +56,6 @@ public class BlockWaterPipe extends Block {
 			newPos = newPos.up();
 			final Block block = worldIn.getBlockState(newPos).getBlock();
 			if (block.equals(WaterworksBlocks.water_pipe)) {
-				Waterworks.LOGGER.info("a pipe");
 				continue;
 			}
 			if (block.equals(WaterworksBlocks.groundwater_pump)) {
