@@ -117,7 +117,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 	private static void breakPipes(World world, BlockPos pos) {
 		int y = pos.getY() - 1;
 		int count = 0;
-		while (y > 0) {
+		while (y >= 0) {
 			final BlockPos position = new BlockPos(pos.getX(), y, pos.getZ());
 			final IBlockState state = world.getBlockState(position);
 			if (state.getBlock().equals(WaterworksBlocks.water_pipe)) {

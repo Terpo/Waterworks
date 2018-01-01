@@ -122,8 +122,11 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 			if (block.equals(WaterworksBlocks.water_pipe)) {
 				count++;
 				y--;
-				continue;
-			} else if (block.equals(Blocks.BEDROCK)) {
+				if (y >= 0) {
+					continue;
+				}
+			}
+			if (block.equals(Blocks.BEDROCK) || (!WaterworksConfig.GROUNDWATER_PUMP_CHECK_BEDROCK && y < 0)) {
 				this.structureComplete = true;
 				this.pipeCounter = count;
 				this.energyUsage = WaterworksConfig.GROUNDWATER_PUMP_ENERGY_BASEUSAGE

@@ -78,6 +78,7 @@ public class WaterworksConfig {
 	public static int GROUNDWATER_PUMP_ENERGY_MAXINPUT = 500;
 	public static int GROUNDWATER_PUMP_PIPE_PLACEMENT_ENERGY = 2500;
 	public static boolean GROUNDWATER_PUMP_SAFETY = true;
+	public static boolean GROUNDWATER_PUMP_CHECK_BEDROCK = true;
 
 	/**
 	 * METHODS FOR CONFIGURATION INITIALIZATION
@@ -162,6 +163,10 @@ public class WaterworksConfig {
 		// Misc
 		GROUNDWATER_PUMP_SAFETY = cfg.getBoolean("Groundwater Pump Safety Block", CATEGORY_GROUND_WATER,
 				GROUNDWATER_PUMP_SAFETY, "Should the Groundwater Pump spawn a slab to close the hole?");
+
+		GROUNDWATER_PUMP_CHECK_BEDROCK = cfg.getBoolean("Groundwater Pump Check Bedrock", CATEGORY_GROUND_WATER,
+				GROUNDWATER_PUMP_CHECK_BEDROCK,
+				"Turn this to false if your world does not generate Bedrock. (Skyblock)");
 	}
 	private static void initRainRocketsConfig() {
 		cfg.addCustomCategoryComment(CATEGORY_ROCKETS, "Configuration for Rockets");
