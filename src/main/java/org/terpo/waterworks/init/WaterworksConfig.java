@@ -1,216 +1,170 @@
 package org.terpo.waterworks.init;
 
-import org.terpo.waterworks.Waterworks;
+import org.terpo.waterworks.api.constants.WaterworksReference;
 
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@Config(modid = WaterworksReference.MODID)
+@Config.LangKey("waterworks.config.title")
 public class WaterworksConfig {
-	public static Configuration cfg;
 
-	// Categories
-	private static final String CATEGORY_DISABLE_RECIPE = "disable recipes";
-	private static final String CATEGORY_DISABLE_REGISTER = "disable register";
+	public static final RainCollection rainCollection = new RainCollection();
+	public static final GroundwaterPump pump = new GroundwaterPump();
+	public static final Rockets rockets = new Rockets();
+	public static final WaterworksRegister register = new WaterworksRegister();
+	public static final WaterworksRecipes recipes = new WaterworksRecipes();
 
-	private static final String CATEGORY_RAIN_COLLECTING = "rain collecting configuration";
-	private static final String CATEGORY_GROUND_WATER = "groundwater pump configuration";
-	private static final String CATEGORY_ROCKETS = "rain rockets";
+	public static class RainCollection {
+		/**
+		 * CONFIG RAIN COLLECTION
+		 */
+		// Simple Rain Tank
+		@Config.Comment("The fillrate in mB/second for the Wooden Rain Tank.")
+		@Config.RangeInt(min = 1, max = 8000)
+		public int woodenRainTankFillrate = 10;
 
-	/**
-	 * DISABLE REGISTER
-	 */
-	// ITEMS
-	public static boolean REGISTER_RAIN_ROCKET = true;
-	public static boolean REGISTER_ANTI_RAIN_ROCKET = true;
+		@Config.Comment("The capacity in mB for the Wooden Rain Tank.")
+		@Config.RangeInt(min = 1000, max = 1024000)
+		public int woodenRainTankCapacity = 8000;
 
-	// BLOCKS
-	public static boolean REGISTER_GROUNDWATER_PUMP = true;
-	public static boolean REGISTER_RAIN_COLLECTING_MULTIBLOCK = true;
-	public static boolean REGISTER_WATER_PIPE = true;
-	public static boolean REGISTER_RAIN_TANK = true;
-	/**
-	 * DISABLE RECIPE
-	 */
-	// ITEMS
-	public static boolean RECIPE_RAIN_ROCKET = true;
-	public static boolean RECIPE_ANTI_RAIN_ROCKET = true;
+		// Multiblock Rain Collector
+		@Config.Comment("Amount of water per second per connected block.")
+		@Config.RangeInt(min = 1, max = 8000)
+		public int rainCollectorFillrate = 20;
 
-	// BLOCKS
-	public static boolean RECIPE_GROUNDWATER_PUMP = true;
-	public static boolean RECIPE_RAIN_COLLECTING_MULTIBLOCK = true;
-	public static boolean RECIPE_WATER_PIPE = true;
-	public static boolean RECIPE_RAIN_TANK = true;
-	/**
-	 * CONFIG ROCKETS
-	 */
-	// Rain Rocket
-	public static int RAIN_DURATION = 3000;
-	public static int RAIN_DURATION_MULTIPLIER_MAX = 8;
+		@Config.Comment("The capacity in mB for the Rain Collector Multiblock.")
+		@Config.RangeInt(min = 8000, max = 1024000)
+		public int rainCollectorCapacity = 32000;
 
-	// Anti Rain Rocket
-	public static int ANTI_RAIN_DURATION = 4000;
-	public static int ANTI_RAIN_DURATION_MULTIPLIER_MAX = 12;
-	public static int ANTI_RAIN_MAX_RANDOM_ADDITIONAL_DAYS = 3;
+		@Config.Comment("Search radius of the Rain Collector Controller")
+		@Config.RangeInt(min = 0, max = 7)
+		public int rainCollectorRange = 2;
+	}
 
-	// Vanilla Firework
-	public static boolean FIREWORK_CHARGE_DESCRIPTION = true;
-	public static boolean FIREWORKS_DESCRIPTION = true;
+	public static class GroundwaterPump {
+		/**
+		 * CONFIG GROUNDWATER PUMP
+		 */
+		@Config.Comment("The fillrate in mB/second for the Groundwater Pump.")
+		@Config.RangeInt(min = 1, max = 8000)
+		public int groundwaterPumpFillrate = 500;
 
-	/**
-	 * CONFIG RAIN COLLECTION
-	 */
-	// Simple Rain Tank
-	public static int RAIN_TANK_SIMPLE_FILLRATE = 10;
-	public static int RAIN_TANK_SIMPLE_CAPACITY = 8000;
-	// Multiblock Rain Collector
-	public static int RAIN_COLLECTOR_FILLRATE = 20;
-	public static int RAIN_COLLECTOR_CAPACITY = 32000;
-	public static int RAIN_COLLECTOR_RANGE = 2;
+		@Config.Comment("The capacity in mB for the Groundwater Pump.")
+		@Config.RangeInt(min = 8000, max = 1024000)
+		public int groundwaterPumpCapacity = 32000;
 
-	/**
-	 * CONFIG GROUNDWATER PUMP
-	 */
-	public static int GROUNDWATER_PUMP_CAPACITY = 32000;
-	public static int GROUNDWATER_PUMP_FILLRATE = 500;
-	public static int GROUNDWATER_PUMP_ENERGY_BASEUSAGE = 1600;
-	public static int GROUNDWATER_PUMP_ENERGY_PIPEMULTIPLIER = 20;
-	public static int GROUNDWATER_PUMP_ENERGY_CAPACITY = 16000;
-	public static int GROUNDWATER_PUMP_ENERGY_MAXINPUT = 500;
-	public static int GROUNDWATER_PUMP_PIPE_PLACEMENT_ENERGY = 2500;
-	public static boolean GROUNDWATER_PUMP_SAFETY = true;
-	public static boolean GROUNDWATER_PUMP_CHECK_BEDROCK = true;
+		@Config.Comment("Pump energy base usage in forge energy units. Needed for each pump operation.")
+		@Config.RangeInt(min = 20, max = 1024000)
+		public int groundwaterPumpEnergyBaseUsage = 1600;
 
-	/**
-	 * METHODS FOR CONFIGURATION INITIALIZATION
-	 */
+		@Config.Comment("Additional to base usage. Each used pipe will multiplied with this value.")
+		@Config.RangeInt(min = 0, max = 1024000)
+		public int groundwaterPumpEnergyPipeMultiplier = 20;
 
-	private static void initDisabledRegister() {
-		cfg.addCustomCategoryComment(CATEGORY_DISABLE_REGISTER,
-				"Disables blocks and items. There are no fallback recipes defined if something is disabled.");
+		@Config.Comment("Pump energy capacity in forge energy units.")
+		@Config.RangeInt(min = 8000, max = 1024000)
+		public int groundwaterPumpEnergyCapacity = 16000;
+
+		@Config.Comment("Pump energy input rate in forge energy units.")
+		@Config.RangeInt(min = 20, max = 1024000)
+		public int groundwaterPumpEnergyInput = 500;
+
+		@Config.Comment("Energy used to place a pipe.")
+		@Config.RangeInt(min = 0, max = 1024000)
+		public int groundwaterPumpEnergyPipePlacement = 2500;
+
+		@Config.Comment("Should the Groundwater Pump spawn a slab to close the hole?")
+		public boolean groundwaterPumpSafety = true;
+
+		@Config.Comment("Turn this to false if your world does not generate Bedrock. (Skyblock)")
+		public boolean groundwaterPumpCheckBedrock = true;
+	}
+
+	public static class Rockets {
+		/**
+		 * CONFIG ROCKETS
+		 */
+		// Rain Rocket
+		@Config.Comment("Rain duration with x1 multiplier.")
+		@Config.RangeInt(min = 1, max = 12000)
+		public int rainDuration = 3000;
+
+		@Config.Comment("Maximum rain multiplier.")
+		@Config.RangeInt(min = 1, max = 24)
+		public int rainMaxMultiplier = 8;
+
+		// Anti Rain Rocket
+		@Config.Comment("Clear sky duration with x1 multiplier.")
+		@Config.RangeInt(min = 100, max = 6000)
+		public int clearSkyDuration = 4000;
+
+		@Config.Comment("Maximum clear sky multiplier.")
+		@Config.RangeInt(min = 100, max = 6000)
+		public int clearSkyMaxMultiplier = 12;
+
+		@Config.Comment("Maximum days of clear sky that will added to the calculated time.")
+		@Config.RangeInt(min = 0, max = 7)
+		public int clearSkyMaxRandomAdditionalDays = 3;
+
+		// Vanilla Firework
+		@Config.Comment("JEI: Adds a small description for firework star.")
+		public boolean fireworkChargeDescription = true;
+		@Config.Comment("JEI: Adds a small description for fireworks.")
+		public boolean fireworksDescription = true;
+	}
+
+	public static class WaterworksRegister {
+		/**
+		 * DISABLE REGISTER
+		 */
 		// ITEMS
-		REGISTER_RAIN_ROCKET = cfg.getBoolean("Register Rain Rocket", CATEGORY_DISABLE_REGISTER, REGISTER_RAIN_ROCKET,
-				"If true, the Rain Rocket is registered");
-		REGISTER_ANTI_RAIN_ROCKET = cfg.getBoolean("Register Anti Rain Rocket", CATEGORY_DISABLE_REGISTER,
-				REGISTER_ANTI_RAIN_ROCKET, "If true, the Anti Rain Rocket is registered");
-		// BLOCKS
-		REGISTER_GROUNDWATER_PUMP = cfg.getBoolean("Register Groundwater Pump", CATEGORY_DISABLE_REGISTER,
-				REGISTER_GROUNDWATER_PUMP, "If true, the Groundwater Pump is registered");
-		REGISTER_RAIN_COLLECTING_MULTIBLOCK = cfg.getBoolean("Register Rain Collector and Rain Collector Controller",
-				CATEGORY_DISABLE_REGISTER, REGISTER_RAIN_COLLECTING_MULTIBLOCK,
-				"If true, the Rain Collector and Rain Collector Controller are registered");
-		REGISTER_WATER_PIPE = cfg.getBoolean("Register Water Pipe", CATEGORY_DISABLE_REGISTER, REGISTER_WATER_PIPE,
-				"If true, the Water Pipe is registered");
-		REGISTER_RAIN_TANK = cfg.getBoolean("Register Rain Tank", CATEGORY_DISABLE_REGISTER, REGISTER_RAIN_TANK,
-				"If true, the Rain Tank is registered");
+		@Config.Comment("If true, the Rain Rocket is registered")
+		public boolean rainRocket = true;
+		@Config.Comment("If true, the Anti Rain Rocket is registered")
+		public boolean antiRainRocket = true;
 
+		// BLOCKS
+		@Config.Comment("If true, the Groundwater Pump is registered")
+		public boolean groundwaterPump = true;
+		@Config.Comment("If true, the Rain Collector and Rain Collector Controller are registered")
+		public boolean rainCollectorMultiblock = true;
+		@Config.Comment("If true, the Water Pipe is registered")
+		public boolean waterPipe = true;
+		@Config.Comment("If true, the Wooden Rain Tank is registered")
+		public boolean woodenRainTank = true;
 	}
-	private static void initDisabledRecipe() {
-		cfg.addCustomCategoryComment(CATEGORY_DISABLE_RECIPE, "Disables recipes on startup.");
+
+	public static class WaterworksRecipes {
+		/**
+		 * DISABLE RECIPE
+		 */
 		// ITEMS
-		RECIPE_RAIN_ROCKET = cfg.getBoolean("Recipe Rain Rocket", CATEGORY_DISABLE_RECIPE, RECIPE_RAIN_ROCKET,
-				"If true, the Rain Rocket has a recipe");
-		RECIPE_ANTI_RAIN_ROCKET = cfg.getBoolean("Recipe Anti Rain Rocket", CATEGORY_DISABLE_RECIPE,
-				RECIPE_ANTI_RAIN_ROCKET, "If true, the Anti Rain Rocket has a recipe");
-		// BLOCKS
-		RECIPE_GROUNDWATER_PUMP = cfg.getBoolean("Recipe Groundwater Pump", CATEGORY_DISABLE_RECIPE,
-				RECIPE_GROUNDWATER_PUMP, "If true, the Groundwater Pump has a recipe");
-		RECIPE_RAIN_COLLECTING_MULTIBLOCK = cfg.getBoolean("Recipe Rain Collector and Rain Collector Controller",
-				CATEGORY_DISABLE_RECIPE, RECIPE_RAIN_COLLECTING_MULTIBLOCK,
-				"If true, the Rain Collector and Rain Collector Controller have a recipe");
-		RECIPE_WATER_PIPE = cfg.getBoolean("Recipe Water Pipe", CATEGORY_DISABLE_RECIPE, RECIPE_WATER_PIPE,
-				"If true, the Water Pipe has a recipe");
-		RECIPE_RAIN_TANK = cfg.getBoolean("Recipe Rain Tank", CATEGORY_DISABLE_RECIPE, RECIPE_RAIN_TANK,
-				"If true, the Rain Tank has a recipe");
+		@Config.Comment("If true, the Rain Rocket has a recipe")
+		public boolean recipeRainRocket = true;
+
+		@Config.Comment("If true, the Anti Rain Rocket has a recipe")
+		public boolean recipeAntiRainRocket = true;
+
 	}
 
-	private static void initRainCollectingConfig() {
-		cfg.addCustomCategoryComment(CATEGORY_RAIN_COLLECTING, "Configuration for rain collecting blocks");
-		// Rain Tank
-		RAIN_TANK_SIMPLE_FILLRATE = cfg.getInt("Simple Rain Tank Fillrate", CATEGORY_RAIN_COLLECTING,
-				RAIN_TANK_SIMPLE_FILLRATE, 1, 8000, "Amount of water per second");
-		RAIN_TANK_SIMPLE_CAPACITY = cfg.getInt("Simple Rain Tank Capacity", CATEGORY_RAIN_COLLECTING,
-				RAIN_TANK_SIMPLE_CAPACITY, 1000, 1024000, "Tank capacity in mB");
-		// Rain Collector
-		RAIN_COLLECTOR_FILLRATE = cfg.getInt("Multiblock Rain Collector Fillrate", CATEGORY_RAIN_COLLECTING,
-				RAIN_COLLECTOR_FILLRATE, 1, 8000, "Amount of water per second per connected block");
-		RAIN_COLLECTOR_CAPACITY = cfg.getInt("Multiblock Rain Collector Capacity", CATEGORY_RAIN_COLLECTING,
-				RAIN_COLLECTOR_CAPACITY, 8000, 1024000, "Tank capacity in mB");
-		RAIN_COLLECTOR_RANGE = cfg.getInt("Multiblock Rain Collector Radius", CATEGORY_RAIN_COLLECTING,
-				RAIN_COLLECTOR_RANGE, 0, 7, "Radius of the Controller block");
-	}
+	@Mod.EventBusSubscriber(modid = WaterworksReference.MODID)
+	private static class EventHandler {
 
-	private static void initGroundWaterPumpConfig() {
-		cfg.addCustomCategoryComment(CATEGORY_GROUND_WATER, "Configuration for the Groundwater Pump");
-		// FLUID
-		GROUNDWATER_PUMP_FILLRATE = cfg.getInt("Groundwater Pump Water Fillrate", CATEGORY_GROUND_WATER,
-				GROUNDWATER_PUMP_FILLRATE, 1, 8000, "Amount of water per second");
-		GROUNDWATER_PUMP_CAPACITY = cfg.getInt("Groundwater Pump Water Capacity", CATEGORY_GROUND_WATER,
-				GROUNDWATER_PUMP_CAPACITY, 8000, 1024000, "Pump water capacity in mB");
-		// Energy
-		GROUNDWATER_PUMP_ENERGY_CAPACITY = cfg.getInt("Groundwater Pump Energy Capacity", CATEGORY_GROUND_WATER,
-				GROUNDWATER_PUMP_ENERGY_CAPACITY, 8000, 1024000, "Pump energy capacity in forge energy units");
-		GROUNDWATER_PUMP_ENERGY_MAXINPUT = cfg.getInt("Groundwater Pump Energy Input Rate", CATEGORY_GROUND_WATER,
-				GROUNDWATER_PUMP_ENERGY_MAXINPUT, 20, 1024000, "Pump energy input rate in forge energy units");
-		GROUNDWATER_PUMP_ENERGY_BASEUSAGE = cfg.getInt("Groundwater Pump Energy Base Usage", CATEGORY_GROUND_WATER,
-				GROUNDWATER_PUMP_ENERGY_BASEUSAGE, 20, 1024000,
-				"Pump energy base usage in forge energy units. Needed For each pump operation.");
-		GROUNDWATER_PUMP_ENERGY_PIPEMULTIPLIER = cfg.getInt("Groundwater Pump Energy Pipe Multiplier",
-				CATEGORY_GROUND_WATER, GROUNDWATER_PUMP_ENERGY_PIPEMULTIPLIER, 0, 1024000,
-				"Additional to base usage. Each used pipe will multiplied with this value.");
-		GROUNDWATER_PUMP_PIPE_PLACEMENT_ENERGY = cfg.getInt("Groundwater Pump Pipe Placement Energy",
-				CATEGORY_GROUND_WATER, GROUNDWATER_PUMP_PIPE_PLACEMENT_ENERGY, 0, 1024000,
-				"Energy used to place a pipe.");
-		// Misc
-		GROUNDWATER_PUMP_SAFETY = cfg.getBoolean("Groundwater Pump Safety Block", CATEGORY_GROUND_WATER,
-				GROUNDWATER_PUMP_SAFETY, "Should the Groundwater Pump spawn a slab to close the hole?");
-
-		GROUNDWATER_PUMP_CHECK_BEDROCK = cfg.getBoolean("Groundwater Pump Check Bedrock", CATEGORY_GROUND_WATER,
-				GROUNDWATER_PUMP_CHECK_BEDROCK,
-				"Turn this to false if your world does not generate Bedrock. (Skyblock)");
-	}
-	private static void initRainRocketsConfig() {
-		cfg.addCustomCategoryComment(CATEGORY_ROCKETS, "Configuration for Rockets");
-		RAIN_DURATION = cfg.getInt("Rain Duration", CATEGORY_ROCKETS, RAIN_DURATION, 1, 12000,
-				"Rain duration with x1 multiplier");
-		RAIN_DURATION_MULTIPLIER_MAX = cfg.getInt("Maximum Rain Duration Multiplier", CATEGORY_ROCKETS,
-				RAIN_DURATION_MULTIPLIER_MAX, 1, 24, "Rain duration multiplier");
-
-		ANTI_RAIN_DURATION = cfg.getInt("Clear Sky Duration", CATEGORY_ROCKETS, ANTI_RAIN_DURATION, 100, 6000,
-				"Clear sky duration with x1 multiplier");
-		ANTI_RAIN_DURATION_MULTIPLIER_MAX = cfg.getInt("Maximum Clear Sky Duration Multiplier", CATEGORY_ROCKETS,
-				ANTI_RAIN_DURATION_MULTIPLIER_MAX, 1, 24, "Clear sky duration multiplier");
-		ANTI_RAIN_MAX_RANDOM_ADDITIONAL_DAYS = cfg.getInt("Maximum Random Additional Days", CATEGORY_ROCKETS,
-				ANTI_RAIN_MAX_RANDOM_ADDITIONAL_DAYS, 0, 7,
-				"Maximum days of clear sky that will added to the calculated time");
-
-		// VANILLA
-		FIREWORK_CHARGE_DESCRIPTION = cfg.getBoolean("Add Minecraft Firework Star Description", CATEGORY_ROCKETS,
-				FIREWORK_CHARGE_DESCRIPTION, "Adds a small description for firework star");
-		FIREWORKS_DESCRIPTION = cfg.getBoolean("Add Minecraft Fireworks Description", CATEGORY_ROCKETS,
-				FIREWORKS_DESCRIPTION, "Adds a small description for fireworks");
-	}
-
-	public static void init(FMLPreInitializationEvent event) {
-		cfg = new Configuration(event.getSuggestedConfigurationFile());
-	}
-	public static void load() {
-		try {
-			cfg.load();
-			initDisabledRegister();
-			initDisabledRecipe();
-			initRainCollectingConfig();
-			initGroundWaterPumpConfig();
-			initRainRocketsConfig();
-		} catch (final Exception ex) {
-			Waterworks.LOGGER.error("Problem loading config file!", ex);
-		} finally {
-			WaterworksConfig.save();
-		}
-	}
-
-	public static void save() {
-		if (cfg.hasChanged()) {
-			cfg.save();
+		/**
+		 * Inject the new values and save to the config file when the config has been
+		 * changed from the GUI.
+		 *
+		 * @param event The event
+		 */
+		@SubscribeEvent
+		public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
+			if (event.getModID().equals(WaterworksReference.MODID)) {
+				ConfigManager.sync(WaterworksReference.MODID, Config.Type.INSTANCE);
+			}
 		}
 	}
 }

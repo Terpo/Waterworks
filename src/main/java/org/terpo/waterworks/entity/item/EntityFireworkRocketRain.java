@@ -43,7 +43,7 @@ public class EntityFireworkRocketRain extends Entity {
 	private int lifetime;
 	private EntityLivingBase entityPlacer;
 
-	private int rainDuration = WaterworksConfig.RAIN_DURATION;
+	private int rainDuration = WaterworksConfig.rockets.rainDuration;
 
 	public EntityFireworkRocketRain(World worldIn) {
 		super(worldIn);
@@ -75,7 +75,7 @@ public class EntityFireworkRocketRain extends Entity {
 				rainMultiplier = tag.getInteger("RAIN");
 			}
 			if (rainMultiplier != -1) {
-				this.rainDuration = WaterworksConfig.RAIN_DURATION * rainMultiplier;
+				this.rainDuration = WaterworksConfig.rockets.rainDuration * rainMultiplier;
 				if (!worldIn.isRemote) {
 					announceRocket(this.rainDuration);
 				}

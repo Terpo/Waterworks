@@ -56,7 +56,7 @@ public class AntiRainRocketRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 			if (nbtCompound == null) {
 				nbtCompound = new NBTTagCompound();
 			}
-			if (multiplierOld + multiplierAdd > WaterworksConfig.ANTI_RAIN_DURATION_MULTIPLIER_MAX) {
+			if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.clearSkyMaxMultiplier) {
 				return false;
 			}
 			nbtCompound.setInteger("ANTIRAIN", multiplierOld + multiplierAdd);
@@ -74,7 +74,7 @@ public class AntiRainRocketRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 					multiplierOld = nbtCompound.getInteger("ANTIRAIN");
 				}
 			}
-			if ((multiplierOld + multiplierAdd) > WaterworksConfig.ANTI_RAIN_DURATION_MULTIPLIER_MAX) {
+			if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.clearSkyMaxMultiplier) {
 				return false;
 			}
 			newTag.setInteger("ANTIRAIN", multiplierOld + multiplierAdd);

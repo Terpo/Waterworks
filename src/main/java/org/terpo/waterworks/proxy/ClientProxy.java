@@ -59,19 +59,19 @@ public class ClientProxy extends CommonProxy {
 
 	// INIT BLOCKS
 	public static void registerBlockRenders() {
-		if (WaterworksConfig.REGISTER_RAIN_TANK) {
+		if (WaterworksConfig.register.woodenRainTank) {
 			registerBlockRender(WaterworksBlocks.rain_tank_wood);
 			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRainTankWood.class, new TileEntityWaterRenderer());
 
 		}
-		if (WaterworksConfig.REGISTER_WATER_PIPE) {
+		if (WaterworksConfig.register.waterPipe) {
 			registerBlockRender(WaterworksBlocks.water_pipe);
 		}
-		if (WaterworksConfig.REGISTER_RAIN_COLLECTING_MULTIBLOCK) {
+		if (WaterworksConfig.register.rainCollectorMultiblock) {
 			registerBlockRender(WaterworksBlocks.rain_collector);
 			registerBlockRender(WaterworksBlocks.rain_collector_controller);
 		}
-		if (WaterworksConfig.REGISTER_GROUNDWATER_PUMP) {
+		if (WaterworksConfig.register.groundwaterPump) {
 			registerBlockRender(WaterworksBlocks.groundwater_pump);
 		}
 	}
@@ -85,10 +85,10 @@ public class ClientProxy extends CommonProxy {
 	 */
 	public static void registerItemRenders() {
 		registerItemRender(WaterworksItems.pipe_wrench);
-		if (WaterworksConfig.REGISTER_RAIN_ROCKET) {
+		if (WaterworksConfig.register.rainRocket) {
 			registerItemRender(WaterworksItems.firework_rain);
 		}
-		if (WaterworksConfig.REGISTER_ANTI_RAIN_ROCKET) {
+		if (WaterworksConfig.register.antiRainRocket) {
 			registerItemRender(WaterworksItems.firework_anti_rain);
 		}
 		registerItemRenderMaterials(WaterworksItems.materials);

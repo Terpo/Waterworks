@@ -54,7 +54,7 @@ public class RainRocketRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
 			if (nbtCompound == null) {
 				nbtCompound = new NBTTagCompound();
 			}
-			if (multiplierOld + multiplierAdd > WaterworksConfig.RAIN_DURATION_MULTIPLIER_MAX) {
+			if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.rainMaxMultiplier) {
 				return false;
 			}
 			nbtCompound.setInteger("RAIN", multiplierOld + multiplierAdd);
@@ -72,7 +72,7 @@ public class RainRocketRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
 					multiplierOld = nbtCompound.getInteger("RAIN");
 				}
 			}
-			if ((multiplierOld + multiplierAdd) > WaterworksConfig.RAIN_DURATION_MULTIPLIER_MAX) {
+			if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.rainMaxMultiplier) {
 				return false;
 			}
 			newTag.setInteger("RAIN", multiplierOld + multiplierAdd);

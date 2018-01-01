@@ -16,7 +16,8 @@ public class TileEntityRainTankWood extends TileWaterworks {
 	private static final int invSlots = 2;
 
 	public TileEntityRainTankWood() {
-		this(WaterworksConfig.RAIN_TANK_SIMPLE_FILLRATE, WaterworksConfig.RAIN_TANK_SIMPLE_CAPACITY);
+		this(WaterworksConfig.rainCollection.woodenRainTankFillrate,
+				WaterworksConfig.rainCollection.woodenRainTankCapacity);
 	}
 	public TileEntityRainTankWood(int fillrate, int capacity) {
 		super(invSlots, capacity);

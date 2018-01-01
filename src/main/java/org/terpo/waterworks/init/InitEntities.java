@@ -31,11 +31,11 @@ public class InitEntities {
 
 	public static void registerEntities(IForgeRegistry<EntityEntry> registry) {
 		final List<EntityEntry> entityEntries = new ArrayList<>();
-		if (WaterworksConfig.REGISTER_RAIN_ROCKET) {
+		if (WaterworksConfig.register.rainRocket) {
 			entityEntries.add(createEntityEntryBuilder("firework_rocket_rain").entity(EntityFireworkRocketRain.class)
 					.tracker(64, 3, true).build());
 		}
-		if (WaterworksConfig.REGISTER_ANTI_RAIN_ROCKET) {
+		if (WaterworksConfig.register.antiRainRocket) {
 			entityEntries.add(createEntityEntryBuilder("firework_rocket_anti_rain")
 					.entity(EntityFireworkRocketAntiRain.class).tracker(64, 3, true).build());
 		}

@@ -6,6 +6,7 @@ import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.proxy.CommonProxy;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -23,6 +24,10 @@ public class Waterworks {
 
 	public static Logger LOGGER = LogManager.getLogger(WaterworksReference.NAME);
 	public static final CreativeTabs CREATIVE_TAB = new WaterworksTab();
+
+	static {
+		FluidRegistry.enableUniversalBucket(); // Must be called before preInit
+	}
 
 	@Mod.EventHandler
 	public static void preInit(FMLPreInitializationEvent event) {

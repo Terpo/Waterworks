@@ -8,7 +8,6 @@ import org.terpo.waterworks.init.InitEntities;
 import org.terpo.waterworks.init.InitItems;
 import org.terpo.waterworks.init.InitModCompat;
 import org.terpo.waterworks.init.InitTileEntities;
-import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksCrafting;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 
@@ -26,10 +25,8 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 
 @Mod.EventBusSubscriber
 public class CommonProxy {
-	@SuppressWarnings("static-method")
+	@SuppressWarnings({"static-method", "unused"})
 	public void preInit(FMLPreInitializationEvent event) {
-		WaterworksConfig.init(event);
-		WaterworksConfig.load();
 		WaterworksPacketHandler.registerMessages(WaterworksReference.MODID);
 		InitModCompat.init("pre");
 	}
@@ -42,9 +39,9 @@ public class CommonProxy {
 		NetworkRegistry.INSTANCE.registerGuiHandler(Waterworks.instance, new GuiProxy());
 	}
 
-	@SuppressWarnings({"static-method", "unused"})
+	@SuppressWarnings({"unused"})
 	public void postInit(FMLPostInitializationEvent event) {
-		WaterworksConfig.save();
+		//
 	}
 
 	@SubscribeEvent

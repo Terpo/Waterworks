@@ -32,16 +32,17 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	private int energyUsage;
 
 	public TileEntityGroundwaterPump() {
-		this(WaterworksConfig.GROUNDWATER_PUMP_FILLRATE, WaterworksConfig.GROUNDWATER_PUMP_CAPACITY);
+		this(WaterworksConfig.pump.groundwaterPumpFillrate,
+				WaterworksConfig.pump.groundwaterPumpCapacity);
 	}
 	public TileEntityGroundwaterPump(int fillrate, int capacity) {
 		super(invSlots, capacity);
 
-		this.battery = new WaterworksBattery(WaterworksConfig.GROUNDWATER_PUMP_ENERGY_CAPACITY,
-				WaterworksConfig.GROUNDWATER_PUMP_ENERGY_MAXINPUT, 0, this);
+		this.battery = new WaterworksBattery(WaterworksConfig.pump.groundwaterPumpEnergyCapacity,
+				WaterworksConfig.pump.groundwaterPumpEnergyInput, 0, this);
 
-		this.energyUsage = WaterworksConfig.GROUNDWATER_PUMP_ENERGY_BASEUSAGE
-				+ WaterworksConfig.GROUNDWATER_PUMP_ENERGY_PIPEMULTIPLIER * this.pipeCounter;
+		this.energyUsage = WaterworksConfig.pump.groundwaterPumpEnergyBaseUsage
+				+ WaterworksConfig.pump.groundwaterPumpEnergyPipeMultiplier * this.pipeCounter;
 
 		this.RESOURCE_WATER = new FluidStack(FluidRegistry.WATER, fillrate);
 
@@ -87,14 +88,14 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	private boolean refill() {
 		if (this.battery.getEnergyStored() >= this.energyUsage) {
 			final int filled = this.fluidTank.fillInternal(this.RESOURCE_WATER, true);
-			if (filled == WaterworksConfig.GROUNDWATER_PUMP_FILLRATE) {
+			if (filled == WaterworksConfig.pump.groundwaterPumpFillrate) {
 				if (this.battery.extractInternal(this.energyUsage, false) > 0) {
 					return true;
 				}
 				return false;
 			} else if (filled > 0) {
 				final int energy = this.energyUsage
-						* Math.round(((float) filled) / WaterworksConfig.GROUNDWATER_PUMP_FILLRATE);
+						* Math.round(((float) filled) / WaterworksConfig.pump.groundwaterPumpFillrate);
 				if (this.battery.extractInternal(energy, false) > 0) {
 					return true;
 				}
@@ -126,16 +127,18 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 					continue;
 				}
 			}
-			if (block.equals(Blocks.BEDROCK) || (!WaterworksConfig.GROUNDWATER_PUMP_CHECK_BEDROCK && y < 0)) {
+			if (block.equals(Blocks.BEDROCK)
+					|| (!WaterworksConfig.pump.groundwaterPumpCheckBedrock && y < 0)) {
 				this.structureComplete = true;
 				this.pipeCounter = count;
-				this.energyUsage = WaterworksConfig.GROUNDWATER_PUMP_ENERGY_BASEUSAGE
-						+ WaterworksConfig.GROUNDWATER_PUMP_ENERGY_PIPEMULTIPLIER * this.pipeCounter;
+				this.energyUsage = WaterworksConfig.pump.groundwaterPumpEnergyBaseUsage
+						+ WaterworksConfig.pump.groundwaterPumpEnergyPipeMultiplier * this.pipeCounter;
 				break;
 			} else if (block.equals(Blocks.AIR)) {
-				if (this.battery.hasEnoughEnergy(WaterworksConfig.GROUNDWATER_PUMP_PIPE_PLACEMENT_ENERGY)
+				if (this.battery.hasEnoughEnergy(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement)
 						&& placePipe(currentPos)) {
-					this.battery.extractInternal(WaterworksConfig.GROUNDWATER_PUMP_PIPE_PLACEMENT_ENERGY, false);
+					this.battery.extractInternal(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement,
+							false);
 					count++;
 					y--;
 					break;

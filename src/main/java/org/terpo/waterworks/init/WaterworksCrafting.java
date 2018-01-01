@@ -17,14 +17,14 @@ public class WaterworksCrafting {
 
 	public static void registerFireworks() {
 		final IForgeRegistry<IRecipe> registry = ForgeRegistries.RECIPES;
-		if (WaterworksConfig.RECIPE_RAIN_ROCKET && WaterworksConfig.REGISTER_RAIN_ROCKET) {
+		if (WaterworksConfig.recipes.recipeRainRocket && WaterworksConfig.register.rainRocket) {
 			final RainRocketRecipe rainRocketRecipe = new RainRocketRecipe();
 			registry.register(rainRocketRecipe.setRegistryName(WaterworksReference.MODID,
 					WaterworksRegistryNames.ITEM_FIREWORK_RAIN));
 //			RecipeSorter.register(WaterworksReference.DOMAIN + "shapeless_firework_rain", RainRocketRecipe.class,
 //					Category.SHAPELESS, "after:minecraft:shapeless");
 		}
-		if (WaterworksConfig.RECIPE_ANTI_RAIN_ROCKET && WaterworksConfig.REGISTER_ANTI_RAIN_ROCKET) {
+		if (WaterworksConfig.recipes.recipeAntiRainRocket && WaterworksConfig.register.antiRainRocket) {
 			final AntiRainRocketRecipe antiRainRocketRecipe = new AntiRainRocketRecipe();
 			registry.register(antiRainRocketRecipe.setRegistryName(WaterworksReference.MODID,
 					WaterworksRegistryNames.ITEM_FIREWORK_ANTI_RAIN));

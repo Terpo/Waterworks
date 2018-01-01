@@ -27,11 +27,11 @@ public class InitItems {
 	public static void registerItems(IForgeRegistry<Item> registry) {
 		WaterworksItems.pipe_wrench = registerItem(registry, new ItemPipeWrench(),
 				WaterworksRegistryNames.ITEM_PIPE_WRENCH);
-		if (WaterworksConfig.REGISTER_RAIN_ROCKET) {
+		if (WaterworksConfig.register.rainRocket) {
 			WaterworksItems.firework_rain = registerItem(registry, new ItemFireworkRain(),
 					WaterworksRegistryNames.ITEM_FIREWORK_RAIN);
 		}
-		if (WaterworksConfig.REGISTER_ANTI_RAIN_ROCKET) {
+		if (WaterworksConfig.register.antiRainRocket) {
 			WaterworksItems.firework_anti_rain = registerItem(registry, new ItemFireworkAntiRain(),
 					WaterworksRegistryNames.ITEM_FIREWORK_ANTI_RAIN);
 		}

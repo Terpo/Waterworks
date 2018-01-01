@@ -46,8 +46,8 @@ public class EntityFireworkRocketAntiRain extends Entity {
 	 */
 	private int lifetime;
 	private EntityLivingBase entityPlacer;
-	private int minimumClearSky = WaterworksConfig.ANTI_RAIN_DURATION;
-	private int realClearSky = WaterworksConfig.ANTI_RAIN_DURATION;
+	private int minimumClearSky = WaterworksConfig.rockets.clearSkyDuration;
+	private int realClearSky = WaterworksConfig.rockets.clearSkyDuration;
 	private int antiRainMultiplier = -1;
 	public EntityFireworkRocketAntiRain(World worldIn) {
 		super(worldIn);
@@ -78,7 +78,7 @@ public class EntityFireworkRocketAntiRain extends Entity {
 				this.antiRainMultiplier = tag.getInteger("ANTIRAIN");
 			}
 			if (this.antiRainMultiplier != -1) {
-				this.minimumClearSky = WaterworksConfig.ANTI_RAIN_DURATION * this.antiRainMultiplier;
+				this.minimumClearSky = WaterworksConfig.rockets.clearSkyDuration * this.antiRainMultiplier;
 				this.realClearSky = this.minimumClearSky + calculateRealClearSky(this.antiRainMultiplier);
 				if (!worldIn.isRemote) {
 					announceRocket(this.realClearSky);
@@ -109,13 +109,13 @@ public class EntityFireworkRocketAntiRain extends Entity {
 	}
 
 	private int calculateRealClearSky(int multiplier) {
-		final int MAX_CLEAR_DAYS = WaterworksConfig.ANTI_RAIN_MAX_RANDOM_ADDITIONAL_DAYS;
+		final int MAX_CLEAR_DAYS = WaterworksConfig.rockets.clearSkyMaxRandomAdditionalDays;
 		if (MAX_CLEAR_DAYS == 0) {
 			return 0;
 		}
 		final int DAYTICKS = 24000;
 		final int maxClearTicks = MAX_CLEAR_DAYS * DAYTICKS;
-		final float multi = (WaterworksConfig.ANTI_RAIN_DURATION_MULTIPLIER_MAX) / ((multiplier + 0.001f) * 6);
+		final float multi = (WaterworksConfig.rockets.clearSkyMaxMultiplier) / ((multiplier + 0.001f) * 6);
 		final float randomMultiplier = multi * (this.rand.nextFloat() * 48) + 1;
 		double log = Math.log(randomMultiplier) / 4;
 		if (log > 1) {

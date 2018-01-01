@@ -28,10 +28,10 @@ public class JEIDescription {
 		descriptionMap.put(WaterworksItems.firework_rain, "item.firework_rain.description");
 		descriptionMap.put(WaterworksItems.firework_anti_rain, "item.firework_anti_rain.description");
 		descriptionMap.put(WaterworksItems.pipe_wrench, "item.pipe_wrench.description");
-		if (WaterworksConfig.FIREWORK_CHARGE_DESCRIPTION) {
+		if (WaterworksConfig.rockets.fireworkChargeDescription) {
 			descriptionMap.put(Items.FIREWORK_CHARGE, "item.firework_charge.description");
 		}
-		if (WaterworksConfig.FIREWORKS_DESCRIPTION) {
+		if (WaterworksConfig.rockets.fireworksDescription) {
 			descriptionMap.put(Items.FIREWORKS, "item.fireworks.description");
 		}
 		descriptionMap.forEach((obj, descriptionKey) -> {

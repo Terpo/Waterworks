@@ -75,11 +75,11 @@ public class ItemFireworkAntiRain extends ItemFirework {
 				final int multi = nbttagcompound.getInteger("ANTIRAIN");
 				tooltip.add(I18n.format("tooltip.anti_rain_rocket.good_weather"));
 				tooltip.add(I18n.format("tooltip.anti_rain_rocket.sunshine_multiplier") + ": " + multi + "/"
-						+ WaterworksConfig.ANTI_RAIN_DURATION_MULTIPLIER_MAX);
+						+ WaterworksConfig.rockets.clearSkyMaxMultiplier);
 				tooltip.add(I18n.format("tooltip.anti_rain_rocket.sunshine_duration") + ": "
-						+ (WaterworksConfig.ANTI_RAIN_DURATION * multi) + " ticks");
+						+ (WaterworksConfig.rockets.clearSkyDuration * multi) + " ticks");
 				tooltip.add(I18n.format("tooltip.anti_rain_rocket.max_additional_days") + ": "
-						+ WaterworksConfig.ANTI_RAIN_MAX_RANDOM_ADDITIONAL_DAYS);
+						+ WaterworksConfig.rockets.clearSkyMaxRandomAdditionalDays);
 			}
 		}
 
