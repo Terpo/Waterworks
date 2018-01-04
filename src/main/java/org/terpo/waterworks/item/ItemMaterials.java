@@ -16,8 +16,10 @@ public class ItemMaterials extends Item {
 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-		for (int i = 0; i < EnumItemMaterials.VALUES.length; i++) {
-			items.add(new ItemStack(this, 1, i));
+		if (this.isInCreativeTab(tab)) {
+			for (int i = 0; i < EnumItemMaterials.VALUES.length; i++) {
+				items.add(new ItemStack(this, 1, i));
+			}
 		}
 	}
 
@@ -25,5 +27,4 @@ public class ItemMaterials extends Item {
 	public String getUnlocalizedName(ItemStack stack) {
 		return super.getUnlocalizedName(stack) + "." + EnumItemMaterials.VALUES[stack.getItemDamage()];
 	}
-
 }
