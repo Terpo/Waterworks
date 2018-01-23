@@ -26,15 +26,14 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 public class CommonProxy {
 	@SuppressWarnings({"static-method", "unused"})
 	public void preInit(FMLPreInitializationEvent event) {
-
 		InitModCompat.init("pre");
+		WaterworksPacketHandler.registerMessages();
 	}
 
 	@SuppressWarnings({"static-method", "unused"})
 	public void init(FMLInitializationEvent event) {
 		InitModCompat.init("init");
 		WaterworksCrafting.register();
-		WaterworksPacketHandler.registerMessages();
 		NetworkRegistry.INSTANCE.registerGuiHandler(Waterworks.instance, new GuiProxy());
 	}
 
