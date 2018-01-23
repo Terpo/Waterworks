@@ -1,7 +1,10 @@
 package org.terpo.waterworks.network;
 
+import org.terpo.waterworks.api.constants.WaterworksReference;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -11,18 +14,13 @@ import net.minecraftforge.fml.relauncher.Side;
 public class WaterworksPacketHandler {
 	private static int packetId = 0;
 
-	public static SimpleNetworkWrapper INSTANCE = null;
+	public static SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(WaterworksReference.MODID);
 
 	public WaterworksPacketHandler() {
 	}
 
 	public static int nextID() {
 		return packetId++;
-	}
-
-	public static void registerMessages(String channelName) {
-		INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(channelName);
-		registerMessages();
 	}
 
 	public static void registerMessages() {
@@ -32,9 +30,12 @@ public class WaterworksPacketHandler {
 	}
 
 	public static void sendToAllAround(IMessage message, TileEntity tileEntity, int range) {
+		final World world = tileEntity.getWorld();
 		final BlockPos blockPos = tileEntity.getPos();
-		INSTANCE.sendToAllAround(message, new TargetPoint(tileEntity.getWorld().provider.getDimension(),
-				blockPos.getX(), blockPos.getY(), blockPos.getZ(), range));
+		if (world.isBlockLoaded(blockPos)) {
+			INSTANCE.sendToAllAround(message, new TargetPoint(world.provider.getDimension(), blockPos.getX(),
+					blockPos.getY(), blockPos.getZ(), range));
+		}
 	}
 
 	public static void sendToAllAround(IMessage message, TileEntity te) {
