@@ -361,7 +361,7 @@ public class EntityFireworkRocketAntiRain extends Entity {
 			for (int i = 0; i < this.antiRainMultiplier; i++) {
 				worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + this.rand.nextDouble() * 2 - 1.0d,
 						pos.getY() + this.rand.nextDouble() * 2 - 1.0d, pos.getZ() + this.rand.nextDouble() * 2 - 1.0d,
-						new ItemStack(Blocks.SPONGE, 1, 1)));
+						new ItemStack(Blocks.SPONGE, 1, worldIn.isRaining() ? 1 : 0)));
 			}
 		}
 	}
