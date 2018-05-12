@@ -56,6 +56,9 @@ waterworks.general.raincollection.woodenraintankcapacity=Wooden Rain Tank Capaci
 waterworks.general.raincollection.raincollectorfillrate=Rain Collector Fillrate
 waterworks.general.raincollection.raincollectorcapacity=Rain Collector Capacity
 waterworks.general.raincollection.raincollectorrange=Rain Collector Range
+waterworks.general.raincollection.woodenraintankdescription=Wooden Rain Tank JEI Description
+waterworks.general.raincollection.raincollectordescription=Rain Collector Multiblock JEI Description
+waterworks.general.raincollection.wrenchdescription=Wrench JEI Description
 
 waterworks.general.pump.groundwaterpumpfillrate=Fillrate
 waterworks.general.pump.groundwaterpumpcapacity=Capacity
@@ -66,6 +69,7 @@ waterworks.general.pump.groundwaterpumpenergyinput=Energy Input
 waterworks.general.pump.groundwaterpumpenergypipeplacement=Energy Pipe Placement
 waterworks.general.pump.groundwaterpumpsafety=Safety
 waterworks.general.pump.groundwaterpumpcheckbedrock=Check Bedrock
+waterworks.general.pump.groundwaterpumpdescription=JEI Description
 
 waterworks.general.rockets.rainduration=Rain Duration
 waterworks.general.rockets.rainmaxmultiplier=Rain Max Multiplier
@@ -74,6 +78,7 @@ waterworks.general.rockets.clearskymaxmultiplier=Clear Sky Max Multiplier
 waterworks.general.rockets.clearskymaxrandomadditionaldays=Clear Sky Max Random Additional Days
 waterworks.general.rockets.fireworkchargedescription=Vanilla Firework Charge Description
 waterworks.general.rockets.fireworksdescription=Vanilla Fireworks Description
+waterworks.general.rockets.fireworkrocketsdescription=Firework Rockets JEI Description
 
 waterworks.general.register.rainrocket=Rain Rocket
 waterworks.general.register.antirainrocket=Anti Rain Rocket

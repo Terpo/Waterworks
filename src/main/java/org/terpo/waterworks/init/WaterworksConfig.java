@@ -18,6 +18,8 @@ public class WaterworksConfig {
 	public static final WaterworksRegister register = new WaterworksRegister();
 	public static final WaterworksRecipes recipes = new WaterworksRecipes();
 
+	// TODO with next major release: move JEI stuff
+
 	public static class RainCollection {
 		/**
 		 * CONFIG RAIN COLLECTION
@@ -43,6 +45,15 @@ public class WaterworksConfig {
 		@Config.Comment("Search radius of the Rain Collector Controller")
 		@Config.RangeInt(min = 0, max = 7)
 		public int rainCollectorRange = 2;
+
+		@Config.Comment("Turn this to false to disable JEI description for the Wooden Rain Tank.")
+		public boolean woodenRainTankDescription = true;
+
+		@Config.Comment("Turn this to false to disable JEI description for the Rain Collector Multiblock.")
+		public boolean rainCollectorDescription = true;
+
+		@Config.Comment("Turn this to false to disable JEI description for the Wrench.")
+		public boolean wrenchDescription = true;
 	}
 
 	public static class GroundwaterPump {
@@ -82,6 +93,9 @@ public class WaterworksConfig {
 
 		@Config.Comment("Turn this to false if your world does not generate Bedrock. (Skyblock)")
 		public boolean groundwaterPumpCheckBedrock = true;
+
+		@Config.Comment("Turn this to false to disable JEI description for the Groundwater Pump.")
+		public boolean groundwaterPumpDescription = true;
 	}
 
 	public static class Rockets {
@@ -109,6 +123,9 @@ public class WaterworksConfig {
 		@Config.Comment("Maximum days of clear sky that will added to the calculated time.")
 		@Config.RangeInt(min = 0, max = 7)
 		public int clearSkyMaxRandomAdditionalDays = 3;
+
+		@Config.Comment("Turn this to false to disable JEI description for the Rockets.")
+		public boolean fireworkRocketsDescription = true;
 
 		// Vanilla Firework
 		@Config.Comment("JEI: Adds a small description for firework star.")
