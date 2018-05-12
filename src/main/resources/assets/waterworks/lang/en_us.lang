@@ -31,10 +31,10 @@ tooltip.anti_rain_rocket.max_additional_days=Maximum random additional days
 #pipe_wrench.no_controller=No Controller found
 
 #JEI
-tile.groundwater_pump.description=The Groundwater Pump needs clear sight to bedrock. Place water pipes into its inventory and give it some power to run.
-tile.rain_collector.description=These blocks increase the yield of a controller block. Its a free form multiblock. Only a face needs to be connected to the controller block.
-tile.rain_collector_controller.description=The heart of the rain collector multiblock structure. Add collectors on the faces to increase the yield. Start a search for valid collectors by right clicking with a Pipe Wrench on it.
-tile.rain_tank_wood.description=A simply rain tank that collects water when its raining.
+tile.groundwater_pump.description=The Groundwater Pump extracts water from below bedrock. It needs clear sight to bedrock. Place water pipes into its inventory and give it some power to run. Pipes will be placed automatically.
+tile.rain_collector.description=Used to increase the size of the rain collector multiblock. Place it down at a cardinal face of the controller or at a cardinal face of another collector. After the placement right click the controller with the Pipe Wrench. Every additional collector needs clear sight to the sky and will increase the yield of the multiblock structure.
+tile.rain_collector_controller.description=The heart of the rain collector multiblock structure. Collects water when it is raining and needs clear sight to the sky. Add collectors on the cardinal faces to increase the yield. Start a search for valid collectors by right clicking with a Pipe Wrench on it.
+tile.rain_tank_wood.description=A simple rain tank that collects water when its raining. It needs clear sight to the sky.
 tile.water_pipe.description=A decorative block that is needed for the Groundwater Pump to work properly
 item.firework_rain.description=Use a Minecraft Rocket and some Ghast Tears to craft a Rain Rocket. More Tears equals a longer duration.
 item.firework_anti_rain.description=Use a Minecraft Rocket and some dry Sponges to craft an Anti Rain Rocket. More Sponges will increase the good weather duration. A random additional time is added to the fixed value in the tooltip. You will get back your Sponges as wet version.
