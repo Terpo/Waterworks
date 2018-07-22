@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntityRainTankWood extends TileWaterworks {
 
+	// TODO Refactor this style nonsense
 	protected FluidStack RESOURCE_WATER = null;
 	private static final int invSlots = 2;
 
@@ -66,6 +67,8 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		return false;
 	}
 
+	// TODO use the official version and not the copy as Tough as nails should be fixed by
+	// now
 	protected boolean isRainingAtPosition(BlockPos posi) {
 		// copy of isRainingAt in World.class
 		if (!this.world.isRaining()) {

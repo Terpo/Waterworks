@@ -29,6 +29,7 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 	private int currentTick = random.nextInt(256);
 	protected WaterworksTank fluidTank;
 
+	// TODO refactor this style nonsense!
 	protected int INVSIZE;
 	protected int TANKSIZE;
 
