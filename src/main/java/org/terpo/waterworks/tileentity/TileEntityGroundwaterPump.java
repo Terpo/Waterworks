@@ -25,18 +25,18 @@ import net.minecraftforge.fluids.FluidStack;
 public class TileEntityGroundwaterPump extends TileWaterworks {
 
 	protected FluidStack RESOURCE_WATER = null;
-	private static final int invSlots = 5;
+	private static final int PUMP_INVENTORY_SLOTS = 5;
+	private static final int PIPE_INVENTARY_SLOT_START = 2;
 	private int pipeCounter = 1;
 	private boolean structureComplete = false;
 	private WaterworksBattery battery;
 	private int energyUsage;
 
 	public TileEntityGroundwaterPump() {
-		this(WaterworksConfig.pump.groundwaterPumpFillrate,
-				WaterworksConfig.pump.groundwaterPumpCapacity);
+		this(WaterworksConfig.pump.groundwaterPumpFillrate, WaterworksConfig.pump.groundwaterPumpCapacity);
 	}
 	public TileEntityGroundwaterPump(int fillrate, int capacity) {
-		super(invSlots, capacity);
+		super(PUMP_INVENTORY_SLOTS, capacity);
 
 		this.battery = new WaterworksBattery(WaterworksConfig.pump.groundwaterPumpEnergyCapacity,
 				WaterworksConfig.pump.groundwaterPumpEnergyInput, 0, this);
@@ -127,8 +127,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 					continue;
 				}
 			}
-			if (block.equals(Blocks.BEDROCK)
-					|| (!WaterworksConfig.pump.groundwaterPumpCheckBedrock && y < 0)) {
+			if (block.equals(Blocks.BEDROCK) || (!WaterworksConfig.pump.groundwaterPumpCheckBedrock && y < 0)) {
 				this.structureComplete = true;
 				this.pipeCounter = count;
 				this.energyUsage = WaterworksConfig.pump.groundwaterPumpEnergyBaseUsage
@@ -137,8 +136,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 			} else if (block.equals(Blocks.AIR)) {
 				if (this.battery.hasEnoughEnergy(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement)
 						&& placePipe(currentPos)) {
-					this.battery.extractInternal(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement,
-							false);
+					this.battery.extractInternal(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement, false);
 					count++;
 					y--;
 					break;
@@ -170,7 +168,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 
 	private HashMap<ItemStack, Integer> getPipeStacks() {
 		final HashMap<ItemStack, Integer> pipeStack = new HashMap<>();
-		for (int i = 0; i < this.INVSIZE; i++) {
+		for (int i = PIPE_INVENTARY_SLOT_START; i < this.INVSIZE; i++) {
 			final ItemStack stack = this.itemStackHandler.getStackInSlot(i);
 			if (!stack.isEmpty()) {
 				pipeStack.put(stack, Integer.valueOf(i));
