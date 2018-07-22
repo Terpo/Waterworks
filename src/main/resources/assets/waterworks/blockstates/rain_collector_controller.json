@@ -1,13 +1,5 @@
 {
-    "forge_marker": 1,
-    
     "variants":{
-		"normal":[{
-    		"model":"waterworks:rain_collector_controller",
-    		"textures": {
-        	    "all": "blocks/dirt"
-        	}
-        }],
-    	"inventory":[{}]
+        "normal":{"model": "waterworks:rain_collector_controller"}
     }
 }
