@@ -52,7 +52,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		this.fluidTank.setCanFill(false);
 		this.fluidTank.setTileEntity(this);
 
-		this.itemStackHandler = new PumpItemStackHandler(this.INVSIZE, this);
+		this.itemStackHandler = new PumpItemStackHandler(this.inventorySize, this);
 
 		// FluidItems Slots
 		this.itemStackHandler.setInputFlagForIndex(0, true);
@@ -178,7 +178,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 
 	private HashMap<ItemStack, Integer> getPipeStacks() {
 		final HashMap<ItemStack, Integer> pipeStack = new HashMap<>();
-		for (int i = PIPE_INVENTARY_SLOT_START; i < this.INVSIZE; i++) {
+		for (int i = PIPE_INVENTARY_SLOT_START; i < this.inventorySize; i++) {
 			final ItemStack stack = this.itemStackHandler.getStackInSlot(i);
 			if (!stack.isEmpty()) {
 				pipeStack.put(stack, Integer.valueOf(i));

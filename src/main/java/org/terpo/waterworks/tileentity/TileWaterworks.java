@@ -29,19 +29,18 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 	private int currentTick = random.nextInt(256);
 	protected WaterworksTank fluidTank;
 
-	// TODO refactor this style nonsense!
-	protected int INVSIZE;
-	protected int TANKSIZE;
+	protected int inventorySize;
+	protected int tankSize;
 
 	// This item handler will hold our two inventory slots
 	protected GeneralItemStackHandler itemStackHandler;
 	// TileEntity
 	public TileWaterworks(int inventorySize, int tankSize) {
 		super();
-		this.INVSIZE = inventorySize;
-		this.TANKSIZE = tankSize;
+		this.inventorySize = inventorySize;
+		this.tankSize = tankSize;
 
-		this.fluidTank = new WaterworksTank(this.TANKSIZE);
+		this.fluidTank = new WaterworksTank(this.tankSize);
 	}
 
 	protected void sendUpdatePacket() {
@@ -130,19 +129,19 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 	// ITickable End
 
 	public int getINVSIZE() {
-		return this.INVSIZE;
+		return this.inventorySize;
 	}
 
 	public void setINVSIZE(int iNVSIZE) {
-		this.INVSIZE = iNVSIZE;
+		this.inventorySize = iNVSIZE;
 	}
 
 	public int getTANKSIZE() {
-		return this.TANKSIZE;
+		return this.tankSize;
 	}
 
 	public void setTANKSIZE(int tANKSIZE) {
-		this.TANKSIZE = tANKSIZE;
+		this.tankSize = tANKSIZE;
 	}
 
 	public int getComparatorOutput() {

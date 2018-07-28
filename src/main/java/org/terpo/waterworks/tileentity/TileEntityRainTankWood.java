@@ -12,22 +12,21 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntityRainTankWood extends TileWaterworks {
 
-	// TODO Refactor this style nonsense
-	protected FluidStack RESOURCE_WATER = null;
-	private static final int invSlots = 2;
+	protected FluidStack fluidResource = null;
+	private static final int INVENTORY_SLOT_COUNT = 2;
 
 	public TileEntityRainTankWood() {
 		this(WaterworksConfig.rainCollection.woodenRainTankFillrate,
 				WaterworksConfig.rainCollection.woodenRainTankCapacity);
 	}
 	public TileEntityRainTankWood(int fillrate, int capacity) {
-		super(invSlots, capacity);
-		this.RESOURCE_WATER = new FluidStack(FluidRegistry.WATER, fillrate);
+		super(INVENTORY_SLOT_COUNT, capacity);
+		this.fluidResource = new FluidStack(FluidRegistry.WATER, fillrate);
 
 		this.fluidTank.setCanFill(false);
 		this.fluidTank.setTileEntity(this);
 
-		this.itemStackHandler = new GeneralItemStackHandler(this.INVSIZE, this);
+		this.itemStackHandler = new GeneralItemStackHandler(this.inventorySize, this);
 
 		this.itemStackHandler.setInputFlagForIndex(0, true);
 		this.itemStackHandler.setOutputFlagForIndex(1, true);
@@ -61,7 +60,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		final BlockPos position = getPos().up();
 
 		if (isRainingAtPosition(position)) {
-			this.fluidTank.fillInternal(this.RESOURCE_WATER, true);
+			this.fluidTank.fillInternal(this.fluidResource, true);
 			return true;
 		}
 		return false;
