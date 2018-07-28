@@ -56,7 +56,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 		int i;
 		for (i = this.currentValidationPos; i < maxValid; i++) {
 			if (this.rainCollectorBlocks[i] != null) {
-				if (isRainingAtPosition(this.rainCollectorBlocks[i].up())) {
+				if (this.world.isRainingAt(this.rainCollectorBlocks[i].up())) {
 					this.countValidCollectors++;
 				}
 			}
