@@ -6,7 +6,6 @@ import org.terpo.waterworks.init.WaterworksConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -59,26 +58,10 @@ public class TileEntityRainTankWood extends TileWaterworks {
 	protected boolean isRefilling() {
 		final BlockPos position = getPos().up();
 
-		if (isRainingAtPosition(position)) {
+		if (this.world.isRainingAt(position)) {
 			this.fluidTank.fillInternal(this.fluidResource, true);
 			return true;
 		}
 		return false;
-	}
-
-	// TODO use the official version and not the copy as Tough as nails should be fixed by
-	// now
-	protected boolean isRainingAtPosition(BlockPos posi) {
-		// copy of isRainingAt in World.class
-		if (!this.world.isRaining()) {
-			return false;
-		} else if (!this.world.canBlockSeeSky(posi)) {
-			return false;
-		} else if (this.world.getPrecipitationHeight(posi).getY() > posi.getY()) {
-			return false;
-		} else {
-			final Biome biome = this.world.getBiome(posi);
-			return biome.getEnableSnow() ? false : (this.world.canSnowAt(posi, false) ? false : biome.canRain());
-		}
 	}
 }
