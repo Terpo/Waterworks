@@ -1,7 +1,10 @@
 package org.terpo.waterworks.tileentity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import org.terpo.waterworks.compat.bedrockbgone.BBGCompatibility;
 import org.terpo.waterworks.energy.WaterworksBattery;
 import org.terpo.waterworks.helper.PumpItemStackHandler;
 import org.terpo.waterworks.init.WaterworksBlocks;
@@ -116,6 +119,13 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		int y = this.pos.getY() - 1;
 		final int z = this.pos.getZ();
 
+		final List<Block> bedrocks = new ArrayList<>();
+		bedrocks.add(Blocks.BEDROCK);
+
+		if (BBGCompatibility.BETTER_BEDROCK != null) {
+			bedrocks.add(BBGCompatibility.BETTER_BEDROCK);
+		}
+
 		while (y >= 0) {
 			final BlockPos currentPos = new BlockPos(x, y, z);
 			final IBlockState state = this.world.getBlockState(currentPos);
@@ -127,7 +137,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 					continue;
 				}
 			}
-			if (block.equals(Blocks.BEDROCK) || (!WaterworksConfig.pump.groundwaterPumpCheckBedrock && y < 0)) {
+			if (bedrocks.contains(block) || (!WaterworksConfig.pump.groundwaterPumpCheckBedrock && y < 0)) {
 				this.structureComplete = true;
 				this.pipeCounter = count;
 				this.energyUsage = WaterworksConfig.pump.groundwaterPumpEnergyBaseUsage
