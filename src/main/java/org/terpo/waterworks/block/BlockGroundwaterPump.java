@@ -113,7 +113,6 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 		super.breakBlock(world, pos, state);
 	}
 
-	@SuppressWarnings("deprecation")
 	private static void breakPipes(World world, BlockPos pos) {
 		int y = pos.getY() - 1;
 		int count = 0;
@@ -131,10 +130,10 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 		if (count > 0) {
 			spawnAsEntity(world, pos, new ItemStack(WaterworksBlocks.water_pipe, count));
 			if (WaterworksConfig.pump.groundwaterPumpSafety) {
-				// TODO remove deprecated call
-				world.setBlockState(pos.down(),
-						Blocks.STONE_SLAB.getStateFromMeta(BlockStoneSlab.EnumType.COBBLESTONE.getMetadata()));
+				world.setBlockState(pos.down(), Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT,
+						BlockStoneSlab.EnumType.COBBLESTONE));
 			}
+
 		}
 
 	}
