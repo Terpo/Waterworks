@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	private final int controllerRange = 2;
-	private final int areaCount = (int) Math.pow(this.controllerRange * 2 + 1, 2);
+	private final int areaCount = (int) Math.pow(this.controllerRange * 2.0d + 1, 2);
 	private BlockPos[] rainCollectorBlocks = new BlockPos[this.areaCount];
 	protected int connectedCollectors = 1;
 
@@ -55,10 +55,8 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 				: (this.currentValidationPos + 5);
 		int i;
 		for (i = this.currentValidationPos; i < maxValid; i++) {
-			if (this.rainCollectorBlocks[i] != null) {
-				if (this.world.isRainingAt(this.rainCollectorBlocks[i].up())) {
-					this.countValidCollectors++;
-				}
+			if (this.rainCollectorBlocks[i] != null && this.world.isRainingAt(this.rainCollectorBlocks[i].up())) {
+				this.countValidCollectors++;
 			}
 		}
 		this.currentValidationPos = maxValid;

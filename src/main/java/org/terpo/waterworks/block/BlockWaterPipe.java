@@ -55,10 +55,10 @@ public class BlockWaterPipe extends Block {
 		while (true) {
 			newPos = newPos.up();
 			final Block block = worldIn.getBlockState(newPos).getBlock();
-			if (block.equals(WaterworksBlocks.water_pipe)) {
+			if (block.equals(WaterworksBlocks.waterPipe)) {
 				continue;
 			}
-			if (block.equals(WaterworksBlocks.groundwater_pump)) {
+			if (block.equals(WaterworksBlocks.groundwaterPump)) {
 				if (block.hasTileEntity(state)) {
 					final TileEntity tE = worldIn.getTileEntity(newPos);
 					if (tE instanceof TileEntityGroundwaterPump) {

@@ -14,7 +14,7 @@ public class WaterworksTab extends CreativeTabs {
 
 	@Override
 	public ItemStack getTabIconItem() {
-		return new ItemStack(WaterworksBlocks.groundwater_pump);
+		return new ItemStack(WaterworksBlocks.groundwaterPump);
 	}
 
 }

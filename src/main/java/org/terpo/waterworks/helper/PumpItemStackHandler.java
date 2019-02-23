@@ -16,7 +16,7 @@ public class PumpItemStackHandler extends GeneralItemStackHandler {
 	}
 	@Override
 	protected boolean isValidItemStack(ItemStack stack, int slot) {
-		if (slot > 1 && stack.getItem().equals(Item.getItemFromBlock(WaterworksBlocks.water_pipe))) {
+		if (slot > 1 && stack.getItem().equals(Item.getItemFromBlock(WaterworksBlocks.waterPipe))) {
 			return true;
 		}
 		return super.isValidItemStack(stack, slot);

@@ -21,16 +21,16 @@ public class JEIDescription {
 
 		final HashMap<Object, String> descriptionMap = new HashMap<>();
 		if (WaterworksConfig.pump.groundwaterPumpDescription) {
-			descriptionMap.put(WaterworksBlocks.groundwater_pump, "tile.groundwater_pump.description");
-			descriptionMap.put(WaterworksBlocks.water_pipe, "tile.water_pipe.description");
+			descriptionMap.put(WaterworksBlocks.groundwaterPump, "tile.groundwater_pump.description");
+			descriptionMap.put(WaterworksBlocks.waterPipe, "tile.water_pipe.description");
 		}
 		if (WaterworksConfig.rainCollection.rainCollectorDescription) {
-			descriptionMap.put(WaterworksBlocks.rain_collector, "tile.rain_collector.description");
-			descriptionMap.put(WaterworksBlocks.rain_collector_controller,
+			descriptionMap.put(WaterworksBlocks.rainCollector, "tile.rain_collector.description");
+			descriptionMap.put(WaterworksBlocks.rainCollectorController,
 					"tile.rain_collector_controller.description");
 		}
 		if (WaterworksConfig.rainCollection.woodenRainTankDescription) {
-			descriptionMap.put(WaterworksBlocks.rain_tank_wood, "tile.rain_tank_wood.description");
+			descriptionMap.put(WaterworksBlocks.rainTankWood, "tile.rain_tank_wood.description");
 		}
 
 		if (WaterworksConfig.rockets.fireworkRocketsDescription) {

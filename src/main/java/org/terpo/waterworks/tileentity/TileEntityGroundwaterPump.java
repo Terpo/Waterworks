@@ -27,9 +27,20 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntityGroundwaterPump extends TileWaterworks {
 
-	protected FluidStack RESOURCE_WATER = null;
+	/**
+	 * used NBT Tags
+	 */
+	private static final String NBT_BOOLEAN_STRUCTURE_COMPLETE = "structureComplete";
+	private static final String NBT_INT_PIPE_COUNTER = "pipeCounter";
+	private static final String NBT_INT_ENERGY_USAGE = "energyUsage";
+
+	/**
+	 * constants
+	 */
 	private static final int PUMP_INVENTORY_SLOTS = 5;
 	private static final int PIPE_INVENTARY_SLOT_START = 2;
+
+	protected FluidStack resourceWater = null;
 	private int pipeCounter = 1;
 	private boolean structureComplete = false;
 	private WaterworksBattery battery;
@@ -47,7 +58,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		this.energyUsage = WaterworksConfig.pump.groundwaterPumpEnergyBaseUsage
 				+ WaterworksConfig.pump.groundwaterPumpEnergyPipeMultiplier * this.pipeCounter;
 
-		this.RESOURCE_WATER = new FluidStack(FluidRegistry.WATER, fillrate);
+		this.resourceWater = new FluidStack(FluidRegistry.WATER, fillrate);
 
 		this.fluidTank.setCanFill(false);
 		this.fluidTank.setTileEntity(this);
@@ -66,10 +77,8 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 
 	@Override
 	protected void updateServerSide() {
-		if (needsUpdate(5)) {
-			if (fillFluid()) {
-				this.isDirty = true;
-			}
+		if (needsUpdate(5) && fillFluid()) {
+			this.isDirty = true;
 		}
 
 		if (needsUpdate(20)) {
@@ -90,19 +99,13 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	}
 	private boolean refill() {
 		if (this.battery.getEnergyStored() >= this.energyUsage) {
-			final int filled = this.fluidTank.fillInternal(this.RESOURCE_WATER, true);
+			final int filled = this.fluidTank.fillInternal(this.resourceWater, true);
 			if (filled == WaterworksConfig.pump.groundwaterPumpFillrate) {
-				if (this.battery.extractInternal(this.energyUsage, false) > 0) {
-					return true;
-				}
-				return false;
+				return this.battery.extractInternal(this.energyUsage, false) > 0;
 			} else if (filled > 0) {
 				final int energy = this.energyUsage
 						* Math.round(((float) filled) / WaterworksConfig.pump.groundwaterPumpFillrate);
-				if (this.battery.extractInternal(energy, false) > 0) {
-					return true;
-				}
-				return false;
+				return this.battery.extractInternal(energy, false) > 0;
 			}
 		}
 		return false;
@@ -130,7 +133,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 			final BlockPos currentPos = new BlockPos(x, y, z);
 			final IBlockState state = this.world.getBlockState(currentPos);
 			final Block block = state.getBlock();
-			if (block.equals(WaterworksBlocks.water_pipe)) {
+			if (block.equals(WaterworksBlocks.waterPipe)) {
 				count++;
 				y--;
 				if (y >= 0) {
@@ -142,15 +145,12 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 				this.pipeCounter = count;
 				this.energyUsage = WaterworksConfig.pump.groundwaterPumpEnergyBaseUsage
 						+ WaterworksConfig.pump.groundwaterPumpEnergyPipeMultiplier * this.pipeCounter;
+				return;
+			} else if (block.equals(Blocks.AIR)
+					&& this.battery.hasEnoughEnergy(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement)
+					&& placePipe(currentPos)) {
+				this.battery.extractInternal(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement, false);
 				break;
-			} else if (block.equals(Blocks.AIR)) {
-				if (this.battery.hasEnoughEnergy(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement)
-						&& placePipe(currentPos)) {
-					this.battery.extractInternal(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement, false);
-					count++;
-					y--;
-					break;
-				}
 			}
 			this.structureComplete = false;
 			break;
@@ -162,7 +162,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		final HashMap<ItemStack, Integer> stacks = getPipeStacks();
 		if (!stacks.isEmpty()) {
 			stacks.forEach((stack, slot) -> {
-				if (this.world.setBlockState(currentPos, WaterworksBlocks.water_pipe.getDefaultState(), 2)) {
+				if (this.world.setBlockState(currentPos, WaterworksBlocks.waterPipe.getDefaultState(), 2)) {
 					if (stack.getCount() > 1) {
 						stack.shrink(1);
 					} else {
@@ -221,9 +221,9 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		this.battery.writeToNBT(compound);
-		compound.setInteger("energyUsage", this.energyUsage);
-		compound.setInteger("pipeCounter", this.pipeCounter);
-		compound.setBoolean("structureComplete", this.structureComplete);
+		compound.setInteger(NBT_INT_ENERGY_USAGE, this.energyUsage);
+		compound.setInteger(NBT_INT_PIPE_COUNTER, this.pipeCounter);
+		compound.setBoolean(NBT_BOOLEAN_STRUCTURE_COMPLETE, this.structureComplete);
 		return compound;
 	}
 
@@ -231,14 +231,14 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		this.battery = this.battery.readFromNBT(compound);
-		if (compound.hasKey("energyUsage")) {
-			this.energyUsage = compound.getInteger("energyUsage");
+		if (compound.hasKey(NBT_INT_ENERGY_USAGE)) {
+			this.energyUsage = compound.getInteger(NBT_INT_ENERGY_USAGE);
 		}
-		if (compound.hasKey("pipeCounter")) {
-			this.pipeCounter = compound.getInteger("pipeCounter");
+		if (compound.hasKey(NBT_INT_PIPE_COUNTER)) {
+			this.pipeCounter = compound.getInteger(NBT_INT_PIPE_COUNTER);
 		}
-		if (compound.hasKey("structureComplete")) {
-			this.structureComplete = compound.getBoolean("structureComplete");
+		if (compound.hasKey(NBT_BOOLEAN_STRUCTURE_COMPLETE)) {
+			this.structureComplete = compound.getBoolean(NBT_BOOLEAN_STRUCTURE_COMPLETE);
 		}
 	}
 }

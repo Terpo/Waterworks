@@ -22,6 +22,13 @@ public class InitTileEntities {
 	}
 
 	private static void registerTileEntity(Class<? extends TileEntity> clazz, String name) {
+		// TODO with next major release: use non deprecated version, add : which kills all
+		// TEs!
 		GameRegistry.registerTileEntity(clazz, WaterworksReference.MODID + name);
+//		GameRegistry.registerTileEntity(clazz, new ResourceLocation(WaterworksReference.MODID, name));
+	}
+
+	private InitTileEntities() {
+		// hideme
 	}
 }

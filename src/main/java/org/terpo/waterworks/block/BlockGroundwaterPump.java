@@ -119,7 +119,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 		while (y >= 0) {
 			final BlockPos position = new BlockPos(pos.getX(), y, pos.getZ());
 			final IBlockState state = world.getBlockState(position);
-			if (state.getBlock().equals(WaterworksBlocks.water_pipe)) {
+			if (state.getBlock().equals(WaterworksBlocks.waterPipe)) {
 				world.destroyBlock(position, false);
 				count++;
 				y--;
@@ -128,7 +128,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 			}
 		}
 		if (count > 0) {
-			spawnAsEntity(world, pos, new ItemStack(WaterworksBlocks.water_pipe, count));
+			spawnAsEntity(world, pos, new ItemStack(WaterworksBlocks.waterPipe, count));
 			if (WaterworksConfig.pump.groundwaterPumpSafety) {
 				world.setBlockState(pos.down(), Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT,
 						BlockStoneSlab.EnumType.COBBLESTONE));

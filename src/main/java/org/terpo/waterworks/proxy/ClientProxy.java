@@ -60,19 +60,19 @@ public class ClientProxy extends CommonProxy {
 	// INIT BLOCKS
 	public static void registerBlockRenders() {
 		if (WaterworksConfig.register.woodenRainTank) {
-			registerBlockRender(WaterworksBlocks.rain_tank_wood);
+			registerBlockRender(WaterworksBlocks.rainTankWood);
 			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRainTankWood.class, new TileEntityWaterRenderer());
 
 		}
 		if (WaterworksConfig.register.waterPipe) {
-			registerBlockRender(WaterworksBlocks.water_pipe);
+			registerBlockRender(WaterworksBlocks.waterPipe);
 		}
 		if (WaterworksConfig.register.rainCollectorMultiblock) {
-			registerBlockRender(WaterworksBlocks.rain_collector);
-			registerBlockRender(WaterworksBlocks.rain_collector_controller);
+			registerBlockRender(WaterworksBlocks.rainCollector);
+			registerBlockRender(WaterworksBlocks.rainCollectorController);
 		}
 		if (WaterworksConfig.register.groundwaterPump) {
-			registerBlockRender(WaterworksBlocks.groundwater_pump);
+			registerBlockRender(WaterworksBlocks.groundwaterPump);
 		}
 	}
 	public static void registerBlockRender(Block block) {
