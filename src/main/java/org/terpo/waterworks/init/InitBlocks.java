@@ -10,9 +10,8 @@ import org.terpo.waterworks.block.BlockRainTankWood;
 import org.terpo.waterworks.block.BlockWaterPipe;
 
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -41,11 +40,7 @@ public class InitBlocks {
 	}
 
 	public static Block registerBlock(IForgeRegistry<Block> registry, Block block, String name) {
-		return registerBlock(registry, block, name, Waterworks.CREATIVE_TAB);
-	}
-
-	public static Block registerBlock(IForgeRegistry<Block> registry, Block block, String name, CreativeTabs tab) {
-		block.setRegistryName(WaterworksReference.MODID, name).setUnlocalizedName(name).setCreativeTab(tab);
+		block.setRegistryName(WaterworksReference.MODID, name);
 		registry.register(block);
 		return block;
 	}
@@ -68,6 +63,11 @@ public class InitBlocks {
 	}
 
 	public static void registerItemBlock(IForgeRegistry<Item> registry, Block block) {
-		registry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+		registry.register(new BlockItem(block, new Item.Properties().group(Waterworks.CREATIVE_TAB))
+				.setRegistryName(block.getRegistryName()));
+	}
+
+	private InitBlocks() {
+		// hide me
 	}
 }

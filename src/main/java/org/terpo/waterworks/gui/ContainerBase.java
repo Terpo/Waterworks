@@ -4,7 +4,7 @@ import org.terpo.waterworks.inventory.FilteredFluidSlotItemHandler;
 import org.terpo.waterworks.inventory.SlotDefinition;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -64,7 +64,7 @@ public class ContainerBase extends Container {
 
 	// @Nullable
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+	public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
 		ItemStack itemstack = ItemStack.EMPTY;
 		final Slot slot = this.inventorySlots.get(index);
 
@@ -91,7 +91,7 @@ public class ContainerBase extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer playerIn) {
+	public boolean canInteractWith(PlayerEntity playerIn) {
 		return this.te.canInteractWith(playerIn);
 	}
 }

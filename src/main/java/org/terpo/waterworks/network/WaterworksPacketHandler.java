@@ -5,11 +5,11 @@ import org.terpo.waterworks.api.constants.WaterworksReference;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.PacketDistributor.TargetPoint;
 
 public class WaterworksPacketHandler {
 	private static int packetId = 0;
@@ -25,8 +25,8 @@ public class WaterworksPacketHandler {
 
 	public static void registerMessages() {
 		// Register messages which are sent from the client to the server here:
-		INSTANCE.registerMessage(TankPacket.Handler.class, TankPacket.class, nextID(), Side.CLIENT);
-		INSTANCE.registerMessage(EnergyPacket.Handler.class, EnergyPacket.class, nextID(), Side.CLIENT);
+		INSTANCE.registerMessage(TankPacket.Handler.class, TankPacket.class, nextID(), Dist.CLIENT);
+		INSTANCE.registerMessage(EnergyPacket.Handler.class, EnergyPacket.class, nextID(), Dist.CLIENT);
 	}
 
 	public static void sendToAllAround(IMessage message, TileEntity tileEntity, int range) {

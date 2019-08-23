@@ -2,16 +2,15 @@
 	"result": {
 		"item": "waterworks:water_pipe"
 	},
+	"type": "minecraft:crafting_shaped",
 	"pattern": [
 		"IBI",
 		"IBI",
 		"IBI"
 	],
-	"type": "forge:ore_shaped",
 	"key": {
 		"I": {
-			"type": "forge:ore_dict",
-			"ore": "ingotIron"
+			"tag": "forge:ingotIron"
 		},
 		"B": {
 			"item": "minecraft:iron_bars"

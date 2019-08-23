@@ -13,40 +13,36 @@ import org.terpo.waterworks.tileentity.specialrenderer.TileEntityWaterRenderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
-@Mod.EventBusSubscriber(Side.CLIENT)
-public class ClientProxy extends CommonProxy {
-	@Override
-	public void preInit(FMLPreInitializationEvent event) {
-		super.preInit(event);
-	}
-	@Override
-	public void init(FMLInitializationEvent event) {
-		super.init(event);
+@Mod.EventBusSubscriber(Dist.CLIENT)
+public class ClientProxy implements IProxy {
 
-	}
-	@Override
-	public void postInit(FMLPostInitializationEvent event) {
-		super.postInit(event);
+	// FIXME Custom Model Loading
 
-	}
 	@Override
-	public EntityPlayer getClientEntityPlayer() {
-		return Minecraft.getMinecraft().player;
+	public void setup(FMLCommonSetupEvent event) {
+		//
+	}
+
+	@Override
+	public World getClientWorld() {
+		return Minecraft.getInstance().world;
+	}
+
+	@Override
+	public ClientPlayerEntity getClientPlayerEntity() {
+		return Minecraft.getInstance().player;
 	}
 
 	@SuppressWarnings("unused")
@@ -76,33 +72,33 @@ public class ClientProxy extends CommonProxy {
 		}
 	}
 	public static void registerBlockRender(Block block) {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
-				new ModelResourceLocation(block.getRegistryName(), "inventory"));
+//		ModelLoader.setCustomModelResourceLocation(Item.BLOCK_TO_ITEM.get(block), 0,
+//				new ModelResourceLocation(block.getRegistryName(), "inventory"));
 	}
 
 	/*
 	 * INIT ITEMS
 	 */
 	public static void registerItemRenders() {
-		registerItemRender(WaterworksItems.pipe_wrench);
+		registerItemRender(WaterworksItems.itemPipeWrench);
 		if (WaterworksConfig.register.rainRocket) {
-			registerItemRender(WaterworksItems.firework_rain);
+			registerItemRender(WaterworksItems.itemFireworkRain);
 		}
 		if (WaterworksConfig.register.antiRainRocket) {
-			registerItemRender(WaterworksItems.firework_anti_rain);
+			registerItemRender(WaterworksItems.itemFireworkAntiRain);
 		}
-		registerItemRenderMaterials(WaterworksItems.materials);
+		registerItemRenderMaterials(WaterworksItems.itemMaterials);
 	}
 
 	public static void registerItemRender(Item item) {
-		ModelLoader.setCustomModelResourceLocation(item, 0,
-				new ModelResourceLocation(item.getRegistryName(), "inventory"));
+//		ModelLoader.setCustomModelResourceLocation(item, 0,
+//				new ModelResourceLocation(item.getRegistryName(), "inventory"));
 	}
 	public static void registerItemRenderMaterials(Item item) {
 		for (int i = 0; i < EnumItemMaterials.VALUES.length; i++) {
 			final ResourceLocation loc = item.getRegistryName();
-			ModelLoader.setCustomModelResourceLocation(item, i,
-					new ModelResourceLocation(loc + "_" + EnumItemMaterials.VALUES[i], "inventory"));
+//			ModelLoader.setCustomModelResourceLocation(item, i,
+//					new ModelResourceLocation(loc + "_" + EnumItemMaterials.VALUES[i], "inventory"));
 		}
 	}
 	/*

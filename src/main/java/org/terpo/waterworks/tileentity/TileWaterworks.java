@@ -2,28 +2,32 @@ package org.terpo.waterworks.tileentity;
 
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.terpo.waterworks.fluid.WaterworksTank;
 import org.terpo.waterworks.helper.GeneralItemStackHandler;
 import org.terpo.waterworks.network.TankPacket;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.PotionTypes;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.potion.Potions;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class TileWaterworks extends BaseTileEntity implements ITickable {
+public class TileWaterworks extends BaseTileEntity implements ITickableTileEntity {
 
 	private static final Random random = new Random();
 	private int currentTick = random.nextInt(256);
@@ -52,24 +56,24 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		super.writeToNBT(compound);
-		compound.setTag("items", this.itemStackHandler.serializeNBT());
-		this.fluidTank.writeToNBT(compound);
+	public CompoundNBT write(CompoundNBT compound) {
+		super.write(compound);
+		compound.put("items", this.itemStackHandler.serializeNBT());
+		this.fluidTank.write(compound);
 		return compound;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
+	public void read(CompoundNBT compound) {
+		super.read(compound);
 		if (compound.hasKey("items")) {
-			this.itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
+			this.itemStackHandler.deserializeNBT((CompoundNBT) compound.getTag("items"));
 		}
-		this.fluidTank = (WaterworksTank) this.fluidTank.readFromNBT(compound);
+		this.fluidTank = (WaterworksTank) this.fluidTank.read(compound);
 
 	}
 
-	public boolean canInteractWith(EntityPlayer playerIn) {
+	public boolean canInteractWith(PlayerEntity playerIn) {
 		// If we are too far away from this tile entity you cannot use it
 		return !isInvalid() && playerIn.getDistanceSq(this.pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
 	}
@@ -86,22 +90,24 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Nonnull
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return (T) this.itemStackHandler;
+			return LazyOptional.of(() -> (T) this.itemStackHandler);
 		}
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return (T) this.fluidTank;
+			return LazyOptional.of(() -> (T) this.fluidTank);
+
 		}
-		return super.getCapability(capability, facing);
+		return super.getCapability(capability, side);
 	}
 
 	// TileEntity End
 
 	// ITackable
 	@Override
-	public final void update() {
+	public final void tick() {
 		this.currentTick++;
 
 		if (!this.world.isRemote) {
@@ -192,8 +198,8 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 				if (stackInput.getItem().equals(Items.GLASS_BOTTLE)) {
 					if (internalFluidAmount >= 1000) {
 						final ItemStack outputSlot = this.itemStackHandler.getStackInSlot(1);
-						final ItemStack outputStack = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM),
-								PotionTypes.WATER);
+						final ItemStack outputStack = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION),
+								Potions.field_185230_b);
 						if (checkOutputSlot(outputSlot, outputStack)) {
 							this.fluidTank.drainInternal(1000, true);
 							moveFilledInputToOutput(stackInput, outputSlot, outputStack);
@@ -226,7 +232,7 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 		}
 	}
 	protected static FluidStack getWaterFluidStack(int amount) {
-		return new FluidStack(FluidRegistry.WATER, amount);
+		return new FluidStack(null, amount);
 	}
 
 	public int getCurrentTick() {

@@ -1,41 +1,42 @@
 package org.terpo.waterworks.tileentity;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 
 public class BaseTileEntity extends TileEntity {
 	protected boolean isDirty = false;
 
-	public BaseTileEntity() {
-		// constructor
-	}
-	// Client Sync
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		// called when the tile entity itself wants to sync to the client
-		final NBTTagCompound nbtTagCompound = new NBTTagCompound();
-		writeToNBT(nbtTagCompound);
-		final int metadata = getBlockMetadata();
-		return new SPacketUpdateTileEntity(this.pos, metadata, nbtTagCompound);
-	}
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		readFromNBT(pkt.getNbtCompound());
+	public BaseTileEntity(TileEntityType<?> tileEntityTypeIn) {
+		super(tileEntityTypeIn);
 	}
 
+	// Client Sync
+	// FIXME Client Sync
+//	@Override
+//	public SPacketUpdateTileEntity getUpdatePacket() {
+//		// called when the tile entity itself wants to sync to the client
+//		final CompoundNBT nbtTagCompound = new CompoundNBT();
+//		write(nbtTagCompound);
+//		final int metadata = getBlockMetadata();
+//		return new SPacketUpdateTileEntity(this.pos, metadata, nbtTagCompound);
+//	}
+//	@Override
+//	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+//		read(pkt.getNbtCompound());
+//	}
+
 	@Override
-	public NBTTagCompound getUpdateTag() {
-		// called whenever the chunkdata is sent to the client
-		final NBTTagCompound nbtTagCompound = new NBTTagCompound();
-		writeToNBT(nbtTagCompound);
+	public CompoundNBT getUpdateTag() {
+		// called whenever the chunk data is sent to the client
+		final CompoundNBT nbtTagCompound = new CompoundNBT();
+		write(nbtTagCompound);
 		return nbtTagCompound;
 	}
 
 	@Override
-	public void handleUpdateTag(NBTTagCompound tag) { // on chunk load CLIENT
-		this.readFromNBT(tag);
+	public void handleUpdateTag(CompoundNBT tag) { // on chunk load CLIENT
+		this.read(tag);
 	}
 	// Client Sync End
 

@@ -5,9 +5,9 @@ import java.util.HashMap;
 import org.terpo.waterworks.inventory.SlotDefinition;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -31,7 +31,7 @@ public class GeneralItemStackHandler extends ItemStackHandler {
 		this.outputSlots = new boolean[size];
 
 		this.filter.put(Items.GLASS_BOTTLE, SlotDefinition.I);
-		this.filter.put(Items.POTIONITEM, SlotDefinition.O);
+		this.filter.put(Items.POTION, SlotDefinition.O);
 
 		for (int i = 0; i < size; i++) {
 			this.inputSlots[i] = false;
@@ -125,7 +125,7 @@ public class GeneralItemStackHandler extends ItemStackHandler {
 
 	protected boolean isValidItemStack(ItemStack stack, int slot) {
 		if (slot <= 1) {
-			return (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)
+			return (stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null).isPresent()
 					|| additionalFilters(stack, slot));
 		}
 		return false;

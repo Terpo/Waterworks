@@ -1,42 +1,32 @@
 package org.terpo.waterworks.block;
 
-import org.terpo.waterworks.compat.top.provider.TOPInfoProvider;
-import org.terpo.waterworks.tileentity.BaseTileEntity;
-import org.terpo.waterworks.tileentity.TileEntityRainCollector;
-import org.terpo.waterworks.tileentity.TileEntityRainCollectorController;
+import javax.annotation.Nullable;
 
-import mcjty.theoneprobe.api.IIconStyle;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.ProbeMode;
-import net.minecraft.block.ITileEntityProvider;
+import org.terpo.waterworks.tileentity.BaseTileEntity;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BaseBlockTE<T extends BaseTileEntity> extends BaseBlock implements ITileEntityProvider, TOPInfoProvider {
+public class BaseBlockTE<T extends BaseTileEntity> extends Block {
+//The One Probe: TOPInfoProvider
+//	private final ResourceLocation guiIcons = new ResourceLocation("theoneprobe", "textures/gui/icons.png");
 
-	private final ResourceLocation guiIcons = new ResourceLocation("theoneprobe", "textures/gui/icons.png");
-
-	public BaseBlockTE(Material materialIn) {
-		super(materialIn);
+	public BaseBlockTE(Block.Properties builder) {
+		super(builder);
 	}
 	public BaseBlockTE() {
-		this(Material.IRON);
+		this(createBaseBlockProperties(Material.IRON));
 	}
 
+	@Nullable
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return null;
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		super.breakBlock(world, pos, state);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -48,28 +38,31 @@ public class BaseBlockTE<T extends BaseTileEntity> extends BaseBlock implements 
 		return null;
 	}
 
-	@SuppressWarnings("hiding")
-	@Override
-	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
-			IBlockState blockState, IProbeHitData data) {
-		final TileEntity te = world.getTileEntity(data.getPos());
-		if (player.isSneaking()) {
-			if (te instanceof TileEntityRainCollectorController) {
-				final TileEntityRainCollectorController tile = (TileEntityRainCollectorController) te;
-				probeInfo.horizontal().text(tile.getConnectedCollectors() + " Collectors");
-			}
-			final IIconStyle iconStyle = probeInfo.defaultIconStyle().textureWidth(32).textureHeight(32);
-			if (te instanceof TileEntityRainCollector) {
-				final TileEntityRainCollector tile = (TileEntityRainCollector) te;
-				if (tile.hasController()) {
-					final BlockPos pos = tile.getController().getPos();
-					probeInfo.horizontal().text("Controller ").icon(this.guiIcons, 0, 16, 16, 16, iconStyle)
-							.text("@" + pos.getX() + "," + pos.getY() + "," + pos.getZ());
-				} else {
-					probeInfo.horizontal().text("Controller ").icon(this.guiIcons, 16, 16, 16, 16, iconStyle);
-				}
-			}
-		}
-	}
+//	@SuppressWarnings("hiding")
+//	@Override
+//	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world,
+//			BlockState blockState, IProbeHitData data) {
+//		final TileEntity te = world.getTileEntity(data.getPos());
+//		if (player.isSneaking()) {
+//			if (te instanceof TileEntityRainCollectorController) {
+//				final TileEntityRainCollectorController tile = (TileEntityRainCollectorController) te;
+//				probeInfo.horizontal().text(tile.getConnectedCollectors() + " Collectors");
+//			}
+//			final IIconStyle iconStyle = probeInfo.defaultIconStyle().textureWidth(32).textureHeight(32);
+//			if (te instanceof TileEntityRainCollector) {
+//				final TileEntityRainCollector tile = (TileEntityRainCollector) te;
+//				if (tile.hasController()) {
+//					final BlockPos pos = tile.getController().getPos();
+//					probeInfo.horizontal().text("Controller ").icon(this.guiIcons, 0, 16, 16, 16, iconStyle)
+//							.text("@" + pos.getX() + "," + pos.getY() + "," + pos.getZ());
+//				} else {
+//					probeInfo.horizontal().text("Controller ").icon(this.guiIcons, 16, 16, 16, 16, iconStyle);
+//				}
+//			}
+//		}
+//	}
 
+	public static Block.Properties createBaseBlockProperties(Material material) {
+		return Block.Properties.create(material).hardnessAndResistance(2F, 6.0F);
+	}
 }

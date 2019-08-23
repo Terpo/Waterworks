@@ -2,19 +2,18 @@
 	"result": {
 		"item": "waterworks:groundwater_pump"
 	},
+	"type": "minecraft:crafting_shaped",
 	"pattern": [
 		"ABA",
 		"STS",
 		"SPS"
 	],
-	"type": "forge:ore_shaped",
 	"key": {
 		"P": {
 			"item": "waterworks:water_pipe"
 		},
 		"S": {
-			"type": "forge:ore_dict",
-			"ore": "blockIron"
+			"tag": "forge:blockIron"
 		},
 		"A": {
 			"item": "minecraft:iron_bars"
@@ -23,8 +22,7 @@
 			"item": "waterworks:rain_tank_wood"
 		},
 		"B": {
-			"item": "waterworks:materials",
-			"data": 0
+			"item": "waterworks:materials"
 		}
 	}
 }

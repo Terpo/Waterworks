@@ -4,7 +4,7 @@ import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -61,7 +61,7 @@ public class TankPacket implements IMessage {
 		}
 		@Override
 		public IMessage onMessage(TankPacket message, MessageContext ctx) {
-			final EntityPlayer player = Waterworks.proxy.getClientEntityPlayer();
+			final PlayerEntity player = Waterworks.proxy.getClientPlayerEntity();
 			final TileWaterworks tileEntity = getTileEntity(player.world, message.getPos());
 			if (tileEntity == null) {
 				return null;

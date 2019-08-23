@@ -11,27 +11,33 @@ import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-@SideOnly(Side.CLIENT)
-public class TileEntityWaterRenderer extends TileEntitySpecialRenderer<TileWaterworks> {
-	int blue, green, red, alphaValue;
-	int lightx, lighty;
-	double minU, minV, maxU, maxV, diffU, diffV;
+@OnlyIn(Dist.CLIENT)
+public class TileEntityWaterRenderer extends TileEntityRenderer<TileWaterworks> {
+	int blue;
+	int green;
+	int red;
+	int alphaValue;
+	int lightx;
+	int lighty;
+	double minU;
+	double minV;
+	double maxU;
+	double maxV;
+	double diffU;
+	double diffV;
 
 	public TileEntityWaterRenderer() {
 		super();
 	}
 
 	@Override
-	public void render(TileWaterworks te, double x, double y, double z, float partialTicks, int destroyStage,
-			float alpha) {
-
+	public void render(TileWaterworks te, double x, double y, double z, float partialTicks, int destroyStage) {
 		final WaterworksTank tank = te.getFluidTank();
 		final int amount = tank.getFluidAmount();
 		final int capacity = tank.getCapacity();
@@ -44,8 +50,8 @@ public class TileEntityWaterRenderer extends TileEntitySpecialRenderer<TileWater
 			this.green = (c >> 8) & 0xFF;
 			this.red = (c >> 16) & 0xFF;
 			this.alphaValue = (c >> 24) & 0xFF;
-			final TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks()
-					.getTextureExtry(fluid.getStill().toString());
+			final TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap()
+					.getAtlasSprite(fluid.getStill().toString());
 			this.diffU = this.maxU - this.minU;
 			this.diffV = this.maxV - this.minV;
 
@@ -68,9 +74,9 @@ public class TileEntityWaterRenderer extends TileEntitySpecialRenderer<TileWater
 				GlStateManager.disableCull();
 				GlStateManager.disableLighting();
 				GlStateManager.enableBlend();
-				GlStateManager.enableAlpha();
+				GlStateManager.enableAlphaTest(); // FIXME Alpha and Render Engine
 				GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-				Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+//				Minecraft.getInstance().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 				final Tessellator tess = Tessellator.getInstance();
 				final BufferBuilder buffer = tess.getBuffer();
 

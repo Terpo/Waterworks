@@ -9,7 +9,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -28,12 +28,12 @@ public class AntiRainRocketRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			final ItemStack itemstack = inv.getStackInSlot(i);
 
-			if (itemstack.getItem() == Items.FIREWORKS) {
+			if (itemstack.getItem() == Items.FIREWORK_ROCKET) {
 				isFireworks = true;
 				rocketStack = i;
 				continue;
 			}
-			if (itemstack.getItem() == WaterworksItems.firework_anti_rain) {
+			if (itemstack.getItem() == WaterworksItems.itemFireworkAntiRain) {
 				isAntiRainRocket = true;
 				rocketStack = i;
 				continue;
@@ -46,39 +46,39 @@ public class AntiRainRocketRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 		if ((isAntiRainRocket && isFireworks) || multiplierAdd <= 0) {
 			return false;
 		}
-		this.resultItem = new ItemStack(WaterworksItems.firework_anti_rain);
+		this.resultItem = new ItemStack(WaterworksItems.itemFireworkAntiRain);
 
 		int multiplierOld = 0;
 		if (isFireworks) {
 			final ItemStack rocket = inv.getStackInSlot(rocketStack);
-			NBTTagCompound nbtCompound = rocket.getTagCompound();
+			CompoundNBT nbtCompound = rocket.getTag();
 
 			if (nbtCompound == null) {
-				nbtCompound = new NBTTagCompound();
+				nbtCompound = new CompoundNBT();
 			}
 			if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.clearSkyMaxMultiplier) {
 				return false;
 			}
-			nbtCompound.setInteger("ANTIRAIN", multiplierOld + multiplierAdd);
-			this.resultItem.setTagCompound(nbtCompound);
+			nbtCompound.setInt("ANTIRAIN", multiplierOld + multiplierAdd);
+			this.resultItem.setTag(nbtCompound);
 			return true;
 		}
 
 		if (isAntiRainRocket) {
 			final ItemStack rocket = inv.getStackInSlot(rocketStack);
-			final NBTTagCompound nbtCompound = rocket.getTagCompound();
-			NBTTagCompound newTag = new NBTTagCompound();
+			final CompoundNBT nbtCompound = rocket.getTag();
+			CompoundNBT newTag = new CompoundNBT();
 			if (nbtCompound != null) {
 				newTag = nbtCompound.copy();
 				if (nbtCompound.hasKey("ANTIRAIN")) {
-					multiplierOld = nbtCompound.getInteger("ANTIRAIN");
+					multiplierOld = nbtCompound.getInt("ANTIRAIN");
 				}
 			}
 			if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.clearSkyMaxMultiplier) {
 				return false;
 			}
-			newTag.setInteger("ANTIRAIN", multiplierOld + multiplierAdd);
-			this.resultItem.setTagCompound(newTag);
+			newTag.setInt("ANTIRAIN", multiplierOld + multiplierAdd);
+			this.resultItem.setTag(newTag);
 			return true;
 		}
 

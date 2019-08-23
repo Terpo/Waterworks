@@ -1,89 +1,96 @@
 package org.terpo.waterworks.block;
 
-import org.terpo.waterworks.Waterworks;
-import org.terpo.waterworks.gui.GuiProxy;
+import javax.annotation.Nullable;
+
 import org.terpo.waterworks.helper.FluidHelper;
 import org.terpo.waterworks.inventory.WaterworksInventoryHelper;
 import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 	public BlockRainTankWood() {
-		super(Material.WOOD);
+		super(Block.Properties.create(Material.WOOD));
 	}
 
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
+//	@Override
+//	public boolean isOpaqueCube(BlockState state) {
+//		return false;
+//	}
 
 	// isNormalCube and isFullCube could also help here for the TESR
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (!worldIn.isRemote && hand == EnumHand.MAIN_HAND) {// isRemote true = client
+	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand,
+			BlockRayTraceResult facing) {
+		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTE(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainTankWood) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				if (!heldItem.isEmpty() && !playerIn.isSneaking()
-						&& tileEntity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)
+						&& tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).isPresent()
 						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity,
 								heldItem)) {
 					return true;
 				}
-				playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, worldIn, pos.getX(), pos.getY(),
-						pos.getZ());
+//				playerIn.openGui(Waterworks.instance, GuiProxy.WATERWORKS_RAINTANK_GUI, worldIn, pos.getX(), pos.getY(),
+//						pos.getZ());
 				return true;
 			}
 		}
 		return true;
 	}
 
+	@Nullable
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new TileEntityRainTankWood();
 	}
 
 	@Override
-	public boolean hasTileEntity() {
+	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride(IBlockState bs) {
+	public boolean hasComparatorInputOverride(BlockState bs) {
 		return true;
 	}
 
 	@Override
-	public int getComparatorInputOverride(IBlockState bs, World world, BlockPos pos) {
+	public int getComparatorInputOverride(BlockState bs, World world, BlockPos pos) {
 		final TileEntity te = getTE(world, pos);
 		if (te instanceof TileEntityRainTankWood) {
 			return getTE(world, pos).getComparatorOutput();
 		}
 		return 0;
 	}
+
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te,
+			ItemStack stack) {
 		final TileEntity tileEntity = getTE(world, pos);
 		if (tileEntity instanceof TileWaterworks) {
-			final IItemHandler handler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			WaterworksInventoryHelper.dropItemsFromInventory(world, pos, handler);
+			final LazyOptional<IItemHandler> capability = tileEntity
+					.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			capability.ifPresent(handler -> WaterworksInventoryHelper.dropItemsFromInventory(world, pos, handler));
 		}
-		super.breakBlock(world, pos, state);
+		super.harvestBlock(world, player, pos, state, te, stack);
 	}
 
 }

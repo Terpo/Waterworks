@@ -1,34 +1,25 @@
 package org.terpo.waterworks.proxy;
 
-import net.minecraft.item.Item;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
-@Mod.EventBusSubscriber(Side.SERVER)
-public class ServerProxy extends CommonProxy {
+@Mod.EventBusSubscriber(Dist.DEDICATED_SERVER)
+public class ServerProxy implements IProxy {
 
-	/**
-	 * @param item sided Item
-	 */
-	public void registerItemSided(Item item) {
-		//
+	@Override
+	public void setup(FMLCommonSetupEvent event) {
 	}
 
 	@Override
-	public void preInit(FMLPreInitializationEvent event) {
-		super.preInit(event);
+	public ClientPlayerEntity getClientPlayerEntity() {
+		throw new IllegalStateException("Only run this on the client!");
 	}
 
 	@Override
-	public void init(FMLInitializationEvent event) {
-		super.init(event);
-	}
-
-	@Override
-	public void postInit(FMLPostInitializationEvent event) {
-		super.postInit(event);
+	public World getClientWorld() {
+		throw new IllegalStateException("Only run this on the client!");
 	}
 }

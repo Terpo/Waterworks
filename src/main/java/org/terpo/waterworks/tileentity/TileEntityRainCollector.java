@@ -1,6 +1,6 @@
 package org.terpo.waterworks.tileentity;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -36,8 +36,8 @@ public class TileEntityRainCollector extends BaseTileEntity {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		super.writeToNBT(compound);
+	public CompoundNBT write(CompoundNBT compound) {
+		super.write(compound);
 		if (this.hasController()) {
 			final BlockPos controllerPos = this.controller.getPos();
 			compound.setLong("controllerPos", controllerPos.toLong());
@@ -46,8 +46,8 @@ public class TileEntityRainCollector extends BaseTileEntity {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
+	public void read(CompoundNBT compound) {
+		super.read(compound);
 		if (compound.hasKey("controllerPos")) {
 			this.controllerPosition = (BlockPos.fromLong(compound.getLong("controllerPos")));
 			// setController(this.controllerPosition);

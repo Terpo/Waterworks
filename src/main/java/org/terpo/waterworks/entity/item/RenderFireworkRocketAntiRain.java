@@ -17,7 +17,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class RenderFireworkRocketAntiRain extends Render<EntityFireworkRocketAntiRain> {
 
 	private final RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
-	private final Item item = WaterworksItems.firework_anti_rain;
+	private final Item item = WaterworksItems.itemFireworkAntiRain;
 	public RenderFireworkRocketAntiRain(RenderManager renderManager) {
 		super(renderManager);
 	}

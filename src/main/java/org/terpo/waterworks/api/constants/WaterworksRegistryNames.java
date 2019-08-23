@@ -14,4 +14,12 @@ public class WaterworksRegistryNames {
 	public static final String ITEM_FIREWORK_RAIN = "firework_rain";
 	public static final String ITEM_FIREWORK_ANTI_RAIN = "firework_anti_rain";
 	public static final String ITEM_MATERIALS = "materials";
+
+	// TILE ENTITIES
+	public static final String TILE_ENTITY_RAIN_TANK_WOOD = "rain_tank_wood";
+	public static final String TILE_ENTITY_RAIN_COLLECTOR_CONTROLLER = "rain_collector_controller";
+	public static final String TILE_ENTITY_RAIN_COLLECTOR = "rain_collector";
+	public static final String TILE_ENTITY_GROUNDWATER_PUMP = "groundwater_pump";
+	public static final String TILE_ENTITY_BASE = "base_tile_entity";
+	public static final String TILE_ENTITY_WATERWORKS = "tile_waterworks";
 }

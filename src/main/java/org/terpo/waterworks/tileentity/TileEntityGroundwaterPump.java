@@ -13,10 +13,10 @@ import org.terpo.waterworks.network.EnergyPacket;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -112,7 +112,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	}
 
 	@Override
-	public boolean shouldRefresh(World worldIn, BlockPos posIn, IBlockState oldState, IBlockState newState) {
+	public boolean shouldRefresh(World worldIn, BlockPos posIn, BlockState oldState, BlockState newState) {
 		return oldState.getBlock() != newState.getBlock();
 	}
 
@@ -131,7 +131,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 
 		while (y >= 0) {
 			final BlockPos currentPos = new BlockPos(x, y, z);
-			final IBlockState state = this.world.getBlockState(currentPos);
+			final BlockState state = this.world.getBlockState(currentPos);
 			final Block block = state.getBlock();
 			if (block.equals(WaterworksBlocks.waterPipe)) {
 				count++;
@@ -218,24 +218,24 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		super.writeToNBT(compound);
-		this.battery.writeToNBT(compound);
-		compound.setInteger(NBT_INT_ENERGY_USAGE, this.energyUsage);
-		compound.setInteger(NBT_INT_PIPE_COUNTER, this.pipeCounter);
+	public CompoundNBT write(CompoundNBT compound) {
+		super.write(compound);
+		this.battery.write(compound);
+		compound.setInt(NBT_INT_ENERGY_USAGE, this.energyUsage);
+		compound.setInt(NBT_INT_PIPE_COUNTER, this.pipeCounter);
 		compound.setBoolean(NBT_BOOLEAN_STRUCTURE_COMPLETE, this.structureComplete);
 		return compound;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		this.battery = this.battery.readFromNBT(compound);
+	public void read(CompoundNBT compound) {
+		super.read(compound);
+		this.battery = this.battery.read(compound);
 		if (compound.hasKey(NBT_INT_ENERGY_USAGE)) {
-			this.energyUsage = compound.getInteger(NBT_INT_ENERGY_USAGE);
+			this.energyUsage = compound.getInt(NBT_INT_ENERGY_USAGE);
 		}
 		if (compound.hasKey(NBT_INT_PIPE_COUNTER)) {
-			this.pipeCounter = compound.getInteger(NBT_INT_PIPE_COUNTER);
+			this.pipeCounter = compound.getInt(NBT_INT_PIPE_COUNTER);
 		}
 		if (compound.hasKey(NBT_BOOLEAN_STRUCTURE_COMPLETE)) {
 			this.structureComplete = compound.getBoolean(NBT_BOOLEAN_STRUCTURE_COMPLETE);

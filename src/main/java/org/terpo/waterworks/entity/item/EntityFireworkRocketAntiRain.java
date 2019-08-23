@@ -2,15 +2,17 @@ package org.terpo.waterworks.entity.item;
 
 import org.terpo.waterworks.init.WaterworksConfig;
 
+import com.mojang.datafixers.DataFixer;
+
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -18,7 +20,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.walkers.ItemStackData;
 import net.minecraft.util.math.BlockPos;
@@ -28,9 +29,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityFireworkRocketAntiRain extends Entity {
 
@@ -45,7 +46,7 @@ public class EntityFireworkRocketAntiRain extends Entity {
 	 * firework explodes.
 	 */
 	private int lifetime;
-	private EntityLivingBase entityPlacer;
+	private LivingEntity entityPlacer;
 	private int minimumClearSky = WaterworksConfig.rockets.clearSkyDuration;
 	private int realClearSky = WaterworksConfig.rockets.clearSkyDuration;
 	private int antiRainMultiplier = -1;
@@ -62,8 +63,8 @@ public class EntityFireworkRocketAntiRain extends Entity {
 
 		if (!givenItem.isEmpty() && givenItem.hasTagCompound()) {
 			this.dataManager.set(ANTI_RAINROCKET_ITEM, givenItem.copy());
-			final NBTTagCompound nbttagcompound = givenItem.getTagCompound();
-			final NBTTagCompound nbttagcompound1 = nbttagcompound.getCompoundTag("Fireworks");
+			final CompoundNBT nbttagcompound = givenItem.getTagCompound();
+			final CompoundNBT nbttagcompound1 = nbttagcompound.getCompoundTag("Fireworks");
 			i += nbttagcompound1.getByte("Flight");
 		}
 
@@ -72,7 +73,7 @@ public class EntityFireworkRocketAntiRain extends Entity {
 		this.motionY = 0.05D;
 		this.lifetime = 10 * i + this.rand.nextInt(6) + this.rand.nextInt(7);
 		if (givenItem.hasTagCompound()) {
-			final NBTTagCompound tag = givenItem.getTagCompound();
+			final CompoundNBT tag = givenItem.getTagCompound();
 			this.antiRainMultiplier = -1;
 			if (tag.hasKey("ANTIRAIN")) {
 				this.antiRainMultiplier = tag.getInteger("ANTIRAIN");
@@ -96,7 +97,7 @@ public class EntityFireworkRocketAntiRain extends Entity {
 		FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
 				.sendMessage(new TextComponentString(announcement));
 	}
-	public EntityFireworkRocketAntiRain(World worldIn, ItemStack itemStack, EntityLivingBase entityLivingbase) {
+	public EntityFireworkRocketAntiRain(World worldIn, ItemStack itemStack, LivingEntity entityLivingbase) {
 		this(worldIn, entityLivingbase.posX, entityLivingbase.posY, entityLivingbase.posZ, itemStack);
 		this.dataManager.set(ANTI_RAINROCKET_ITEM_INT, Integer.valueOf(entityLivingbase.getEntityId()));
 		this.entityPlacer = entityLivingbase;
@@ -128,13 +129,13 @@ public class EntityFireworkRocketAntiRain extends Entity {
 	 * Checks if the entity is in range to render.
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean isInRangeToRenderDist(double distance) {
 		return distance < 4096.0D && !this.getRocketIntValue();
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean isInRangeToRender3d(double x, double y, double z) {
 		return super.isInRangeToRender3d(x, y, z) && !this.getRocketIntValue();
 	}
@@ -143,7 +144,7 @@ public class EntityFireworkRocketAntiRain extends Entity {
 	 * Updates the velocity of the entity to a new value.
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void setVelocity(double x, double y, double z) {
 		this.motionX = x;
 		this.motionY = y;
@@ -173,8 +174,8 @@ public class EntityFireworkRocketAntiRain extends Entity {
 				final Entity entity = this.world
 						.getEntityByID(this.dataManager.get(ANTI_RAINROCKET_ITEM_INT).intValue());
 
-				if (entity instanceof EntityLivingBase) {
-					this.entityPlacer = (EntityLivingBase) entity;
+				if (entity instanceof LivingEntity) {
+					this.entityPlacer = (LivingEntity) entity;
 				}
 			}
 
@@ -222,7 +223,7 @@ public class EntityFireworkRocketAntiRain extends Entity {
 		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
 
 		if (this.fireworkAge == 0 && !this.isSilent()) {
-			this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ,
+			this.world.playSound((PlayerEntity) null, this.posX, this.posY, this.posZ,
 					SoundEvents.ENTITY_FIREWORK_LAUNCH, SoundCategory.AMBIENT, 3.0F, 1.0F);
 		}
 
@@ -244,7 +245,7 @@ public class EntityFireworkRocketAntiRain extends Entity {
 	private void damageEntities() {
 		float f = 0.0F;
 		final ItemStack itemstack = this.dataManager.get(ANTI_RAINROCKET_ITEM);
-		final NBTTagCompound nbttagcompound = itemstack.isEmpty() ? null : itemstack.getSubCompound("Fireworks");
+		final CompoundNBT nbttagcompound = itemstack.isEmpty() ? null : itemstack.getSubCompound("Fireworks");
 		final NBTTagList nbttaglist = nbttagcompound != null ? nbttagcompound.getTagList("Explosions", 10) : null;
 
 		if (nbttaglist != null && !nbttaglist.hasNoTags()) {
@@ -259,7 +260,7 @@ public class EntityFireworkRocketAntiRain extends Entity {
 
 			final Vec3d vec3d = new Vec3d(this.posX, this.posY, this.posZ);
 
-			for (final EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class,
+			for (final LivingEntity entitylivingbase : this.world.getEntitiesWithinAABB(LivingEntity.class,
 					this.getEntityBoundingBox().grow(5.0D))) {
 				if (entitylivingbase != this.entityPlacer && this.getDistanceSq(entitylivingbase) <= 25.0D) {
 					boolean flag = false;
@@ -291,11 +292,11 @@ public class EntityFireworkRocketAntiRain extends Entity {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void handleStatusUpdate(byte id) {
 		if (id == 17 && this.world.isRemote) {
 			final ItemStack itemstack = this.dataManager.get(ANTI_RAINROCKET_ITEM);
-			final NBTTagCompound nbttagcompound = itemstack.isEmpty() ? null : itemstack.getSubCompound("Fireworks");
+			final CompoundNBT nbttagcompound = itemstack.isEmpty() ? null : itemstack.getSubCompound("Fireworks");
 			this.world.makeFireworks(this.posX, this.posY, this.posZ, this.motionX, this.motionY, this.motionZ,
 					nbttagcompound);
 		}
@@ -309,21 +310,21 @@ public class EntityFireworkRocketAntiRain extends Entity {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
+	public void writeEntityToNBT(CompoundNBT compound) {
 		compound.setInteger("Life", this.fireworkAge);
 		compound.setInteger("LifeTime", this.lifetime);
 		final ItemStack itemstack = this.dataManager.get(ANTI_RAINROCKET_ITEM);
 
 		if (!itemstack.isEmpty()) {
-			compound.setTag("FireworksItem", itemstack.writeToNBT(new NBTTagCompound()));
+			compound.setTag("FireworksItem", itemstack.writeToNBT(new CompoundNBT()));
 		}
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
+	public void readEntityFromNBT(CompoundNBT compound) {
 		this.fireworkAge = compound.getInteger("Life");
 		this.lifetime = compound.getInteger("LifeTime");
-		final NBTTagCompound nbttagcompound = compound.getCompoundTag("FireworksItem");
+		final CompoundNBT nbttagcompound = compound.getCompoundTag("FireworksItem");
 
 		if (nbttagcompound != null) {
 			final ItemStack itemstack = new ItemStack(nbttagcompound);

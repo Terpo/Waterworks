@@ -1,5 +1,6 @@
 package org.terpo.waterworks.item;
 
+import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.api.constants.EnumItemMaterials;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -9,7 +10,7 @@ import net.minecraft.util.NonNullList;
 
 public class ItemMaterials extends Item {
 	public ItemMaterials() {
-		super();
+		super((new Item.Properties()).group(Waterworks.CREATIVE_TAB));
 		setMaxDamage(0);
 		setHasSubtypes(true);
 	}

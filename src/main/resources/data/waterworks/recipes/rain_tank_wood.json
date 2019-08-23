@@ -1,0 +1,22 @@
+{
+	"result": {
+		"item": "waterworks:rain_tank_wood"
+	},
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"P P",
+		"PSP",
+		"BBB"
+	],
+	"key": {
+		"P": {
+			"tag": "forge:plankWood"
+		},
+		"S": {
+			"tag": "forge:slabWood"
+		},
+		"B": {
+			"tag": "forge:stone"
+		}
+	}
+}

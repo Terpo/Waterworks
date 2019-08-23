@@ -8,15 +8,13 @@ import org.terpo.waterworks.item.ItemFireworkRain;
 import org.terpo.waterworks.item.ItemMaterials;
 import org.terpo.waterworks.item.ItemPipeWrench;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraft.item.ItemGroup;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class InitItems {
 
-	public static void init(Register<Item> event) {
-		final IForgeRegistry<Item> registry = event.getRegistry();
+	public static void init(IForgeRegistry<Item> registry) {
 		registerItems(registry);
 	}
 
@@ -25,22 +23,27 @@ public class InitItems {
 	}
 
 	public static void registerItems(IForgeRegistry<Item> registry) {
-		WaterworksItems.pipe_wrench = registerItem(registry, new ItemPipeWrench(),
+		WaterworksItems.itemPipeWrench = registerItem(registry, new ItemPipeWrench(),
 				WaterworksRegistryNames.ITEM_PIPE_WRENCH);
 		if (WaterworksConfig.register.rainRocket) {
-			WaterworksItems.firework_rain = registerItem(registry, new ItemFireworkRain(),
+			WaterworksItems.itemFireworkRain = registerItem(registry, new ItemFireworkRain(),
 					WaterworksRegistryNames.ITEM_FIREWORK_RAIN);
 		}
 		if (WaterworksConfig.register.antiRainRocket) {
-			WaterworksItems.firework_anti_rain = registerItem(registry, new ItemFireworkAntiRain(),
+			WaterworksItems.itemFireworkAntiRain = registerItem(registry, new ItemFireworkAntiRain(),
 					WaterworksRegistryNames.ITEM_FIREWORK_ANTI_RAIN);
 		}
-		WaterworksItems.materials = registerItem(registry, new ItemMaterials(), WaterworksRegistryNames.ITEM_MATERIALS);
+		WaterworksItems.itemMaterials = registerItem(registry, new ItemMaterials(),
+				WaterworksRegistryNames.ITEM_MATERIALS);
 	}
 
-	private static Item registerItem(IForgeRegistry<Item> registry, Item item, String name, CreativeTabs tab) {
-		item.setRegistryName(WaterworksReference.MODID, name).setUnlocalizedName(name).setCreativeTab(tab);
+	private static Item registerItem(IForgeRegistry<Item> registry, Item item, String name, ItemGroup tab) {
+		item.setRegistryName(WaterworksReference.MODID, name);
 		registry.register(item);
 		return item;
+	}
+
+	private InitItems() {
+		// hide me
 	}
 }

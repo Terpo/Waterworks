@@ -2,16 +2,15 @@
 	"result": {
 		"item": "waterworks:rain_collector_controller"
 	},
+	"type": "minecraft:crafting_shaped",
 	"pattern": [
 		"ICI",
 		"PTP",
 		"III"
 	],
-	"type": "forge:ore_shaped",
 	"key": {
 		"I": {
-			"type": "forge:ore_dict",
-			"ore": "ingotIron"
+			"tag": "forge:ingotIron"
 		},
 		"P": {
 			"item": "waterworks:water_pipe"
@@ -20,8 +19,7 @@
 			"item": "waterworks:rain_tank_wood"
 		},
 		"C": {
-			"item": "waterworks:materials",
-			"data": 1
+			"item": "waterworks:materials"
 		}
 	}
 }

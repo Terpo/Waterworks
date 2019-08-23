@@ -4,7 +4,7 @@ import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.helper.AreaHelper;
 import org.terpo.waterworks.init.WaterworksConfig;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -87,43 +87,43 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		super.writeToNBT(compound);
+	public CompoundNBT write(CompoundNBT compound) {
+		super.write(compound);
 		int connectedBlocks = 0;
 		// TagList of Integer Tags:
 		final NBTTagList list = new NBTTagList();
 		for (int i = 0; i < this.areaCount; i++) {
 			if (this.rainCollectorBlocks[i] != null) {
-				final NBTTagCompound nbt = new NBTTagCompound();
+				final CompoundNBT nbt = new CompoundNBT();
 				nbt.setLong("collectorPos", this.rainCollectorBlocks[i].toLong());
-				list.appendTag(nbt);
+				list.add(nbt);
 				connectedBlocks++;
 			}
 		}
-		compound.setInteger("connectedBlocks", connectedBlocks);
+		compound.setInt("connectedBlocks", connectedBlocks);
 		compound.setTag("collectorPosList", list);
-		compound.setInteger("validCollectors", this.validCollectors);
+		compound.setInt("validCollectors", this.validCollectors);
 		return compound;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
+	public void read(CompoundNBT compound) {
+		super.read(compound);
 		if (compound.hasKey("connectedBlocks")) {
-			this.connectedCollectors = compound.getInteger("connectedBlocks");
+			this.connectedCollectors = compound.getInt("connectedBlocks");
 			if (compound.hasKey("collectorPosList")) {
-				final NBTTagList list = compound.getTagList("collectorPosList", 10);
-				if (list.tagCount() > this.areaCount) {
-					this.rainCollectorBlocks = new BlockPos[list.tagCount()];
+				final NBTTagList list = compound.getList("collectorPosList", 10);
+				if (list.size() > this.areaCount) {
+					this.rainCollectorBlocks = new BlockPos[list.size()];
 					this.isReset = true;
 				}
-				for (int i = 0; i < list.tagCount(); i++) {
-					final NBTTagCompound nbt = list.getCompoundTagAt(i);
+				for (int i = 0; i < list.size(); i++) {
+					final CompoundNBT nbt = list.getCompound(i);
 					this.rainCollectorBlocks[i] = (BlockPos.fromLong(nbt.getLong("collectorPos")));
 				}
 			}
 			if (compound.hasKey("validCollectors")) {
-				this.validCollectors = compound.getInteger("validCollectors");
+				this.validCollectors = compound.getInt("validCollectors");
 				this.fluidResource = getWaterFluidStack(
 						this.validCollectors * WaterworksConfig.rainCollection.rainCollectorFillrate);
 			}

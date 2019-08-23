@@ -2,51 +2,57 @@ package org.terpo.waterworks.block;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.terpo.waterworks.init.WaterworksItems;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
 import org.terpo.waterworks.tileentity.TileEntityRainCollector;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 
 	public BlockRainCollector() {
-		super(Material.IRON);
+		super(Block.Properties.create(Material.IRON));
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		super.addInformation(stack, player, tooltip, advanced);
-		tooltip.add(I18n.format("tooltip.rain_collector"));
+	@OnlyIn(Dist.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip,
+			ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);
+		tooltip.add(new StringTextComponent(I18n.format("tooltip.rain_collector")));
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new TileEntityRainCollector();
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (!worldIn.isRemote && hand == EnumHand.MAIN_HAND) {// isRemote true = client
+	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand,
+			BlockRayTraceResult facing) {
+		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTE(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainCollector) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (heldItem.getItem() == WaterworksItems.pipe_wrench) {
+				if (heldItem.getItem() == WaterworksItems.itemPipeWrench) {
 					final TileEntityRainCollector collector = (TileEntityRainCollector) tileEntity;
 					String out;
 					if (collector.hasController()) {
@@ -56,23 +62,23 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 					} else {
 						out = "No Controller found";
 					}
-					playerIn.sendMessage(new TextComponentString(out));
+					playerIn.sendMessage(new StringTextComponent(out));
 				}
 			}
 		}
-		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+		return super.onBlockActivated(state, worldIn, pos, playerIn, hand, facing);
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		final TileEntity tileEntity = getTE(world, pos);
 		if (tileEntity instanceof TileEntityRainCollector) {
 			((TileEntityRainCollector) tileEntity).informAboutBlockBreak();
 		}
-		super.breakBlock(world, pos, state);
+		super.onBlockHarvested(world, pos, state, player);
 	}
 	@Override
-	public boolean hasTileEntity() {
+	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
 }

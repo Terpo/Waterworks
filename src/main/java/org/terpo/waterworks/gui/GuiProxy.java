@@ -5,7 +5,7 @@ import org.terpo.waterworks.gui.pump.GuiPumpContainer;
 import org.terpo.waterworks.gui.pump.PumpContainer;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -17,7 +17,7 @@ public class GuiProxy implements IGuiHandler {
 	public static final int WATERWORKS_GROUNDWATER_PUMP_GUI = 1;
 
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
 		if (ID == WATERWORKS_RAINTANK_GUI) {
 			final TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
 			if (tileEntity instanceof TileWaterworks) {
@@ -34,7 +34,7 @@ public class GuiProxy implements IGuiHandler {
 	}
 
 	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
 		if (ID == WATERWORKS_RAINTANK_GUI) {
 			final TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
 			if (tileEntity instanceof TileWaterworks) {

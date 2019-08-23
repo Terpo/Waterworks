@@ -1,9 +1,10 @@
 package org.terpo.waterworks.energy;
 
+import org.terpo.waterworks.api.constants.NBTContants;
 import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.energy.EnergyStorage;
 
 public class WaterworksBattery extends EnergyStorage {
@@ -55,14 +56,14 @@ public class WaterworksBattery extends EnergyStorage {
 		}
 	}
 
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound.setInteger("energyStored", this.energy);
+	public CompoundNBT write(CompoundNBT compound) {
+		compound.putInt(NBTContants.ENERGY_STORED, this.energy);
 		return compound;
 	}
 
-	public WaterworksBattery readFromNBT(NBTTagCompound compound) {
-		if (compound.hasKey("energyStored")) {
-			this.energy = compound.getInteger("energyStored");
+	public WaterworksBattery read(CompoundNBT compound) {
+		if (compound.contains(NBTContants.ENERGY_STORED)) {
+			this.energy = compound.getInt(NBTContants.ENERGY_STORED);
 		}
 		return this;
 	}

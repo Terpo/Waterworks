@@ -1,18 +1,18 @@
 package org.terpo.waterworks.block;
 
-import java.util.List;
+import javax.annotation.Nullable;
 
 import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockWaterPipe extends Block {
@@ -20,37 +20,37 @@ public class BlockWaterPipe extends Block {
 	private static final AxisAlignedBB boundingBox = new AxisAlignedBB(.375, 0, .375, .625, 1, .625);
 	private static final AxisAlignedBB collisionBox = new AxisAlignedBB(.3125, 0, .3125, .7375, 1, .7375);
 	public BlockWaterPipe() {
-		super(Material.IRON);
-		this.setResistance(2F);
-		this.setHardness(2F);
-		this.setHarvestLevel("pickaxe", 2);
+		super(Block.Properties.create(Material.IRON).hardnessAndResistance(2F, 6.0F));
 	}
 
-	@Override
-	public boolean isFullBlock(IBlockState state) {
-		return false;
-	}
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return boundingBox;
-	}
+//	@Override
+//	public boolean isFullBlock(BlockState state) {
+//		return false;
+//	}
+//	@Override
+//	public boolean isOpaqueCube(BlockState state) {
+//		return false;
+//	}
+//	
+//	@Override
+//	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
+//		return boundingBox;
+//	}
+//
+//	@Override
+//	public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
+//			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean p_185477_7_) {
+//		super.addCollisionBoxToList(pos, entityBox, collidingBoxes, collisionBox);
+//	}
+//
+//	@Override
+//	public boolean isFullCube(BlockState state) {
+//		return false;
+//	}
 
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
-			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean p_185477_7_) {
-		super.addCollisionBoxToList(pos, entityBox, collidingBoxes, collisionBox);
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state,
+			@Nullable TileEntity te, ItemStack stack) {
 		BlockPos newPos = pos;
 		while (true) {
 			newPos = newPos.up();
@@ -70,7 +70,7 @@ public class BlockWaterPipe extends Block {
 			break;
 
 		}
-		super.breakBlock(worldIn, pos, state);
+		super.harvestBlock(worldIn, player, pos, state, te, stack);
 	}
 
 }

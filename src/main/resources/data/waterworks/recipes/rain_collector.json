@@ -2,16 +2,15 @@
 	"result": {
 		"item": "waterworks:rain_collector"
 	},
+	"type": "minecraft:crafting_shaped",
 	"pattern": [
 		"IMI",
 		"T T",
 		"III"
 	],
-	"type": "forge:ore_shaped",
 	"key": {
 		"I": {
-			"type": "forge:ore_dict",
-			"ore": "ingotIron"
+			"tag": "forge:ingotIron"
 		},
 		"T": {
 			"item": "waterworks:water_pipe"
