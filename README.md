@@ -33,7 +33,7 @@ Further information can be found in the <a href="https://github.com/Terpo/Waterw
 
 -----------------
 
-<a href="https://minecraft.curseforge.com/projects/waterworks">Download this mod on Curseforge</a>
+<a href="https://www.curseforge.com/minecraft/mc-mods/waterworks">Download this mod on Curseforge</a>
 Do not trust other download sites! I will only offer Curseforge as Download source.
  
 -----------------
