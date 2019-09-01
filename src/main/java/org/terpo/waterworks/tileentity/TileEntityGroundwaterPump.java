@@ -221,8 +221,8 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	public CompoundNBT write(CompoundNBT compound) {
 		super.write(compound);
 		this.battery.write(compound);
-		compound.setInt(NBT_INT_ENERGY_USAGE, this.energyUsage);
-		compound.setInt(NBT_INT_PIPE_COUNTER, this.pipeCounter);
+		compound.putInt(NBT_INT_ENERGY_USAGE, this.energyUsage);
+		compound.putInt(NBT_INT_PIPE_COUNTER, this.pipeCounter);
 		compound.setBoolean(NBT_BOOLEAN_STRUCTURE_COMPLETE, this.structureComplete);
 		return compound;
 	}
@@ -231,13 +231,13 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	public void read(CompoundNBT compound) {
 		super.read(compound);
 		this.battery = this.battery.read(compound);
-		if (compound.hasKey(NBT_INT_ENERGY_USAGE)) {
+		if (compound.hasUniqueId(NBT_INT_ENERGY_USAGE)) {
 			this.energyUsage = compound.getInt(NBT_INT_ENERGY_USAGE);
 		}
-		if (compound.hasKey(NBT_INT_PIPE_COUNTER)) {
+		if (compound.hasUniqueId(NBT_INT_PIPE_COUNTER)) {
 			this.pipeCounter = compound.getInt(NBT_INT_PIPE_COUNTER);
 		}
-		if (compound.hasKey(NBT_BOOLEAN_STRUCTURE_COMPLETE)) {
+		if (compound.hasUniqueId(NBT_BOOLEAN_STRUCTURE_COMPLETE)) {
 			this.structureComplete = compound.getBoolean(NBT_BOOLEAN_STRUCTURE_COMPLETE);
 		}
 	}

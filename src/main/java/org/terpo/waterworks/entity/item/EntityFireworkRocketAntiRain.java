@@ -8,7 +8,6 @@ import org.terpo.waterworks.init.WaterworksItems;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.FireworkRocketEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
@@ -31,8 +30,18 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 
 	private int realClearSky = WaterworksConfig.rockets.clearSkyDuration;
 
-	public EntityFireworkRocketAntiRain(EntityType<? extends FireworkRocketEntity> entity, World world) {
+	public EntityFireworkRocketAntiRain(EntityType<? extends EntityFireworkRocketAntiRain> entity, World world) {
 		super(entity, world);
+		this.duration = WaterworksConfig.rockets.clearSkyDuration;
+	}
+
+	public EntityFireworkRocketAntiRain(World worldIn, double x, double y, double z, ItemStack itemstack) {
+		super(worldIn, x, y, z, itemstack);
+		this.duration = WaterworksConfig.rockets.clearSkyDuration;
+	}
+
+	public EntityFireworkRocketAntiRain(World worldIn, ItemStack itemstack, LivingEntity entity) {
+		super(worldIn, itemstack, entity);
 		this.duration = WaterworksConfig.rockets.clearSkyDuration;
 	}
 

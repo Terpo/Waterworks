@@ -100,18 +100,18 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 				connectedBlocks++;
 			}
 		}
-		compound.setInt("connectedBlocks", connectedBlocks);
+		compound.putInt("connectedBlocks", connectedBlocks);
 		compound.setTag("collectorPosList", list);
-		compound.setInt("validCollectors", this.validCollectors);
+		compound.putInt("validCollectors", this.validCollectors);
 		return compound;
 	}
 
 	@Override
 	public void read(CompoundNBT compound) {
 		super.read(compound);
-		if (compound.hasKey("connectedBlocks")) {
+		if (compound.hasUniqueId("connectedBlocks")) {
 			this.connectedCollectors = compound.getInt("connectedBlocks");
-			if (compound.hasKey("collectorPosList")) {
+			if (compound.hasUniqueId("collectorPosList")) {
 				final NBTTagList list = compound.getList("collectorPosList", 10);
 				if (list.size() > this.areaCount) {
 					this.rainCollectorBlocks = new BlockPos[list.size()];
@@ -122,7 +122,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 					this.rainCollectorBlocks[i] = (BlockPos.fromLong(nbt.getLong("collectorPos")));
 				}
 			}
-			if (compound.hasKey("validCollectors")) {
+			if (compound.hasUniqueId("validCollectors")) {
 				this.validCollectors = compound.getInt("validCollectors");
 				this.fluidResource = getWaterFluidStack(
 						this.validCollectors * WaterworksConfig.rainCollection.rainCollectorFillrate);

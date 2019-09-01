@@ -40,7 +40,7 @@ public class FluidHelper {
 			if (!playerIn.isCreative()) {
 				tank.drainInternal(1000, true);
 				final ItemStack stackWaterBottle = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION),
-						Potions.field_185230_b); // water
+						Potions.WATER);
 				itemstack.shrink(1);
 				if (itemstack.isEmpty()) {
 					playerIn.setHeldItem(hand, stackWaterBottle);

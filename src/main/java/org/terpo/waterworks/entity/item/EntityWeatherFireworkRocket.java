@@ -8,7 +8,6 @@ import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.item.FireworkRocketEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.ItemStack;
@@ -50,7 +49,7 @@ public class EntityWeatherFireworkRocket extends Entity implements IRendersAsIte
 
 	protected int duration;
 	protected int durationMultiplier;
-	public EntityWeatherFireworkRocket(EntityType<? extends FireworkRocketEntity> entity, World world) {
+	public EntityWeatherFireworkRocket(EntityType<? extends EntityWeatherFireworkRocket> entity, World world) {
 		super(entity, world);
 	}
 

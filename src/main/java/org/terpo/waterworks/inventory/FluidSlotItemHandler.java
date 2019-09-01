@@ -32,7 +32,7 @@ public class FluidSlotItemHandler extends SlotItemHandler {
 	}
 
 	protected boolean isFilteredItemValid(ItemStack stack) {
-		return (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)
+		return (stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent()
 				|| additionalFilters(stack));
 	}
 

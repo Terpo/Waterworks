@@ -1,24 +1,31 @@
 package org.terpo.waterworks.item.crafting;
 
+import java.util.function.Function;
+
 import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksItems;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.block.Blocks;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class AntiRainRocketRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+public class AntiRainRocketRecipe extends SpecialRecipeSerializer<IRecipe<?>> implements IRecipe {
+	public AntiRainRocketRecipe(Function<ResourceLocation, IRecipe<?>> function) {
+		super(function);
+	}
+
 	private ItemStack resultItem = ItemStack.EMPTY;
 	@Override
-	public boolean matches(InventoryCrafting inv, World worldIn) {
+	public boolean matches(IInventory inv, World worldIn) {
 		this.resultItem = ItemStack.EMPTY;
 
 		int rocketStack = -1;
@@ -38,7 +45,7 @@ public class AntiRainRocketRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 				rocketStack = i;
 				continue;
 			}
-			if (itemstack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && itemstack.getMetadata() == 0) {
+			if (itemstack.getItem() == Item.BLOCK_TO_ITEM.get(Blocks.SPONGE)) {
 				multiplierAdd++;
 			}
 		}
@@ -59,7 +66,7 @@ public class AntiRainRocketRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 			if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.clearSkyMaxMultiplier) {
 				return false;
 			}
-			nbtCompound.setInt("ANTIRAIN", multiplierOld + multiplierAdd);
+			nbtCompound.putInt("ANTIRAIN", multiplierOld + multiplierAdd);
 			this.resultItem.setTag(nbtCompound);
 			return true;
 		}
@@ -70,14 +77,14 @@ public class AntiRainRocketRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 			CompoundNBT newTag = new CompoundNBT();
 			if (nbtCompound != null) {
 				newTag = nbtCompound.copy();
-				if (nbtCompound.hasKey("ANTIRAIN")) {
+				if (nbtCompound.hasUniqueId("ANTIRAIN")) {
 					multiplierOld = nbtCompound.getInt("ANTIRAIN");
 				}
 			}
 			if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.clearSkyMaxMultiplier) {
 				return false;
 			}
-			newTag.setInt("ANTIRAIN", multiplierOld + multiplierAdd);
+			newTag.putInt("ANTIRAIN", multiplierOld + multiplierAdd);
 			this.resultItem.setTag(newTag);
 			return true;
 		}
@@ -86,7 +93,7 @@ public class AntiRainRocketRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 	}
 
 	@Override
-	public ItemStack getCraftingResult(InventoryCrafting inv) {
+	public ItemStack getCraftingResult(IInventory inv) {
 		return this.resultItem.copy();
 	}
 
@@ -96,13 +103,26 @@ public class AntiRainRocketRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 	}
 
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-		return ForgeHooks.defaultRecipeGetRemainingItems(inv);
+	public boolean canFit(int width, int height) {
+		return width * height >= 1;
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
-		return width * height >= 1;
+	public ResourceLocation getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IRecipeSerializer getSerializer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IRecipeType getType() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

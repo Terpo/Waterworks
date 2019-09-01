@@ -25,6 +25,7 @@ import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TileWaterworks extends BaseTileEntity implements ITickableTileEntity {
@@ -66,7 +67,7 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 	@Override
 	public void read(CompoundNBT compound) {
 		super.read(compound);
-		if (compound.hasKey("items")) {
+		if (compound.hasUniqueId("items")) {
 			this.itemStackHandler.deserializeNBT((CompoundNBT) compound.getTag("items"));
 		}
 		this.fluidTank = (WaterworksTank) this.fluidTank.read(compound);
@@ -177,7 +178,9 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 		if (internalFluidAmount > 0) {
 			final ItemStack stackInput = this.itemStackHandler.getStackInSlot(0);
 			if (!stackInput.isEmpty()) {
-				if (stackInput.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+				final LazyOptional<IFluidHandlerItem> capability = stackInput
+						.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+				if (capability.isPresent()) {
 
 					final FluidActionResult filledSimulated = FluidUtil.tryFillContainer(stackInput, this.fluidTank,
 							Integer.MAX_VALUE, null, false);
@@ -199,7 +202,7 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 					if (internalFluidAmount >= 1000) {
 						final ItemStack outputSlot = this.itemStackHandler.getStackInSlot(1);
 						final ItemStack outputStack = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION),
-								Potions.field_185230_b);
+								Potions.WATER);
 						if (checkOutputSlot(outputSlot, outputStack)) {
 							this.fluidTank.drainInternal(1000, true);
 							moveFilledInputToOutput(stackInput, outputSlot, outputStack);

@@ -1,22 +1,45 @@
 package org.terpo.waterworks.item.crafting;
 
+import java.util.function.Function;
+
 import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksItems;
 
-import net.minecraft.init.Items;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.registries.ForgeRegistryEntry;
+public class RainRocketRecipe extends SpecialRecipeSerializer<IRecipe<?>> implements IRecipe {
 
-public class RainRocketRecipe extends ForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+	public RainRocketRecipe(Function<ResourceLocation, IRecipe<?>> p_i50024_1_) {
+		super(p_i50024_1_);
+	}
+
 	private ItemStack resultItem = ItemStack.EMPTY;
+
 	@Override
-	public boolean matches(InventoryCrafting inv, World worldIn) {
+	public ItemStack getCraftingResult(IInventory inv) {
+		return this.resultItem.copy();
+	}
+
+	@Override
+	public ItemStack getRecipeOutput() {
+		return this.resultItem;
+	}
+
+	@Override
+	public boolean canFit(int width, int height) {
+		return width * height >= 1;
+	}
+
+	@Override
+	public boolean matches(IInventory inv, World worldIn) {
 		this.resultItem = ItemStack.EMPTY;
 
 		int rocketStack = -1;
@@ -57,7 +80,7 @@ public class RainRocketRecipe extends ForgeRegistryEntry.Impl<IRecipe> implement
 			if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.rainMaxMultiplier) {
 				return false;
 			}
-			nbtCompound.setInt("RAIN", multiplierOld + multiplierAdd);
+			nbtCompound.putInt("RAIN", multiplierOld + multiplierAdd);
 			this.resultItem.setTag(nbtCompound);
 			return true;
 		}
@@ -68,14 +91,14 @@ public class RainRocketRecipe extends ForgeRegistryEntry.Impl<IRecipe> implement
 			CompoundNBT newTag = new CompoundNBT();
 			if (nbtCompound != null) {
 				newTag = nbtCompound.copy();
-				if (nbtCompound.hasKey("RAIN")) {
+				if (nbtCompound.hasUniqueId("RAIN")) {
 					multiplierOld = nbtCompound.getInt("RAIN");
 				}
 			}
 			if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.rainMaxMultiplier) {
 				return false;
 			}
-			newTag.setInt("RAIN", multiplierOld + multiplierAdd);
+			newTag.putInt("RAIN", multiplierOld + multiplierAdd);
 			this.resultItem.setTag(newTag);
 			return true;
 		}
@@ -84,22 +107,18 @@ public class RainRocketRecipe extends ForgeRegistryEntry.Impl<IRecipe> implement
 	}
 
 	@Override
-	public ItemStack getCraftingResult(InventoryCrafting inv) {
-		return this.resultItem.copy();
+	public ResourceLocation getId() {
+		return null;
 	}
 
 	@Override
-	public ItemStack getRecipeOutput() {
-		return this.resultItem;
+	public IRecipeSerializer getSerializer() {
+		return this;
 	}
 
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-		return ForgeHooks.defaultRecipeGetRemainingItems(inv);
-	}
-
-	@Override
-	public boolean canFit(int width, int height) {
-		return width * height >= 1;
+	public IRecipeType getType() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

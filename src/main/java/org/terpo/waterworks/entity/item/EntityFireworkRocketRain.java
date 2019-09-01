@@ -26,8 +26,18 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 	private static final DataParameter<Boolean> SHOT_AT_ANGLE_RAINROCKET_BOOLEAN = EntityDataManager
 			.createKey(FireworkRocketEntity.class, DataSerializers.BOOLEAN);
 
-	public EntityFireworkRocketRain(EntityType<? extends FireworkRocketEntity> entity, World world) {
+	public EntityFireworkRocketRain(EntityType<? extends EntityFireworkRocketRain> entity, World world) {
 		super(entity, world);
+		this.duration = WaterworksConfig.rockets.rainDuration;
+	}
+
+	public EntityFireworkRocketRain(World worldIn, double x, double y, double z, ItemStack itemstack) {
+		super(worldIn, x, y, z, itemstack);
+		this.duration = WaterworksConfig.rockets.rainDuration;
+	}
+
+	public EntityFireworkRocketRain(World worldIn, ItemStack itemstack, LivingEntity entity) {
+		super(worldIn, itemstack, entity);
 		this.duration = WaterworksConfig.rockets.rainDuration;
 	}
 

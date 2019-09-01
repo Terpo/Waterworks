@@ -5,8 +5,8 @@ import org.terpo.waterworks.api.constants.WaterworksRegistryNames;
 import org.terpo.waterworks.item.crafting.AntiRainRocketRecipe;
 import org.terpo.waterworks.item.crafting.RainRocketRecipe;
 
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class WaterworksCrafting {
@@ -16,7 +16,7 @@ public class WaterworksCrafting {
 	}
 
 	public static void registerFireworks() {
-		final IForgeRegistry<IRecipe> registry = ForgeRegistries.RECIPES;
+		final IForgeRegistry<IRecipeSerializer<?>> registry = ForgeRegistries.RECIPE_SERIALIZERS;
 		if (WaterworksConfig.recipes.recipeRainRocket && WaterworksConfig.register.rainRocket) {
 			final RainRocketRecipe rainRocketRecipe = new RainRocketRecipe();
 			registry.register(rainRocketRecipe.setRegistryName(WaterworksReference.MODID,
