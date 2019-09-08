@@ -44,16 +44,16 @@ public class Waterworks {
 	public static final ItemGroup CREATIVE_TAB = new WaterworksTab();
 
 	// FIXME universal bucket
-	static {
+//	static {
 //		FluidRegistry.enableUniversalBucket(); // Must be called before preInit
-	}
+//	}
 	public Waterworks() {
 		// Register the setup method for modloading
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 		// Register the enqueueIMC method for modloading
-//		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
 		// Register the processIMC method for modloading
-//		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
 		// Register the doClientStuff method for modloading
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
@@ -103,27 +103,31 @@ public class Waterworks {
 	public static class RegistryEvents {
 		@SubscribeEvent
 		public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
+			LOGGER.info("HELLO from Register Block");
 			InitBlocks.initBlocks(event);
 		}
 		@SubscribeEvent
 		public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
+			LOGGER.info("HELLO from Register Items");
 			InitBlocks.initItemBlocks(event);
 			InitItems.init(event.getRegistry());
 		}
 
 		@SubscribeEvent
 		public static void onTileEntityRegistry(RegistryEvent.Register<TileEntityType<?>> event) {
+			LOGGER.info("HELLO from Register TEs");
 			InitTileEntities.register(event.getRegistry());
 		}
 
 		@SubscribeEvent
 		public static void onEntityRegistry(final RegistryEvent.Register<EntityType<?>> event) {
+			LOGGER.info("HELLO from Register Entities");
 			InitEntities.register(event.getRegistry());
 		}
 
 		@SubscribeEvent
 		public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
-
+			LOGGER.info("HELLO from Register GUI");
 			// registry of the client side container
 			event.getRegistry()
 					.register(IForgeContainerType

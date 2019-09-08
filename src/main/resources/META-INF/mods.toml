@@ -18,25 +18,21 @@ version="${file.jarVersion}" #mandatory
  # A display name for the mod
 displayName="Waterworks" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
-updateJSONURL="" #optional
+#updateJSONURL="http://myurl.me/" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
 displayURL="https://github.com/Terpo/Waterworks" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="" #optional
+#logoFile="examplemod.png" #optional
 # A text field displayed in the mod UI
 credits="Kunole for some fancy models!" #optional
 # A text field displayed in the mod UI
 authors="Terpo" #optional
 # The description text for the mod (multi line!) (#mandatory)
-description='''Waterworks adds serveral water collecting mechanics and other gadgets.'''
-																				
-
-					  
-
-																																																																																																																																																					 
-   
+description='''
+Waterworks adds serveral water collecting mechanics and other gadgets.
+'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.examplemod]] #optional
+[[dependencies.waterworks]] #optional
     # the modid of the dependency
     modId="forge" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
@@ -48,7 +44,7 @@ description='''Waterworks adds serveral water collecting mechanics and other gad
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
 # Here's another dependency
-[[dependencies.examplemod]]
+[[dependencies.waterworks]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.14.4]"
