@@ -210,7 +210,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		if (cap == CapabilityEnergy.ENERGY) {
 			return this.battery.cast();
 		}
-		return super.getCapability(cap);
+		return super.getCapability(cap, facing);
 	}
 
 	public void sendEnergyPacket() {
