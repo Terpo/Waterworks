@@ -6,7 +6,7 @@ import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksTileEntities;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -92,17 +92,18 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 		super.write(compound);
 		int connectedBlocks = 0;
 		// TagList of Integer Tags:
-		final NBTTagList list = new NBTTagList();
+
+		final ListNBT list = new ListNBT();
 		for (int i = 0; i < this.areaCount; i++) {
 			if (this.rainCollectorBlocks[i] != null) {
 				final CompoundNBT nbt = new CompoundNBT();
-				nbt.setLong("collectorPos", this.rainCollectorBlocks[i].toLong());
+				nbt.putLong("collectorPos", this.rainCollectorBlocks[i].toLong());
 				list.add(nbt);
 				connectedBlocks++;
 			}
 		}
 		compound.putInt("connectedBlocks", connectedBlocks);
-		compound.setTag("collectorPosList", list);
+		compound.put("collectorPosList", list);
 		compound.putInt("validCollectors", this.validCollectors);
 		return compound;
 	}
@@ -113,7 +114,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 		if (compound.hasUniqueId("connectedBlocks")) {
 			this.connectedCollectors = compound.getInt("connectedBlocks");
 			if (compound.hasUniqueId("collectorPosList")) {
-				final NBTTagList list = compound.getList("collectorPosList", 10);
+				final ListNBT list = compound.getList("collectorPosList", 10);
 				if (list.size() > this.areaCount) {
 					this.rainCollectorBlocks = new BlockPos[list.size()];
 					this.isReset = true;

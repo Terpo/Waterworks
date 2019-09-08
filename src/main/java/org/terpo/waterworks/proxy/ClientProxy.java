@@ -1,12 +1,10 @@
 package org.terpo.waterworks.proxy;
 
 import org.terpo.waterworks.api.constants.EnumItemMaterials;
-import org.terpo.waterworks.entity.item.EntityFireworkRocketAntiRain;
-import org.terpo.waterworks.entity.item.EntityFireworkRocketRain;
-import org.terpo.waterworks.entity.item.RenderFireworkRocketAntiRain;
-import org.terpo.waterworks.entity.item.RenderFireworkRocketRain;
+import org.terpo.waterworks.gui.BaseContainerScreen;
 import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.init.WaterworksConfig;
+import org.terpo.waterworks.init.WaterworksContainers;
 import org.terpo.waterworks.init.WaterworksItems;
 import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
 import org.terpo.waterworks.tileentity.specialrenderer.TileEntityWaterRenderer;
@@ -14,6 +12,7 @@ import org.terpo.waterworks.tileentity.specialrenderer.TileEntityWaterRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -21,7 +20,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -50,7 +48,7 @@ public class ClientProxy implements IProxy {
 	public static void registerModels(ModelRegistryEvent event) {
 		registerItemRenders();
 		registerBlockRenders();
-		registerEntityRenders();
+//		registerEntityRenders();
 	}
 
 	// INIT BLOCKS
@@ -105,11 +103,19 @@ public class ClientProxy implements IProxy {
 	 * INIT ENTITIES
 	 */
 
-	public static void registerEntityRenders() {
-		RenderingRegistry.registerEntityRenderingHandler(EntityFireworkRocketRain.class,
-				new RenderFireworkRocketRain.Factory());
-		RenderingRegistry.registerEntityRenderingHandler(EntityFireworkRocketAntiRain.class,
-				new RenderFireworkRocketAntiRain.Factory());
+	@Override
+	public void init() {
+		ScreenManager.registerFactory(WaterworksContainers.waterworks, BaseContainerScreen::new);
+//		ScreenManager.registerFactory(WaterworksContainers.groundwaterPump, PumpContainerScreen::new);
+//		ScreenManager.registerFactory(WaterworksContainers.groundwaterPump, PumpContainerScreen::new);
 	}
+
+	// FIXME Entity Renderers
+//	public static void registerEntityRenders() {
+//		RenderingRegistry.registerEntityRenderingHandler(EntityFireworkRocketRain.class,
+//				new RenderFireworkRocketRain);
+//		RenderingRegistry.registerEntityRenderingHandler(EntityFireworkRocketAntiRain.class,
+//				new RenderFireworkRocketAntiRain.Factory());
+//	}
 
 }

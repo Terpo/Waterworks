@@ -22,4 +22,9 @@ public class WaterworksRegistryNames {
 	public static final String TILE_ENTITY_GROUNDWATER_PUMP = "groundwater_pump";
 	public static final String TILE_ENTITY_BASE = "base_tile_entity";
 	public static final String TILE_ENTITY_WATERWORKS = "tile_waterworks";
+
+	// GUI Containers
+	public static final String CONTAINER_WATERWORKS = "container_waterworks";
+	public static final String CONTAINER_GROUNDWATER_PUMP = "container_groundwater_pump";
+
 }

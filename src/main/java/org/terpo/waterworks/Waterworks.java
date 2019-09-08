@@ -3,6 +3,8 @@ package org.terpo.waterworks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.terpo.waterworks.api.constants.WaterworksReference;
+import org.terpo.waterworks.api.constants.WaterworksRegistryNames;
+import org.terpo.waterworks.gui.ContainerBase;
 import org.terpo.waterworks.init.InitBlocks;
 import org.terpo.waterworks.init.InitEntities;
 import org.terpo.waterworks.init.InitItems;
@@ -16,9 +18,11 @@ import org.terpo.waterworks.proxy.ServerProxy;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -65,8 +69,8 @@ public class Waterworks {
 
 		InitModCompat.init("init");
 		WaterworksCrafting.register();
-//		NetworkRegistry.INSTANCE.registerGuiHandler(Waterworks.instance, new GuiProxy()); //FIXME network registry
 		proxy.setup(event);
+		proxy.init();
 
 		LOGGER.info("Waterworks Setup complete");
 	}
@@ -116,5 +120,17 @@ public class Waterworks {
 		public static void onEntityRegistry(final RegistryEvent.Register<EntityType<?>> event) {
 			InitEntities.register(event.getRegistry());
 		}
+
+		@SubscribeEvent
+		public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
+
+			// registry of the client side container
+			event.getRegistry()
+					.register(IForgeContainerType
+							.create((windowId, inventory, data) -> new ContainerBase(windowId, inventory,
+									Waterworks.proxy.getClientWorld().getTileEntity(data.readBlockPos())))
+							.setRegistryName(WaterworksReference.MODID, WaterworksRegistryNames.BLOCK_RAIN_TANK_WOOD));
+		}
+
 	}
 }

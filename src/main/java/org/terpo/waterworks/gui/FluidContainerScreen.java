@@ -6,25 +6,25 @@ import java.util.List;
 import org.terpo.waterworks.energy.WaterworksBattery;
 import org.terpo.waterworks.fluid.WaterworksTank;
 import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
-import org.terpo.waterworks.tileentity.TileWaterworks;
 
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.inventory.Container;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 //Client Side
-public class GuiFluidContainer extends GuiContainerBase {
+public class FluidContainerScreen extends BaseContainerScreen {
 
 	protected WaterworksTank fluidTank;
 	protected WaterworksBattery battery;
 
-	public GuiFluidContainer(Container inventorySlotsIn, TileWaterworks te) {
-		super(inventorySlotsIn);
-		this.fluidTank = te.getFluidTank();
-		if (te instanceof TileEntityGroundwaterPump) {
-			this.battery = ((TileEntityGroundwaterPump) te).getBattery();
+	public FluidContainerScreen(ContainerBase screenContainer, PlayerInventory inv, ITextComponent title) {
+		super(screenContainer, inv, title);
+		this.fluidTank = screenContainer.getTileWaterworks().getFluidTank();
+		if (screenContainer.getTileWaterworks() instanceof TileEntityGroundwaterPump) {
+			this.battery = (WaterworksBattery) screenContainer.getTileWaterworks()
+					.getCapability(CapabilityEnergy.ENERGY).orElse(null);
 		}
 
 	}
@@ -33,21 +33,22 @@ public class GuiFluidContainer extends GuiContainerBase {
 		if (this.fluidTank != null) {
 			final int fillHeight = this.fluidTank.getFluidAmount() * tankSizeY / this.fluidTank.getCapacity();
 
-			final ResourceLocation waterResource = FluidRegistry.WATER.getStill();
-			final TextureAtlasSprite sprite = this.mc.getTextureMapBlocks().getAtlasSprite(waterResource.toString());
-			this.mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-			this.drawTexturedModalRect(getGuiLeft() + tankPosX, getGuiTop() + tankPosY + tankSizeY - fillHeight, sprite,
-					tankSizeX, fillHeight);
+			// FIXME Water Resource
+//			final ResourceLocation waterResource = FluidRegistry.WATER.getStill();
+//			final TextureAtlasSprite sprite = this.minecraft.getTextureMap().getAtlasSprite(waterResource.toString());
+			this.minecraft.getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+			this.fillGradient(getGuiLeft() + tankPosX, getGuiTop() + tankPosY + tankSizeY - fillHeight, 0, 0, tankSizeX,
+					fillHeight);
 		}
 	}
 	protected void drawBattery(int batteryPosX, int batterySizeX, int batteryPosY, int batterySizeY) {
 		if (this.battery != null) {
 			final int fillHeight = this.battery.getEnergyStored() * batterySizeY / this.battery.getMaxEnergyStored();
 
-			this.mc.getTextureManager()
+			this.minecraft.getTextureManager()
 					.bindTexture(new ResourceLocation("waterworks:textures/blocks/energy_overlay.png"));
-			this.drawTexturedModalRect(getGuiLeft() + batteryPosX,
-					getGuiTop() + batteryPosY + batterySizeY - fillHeight, 0, 0, batterySizeX, fillHeight);
+			this.fillGradient(getGuiLeft() + batteryPosX, getGuiTop() + batteryPosY + batterySizeY - fillHeight, 0, 0,
+					batterySizeX, fillHeight);
 		}
 	}
 
@@ -58,8 +59,7 @@ public class GuiFluidContainer extends GuiContainerBase {
 		toolTipText.add(tooltip);
 		if (getGuiLeft() + xStartTank <= mouseX && mouseX < getGuiLeft() + xStartTank + xSizeTank
 				&& mouseY >= getGuiTop() + yStartTank && mouseY < getGuiTop() + yStartTank + ySizeTank) {
-
-			drawHoveringText(toolTipText, mouseX - getGuiLeft() + 10, mouseY - getGuiTop());
+			renderTooltip(toolTipText, mouseX - getGuiLeft() + 10, mouseY - getGuiTop());
 		}
 	}
 	protected void drawBatteryTooltip(int mouseX, int mouseY, int xStartBattery, int xSizeTankBattery,
@@ -70,7 +70,7 @@ public class GuiFluidContainer extends GuiContainerBase {
 				&& mouseY >= getGuiTop() + yStartBattery && mouseY < getGuiTop() + yStartBattery + ySizeBattery) {
 			final List<String> toolTipText = new ArrayList<>();
 			toolTipText.add(tooltip);
-			drawHoveringText(toolTipText, mouseX - getGuiLeft() + 10, mouseY - getGuiTop());
+			renderTooltip(toolTipText, mouseX - getGuiLeft() + 10, mouseY - getGuiTop());
 		}
 	}
 

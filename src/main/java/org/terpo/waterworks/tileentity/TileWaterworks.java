@@ -6,11 +6,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.terpo.waterworks.fluid.WaterworksTank;
+import org.terpo.waterworks.gui.ContainerBase;
 import org.terpo.waterworks.helper.GeneralItemStackHandler;
-import org.terpo.waterworks.network.TankPacket;
-import org.terpo.waterworks.network.WaterworksPacketHandler;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -19,6 +21,8 @@ import net.minecraft.potion.Potions;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -28,7 +32,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class TileWaterworks extends BaseTileEntity implements ITickableTileEntity {
+public class TileWaterworks extends BaseTileEntity implements ITickableTileEntity, INamedContainerProvider {
 
 	private static final Random random = new Random();
 	private int currentTick = random.nextInt(256);
@@ -48,8 +52,9 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 		this.fluidTank = new WaterworksTank(this.tankSize);
 	}
 
+	// FIXME send update packet
 	protected void sendUpdatePacket() {
-		WaterworksPacketHandler.sendToAllAround(new TankPacket(this), this);
+//		WaterworksPacketHandler.sendToAllAround(new TankPacket(this), this);
 	}
 
 	public TileWaterworks(TileEntityType<?> tileEntityTypeIn) {
@@ -70,19 +75,20 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 		if (compound.hasUniqueId("items")) {
 			this.itemStackHandler.deserializeNBT(compound.getCompound("items"));
 		}
-		this.fluidTank = (WaterworksTank) this.fluidTank.readFromNBT(compound);
+		this.fluidTank.readFromNBT(compound);
 
 	}
 
-	public boolean canInteractWith(PlayerEntity playerIn) {
-		// If we are too far away from this tile entity you cannot use it
-		return !isInvalid() && playerIn.getDistanceSq(this.pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
-	}
+//	public boolean canInteractWith(PlayerEntity playerIn) {
+//		// If we are too far away from this tile entity you cannot use it
+//		return !isInvalid() && playerIn.getDistanceSq(this.pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
+//	}
 
 	@SuppressWarnings("unchecked")
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
+		// FIXME see lazy handling in groundwater pump
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return LazyOptional.of(() -> (T) this.itemStackHandler);
 		}
@@ -124,20 +130,20 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 	}
 	// ITickable End
 
-	public int getINVSIZE() {
+	public int getInventorySize() {
 		return this.inventorySize;
 	}
 
-	public void setINVSIZE(int iNVSIZE) {
-		this.inventorySize = iNVSIZE;
+	public void setInventorySize(int inventorySize) {
+		this.inventorySize = inventorySize;
 	}
 
-	public int getTANKSIZE() {
+	public int getTankSize() {
 		return this.tankSize;
 	}
 
-	public void setTANKSIZE(int tANKSIZE) {
-		this.tankSize = tANKSIZE;
+	public void setTANKSIZE(int tankSize) {
+		this.tankSize = tankSize;
 	}
 
 	public int getComparatorOutput() {
@@ -224,11 +230,25 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 		}
 	}
 	protected static FluidStack getWaterFluidStack(int amount) {
-		return new FluidStack(null, amount);
+		return null; // FIXME water fluid
+		// new FluidStack(null, amount);
 	}
 
 	public int getCurrentTick() {
 		return this.currentTick;
+	}
+
+	// server side GUI container
+	@Override
+	public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity entity) {
+		return new ContainerBase(windowId, inventory, this);
+	}
+
+	// server side GUI container
+	// FIXME Proper localiation
+	@Override
+	public ITextComponent getDisplayName() {
+		return new StringTextComponent(getType().getRegistryName().getPath());
 	}
 
 }

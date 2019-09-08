@@ -4,11 +4,8 @@ import org.terpo.waterworks.helper.GeneralItemStackHandler;
 import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksTileEntities;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntityRainTankWood extends TileWaterworks {
@@ -27,7 +24,8 @@ public class TileEntityRainTankWood extends TileWaterworks {
 	}
 	public TileEntityRainTankWood(TileEntityType<?> tileEntityTypeIn, int fillrate, int capacity) {
 		super(tileEntityTypeIn, INVENTORY_SLOT_COUNT, capacity);
-		this.fluidResource = new FluidStack(FluidRegistry.WATER, fillrate);
+		this.fluidResource = null; // FIXME water fluid
+		// new FluidStack(FluidRegistry.WATER, fillrate);
 
 		this.fluidTank.setCanFill(false);
 		this.fluidTank.setTileEntity(this);
@@ -51,10 +49,11 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		super.updateServerSide();
 	}
 
-	@Override
-	public boolean shouldRefresh(World worldIn, BlockPos posIn, BlockState oldState, BlockState newState) {
-		return oldState.getBlock() != newState.getBlock();
-	}
+	// FIXME should refresh
+//	@Override
+//	public boolean shouldRefresh(World worldIn, BlockPos posIn, BlockState oldState, BlockState newState) {
+//		return oldState.getBlock() != newState.getBlock();
+//	}
 
 	public int getStateLevel() {
 		return Math.round((this.fluidTank.getFluidAmount() * 4.0f / this.fluidTank.getCapacity()));

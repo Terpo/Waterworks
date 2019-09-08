@@ -4,9 +4,10 @@ import org.terpo.waterworks.init.WaterworksTileEntities;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -32,7 +33,7 @@ public class TileEntityRainCollector extends BaseTileEntity {
 	}
 
 	public void informAboutBlockBreak() {
-		if (hasController() && !this.controller.isInvalid()) {
+		if (hasController() && !this.controller.isRemoved()) {
 			this.controller.removeCollector(this.pos);
 		}
 	}
@@ -42,7 +43,7 @@ public class TileEntityRainCollector extends BaseTileEntity {
 		super.write(compound);
 		if (this.hasController()) {
 			final BlockPos controllerPos = this.controller.getPos();
-			compound.setLong("controllerPos", controllerPos.toLong());
+			compound.putLong("controllerPos", controllerPos.toLong());
 		}
 		return compound;
 	}
@@ -83,29 +84,16 @@ public class TileEntityRainCollector extends BaseTileEntity {
 		return false;
 	}
 
-	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (hasController()) {
-			if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-				return true;
-			}
-			if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-				return true;
-			}
-		}
-		return super.hasCapability(capability, facing);
-	}
-
 	@SuppressWarnings({"unchecked"})
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return (T) this.controller.itemStackHandler;
+			return LazyOptional.of(() -> (T) this.controller.itemStackHandler);
 		}
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return (T) this.controller.fluidTank;
+			return LazyOptional.of(() -> (T) this.controller.fluidTank);
 		}
-		return super.getCapability(capability, facing);
+		return super.getCapability(capability, side);
 	}
 
 	public void breakConnection(TileEntityRainCollectorController otherController) {
