@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	private final int controllerRange = 2;
@@ -44,7 +45,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	@Override
 	protected boolean isRefilling() {
 		if (this.world.isRaining()) {
-			this.fluidTank.fillInternal(this.fluidResource, true);
+			this.fluidTank.fill(this.fluidResource, FluidAction.EXECUTE);
 			return true;
 		}
 		return false;

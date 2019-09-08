@@ -1,15 +1,18 @@
 package org.terpo.waterworks.fluid;
 
-import org.terpo.waterworks.tileentity.BaseTileEntity;
+import org.terpo.waterworks.tileentity.TileWaterworks;
 
-import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class WaterworksTank extends FluidTank {
 
-	public WaterworksTank(int capacity) {
+	private final TileWaterworks tile;
+	public WaterworksTank(int capacity, TileWaterworks tileWaterworks) {
 		super(capacity);
+		this.tile = tileWaterworks;
 	}
 
+	@Override
 	public boolean isEmpty() {
 		return this.getFluidAmount() == 0;
 	}
@@ -19,9 +22,7 @@ public class WaterworksTank extends FluidTank {
 	}
 	@Override
 	protected void onContentsChanged() {
-		if (this.tile instanceof BaseTileEntity) {
-			((BaseTileEntity) this.tile).setDirty(true);
-		}
+		this.tile.setDirty(true);
 	}
 
 }

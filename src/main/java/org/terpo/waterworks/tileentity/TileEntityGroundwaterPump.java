@@ -20,6 +20,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -29,6 +30,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class TileEntityGroundwaterPump extends TileWaterworks {
 
@@ -60,11 +62,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		this.energyUsage = WaterworksConfig.pump.groundwaterPumpEnergyBaseUsage
 				+ WaterworksConfig.pump.groundwaterPumpEnergyPipeMultiplier * this.pipeCounter;
 
-		this.resourceWater = null; // FIXME Fluid
-									// new FluidStack(FluidRegistry.WATER,fillrate);
-
-		this.fluidTank.setCanFill(false);
-		this.fluidTank.setTileEntity(this);
+		this.resourceWater = new FluidStack(Fluids.WATER, fillrate);
 
 		this.itemStackHandler = new PumpItemStackHandler(this.inventorySize, this);
 
@@ -107,7 +105,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	private boolean refill() {
 		final WaterworksBattery waterworksBattery = this.battery.orElse(null);
 		if (waterworksBattery != null && waterworksBattery.getEnergyStored() >= this.energyUsage) {
-			final int filled = this.fluidTank.fillInternal(this.resourceWater, true);
+			final int filled = this.fluidTank.fill(this.resourceWater, FluidAction.EXECUTE);
 			if (filled == WaterworksConfig.pump.groundwaterPumpFillrate) {
 				return waterworksBattery.extractInternal(this.energyUsage, false) > 0;
 			} else if (filled > 0) {

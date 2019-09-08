@@ -4,9 +4,11 @@ import org.terpo.waterworks.helper.GeneralItemStackHandler;
 import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksTileEntities;
 
+import net.minecraft.fluid.Fluids;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class TileEntityRainTankWood extends TileWaterworks {
 
@@ -24,11 +26,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 	}
 	public TileEntityRainTankWood(TileEntityType<?> tileEntityTypeIn, int fillrate, int capacity) {
 		super(tileEntityTypeIn, INVENTORY_SLOT_COUNT, capacity);
-		this.fluidResource = null; // FIXME water fluid
-		// new FluidStack(FluidRegistry.WATER, fillrate);
-
-		this.fluidTank.setCanFill(false);
-		this.fluidTank.setTileEntity(this);
+		this.fluidResource = new FluidStack(Fluids.WATER, fillrate);
 
 		this.itemStackHandler = new GeneralItemStackHandler(this.inventorySize, this);
 
@@ -63,7 +61,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		final BlockPos position = getPos().up();
 
 		if (this.world.isRainingAt(position)) {
-			this.fluidTank.fillInternal(this.fluidResource, true);
+			this.fluidTank.fill(this.fluidResource, FluidAction.EXECUTE);
 			return true;
 		}
 		return false;

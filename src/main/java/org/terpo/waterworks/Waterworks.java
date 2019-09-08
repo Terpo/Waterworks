@@ -25,7 +25,6 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -44,8 +43,9 @@ public class Waterworks {
 
 	public static final ItemGroup CREATIVE_TAB = new WaterworksTab();
 
+	// FIXME universal bucket
 	static {
-		FluidRegistry.enableUniversalBucket(); // Must be called before preInit
+//		FluidRegistry.enableUniversalBucket(); // Must be called before preInit
 	}
 	public Waterworks() {
 		// Register the setup method for modloading

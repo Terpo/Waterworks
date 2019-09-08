@@ -11,12 +11,13 @@ import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.fluid.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 @OnlyIn(Dist.CLIENT)
 public class TileEntityWaterRenderer extends TileEntityRenderer<TileWaterworks> {
@@ -43,16 +44,16 @@ public class TileEntityWaterRenderer extends TileEntityRenderer<TileWaterworks> 
 		final int amount = tank.getFluidAmount();
 		final int capacity = tank.getCapacity();
 		final FluidStack fluidStack = tank.getFluid();
-		final Fluid fluid = (fluidStack != null) ? fluidStack.getFluid() : null;
+		final Fluid fluid = fluidStack.getFluid();
 
 		if (fluid != null) {
-			final int c = fluid.getColor();
+			final int c = fluid.getAttributes().getColor();
 			this.blue = c & 0xFF;
 			this.green = (c >> 8) & 0xFF;
 			this.red = (c >> 16) & 0xFF;
 			this.alphaValue = (c >> 24) & 0xFF;
 			final TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap()
-					.getAtlasSprite(fluid.getStill().toString());
+					.getSprite(fluid.getAttributes().getStillTexture());
 			this.diffU = this.maxU - this.minU;
 			this.diffV = this.maxV - this.minV;
 
@@ -63,7 +64,7 @@ public class TileEntityWaterRenderer extends TileEntityRenderer<TileWaterworks> 
 				this.minV = sprite.getMinV() + this.diffV * multiplier;
 				this.maxV = sprite.getMaxV() - this.diffV * multiplier;
 
-				final int i = getWorld().getCombinedLight(te.getPos(), fluid.getLuminosity());
+				final int i = getWorld().getCombinedLight(te.getPos(), fluid.getAttributes().getLuminosity());
 				this.lightx = i >> 0x10 & 0xFFFF;
 				this.lighty = i & 0xFFFF;
 
@@ -75,9 +76,9 @@ public class TileEntityWaterRenderer extends TileEntityRenderer<TileWaterworks> 
 				GlStateManager.disableCull();
 				GlStateManager.disableLighting();
 				GlStateManager.enableBlend();
-				GlStateManager.enableAlphaTest(); // FIXME Alpha and Render Engine
+				GlStateManager.enableAlphaTest();
 				GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-//				Minecraft.getInstance().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+				Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 				final Tessellator tess = Tessellator.getInstance();
 				final BufferBuilder buffer = tess.getBuffer();
 

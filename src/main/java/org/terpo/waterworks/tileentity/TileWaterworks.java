@@ -29,6 +29,7 @@ import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -49,7 +50,7 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 		this.inventorySize = inventorySize;
 		this.tankSize = tankSize;
 
-		this.fluidTank = new WaterworksTank(this.tankSize);
+		this.fluidTank = new WaterworksTank(this.tankSize, this);
 	}
 
 	// FIXME send update packet
@@ -199,7 +200,7 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 						final ItemStack outputStack = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION),
 								Potions.WATER);
 						if (checkOutputSlot(outputSlot, outputStack)) {
-							this.fluidTank.drainInternal(1000, true);
+							this.fluidTank.drain(1000, FluidAction.EXECUTE);
 							moveFilledInputToOutput(stackInput, outputSlot, outputStack);
 							return true;
 						}

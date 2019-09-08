@@ -17,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class FluidHelper {
 
@@ -38,7 +39,7 @@ public class FluidHelper {
 		final WaterworksTank tank = tileEntity.getFluidTank();
 		if (tank.getFluidAmount() >= 1000) {
 			if (!playerIn.isCreative()) {
-				tank.drainInternal(1000, true);
+				tank.drain(1000, FluidAction.EXECUTE);
 				final ItemStack stackWaterBottle = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION),
 						Potions.WATER);
 				itemstack.shrink(1);
