@@ -1,5 +1,7 @@
 package org.terpo.waterworks.block;
 
+import javax.annotation.Nullable;
+
 import org.terpo.waterworks.helper.FluidHelper;
 import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.init.WaterworksConfig;
@@ -15,6 +17,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -64,10 +67,16 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 		return true;
 	}
 
+	// FIXME Placement
+//	The way that the direction state is set for FirstBlock is not standard and leads to strange result that are not similar to how vanilla blocks work. 
+//	To get the vanilla behaviour, instead of using onBlockPlacedBy, use getStateForPlacement(BlockItemUseContext context) along with setting a default state in the constructor. I suggest you look at the ObserverBlock vanilla class as an example.
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
+			ItemStack stack) {
 		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-		worldIn.setBlockState(pos, state.with(BlockStateProperties.FACING, placer.getHorizontalFacing()), 2);
+		if (placer != null) {
+			worldIn.setBlockState(pos, state.with(BlockStateProperties.FACING, placer.getHorizontalFacing()), 2);
+		}
 	}
 
 	@Override
@@ -174,4 +183,9 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 //	protected BlockStateContainer createBlockState() {
 //		return new BlockStateContainer(this, new IProperty[]{PROPERTYFACING});
 //	}
+
+	@Override
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+		builder.add(BlockStateProperties.FACING);
+	}
 }

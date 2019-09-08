@@ -17,8 +17,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -40,8 +40,8 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 	// This item handler will hold our two inventory slots
 	protected GeneralItemStackHandler itemStackHandler;
 	// TileEntity
-	public TileWaterworks(int inventorySize, int tankSize) {
-		super();
+	public TileWaterworks(TileEntityType<?> tileEntityTypeIn, int inventorySize, int tankSize) {
+		super(tileEntityTypeIn);
 		this.inventorySize = inventorySize;
 		this.tankSize = tankSize;
 
@@ -52,15 +52,15 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 		WaterworksPacketHandler.sendToAllAround(new TankPacket(this), this);
 	}
 
-	public TileWaterworks() {
-		this(2, 8000);
+	public TileWaterworks(TileEntityType<?> tileEntityTypeIn) {
+		this(tileEntityTypeIn, 2, 8000);
 	}
 
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
 		super.write(compound);
 		compound.put("items", this.itemStackHandler.serializeNBT());
-		this.fluidTank.write(compound);
+		this.fluidTank.writeToNBT(compound);
 		return compound;
 	}
 
@@ -68,26 +68,15 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 	public void read(CompoundNBT compound) {
 		super.read(compound);
 		if (compound.hasUniqueId("items")) {
-			this.itemStackHandler.deserializeNBT((CompoundNBT) compound.getTag("items"));
+			this.itemStackHandler.deserializeNBT(compound.getCompound("items"));
 		}
-		this.fluidTank = (WaterworksTank) this.fluidTank.read(compound);
+		this.fluidTank = (WaterworksTank) this.fluidTank.readFromNBT(compound);
 
 	}
 
 	public boolean canInteractWith(PlayerEntity playerIn) {
 		// If we are too far away from this tile entity you cannot use it
 		return !isInvalid() && playerIn.getDistanceSq(this.pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
-	}
-
-	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return true;
-		}
-		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return true;
-		}
-		return super.hasCapability(capability, facing);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.terpo.waterworks.compat.bedrockbgone.BBGCompatibility;
 import org.terpo.waterworks.energy.WaterworksBattery;
 import org.terpo.waterworks.helper.PumpItemStackHandler;
 import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.init.WaterworksConfig;
+import org.terpo.waterworks.init.WaterworksTileEntities;
 import org.terpo.waterworks.network.EnergyPacket;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 
@@ -17,10 +21,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -50,10 +55,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		this(WaterworksConfig.pump.groundwaterPumpFillrate, WaterworksConfig.pump.groundwaterPumpCapacity);
 	}
 	public TileEntityGroundwaterPump(int fillrate, int capacity) {
-		super(PUMP_INVENTORY_SLOTS, capacity);
-
-		this.battery = new WaterworksBattery(WaterworksConfig.pump.groundwaterPumpEnergyCapacity,
-				WaterworksConfig.pump.groundwaterPumpEnergyInput, 0, this);
+		super(WaterworksTileEntities.groundwaterPump, PUMP_INVENTORY_SLOTS, capacity);
 
 		this.energyUsage = WaterworksConfig.pump.groundwaterPumpEnergyBaseUsage
 				+ WaterworksConfig.pump.groundwaterPumpEnergyPipeMultiplier * this.pipeCounter;
@@ -98,14 +100,15 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 
 	}
 	private boolean refill() {
-		if (this.battery.getEnergyStored() >= this.energyUsage) {
+		final WaterworksBattery waterworksBattery = getBattery();
+		if (waterworksBattery.getEnergyStored() >= this.energyUsage) {
 			final int filled = this.fluidTank.fillInternal(this.resourceWater, true);
 			if (filled == WaterworksConfig.pump.groundwaterPumpFillrate) {
-				return this.battery.extractInternal(this.energyUsage, false) > 0;
+				return waterworksBattery.extractInternal(this.energyUsage, false) > 0;
 			} else if (filled > 0) {
 				final int energy = this.energyUsage
 						* Math.round(((float) filled) / WaterworksConfig.pump.groundwaterPumpFillrate);
-				return this.battery.extractInternal(energy, false) > 0;
+				return waterworksBattery.extractInternal(energy, false) > 0;
 			}
 		}
 		return false;
@@ -147,9 +150,9 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 						+ WaterworksConfig.pump.groundwaterPumpEnergyPipeMultiplier * this.pipeCounter;
 				return;
 			} else if (block.equals(Blocks.AIR)
-					&& this.battery.hasEnoughEnergy(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement)
+					&& getBattery().hasEnoughEnergy(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement)
 					&& placePipe(currentPos)) {
-				this.battery.extractInternal(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement, false);
+				getBattery().extractInternal(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement, false);
 				break;
 			}
 			this.structureComplete = false;
@@ -193,23 +196,21 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		this.structureComplete = structureComplete;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Nonnull
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == CapabilityEnergy.ENERGY) {
-			return true;
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction facing) {
+		if (cap == CapabilityEnergy.ENERGY) {
+			return LazyOptional.of(() -> (T) getBattery());
 		}
-		return super.hasCapability(capability, facing);
+		return super.getCapability(cap);
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		if (capability == CapabilityEnergy.ENERGY) {
-			return (T) this.battery;
+	private WaterworksBattery getBattery() {
+		if (this.battery == null) {
+			this.battery = new WaterworksBattery(WaterworksConfig.pump.groundwaterPumpEnergyCapacity,
+					WaterworksConfig.pump.groundwaterPumpEnergyInput, 0, this);
 		}
-		return super.getCapability(capability, facing);
-	}
-	public WaterworksBattery getBattery() {
 		return this.battery;
 	}
 
@@ -220,17 +221,17 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
 		super.write(compound);
-		this.battery.write(compound);
+		getBattery().write(compound);
 		compound.putInt(NBT_INT_ENERGY_USAGE, this.energyUsage);
 		compound.putInt(NBT_INT_PIPE_COUNTER, this.pipeCounter);
-		compound.setBoolean(NBT_BOOLEAN_STRUCTURE_COMPLETE, this.structureComplete);
+		compound.putBoolean(NBT_BOOLEAN_STRUCTURE_COMPLETE, this.structureComplete);
 		return compound;
 	}
 
 	@Override
 	public void read(CompoundNBT compound) {
 		super.read(compound);
-		this.battery = this.battery.read(compound);
+		this.battery = getBattery().read(compound);
 		if (compound.hasUniqueId(NBT_INT_ENERGY_USAGE)) {
 			this.energyUsage = compound.getInt(NBT_INT_ENERGY_USAGE);
 		}

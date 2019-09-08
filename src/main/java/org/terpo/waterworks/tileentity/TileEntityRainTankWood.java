@@ -2,8 +2,10 @@ package org.terpo.waterworks.tileentity;
 
 import org.terpo.waterworks.helper.GeneralItemStackHandler;
 import org.terpo.waterworks.init.WaterworksConfig;
+import org.terpo.waterworks.init.WaterworksTileEntities;
 
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -15,11 +17,16 @@ public class TileEntityRainTankWood extends TileWaterworks {
 	private static final int INVENTORY_SLOT_COUNT = 2;
 
 	public TileEntityRainTankWood() {
-		this(WaterworksConfig.rainCollection.woodenRainTankFillrate,
+		this(WaterworksTileEntities.rainTankWood, WaterworksConfig.rainCollection.woodenRainTankFillrate,
 				WaterworksConfig.rainCollection.woodenRainTankCapacity);
 	}
-	public TileEntityRainTankWood(int fillrate, int capacity) {
-		super(INVENTORY_SLOT_COUNT, capacity);
+
+	public TileEntityRainTankWood(TileEntityType<?> tileEntityTypeIn) {
+		this(tileEntityTypeIn, WaterworksConfig.rainCollection.woodenRainTankFillrate,
+				WaterworksConfig.rainCollection.woodenRainTankCapacity);
+	}
+	public TileEntityRainTankWood(TileEntityType<?> tileEntityTypeIn, int fillrate, int capacity) {
+		super(tileEntityTypeIn, INVENTORY_SLOT_COUNT, capacity);
 		this.fluidResource = new FluidStack(FluidRegistry.WATER, fillrate);
 
 		this.fluidTank.setCanFill(false);

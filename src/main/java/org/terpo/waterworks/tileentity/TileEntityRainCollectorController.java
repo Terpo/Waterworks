@@ -3,6 +3,7 @@ package org.terpo.waterworks.tileentity;
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.helper.AreaHelper;
 import org.terpo.waterworks.init.WaterworksConfig;
+import org.terpo.waterworks.init.WaterworksTileEntities;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagList;
@@ -22,7 +23,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	private int countValidCollectors = 0;
 
 	public TileEntityRainCollectorController() {
-		super(WaterworksConfig.rainCollection.rainCollectorFillrate,
+		super(WaterworksTileEntities.rainCollectorController, WaterworksConfig.rainCollection.rainCollectorFillrate,
 				WaterworksConfig.rainCollection.rainCollectorCapacity);
 	}
 

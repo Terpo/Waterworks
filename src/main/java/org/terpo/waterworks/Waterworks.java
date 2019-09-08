@@ -71,16 +71,6 @@ public class Waterworks {
 		LOGGER.info("Waterworks Setup complete");
 	}
 
-	@SubscribeEvent
-	public static void registerTileEntities(RegistryEvent.Register<TileEntityType<?>> event) {
-		InitTileEntities.register(event.getRegistry());
-	}
-
-	@SubscribeEvent
-	public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
-		InitEntities.register(event.getRegistry());
-	}
-
 	private void doClientStuff(final FMLClientSetupEvent event) {
 		LOGGER.info("Waterworks Client Setup");
 	}
@@ -115,6 +105,16 @@ public class Waterworks {
 		public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
 			InitBlocks.initItemBlocks(event);
 			InitItems.init(event.getRegistry());
+		}
+
+		@SubscribeEvent
+		public static void onTileEntityRegistry(RegistryEvent.Register<TileEntityType<?>> event) {
+			InitTileEntities.register(event.getRegistry());
+		}
+
+		@SubscribeEvent
+		public static void onEntityRegistry(final RegistryEvent.Register<EntityType<?>> event) {
+			InitEntities.register(event.getRegistry());
 		}
 	}
 }
