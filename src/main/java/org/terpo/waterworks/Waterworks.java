@@ -35,7 +35,6 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(WaterworksReference.MODID)
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Waterworks {
 	public static final Logger LOGGER = LogManager.getLogger(WaterworksReference.NAME);
 	// do not use a lambda method reference here
