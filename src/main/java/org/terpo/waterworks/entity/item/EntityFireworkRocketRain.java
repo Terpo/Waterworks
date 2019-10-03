@@ -7,7 +7,6 @@ import org.terpo.waterworks.init.WaterworksItems;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.FireworkRocketEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -24,7 +23,7 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 	private static final DataParameter<OptionalInt> BOOSTED_RAINROCKET_ENTITY_ID = EntityDataManager
 			.createKey(EntityFireworkRocketRain.class, DataSerializers.OPTIONAL_VARINT);
 	private static final DataParameter<Boolean> SHOT_AT_ANGLE_RAINROCKET_BOOLEAN = EntityDataManager
-			.createKey(FireworkRocketEntity.class, DataSerializers.BOOLEAN);
+			.createKey(EntityFireworkRocketRain.class, DataSerializers.BOOLEAN);
 
 	public EntityFireworkRocketRain(EntityType<? extends EntityFireworkRocketRain> entity, World world) {
 		super(entity, world);
