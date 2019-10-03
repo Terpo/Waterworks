@@ -1,0 +1,19 @@
+{
+	"result": {
+		"item": "waterworks:materials"
+	},
+	"pattern": [
+		" G ",
+		"GEG",
+		" G "
+	],
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"G": {
+			"item": "minecraft:gold_nugget"
+		},
+		"E": {
+			"item": "minecraft:ender_pearl"
+		}
+	}
+}

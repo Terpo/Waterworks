@@ -10,7 +10,7 @@
 	],
 	"key": {
 		"I": {
-			"tag": "forge:ingotIron"
+			"item": "minecraft:iron_ingot"
 		},
 		"T": {
 			"item": "waterworks:water_pipe"

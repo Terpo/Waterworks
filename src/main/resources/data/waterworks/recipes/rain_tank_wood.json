@@ -10,10 +10,10 @@
 	],
 	"key": {
 		"P": {
-			"tag": "forge:plankWood"
+			"tag": "minecraft:planks"
 		},
 		"S": {
-			"tag": "forge:slabWood"
+			"tag": "minecraft:wooden_slabs"
 		},
 		"B": {
 			"tag": "forge:stone"

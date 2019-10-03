@@ -13,7 +13,7 @@
 			"item": "waterworks:water_pipe"
 		},
 		"S": {
-			"tag": "forge:blockIron"
+			"item": "minecraft:iron_block"
 		},
 		"A": {
 			"item": "minecraft:iron_bars"

@@ -1,0 +1,19 @@
+{
+	"result": {
+		"item": "waterworks:pipe_wrench"
+	},
+	"pattern": [
+		" II",
+		"  L",
+		"  I"
+	],
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"I": {
+			"item": "minecraft:iron_ingot"
+		},
+		"L": {
+			"tag": "forge:dyes/blue"
+		}
+	}
+}
