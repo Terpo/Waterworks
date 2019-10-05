@@ -1,18 +1,16 @@
 {
 	"result": {
-		"item": "waterworks:materials",
-		"data": 1
+		"item": "waterworks:material_controller"
 	},
 	"pattern": [
 		" G ",
 		"GEG",
 		" G "
 	],
-	"type": "forge:ore_shaped",
+	"type": "minecraft:crafting_shaped",
 	"key": {
 		"G": {
-			"type": "forge:ore_dict",
-			"ore": "nuggetGold"
+			"item": "minecraft:gold_nugget"
 		},
 		"E": {
 			"item": "minecraft:ender_pearl"

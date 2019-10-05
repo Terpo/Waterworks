@@ -13,7 +13,8 @@ public class WaterworksRegistryNames {
 	public static final String ITEM_PIPE_WRENCH = "pipe_wrench";
 	public static final String ITEM_FIREWORK_RAIN = "firework_rain";
 	public static final String ITEM_FIREWORK_ANTI_RAIN = "firework_anti_rain";
-	public static final String ITEM_MATERIALS = "materials";
+	public static final String ITEM_MATERIAL_ENERGY_ADAPTER = "material_energy_adapter";
+	public static final String ITEM_MATERIAL_CONTROLLER = "material_controller";
 
 	// TILE ENTITIES
 	public static final String TILE_ENTITY_RAIN_TANK_WOOD = "rain_tank_wood";

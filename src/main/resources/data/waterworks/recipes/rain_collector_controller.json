@@ -19,7 +19,7 @@
 			"item": "waterworks:rain_tank_wood"
 		},
 		"C": {
-			"item": "waterworks:materials"
+			"item": "waterworks:material_controller"
 		}
 	}
 }

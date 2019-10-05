@@ -13,8 +13,10 @@ public class WaterworksItems {
 	public static Item itemFireworkRain;
 	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.ITEM_FIREWORK_ANTI_RAIN)
 	public static Item itemFireworkAntiRain;
-	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.ITEM_MATERIALS)
-	public static Item itemMaterials;
+	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.ITEM_MATERIAL_ENERGY_ADAPTER)
+	public static Item itemMaterialEnergyAdapter;
+	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.ITEM_MATERIAL_CONTROLLER)
+	public static Item itemMaterialController;
 
 	private WaterworksItems() {
 		// hide me

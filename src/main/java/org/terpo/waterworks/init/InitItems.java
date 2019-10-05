@@ -5,7 +5,8 @@ import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.api.constants.WaterworksRegistryNames;
 import org.terpo.waterworks.item.ItemFireworkAntiRain;
 import org.terpo.waterworks.item.ItemFireworkRain;
-import org.terpo.waterworks.item.ItemMaterials;
+import org.terpo.waterworks.item.ItemMaterialController;
+import org.terpo.waterworks.item.ItemMaterialEnergyAdapter;
 import org.terpo.waterworks.item.ItemPipeWrench;
 
 import net.minecraft.item.Item;
@@ -33,8 +34,10 @@ public class InitItems {
 			WaterworksItems.itemFireworkAntiRain = registerItem(registry, new ItemFireworkAntiRain(),
 					WaterworksRegistryNames.ITEM_FIREWORK_ANTI_RAIN);
 		}
-		WaterworksItems.itemMaterials = registerItem(registry, new ItemMaterials(),
-				WaterworksRegistryNames.ITEM_MATERIALS);
+		WaterworksItems.itemMaterialEnergyAdapter = registerItem(registry, new ItemMaterialEnergyAdapter(),
+				WaterworksRegistryNames.ITEM_MATERIAL_ENERGY_ADAPTER);
+		WaterworksItems.itemMaterialController = registerItem(registry, new ItemMaterialController(),
+				WaterworksRegistryNames.ITEM_MATERIAL_CONTROLLER);
 	}
 
 	private static Item registerItem(IForgeRegistry<Item> registry, Item item, String name, ItemGroup tab) {

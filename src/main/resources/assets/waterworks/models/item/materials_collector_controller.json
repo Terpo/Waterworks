@@ -1,6 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "waterworks:items/materials_collector_controller"
-    }
-}
