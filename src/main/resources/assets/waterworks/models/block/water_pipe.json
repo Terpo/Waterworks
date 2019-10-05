@@ -1,7 +1,7 @@
 {
     "textures": {
-        "0": "blocks/iron_block",
-        "particle": "blocks/iron_block"
+        "0": "block/iron_block",
+        "particle": "block/iron_block"
     },
       "display": {
         "gui": {

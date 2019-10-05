@@ -1,10 +1,12 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
-    "textures": {
-        "particle": "blocks/jukebox_side",
+    "textures": 
+    {
+        "particle": "block/jukebox_side",
 		"0": "waterworks:models/rain_collector_side",
-		"1": "blocks/piston_inner"
-    },      "display": {
+		"1": "block/piston_inner"
+    },      
+    "display": {
         "gui": {
             "rotation": [ 30, 225, 0 ],
             "translation": [ 0, 0, 0],

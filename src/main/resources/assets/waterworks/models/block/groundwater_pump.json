@@ -1,11 +1,11 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-    "particle": "blocks/hopper_outside",
-        "0": "blocks/hopper_outside",
-        "1": "blocks/hopper_inside",
-        "2": "blocks/anvil_base",
-        "3": "blocks/iron_block",
+    "particle": "block/hopper_outside",
+        "0": "block/hopper_outside",
+        "1": "block/hopper_inside",
+        "2": "block/anvil_base",
+        "3": "block/iron_block",
         "4": "waterworks:models/groundwater_pump_decal"
     },      "display": {
         "gui": {

@@ -45,8 +45,7 @@ public class InitBlocks {
 		return block;
 	}
 
-	public static void initItemBlocks(Register<Item> event) {
-		final IForgeRegistry<Item> registry = event.getRegistry();
+	public static void initItemBlocks(IForgeRegistry<Item> registry) {
 		if (WaterworksConfig.register.woodenRainTank) {
 			registerItemBlock(registry, WaterworksBlocks.rainTankWood);
 		}

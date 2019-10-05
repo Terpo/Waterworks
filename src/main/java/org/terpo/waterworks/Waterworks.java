@@ -33,6 +33,7 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.IForgeRegistry;
 
 @Mod(WaterworksReference.MODID)
 public class Waterworks {
@@ -108,8 +109,9 @@ public class Waterworks {
 		@SubscribeEvent
 		public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
 			LOGGER.info("HELLO from Register Items");
-			InitBlocks.initItemBlocks(event);
-			InitItems.init(event.getRegistry());
+			final IForgeRegistry<Item> itemRegistry = event.getRegistry();
+			InitBlocks.initItemBlocks(itemRegistry);
+			InitItems.init(itemRegistry);
 		}
 
 		@SubscribeEvent
