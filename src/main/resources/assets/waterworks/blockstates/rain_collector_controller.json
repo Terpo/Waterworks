@@ -1,5 +1,5 @@
 {
     "variants":{
-        "normal":{"model": "waterworks:rain_collector_controller"}
+        "":{"model": "waterworks:block/rain_collector_controller"}
     }
 }

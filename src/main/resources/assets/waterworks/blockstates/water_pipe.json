@@ -1,5 +1,5 @@
 {
     "variants":{
-        "normal":{"model": "waterworks:water_pipe"}
+        "":{"model": "waterworks:block/water_pipe"}
     }
 }

@@ -1,5 +1,5 @@
 {
     "variants":{
-        "":{"model": "waterworks:rain_tank_wood"}
+        "":{"model": "waterworks:block/rain_tank_wood"}
     }
 }

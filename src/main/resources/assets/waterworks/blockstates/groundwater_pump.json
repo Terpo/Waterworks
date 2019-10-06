@@ -1,8 +1,8 @@
 {
    "variants": {
-        "facing=north":  { "model": "waterworks:groundwater_pump" },
-        "facing=south":  { "model": "waterworks:groundwater_pump", "y": 180, "uvlock": true },
-        "facing=east": { "model": "waterworks:groundwater_pump", "y": 90, "uvlock": true },
-        "facing=west": { "model": "waterworks:groundwater_pump", "y": 270, "uvlock": true }
+        "facing=north":  { "model": "waterworks:block/groundwater_pump" },
+        "facing=south":  { "model": "waterworks:block/groundwater_pump", "y": 180, "uvlock": true },
+        "facing=east": { "model": "waterworks:block/groundwater_pump", "y": 90, "uvlock": true },
+        "facing=west": { "model": "waterworks:block/groundwater_pump", "y": 270, "uvlock": true }
     }
 }
