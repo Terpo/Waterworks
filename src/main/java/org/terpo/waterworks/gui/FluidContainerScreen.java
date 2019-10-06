@@ -20,7 +20,6 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.fluids.FluidStack;
 
 //Client Side
 public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
@@ -29,6 +28,7 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 	protected WaterworksBattery battery;
 	protected ResourceLocation gui;
 	protected Rectangle2d tankRectangle;
+	private final ResourceLocation waterResource = Fluids.WATER.getAttributes().getStillTexture();
 
 	public FluidContainerScreen(ResourceLocation gui, Rectangle2d tankRectangle, ContainerBase screenContainer,
 			PlayerInventory inv, ITextComponent title) {
@@ -61,7 +61,6 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 		this.minecraft.getTextureManager().bindTexture(this.gui);
 //		this.blit(relX, relY, 0, 0, this.xSize, this.ySize);
 		this.blit(getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
-
 		drawTank(this.tankRectangle.getX(), this.tankRectangle.getWidth(), this.tankRectangle.getY(),
 				this.tankRectangle.getHeight());
 	}
@@ -76,10 +75,8 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 	protected void drawTank(int tankPosX, int tankSizeX, int tankPosY, int tankSizeY) {
 		if (this.fluidTank != null) {
 			final int fillHeight = this.fluidTank.getFluidAmount() * tankSizeY / this.fluidTank.getCapacity();
+			final TextureAtlasSprite sprite = this.minecraft.getTextureMap().getSprite(this.waterResource);
 
-			// FIXME Water Resource
-			final ResourceLocation waterResource = new FluidStack(Fluids.WATER, 1000).getFluid().getRegistryName();
-			final TextureAtlasSprite sprite = this.minecraft.getTextureMap().getSprite(waterResource);
 			this.minecraft.getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 			AbstractGui.blit(getGuiLeft() + tankPosX, getGuiTop() + tankPosY + tankSizeY - fillHeight, 0, tankSizeX,
 					fillHeight, sprite);
