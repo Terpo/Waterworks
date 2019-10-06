@@ -16,6 +16,10 @@ public class WaterworksRegistryNames {
 	public static final String ITEM_MATERIAL_ENERGY_ADAPTER = "material_energy_adapter";
 	public static final String ITEM_MATERIAL_CONTROLLER = "material_controller";
 
+	// RECIPE
+	public static final String RECIPE_FIREWORK_RAIN = "firework_rain";
+	public static final String RECIPE_FIREWORK_ANTI_RAIN = "firework_anti_rain";
+
 	// TILE ENTITIES
 	public static final String TILE_ENTITY_RAIN_TANK_WOOD = "rain_tank_wood";
 	public static final String TILE_ENTITY_RAIN_COLLECTOR_CONTROLLER = "rain_collector_controller";

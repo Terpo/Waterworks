@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.entity.item.EntityFireworkRocketRain;
+import org.terpo.waterworks.init.WaterworksConfig;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,6 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -78,14 +80,13 @@ public class ItemFireworkRain extends FireworkRocketItem {
 		super.addInformation(stack, world, tooltip, advanced);
 		if (stack.hasTag()) {
 			final CompoundNBT nbttagcompound = stack.getTag();
-			if (nbttagcompound.hasUniqueId("RAIN")) {
+			if (nbttagcompound.contains("RAIN")) {
 				final int multi = nbttagcompound.getInt("RAIN");
-				// FIXME Rain Tooltips
-//				tooltip.add(I18n.format("tooltip.rain_rocket.bad_weather"));
-//				tooltip.add(I18n.format("tooltip.rain_rocket.rain_duration") + ": " + multi + "/"
-//						+ WaterworksConfig.rockets.rainMaxMultiplier);
-//				tooltip.add(I18n.format("tooltip.rain_rocket.rain_duration") + ": "
-//						+ (WaterworksConfig.rockets.rainDuration * multi) + " ticks");
+				tooltip.add(new TranslationTextComponent("tooltip.rain_rocket.bad_weather"));
+				tooltip.add(new TranslationTextComponent("tooltip.rain_rocket.rain_duration")
+						.appendText(": " + multi + "/" + WaterworksConfig.rockets.rainMaxMultiplier));
+				tooltip.add(new TranslationTextComponent("tooltip.rain_rocket.rain_duration")
+						.appendText(": " + (WaterworksConfig.rockets.rainDuration * multi) + " ticks"));
 			}
 		}
 	}

@@ -1,31 +1,38 @@
 package org.terpo.waterworks.init;
 
+import org.terpo.waterworks.api.constants.WaterworksReference;
+import org.terpo.waterworks.api.constants.WaterworksRegistryNames;
+import org.terpo.waterworks.item.crafting.AntiRainRocketRecipe;
+import org.terpo.waterworks.item.crafting.RainRocketRecipe;
+
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class WaterworksCrafting {
 
-	public static void register() {
-		registerFireworks();
+	public static void register(IForgeRegistry<IRecipeSerializer<?>> registry) {
+		final SpecialRecipeSerializer<AntiRainRocketRecipe> specialRecipeFireworkAntiRain = new SpecialRecipeSerializer<>(
+				AntiRainRocketRecipe::new);
+		specialRecipeFireworkAntiRain.setRegistryName(WaterworksReference.MODID,
+				WaterworksRegistryNames.RECIPE_FIREWORK_ANTI_RAIN);
+		registry.register(specialRecipeFireworkAntiRain);
+		WaterworksRecipes.recipeFireworkAntiRain = specialRecipeFireworkAntiRain;
+
+		final SpecialRecipeSerializer<RainRocketRecipe> specialRecipeFireworkRain = new SpecialRecipeSerializer<>(
+				RainRocketRecipe::new);
+		specialRecipeFireworkRain.setRegistryName(WaterworksReference.MODID,
+				WaterworksRegistryNames.RECIPE_FIREWORK_RAIN);
+		registry.register(specialRecipeFireworkRain);
+		WaterworksRecipes.recipeFireworkRain = specialRecipeFireworkRain;
 	}
-	// FIXME register firework recipes
 
 	public static void registerFireworks() {
-		final IForgeRegistry<IRecipeSerializer<?>> registry = ForgeRegistries.RECIPE_SERIALIZERS;
 		if (WaterworksConfig.recipes.recipeRainRocket && WaterworksConfig.register.rainRocket) {
-//			final RainRocketRecipe rainRocketRecipe = new RainRocketRecipe();
-//			registry.register(rainRocketRecipe.setRegistryName(WaterworksReference.MODID,
-//					WaterworksRegistryNames.ITEM_FIREWORK_RAIN));
-//			RecipeSorter.register(WaterworksReference.DOMAIN + "shapeless_firework_rain", RainRocketRecipe.class,
-//					Category.SHAPELESS, "after:minecraft:shapeless");
+			// TODO recipe register
 		}
 		if (WaterworksConfig.recipes.recipeAntiRainRocket && WaterworksConfig.register.antiRainRocket) {
-//			final AntiRainRocketRecipe antiRainRocketRecipe = new AntiRainRocketRecipe();
-//			registry.register(antiRainRocketRecipe.setRegistryName(WaterworksReference.MODID,
-//					WaterworksRegistryNames.ITEM_FIREWORK_ANTI_RAIN));
-//			RecipeSorter.register(WaterworksReference.DOMAIN + "shapeless_firework_anti_rain",
-//					AntiRainRocketRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
+//TODO recipe register
 		}
 
 	}

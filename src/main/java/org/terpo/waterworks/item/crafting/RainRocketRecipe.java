@@ -1,45 +1,27 @@
 package org.terpo.waterworks.item.crafting;
 
-import java.util.function.Function;
-
 import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksItems;
+import org.terpo.waterworks.init.WaterworksRecipes;
 
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.SpecialRecipeSerializer;
+import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-public class RainRocketRecipe extends SpecialRecipeSerializer<IRecipe<?>> implements IRecipe {
 
-	public RainRocketRecipe(Function<ResourceLocation, IRecipe<?>> p_i50024_1_) {
-		super(p_i50024_1_);
-	}
-
+public class RainRocketRecipe extends SpecialRecipe {
 	private ItemStack resultItem = ItemStack.EMPTY;
 
-	@Override
-	public ItemStack getCraftingResult(IInventory inv) {
-		return this.resultItem.copy();
+	public RainRocketRecipe(ResourceLocation idIn) {
+		super(idIn);
 	}
 
 	@Override
-	public ItemStack getRecipeOutput() {
-		return this.resultItem;
-	}
-
-	@Override
-	public boolean canFit(int width, int height) {
-		return width * height >= 1;
-	}
-
-	@Override
-	public boolean matches(IInventory inv, World worldIn) {
+	public boolean matches(CraftingInventory inv, World worldIn) {
 		this.resultItem = ItemStack.EMPTY;
 
 		int rocketStack = -1;
@@ -91,7 +73,7 @@ public class RainRocketRecipe extends SpecialRecipeSerializer<IRecipe<?>> implem
 			CompoundNBT newTag = new CompoundNBT();
 			if (nbtCompound != null) {
 				newTag = nbtCompound.copy();
-				if (nbtCompound.hasUniqueId("RAIN")) {
+				if (nbtCompound.contains("RAIN")) {
 					multiplierOld = nbtCompound.getInt("RAIN");
 				}
 			}
@@ -107,18 +89,17 @@ public class RainRocketRecipe extends SpecialRecipeSerializer<IRecipe<?>> implem
 	}
 
 	@Override
-	public ResourceLocation getId() {
-		return null;
+	public ItemStack getCraftingResult(CraftingInventory inv) {
+		return this.resultItem.copy();
 	}
 
 	@Override
-	public IRecipeSerializer getSerializer() {
-		return this;
+	public boolean canFit(int width, int height) {
+		return width * height >= 1;
 	}
 
 	@Override
-	public IRecipeType getType() {
-		// TODO Auto-generated method stub
-		return null;
+	public IRecipeSerializer<?> getSerializer() {
+		return WaterworksRecipes.recipeFireworkRain;
 	}
 }

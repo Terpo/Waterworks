@@ -232,13 +232,13 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	public void read(CompoundNBT compound) {
 		super.read(compound);
 		this.battery.ifPresent(b -> b.read(compound));
-		if (compound.hasUniqueId(NBT_INT_ENERGY_USAGE)) {
+		if (compound.contains(NBT_INT_ENERGY_USAGE)) {
 			this.energyUsage = compound.getInt(NBT_INT_ENERGY_USAGE);
 		}
-		if (compound.hasUniqueId(NBT_INT_PIPE_COUNTER)) {
+		if (compound.contains(NBT_INT_PIPE_COUNTER)) {
 			this.pipeCounter = compound.getInt(NBT_INT_PIPE_COUNTER);
 		}
-		if (compound.hasUniqueId(NBT_BOOLEAN_STRUCTURE_COMPLETE)) {
+		if (compound.contains(NBT_BOOLEAN_STRUCTURE_COMPLETE)) {
 			this.structureComplete = compound.getBoolean(NBT_BOOLEAN_STRUCTURE_COMPLETE);
 		}
 	}

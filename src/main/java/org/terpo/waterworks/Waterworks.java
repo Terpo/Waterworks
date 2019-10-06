@@ -23,6 +23,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
@@ -70,7 +71,6 @@ public class Waterworks {
 		WaterworksPacketHandler.registerMessages();
 
 		InitModCompat.init("init");
-		WaterworksCrafting.register();
 		proxy.setup(event);
 		proxy.init();
 
@@ -126,6 +126,11 @@ public class Waterworks {
 		public static void onEntityRegistry(final RegistryEvent.Register<EntityType<?>> event) {
 			LOGGER.info("HELLO from Register Entities");
 			InitEntities.register(event.getRegistry());
+		}
+		@SubscribeEvent
+		public static void onRecipeRegistry(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
+			LOGGER.info("HELLO from Register Recipes");
+			WaterworksCrafting.register(event.getRegistry());
 		}
 
 		@SubscribeEvent

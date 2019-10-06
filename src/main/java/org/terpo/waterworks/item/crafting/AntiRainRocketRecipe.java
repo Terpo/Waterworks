@@ -1,31 +1,30 @@
 package org.terpo.waterworks.item.crafting;
 
-import java.util.function.Function;
-
 import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksItems;
+import org.terpo.waterworks.init.WaterworksRecipes;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.SpecialRecipeSerializer;
+import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class AntiRainRocketRecipe extends SpecialRecipeSerializer<IRecipe<?>> implements IRecipe {
-	public AntiRainRocketRecipe(Function<ResourceLocation, IRecipe<?>> function) {
-		super(function);
-	}
+public class AntiRainRocketRecipe extends SpecialRecipe {
 
 	private ItemStack resultItem = ItemStack.EMPTY;
+
+	public AntiRainRocketRecipe(ResourceLocation idIn) {
+		super(idIn);
+	}
+
 	@Override
-	public boolean matches(IInventory inv, World worldIn) {
+	public boolean matches(CraftingInventory inv, World worldIn) {
 		this.resultItem = ItemStack.EMPTY;
 
 		int rocketStack = -1;
@@ -77,7 +76,7 @@ public class AntiRainRocketRecipe extends SpecialRecipeSerializer<IRecipe<?>> im
 			CompoundNBT newTag = new CompoundNBT();
 			if (nbtCompound != null) {
 				newTag = nbtCompound.copy();
-				if (nbtCompound.hasUniqueId("ANTIRAIN")) {
+				if (nbtCompound.contains("ANTIRAIN")) {
 					multiplierOld = nbtCompound.getInt("ANTIRAIN");
 				}
 			}
@@ -93,13 +92,8 @@ public class AntiRainRocketRecipe extends SpecialRecipeSerializer<IRecipe<?>> im
 	}
 
 	@Override
-	public ItemStack getCraftingResult(IInventory inv) {
+	public ItemStack getCraftingResult(CraftingInventory inv) {
 		return this.resultItem.copy();
-	}
-
-	@Override
-	public ItemStack getRecipeOutput() {
-		return this.resultItem;
 	}
 
 	@Override
@@ -108,21 +102,8 @@ public class AntiRainRocketRecipe extends SpecialRecipeSerializer<IRecipe<?>> im
 	}
 
 	@Override
-	public ResourceLocation getId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IRecipeSerializer getSerializer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IRecipeType getType() {
-		// TODO Auto-generated method stub
-		return null;
+	public IRecipeSerializer<?> getSerializer() {
+		return WaterworksRecipes.recipeFireworkAntiRain;
 	}
 
 }

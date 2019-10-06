@@ -51,7 +51,7 @@ public class TileEntityRainCollector extends BaseTileEntity {
 	@Override
 	public void read(CompoundNBT compound) {
 		super.read(compound);
-		if (compound.hasUniqueId("controllerPos")) {
+		if (compound.contains("controllerPos")) {
 			this.controllerPosition = (BlockPos.fromLong(compound.getLong("controllerPos")));
 			// setController(this.controllerPosition);
 		}

@@ -71,7 +71,7 @@ public class EntityWeatherFireworkRocket extends Entity implements IRendersAsIte
 		if (givenItem.hasTag()) {
 			final CompoundNBT tag = givenItem.getTag();
 
-			if (tag.hasUniqueId(getRocketTypeTag())) {
+			if (tag.contains(getRocketTypeTag())) {
 				this.durationMultiplier = tag.getInt(getRocketTypeTag());
 			}
 			if (this.durationMultiplier != -1) {

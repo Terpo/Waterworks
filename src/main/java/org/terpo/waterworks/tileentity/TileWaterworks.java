@@ -75,7 +75,7 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 	@Override
 	public void read(CompoundNBT compound) {
 		super.read(compound);
-		if (compound.hasUniqueId("items")) {
+		if (compound.contains("items")) {
 			this.itemStackHandler.deserializeNBT(compound.getCompound("items"));
 		}
 		this.fluidTank.readFromNBT(compound);
