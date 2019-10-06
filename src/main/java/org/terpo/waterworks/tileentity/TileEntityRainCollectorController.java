@@ -1,10 +1,15 @@
 package org.terpo.waterworks.tileentity;
 
 import org.terpo.waterworks.Waterworks;
+import org.terpo.waterworks.gui.ContainerBase;
 import org.terpo.waterworks.helper.AreaHelper;
 import org.terpo.waterworks.init.WaterworksConfig;
+import org.terpo.waterworks.init.WaterworksContainers;
 import org.terpo.waterworks.init.WaterworksTileEntities;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -24,8 +29,12 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	private int countValidCollectors = 0;
 
 	public TileEntityRainCollectorController() {
-		super(WaterworksTileEntities.rainCollectorController, WaterworksConfig.rainCollection.rainCollectorFillrate,
-				WaterworksConfig.rainCollection.rainCollectorCapacity);
+		super(WaterworksTileEntities.rainCollectorController, 0, WaterworksConfig.rainCollection.rainCollectorCapacity);
+	}
+
+	@Override
+	public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity entity) {
+		return new ContainerBase(WaterworksContainers.rainCollectorController, windowId, inventory, this);
 	}
 
 	@Override

@@ -4,15 +4,15 @@ import org.terpo.waterworks.gui.ContainerBase;
 import org.terpo.waterworks.init.WaterworksContainers;
 import org.terpo.waterworks.inventory.FilteredSlotItemHandler;
 import org.terpo.waterworks.inventory.SlotDefinition;
-import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import net.minecraft.inventory.IInventory;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class PumpContainer extends ContainerBase {
 
-	public PumpContainer(int windowId, IInventory playerInv, TileWaterworks te) {
+	public PumpContainer(int windowId, IInventory playerInv, TileEntity te) {
 		super(WaterworksContainers.groundwaterPump, windowId, playerInv, te);
 	}
 

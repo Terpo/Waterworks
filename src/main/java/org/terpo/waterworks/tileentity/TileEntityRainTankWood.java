@@ -1,10 +1,15 @@
 package org.terpo.waterworks.tileentity;
 
+import org.terpo.waterworks.gui.ContainerBase;
 import org.terpo.waterworks.helper.GeneralItemStackHandler;
 import org.terpo.waterworks.init.WaterworksConfig;
+import org.terpo.waterworks.init.WaterworksContainers;
 import org.terpo.waterworks.init.WaterworksTileEntities;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
@@ -65,5 +70,10 @@ public class TileEntityRainTankWood extends TileWaterworks {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity entity) {
+		return new ContainerBase(WaterworksContainers.rainTankWood, windowId, inventory, this);
 	}
 }

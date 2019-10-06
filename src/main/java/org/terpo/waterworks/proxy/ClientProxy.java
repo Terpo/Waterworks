@@ -1,6 +1,7 @@
 package org.terpo.waterworks.proxy;
 
-import org.terpo.waterworks.gui.BaseContainerScreen;
+import org.terpo.waterworks.gui.FluidContainerScreen;
+import org.terpo.waterworks.gui.pump.PumpContainerScreen;
 import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksContainers;
@@ -74,8 +75,9 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void init() {
-		ScreenManager.registerFactory(WaterworksContainers.waterworks, BaseContainerScreen::new);
-//		ScreenManager.registerFactory(WaterworksContainers.groundwaterPump, PumpContainerScreen::new);
+		ScreenManager.registerFactory(WaterworksContainers.rainTankWood, FluidContainerScreen::new);
+		ScreenManager.registerFactory(WaterworksContainers.rainCollectorController, FluidContainerScreen::new);
+		ScreenManager.registerFactory(WaterworksContainers.groundwaterPump, PumpContainerScreen::new);
 	}
 
 	// FIXME Entity Renderers

@@ -2,7 +2,6 @@ package org.terpo.waterworks.gui;
 
 import javax.annotation.Nullable;
 
-import org.terpo.waterworks.init.WaterworksContainers;
 import org.terpo.waterworks.inventory.FilteredFluidSlotItemHandler;
 import org.terpo.waterworks.inventory.SlotDefinition;
 import org.terpo.waterworks.tileentity.TileWaterworks;
@@ -24,9 +23,6 @@ public class ContainerBase extends Container {
 
 	private final TileWaterworks tileWaterworks;
 
-	public ContainerBase(int windowId, IInventory playerInv, TileEntity tileEntity) {
-		this(WaterworksContainers.waterworks, windowId, playerInv, tileEntity);
-	}
 	public ContainerBase(@Nullable ContainerType<?> type, int windowId, IInventory playerInv, TileEntity te) {
 		super(type, windowId);
 		this.tileWaterworks = (TileWaterworks) te;

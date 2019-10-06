@@ -9,12 +9,14 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class WaterworksContainers {
-	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.CONTAINER_WATERWORKS)
-	public static ContainerType<ContainerBase> waterworks;
-	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.CONTAINER_GROUNDWATER_PUMP)
+	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.BLOCK_RAIN_TANK_WOOD)
+	public static ContainerType<ContainerBase> rainTankWood;
+	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR_CONTROLLER)
+	public static ContainerType<ContainerBase> rainCollectorController;
+	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.BLOCK_GROUNDWATER_PUMP)
 	public static ContainerType<PumpContainer> groundwaterPump;
 
 	private WaterworksContainers() {
-		// hidme
+		// hide me
 	}
 }

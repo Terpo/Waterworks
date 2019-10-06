@@ -5,11 +5,13 @@ import org.apache.logging.log4j.Logger;
 import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.api.constants.WaterworksRegistryNames;
 import org.terpo.waterworks.gui.ContainerBase;
+import org.terpo.waterworks.gui.pump.PumpContainer;
 import org.terpo.waterworks.init.InitBlocks;
 import org.terpo.waterworks.init.InitEntities;
 import org.terpo.waterworks.init.InitItems;
 import org.terpo.waterworks.init.InitModCompat;
 import org.terpo.waterworks.init.InitTileEntities;
+import org.terpo.waterworks.init.WaterworksContainers;
 import org.terpo.waterworks.init.WaterworksCrafting;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 import org.terpo.waterworks.proxy.ClientProxy;
@@ -130,11 +132,23 @@ public class Waterworks {
 		public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
 			LOGGER.info("HELLO from Register GUI");
 			// registry of the client side container
+			event.getRegistry().register(IForgeContainerType
+					.create((windowId, inventory, data) -> new ContainerBase(WaterworksContainers.rainTankWood,
+							windowId, inventory, Waterworks.proxy.getClientWorld().getTileEntity(data.readBlockPos())))
+					.setRegistryName(WaterworksReference.MODID, WaterworksRegistryNames.BLOCK_RAIN_TANK_WOOD));
 			event.getRegistry()
 					.register(IForgeContainerType
-							.create((windowId, inventory, data) -> new ContainerBase(windowId, inventory,
+							.create((windowId, inventory, data) -> new ContainerBase(
+									WaterworksContainers.rainCollectorController, windowId, inventory,
 									Waterworks.proxy.getClientWorld().getTileEntity(data.readBlockPos())))
-							.setRegistryName(WaterworksReference.MODID, WaterworksRegistryNames.BLOCK_RAIN_TANK_WOOD));
+							.setRegistryName(WaterworksReference.MODID,
+									WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR_CONTROLLER));
+			event.getRegistry()
+					.register(IForgeContainerType
+							.create((windowId, inventory, data) -> new PumpContainer(windowId, inventory,
+									Waterworks.proxy.getClientWorld().getTileEntity(data.readBlockPos())))
+							.setRegistryName(WaterworksReference.MODID,
+									WaterworksRegistryNames.BLOCK_GROUNDWATER_PUMP));
 		}
 
 	}
