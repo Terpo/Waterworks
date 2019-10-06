@@ -4,7 +4,7 @@
     "particle": "block/hopper_outside",
         "0": "block/hopper_outside",
         "1": "block/hopper_inside",
-        "2": "block/anvil_base",
+        "2": "block/anvil",
         "3": "block/iron_block",
         "4": "waterworks:models/groundwater_pump_decal"
     },      "display": {
