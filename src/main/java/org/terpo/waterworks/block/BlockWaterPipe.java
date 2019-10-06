@@ -7,6 +7,7 @@ import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -20,7 +21,7 @@ public class BlockWaterPipe extends Block {
 	private static final AxisAlignedBB boundingBox = new AxisAlignedBB(.375, 0, .375, .625, 1, .625);
 	private static final AxisAlignedBB collisionBox = new AxisAlignedBB(.3125, 0, .3125, .7375, 1, .7375);
 	public BlockWaterPipe() {
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(2F, 6.0F));
+		super(Block.Properties.create(Material.IRON).hardnessAndResistance(2F, 6.0F).sound(SoundType.METAL));
 	}
 
 //	@Override

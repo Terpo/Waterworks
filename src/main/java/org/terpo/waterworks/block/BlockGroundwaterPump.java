@@ -13,7 +13,6 @@ import org.terpo.waterworks.tileentity.TileWaterworks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -39,7 +38,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 	private static final AxisAlignedBB boundingBox = new AxisAlignedBB(0, 0, .125, 1, 0.8125, .875);
 	private static final AxisAlignedBB collisionBox = new AxisAlignedBB(0, 0, .125, 1, 0.8125, .875);
 	public BlockGroundwaterPump() {
-		super(Block.Properties.create(Material.IRON));
+		super();
 		this.setDefaultState(getDefaultState().with(BlockStateProperties.FACING, Direction.NORTH));
 	}
 

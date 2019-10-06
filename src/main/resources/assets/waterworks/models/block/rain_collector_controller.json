@@ -3,7 +3,8 @@
     "textures": {
     "particle": "waterworks:models/rain_collector_controller",
         "0": "waterworks:models/rain_collector_controller"
-    },      "display": {
+    },      
+    "display": {
         "gui": {
             "rotation": [ 30, 225, 0 ],
             "translation": [ 0, 0, 0],

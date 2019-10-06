@@ -8,9 +8,7 @@ import org.terpo.waterworks.init.WaterworksItems;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
 import org.terpo.waterworks.tileentity.TileEntityRainCollector;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,7 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 
 	public BlockRainCollector() {
-		super(Block.Properties.create(Material.IRON));
+		super();
 	}
 
 	@Override

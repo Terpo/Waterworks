@@ -9,6 +9,7 @@ import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -28,7 +29,7 @@ import net.minecraftforge.items.IItemHandler;
 
 public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 	public BlockRainTankWood() {
-		super(Block.Properties.create(Material.WOOD));
+		super(Block.Properties.create(Material.WOOD).hardnessAndResistance(2F, 3.0F).sound(SoundType.WOOD));
 	}
 
 //	@Override

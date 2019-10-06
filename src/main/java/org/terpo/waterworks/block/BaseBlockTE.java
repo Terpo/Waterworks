@@ -6,6 +6,7 @@ import org.terpo.waterworks.tileentity.BaseTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +21,7 @@ public class BaseBlockTE<T extends BaseTileEntity> extends Block {
 		super(builder);
 	}
 	public BaseBlockTE() {
-		this(createBaseBlockProperties(Material.IRON));
+		this(createBaseBlockProperties());
 	}
 
 	@Nullable
@@ -62,7 +63,7 @@ public class BaseBlockTE<T extends BaseTileEntity> extends Block {
 //		}
 //	}
 
-	public static Block.Properties createBaseBlockProperties(Material material) {
-		return Block.Properties.create(material).hardnessAndResistance(2F, 6.0F);
+	public static Block.Properties createBaseBlockProperties() {
+		return Block.Properties.create(Material.IRON).hardnessAndResistance(2F, 6.0F).sound(SoundType.METAL);
 	}
 }
