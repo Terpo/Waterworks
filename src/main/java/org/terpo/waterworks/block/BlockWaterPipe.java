@@ -14,40 +14,31 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class BlockWaterPipe extends Block {
 
-	private static final AxisAlignedBB boundingBox = new AxisAlignedBB(.375, 0, .375, .625, 1, .625);
-	private static final AxisAlignedBB collisionBox = new AxisAlignedBB(.3125, 0, .3125, .7375, 1, .7375);
+	private static final VoxelShape boundingBox = VoxelShapes.create(new AxisAlignedBB(.375, 0, .375, .625, 1, .625));
+	private static final VoxelShape collisionBox = VoxelShapes
+			.create(new AxisAlignedBB(.3125, 0, .3125, .7375, 1, .7375));
 	public BlockWaterPipe() {
 		super(Block.Properties.create(Material.IRON).hardnessAndResistance(2F, 6.0F).sound(SoundType.METAL));
 	}
 
-//	@Override
-//	public boolean isFullBlock(BlockState state) {
-//		return false;
-//	}
-//	@Override
-//	public boolean isOpaqueCube(BlockState state) {
-//		return false;
-//	}
-//	
-//	@Override
-//	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
-//		return boundingBox;
-//	}
-//
-//	@Override
-//	public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox,
-//			List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean p_185477_7_) {
-//		super.addCollisionBoxToList(pos, entityBox, collidingBoxes, collisionBox);
-//	}
-//
-//	@Override
-//	public boolean isFullCube(BlockState state) {
-//		return false;
-//	}
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos,
+			ISelectionContext context) {
+		return collisionBox;
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		return boundingBox;
+	}
 
 	@Override
 	public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state,
