@@ -3,6 +3,7 @@ package org.terpo.waterworks.entity.item;
 import java.util.OptionalInt;
 
 import org.terpo.waterworks.init.WaterworksConfig;
+import org.terpo.waterworks.init.WaterworksEntities;
 import org.terpo.waterworks.init.WaterworksItems;
 
 import net.minecraft.entity.EntityType;
@@ -31,13 +32,11 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 	}
 
 	public EntityFireworkRocketRain(World worldIn, double x, double y, double z, ItemStack itemstack) {
-		super(worldIn, x, y, z, itemstack);
-		this.duration = WaterworksConfig.rockets.rainDuration;
+		super(WaterworksEntities.itemFireworkRain, worldIn, x, y, z, itemstack);
 	}
 
 	public EntityFireworkRocketRain(World worldIn, ItemStack itemstack, LivingEntity entity) {
-		super(worldIn, itemstack, entity);
-		this.duration = WaterworksConfig.rockets.rainDuration;
+		super(WaterworksEntities.itemFireworkRain, worldIn, itemstack, entity);
 	}
 
 	@Override
@@ -62,12 +61,14 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 
 	@Override
 	public void remove() {
-		final WorldInfo worldInfo = this.getEntityWorld().getWorldInfo();
-		worldInfo.setClearWeatherTime(0);
-		worldInfo.setRainTime(this.duration);
-		worldInfo.setThunderTime(this.duration);
-		worldInfo.setRaining(true);
-		worldInfo.setThundering(this.rand.nextInt(10) > 6);
+		if (!this.getEntityWorld().isRemote) {
+			final WorldInfo worldInfo = this.getEntityWorld().getWorldInfo();
+			worldInfo.setClearWeatherTime(0);
+			worldInfo.setRainTime(this.duration);
+			worldInfo.setThunderTime(this.duration);
+			worldInfo.setRaining(true);
+			worldInfo.setThundering(this.rand.nextInt(10) > 6);
+		}
 		super.remove();
 	}
 
@@ -113,7 +114,7 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 	}
 
 	@Override
-	protected int getDefaultDuration() {
+	protected int getConfiguredDuration() {
 		return WaterworksConfig.rockets.rainDuration;
 	}
 }

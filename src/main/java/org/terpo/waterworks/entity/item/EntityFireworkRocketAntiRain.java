@@ -3,6 +3,7 @@ package org.terpo.waterworks.entity.item;
 import java.util.OptionalInt;
 
 import org.terpo.waterworks.init.WaterworksConfig;
+import org.terpo.waterworks.init.WaterworksEntities;
 import org.terpo.waterworks.init.WaterworksItems;
 
 import net.minecraft.block.Blocks;
@@ -36,13 +37,11 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 	}
 
 	public EntityFireworkRocketAntiRain(World worldIn, double x, double y, double z, ItemStack itemstack) {
-		super(worldIn, x, y, z, itemstack);
-		this.duration = WaterworksConfig.rockets.clearSkyDuration;
+		super(WaterworksEntities.itemFireworkAntiRain, worldIn, x, y, z, itemstack);
 	}
 
 	public EntityFireworkRocketAntiRain(World worldIn, ItemStack itemstack, LivingEntity entity) {
-		super(worldIn, itemstack, entity);
-		this.duration = WaterworksConfig.rockets.clearSkyDuration;
+		super(WaterworksEntities.itemFireworkAntiRain, worldIn, itemstack, entity);
 	}
 
 	@Override
@@ -52,14 +51,22 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 	}
 
 	@Override
+	protected void registerData() {
+		this.dataManager.register(ANTI_RAINROCKET_ITEM, ItemStack.EMPTY);
+		this.dataManager.register(BOOSTED_ANTI_RAINROCKET_ENTITY_ID, OptionalInt.empty());
+		this.dataManager.register(SHOT_AT_ANGLE_ANTI_RAINROCKET_BOOLEAN, Boolean.valueOf(false));
+	}
+
+	@Override
 	public void remove() {
-		final WorldInfo worldInfo = this.getEntityWorld().getWorldInfo();
-		worldInfo.setClearWeatherTime(this.realClearSky);
-		worldInfo.setRainTime(0);
-		worldInfo.setThunderTime(0);
-		worldInfo.setRaining(false);
-		worldInfo.setThundering(false);
 		if (!this.getEntityWorld().isRemote) {
+			final WorldInfo worldInfo = this.getEntityWorld().getWorldInfo();
+			worldInfo.setClearWeatherTime(this.realClearSky);
+			worldInfo.setRainTime(0);
+			worldInfo.setThunderTime(0);
+			worldInfo.setRaining(false);
+			worldInfo.setThundering(false);
+
 			final BlockPos pos = this.getPosition();
 			dropSponge(pos);
 		}
@@ -117,7 +124,7 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 	}
 
 	@Override
-	protected int getDefaultDuration() {
+	protected int getConfiguredDuration() {
 		return WaterworksConfig.rockets.clearSkyDuration;
 	}
 

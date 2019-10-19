@@ -1,5 +1,9 @@
 package org.terpo.waterworks.proxy;
 
+import org.terpo.waterworks.entity.item.EntityFireworkRocketAntiRain;
+import org.terpo.waterworks.entity.item.EntityFireworkRocketRain;
+import org.terpo.waterworks.entity.item.RenderFireworkRocketAntiRain;
+import org.terpo.waterworks.entity.item.RenderFireworkRocketRain;
 import org.terpo.waterworks.gui.FluidContainerScreen;
 import org.terpo.waterworks.gui.pump.PumpContainerScreen;
 import org.terpo.waterworks.init.WaterworksContainers;
@@ -12,13 +16,12 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientProxy implements IProxy {
-
-	// FIXME Custom Model Loading
 
 	@Override
 	public void setup(FMLCommonSetupEvent event) {
@@ -42,19 +45,12 @@ public class ClientProxy implements IProxy {
 		ScreenManager.registerFactory(WaterworksContainers.rainCollectorController, FluidContainerScreen::new);
 		ScreenManager.registerFactory(WaterworksContainers.groundwaterPump, PumpContainerScreen::new);
 
+		// ENTITY RENDERER
+		RenderingRegistry.registerEntityRenderingHandler(EntityFireworkRocketAntiRain.class,
+				RenderFireworkRocketAntiRain::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityFireworkRocketRain.class, RenderFireworkRocketRain::new);
+
 		// TESR
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRainTankWood.class, new TileEntityWaterRenderer());
 	}
-
-	/*
-	 * INIT ENTITIES
-	 */
-	// FIXME Entity Renderers
-//	public static void registerEntityRenders() {
-//		RenderingRegistry.registerEntityRenderingHandler(EntityFireworkRocketRain.class,
-//				new RenderFireworkRocketRain);
-//		RenderingRegistry.registerEntityRenderingHandler(EntityFireworkRocketAntiRain.class,
-//				new RenderFireworkRocketAntiRain.Factory());
-//	}
-
 }

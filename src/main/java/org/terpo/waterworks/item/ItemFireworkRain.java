@@ -16,7 +16,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -32,19 +31,12 @@ public class ItemFireworkRain extends FireworkRocketItem {
 
 	@Override
 	public ActionResultType onItemUse(ItemUseContext context) {
-		final World worldIn = context.getWorld();
-		final PlayerEntity player = context.getPlayer();
-		final BlockPos pos = context.getPos();
-
-		if (!worldIn.isRemote) {
+		if (!context.getWorld().isRemote) {
 			final ItemStack itemstack = context.getItem();
-
-			final Vec3d hitVec = context.getHitVec();
-			final EntityFireworkRocketRain entityfireworkrocket = new EntityFireworkRocketRain(worldIn,
-					pos.getX() + hitVec.x, pos.getY() + hitVec.y, pos.getZ() + hitVec.z, itemstack);
-			worldIn.addEntity(entityfireworkrocket);
-
-			if (!player.isCreative()) {
+			final Vec3d vec3d = context.getHitVec();
+			context.getWorld()
+					.addEntity(new EntityFireworkRocketRain(context.getWorld(), vec3d.x, vec3d.y, vec3d.z, itemstack));
+			if (!context.getPlayer().isCreative()) {
 				itemstack.shrink(1);
 			}
 		}

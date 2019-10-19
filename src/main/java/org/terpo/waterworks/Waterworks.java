@@ -10,9 +10,9 @@ import org.terpo.waterworks.init.InitBlocks;
 import org.terpo.waterworks.init.InitEntities;
 import org.terpo.waterworks.init.InitItems;
 import org.terpo.waterworks.init.InitModCompat;
+import org.terpo.waterworks.init.InitRecipes;
 import org.terpo.waterworks.init.InitTileEntities;
 import org.terpo.waterworks.init.WaterworksContainers;
-import org.terpo.waterworks.init.WaterworksCrafting;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 import org.terpo.waterworks.proxy.ClientProxy;
 import org.terpo.waterworks.proxy.IProxy;
@@ -127,10 +127,11 @@ public class Waterworks {
 			LOGGER.info("HELLO from Register Entities");
 			InitEntities.register(event.getRegistry());
 		}
+
 		@SubscribeEvent
 		public static void onRecipeRegistry(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
 			LOGGER.info("HELLO from Register Recipes");
-			WaterworksCrafting.register(event.getRegistry());
+			InitRecipes.register(event.getRegistry());
 		}
 
 		@SubscribeEvent

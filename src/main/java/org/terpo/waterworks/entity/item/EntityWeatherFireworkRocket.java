@@ -27,7 +27,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
@@ -53,12 +52,13 @@ public class EntityWeatherFireworkRocket extends Entity implements IRendersAsIte
 		super(entity, world);
 	}
 
-	public EntityWeatherFireworkRocket(World worldIn, double x, double y, double z, ItemStack givenItem) {
-		super(EntityType.FIREWORK_ROCKET, worldIn);
-		this.duration = getDefaultDuration();
+	public EntityWeatherFireworkRocket(EntityType<?> entityType, World worldIn, double x, double y, double z,
+			ItemStack givenItem) {
+		super(entityType, worldIn);
+		this.setPosition(x, y, z);
+		this.duration = getConfiguredDuration();
 		this.durationMultiplier = -1;
 		this.fireworkAge = 0;
-		this.setPosition(x, y, z);
 		int i = 1;
 		if (!givenItem.isEmpty() && givenItem.hasTag()) {
 			setRocketItem(givenItem);
@@ -81,18 +81,18 @@ public class EntityWeatherFireworkRocket extends Entity implements IRendersAsIte
 				}
 			}
 		}
-
 	}
 
-	public EntityWeatherFireworkRocket(World world, ItemStack itemStack, LivingEntity entity) {
-		this(world, entity.posX, entity.posY, entity.posZ, itemStack);
+	public EntityWeatherFireworkRocket(EntityType<?> entityType, World world, ItemStack itemStack,
+			LivingEntity entity) {
+		this(entityType, world, entity.posX, entity.posY, entity.posZ, itemStack);
 		setBoostedEntity(entity);
 		this.boostedEntity = entity;
 	}
 
-	public EntityWeatherFireworkRocket(World world, ItemStack itemStack, double x, double y, double z,
-			boolean shotAtAngle) {
-		this(world, x, y, z, itemStack);
+	public EntityWeatherFireworkRocket(EntityType<?> entityType, World world, ItemStack itemStack, double x, double y,
+			double z, boolean shotAtAngle) {
+		this(entityType, world, x, y, z, itemStack);
 		setShotAtAngle(Boolean.valueOf(shotAtAngle));
 	}
 
@@ -332,17 +332,6 @@ public class EntityWeatherFireworkRocket extends Entity implements IRendersAsIte
 		ServerLifecycleHooks.getCurrentServer().getPlayerList().sendMessage(new StringTextComponent(announcement));
 	}
 
-	@Override
-	public void remove() {
-		final WorldInfo worldInfo = this.getEntityWorld().getWorldInfo();
-		worldInfo.setClearWeatherTime(0);
-		worldInfo.setRainTime(this.duration);
-		worldInfo.setThunderTime(this.duration);
-		worldInfo.setRaining(true);
-		worldInfo.setThundering(this.rand.nextInt(10) > 6);
-		super.remove();
-	}
-
 	/**
 	 * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
 	 */
@@ -423,8 +412,7 @@ public class EntityWeatherFireworkRocket extends Entity implements IRendersAsIte
 		return "";
 	}
 
-	@SuppressWarnings("static-method")
-	protected int getDefaultDuration() {
+	protected int getConfiguredDuration() {
 		return 0;
 	}
 

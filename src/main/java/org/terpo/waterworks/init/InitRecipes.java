@@ -9,7 +9,7 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraftforge.registries.IForgeRegistry;
 
-public class WaterworksCrafting {
+public class InitRecipes {
 
 	public static void register(IForgeRegistry<IRecipeSerializer<?>> registry) {
 		final SpecialRecipeSerializer<AntiRainRocketRecipe> specialRecipeFireworkAntiRain = new SpecialRecipeSerializer<>(
