@@ -46,7 +46,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class Waterworks {
 	public static final Logger LOGGER = LogManager.getLogger(WaterworksReference.NAME);
 	// do not use a lambda method reference here
-	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
+	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy()); // NOSONAR
 
 	public static final ItemGroup CREATIVE_TAB = new WaterworksTab();
 
