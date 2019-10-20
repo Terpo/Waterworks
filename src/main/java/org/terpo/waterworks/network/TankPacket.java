@@ -67,10 +67,7 @@ public class TankPacket extends BasePacket {
 
 	protected static void handleTankInformation(TankPacket message, final TileWaterworks tileEntity) {
 		// write new NBT Values
-		if (message.fluidAmount > 0) {
-			tileEntity.getFluidTank().setFluid(new FluidStack(Fluids.WATER, message.fluidAmount));
-		} else {
-			tileEntity.getFluidTank().setFluid(null);
-		}
+		tileEntity.getFluidTank()
+				.setFluid(new FluidStack(Fluids.WATER, message.fluidAmount > 0 ? message.fluidAmount : 0));
 	}
 }

@@ -17,6 +17,7 @@ import org.terpo.waterworks.init.WaterworksTileEntities;
 import org.terpo.waterworks.network.PumpPacket;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -126,12 +127,6 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		return false;
 	}
 
-	// FIXME Should refresh
-//	@Override
-//	public boolean shouldRefresh(World worldIn, BlockPos posIn, BlockState oldState, BlockState newState) {
-//		return oldState.getBlock() != newState.getBlock();
-//	}
-
 	private void checkStructure() {
 		int count = 0;
 		final int x = this.pos.getX();
@@ -164,7 +159,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 					this.energyUsage = WaterworksConfig.pump.getGroundwaterPumpEnergyBaseUsage()
 							+ WaterworksConfig.pump.getGroundwaterPumpEnergyPipeMultiplier() * this.pipeCounter;
 					return;
-				} else if (block.equals(Blocks.AIR)
+				} else if (block instanceof AirBlock
 						&& internalBattery
 								.hasEnoughEnergy(WaterworksConfig.pump.getGroundwaterPumpEnergyPipePlacement())
 						&& placePipe(currentPos)) {
@@ -214,7 +209,6 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		this.structureComplete = structureComplete;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction facing) {
