@@ -1,79 +1,76 @@
 package org.terpo.waterworks.network;
 
-//public class TankPacket implements IMessage {
-//
-//	private TileWaterworks tileEntity = null;
-//	BlockPos tileEntityPosition = null;
-//	int fluidAmount = 0;
-//	public TankPacket() {
-//		// nothing 2do
-//	}
-//
-//	public TankPacket(TileWaterworks tileEntity) {
-//		this.tileEntity = tileEntity;
-//		this.tileEntityPosition = this.tileEntity.getPos();
-//		this.fluidAmount = this.tileEntity.getFluidTank().getFluidAmount();
-//	}
-//
-//	@Override
-//	public void fromBytes(ByteBuf buf) {
-//		// Reads the int back from the buf. Note that if you have multiple values, you
-//		// must read in the same order you wrote.
-//		int x, y, z;
-//		x = buf.readInt();
-//		y = buf.readInt();
-//		z = buf.readInt();
-//		this.fluidAmount = buf.readInt();
-//		this.tileEntityPosition = new BlockPos(x, y, z);
-//	}
-//
-//	@Override
-//	public void toBytes(ByteBuf buf) {
-//		// Writes the int into the buf
-//		buf.writeInt(this.tileEntityPosition.getX());
-//		buf.writeInt(this.tileEntityPosition.getY());
-//		buf.writeInt(this.tileEntityPosition.getZ());
-//		buf.writeInt(this.fluidAmount);
-//	}
-//
-//	public BlockPos getPos() {
-//		return this.tileEntityPosition;
-//	}
-//
-//	public static class Handler implements IMessageHandler<TankPacket, IMessage> {
-//
-//		public Handler() {
-//			// default constructor
-//		}
-//		@Override
-//		public IMessage onMessage(TankPacket message, MessageContext ctx) {
-//			final PlayerEntity player = Waterworks.proxy.getClientPlayerEntity();
-//			final TileWaterworks tileEntity = getTileEntity(player.world, message.getPos());
-//			if (tileEntity == null) {
-//				return null;
-//			}
-//			// write new NBT Values
-//			if (message.fluidAmount > 0) {
-//				tileEntity.getFluidTank().setFluid(new FluidStack(FluidRegistry.WATER, message.fluidAmount));
-//			} else {
-//				tileEntity.getFluidTank().setFluid(null);
-//			}
-//			return null;
-//		}
-//
-//		public static TileWaterworks getTileEntity(World worldObj, BlockPos pos) {
-//			if (worldObj == null) {
-//				return null;
-//			}
-//			final TileEntity te = worldObj.getTileEntity(pos);
-//
-//			if (te instanceof TileWaterworks) {
-//				return (TileWaterworks) te;
-//			}
-//			return null;
-//
-//		}
-//
-//	}
-//
-//}
+import java.util.function.Supplier;
+
+import org.terpo.waterworks.Waterworks;
+import org.terpo.waterworks.tileentity.TileWaterworks;
+
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.network.NetworkEvent.Context;
+
+public class TankPacket extends BasePacket {
+
+	private TileWaterworks tileEntity = null;
+
+	int fluidAmount = 0;
+	public TankPacket() {
+		// nothing 2do
+	}
+
+	public TankPacket(TileWaterworks tileEntity) {
+		super(tileEntity);
+		this.tileEntity = tileEntity;
+		this.fluidAmount = this.tileEntity.getFluidTank().getFluidAmount();
+	}
+
+	public static TankPacket decode(PacketBuffer buf) {
+		// Reads the int back from the buf. Note that if you have multiple values, you
+		// must read in the same order you wrote.
+		final TankPacket tankPacket = new TankPacket();
+		readPosition(buf, tankPacket);
+		readTankInformation(buf, tankPacket);
+		return tankPacket;
+	}
+
+	protected static void readTankInformation(PacketBuffer buf, final TankPacket tankPacket) {
+		tankPacket.fluidAmount = buf.readInt();
+	}
+
+	public static void encode(TankPacket tankPacket, PacketBuffer buf) {
+		// Writes the int into the buf
+		writePosition(tankPacket, buf);
+		writeTankInformation(tankPacket, buf);
+	}
+
+	protected static void writeTankInformation(TankPacket tankPacket, PacketBuffer buf) {
+		buf.writeInt(tankPacket.fluidAmount);
+	}
+
+	public static void consume(TankPacket message, Supplier<Context> ctx) {
+		ctx.get().enqueueWork(() -> {
+			final BlockPos pos = message.tileEntityPosition;
+			final ClientPlayerEntity clientPlayerEntity = Waterworks.proxy.getClientPlayerEntity();
+			if (clientPlayerEntity.world.isAreaLoaded(pos, 0)) {
+				final TileEntity tileEntity = getTileEntity(clientPlayerEntity.world, pos);
+				if (tileEntity instanceof TileWaterworks) {
+					handleTankInformation(message, (TileWaterworks) tileEntity);
+				}
+			}
+		});
+		ctx.get().setPacketHandled(true);
+	}
+
+	protected static void handleTankInformation(TankPacket message, final TileWaterworks tileEntity) {
+		// write new NBT Values
+		if (message.fluidAmount > 0) {
+			tileEntity.getFluidTank().setFluid(new FluidStack(Fluids.WATER, message.fluidAmount));
+		} else {
+			tileEntity.getFluidTank().setFluid(null);
+		}
+	}
+}

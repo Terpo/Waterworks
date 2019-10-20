@@ -7,4 +7,6 @@ public class WaterworksReference {
 
 	public static final String CLIENTPROXY = "org.terpo.waterworks.proxy.ClientProxy";
 	public static final String SERVERPROXY = "org.terpo.waterworks.proxy.ServerProxy";
+
+	public static final String NETWORK = "channel";
 }

@@ -14,6 +14,8 @@ import org.terpo.waterworks.helper.PumpItemStackHandler;
 import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksTileEntities;
+import org.terpo.waterworks.network.PumpPacket;
+import org.terpo.waterworks.network.WaterworksPacketHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -87,6 +89,13 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		}
 
 		if (needsUpdate(20)) {
+			this.battery.ifPresent(b -> {
+				if (b.isDirty()) {
+					this.isDirty = true;
+					b.setDirty(false);
+				}
+			});
+
 			if (!this.structureComplete) {
 				checkStructure();
 			} else {
@@ -215,9 +224,9 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		return super.getCapability(cap, facing);
 	}
 
-	public void sendEnergyPacket() {
-		// FIXME
-//		WaterworksPacketHandler.sendToAllAround(new EnergyPacket(this), this);
+	@Override
+	protected void sendUpdatePacket() {
+		WaterworksPacketHandler.sendToAllAround(new PumpPacket(this), this);
 	}
 
 	@Override

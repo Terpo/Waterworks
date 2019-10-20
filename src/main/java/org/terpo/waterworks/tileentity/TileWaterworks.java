@@ -9,6 +9,8 @@ import org.terpo.waterworks.fluid.WaterworksTank;
 import org.terpo.waterworks.gui.ContainerBase;
 import org.terpo.waterworks.helper.GeneralItemStackHandler;
 import org.terpo.waterworks.init.WaterworksContainers;
+import org.terpo.waterworks.network.TankPacket;
+import org.terpo.waterworks.network.WaterworksPacketHandler;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -55,9 +57,8 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 		this.fluidTank = new WaterworksTank(this.tankSize, this);
 	}
 
-	// FIXME send update packet
 	protected void sendUpdatePacket() {
-//		WaterworksPacketHandler.sendToAllAround(new TankPacket(this), this);
+		WaterworksPacketHandler.sendToAllAround(new TankPacket(this), this);
 	}
 
 	public TileWaterworks(TileEntityType<?> tileEntityTypeIn) {

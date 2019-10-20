@@ -1,7 +1,6 @@
 package org.terpo.waterworks.energy;
 
 import org.terpo.waterworks.api.constants.NBTContants;
-import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -11,6 +10,7 @@ public class WaterworksBattery extends EnergyStorage {
 
 	private final TileWaterworks tile;
 	int lastTick = 0;
+	private boolean dirty;
 
 	public WaterworksBattery(int capacity, int maxReceive, int maxExtract, TileWaterworks tE) {
 		super(capacity, maxReceive, maxExtract);
@@ -21,7 +21,7 @@ public class WaterworksBattery extends EnergyStorage {
 	public int extractInternal(int energyAmount, boolean simulate) {
 		if (!simulate && (energyAmount <= this.energy)) {
 			this.energy -= energyAmount;
-			onContentsChanged();
+			this.dirty = true;
 			return energyAmount;
 		}
 		return 0;
@@ -33,19 +33,19 @@ public class WaterworksBattery extends EnergyStorage {
 
 	@Override
 	public int receiveEnergy(int maximumReceive, boolean simulate) {
-		onContentsChanged();
-		return super.receiveEnergy(maximumReceive, simulate);
+		final int quantity = super.receiveEnergy(maximumReceive, simulate);
+		if (quantity > 0) {
+			this.dirty = true;
+		}
+		return quantity;
 	}
 
-	protected void onContentsChanged() {
-		// We need to tell the tile entity that something has changed so
-		// that the chest contents is persisted
-		if (this.tile instanceof TileEntityGroundwaterPump) {
-			if (this.tile.getCurrentTick() - this.lastTick > 20) {
-				((TileEntityGroundwaterPump) this.tile).sendEnergyPacket();
-				this.lastTick = this.tile.getCurrentTick();
-			}
-		}
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
+	}
+
+	public boolean isDirty() {
+		return this.dirty;
 	}
 
 	public void setEnergyAmount(int energyAmount) {
