@@ -1,185 +1,384 @@
 package org.terpo.waterworks.init;
 
-import org.terpo.waterworks.api.constants.WaterworksReference;
+import java.nio.file.Path;
 
+import org.terpo.waterworks.Waterworks;
+
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import com.electronwill.nightconfig.core.io.WritingMode;
+
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.ForgeI18n;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 
-//@Config(modid = WaterworksReference.MODID)
-//@Config.LangKey("waterworks.config.title")
+@Mod.EventBusSubscriber
 public class WaterworksConfig {
 
-	public static final RainCollection rainCollection = new RainCollection();
-	public static final GroundwaterPump pump = new GroundwaterPump();
-	public static final Rockets rockets = new Rockets();
-	public static final WaterworksRegister register = new WaterworksRegister();
-	public static final WaterworksRecipes recipes = new WaterworksRecipes();
+	static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
+	public static ForgeConfigSpec commonConfig; // NOSONAR
 
-	// TODO with next major release: move JEI stuff
-	// FIXME Config
+	public static final RainCollection rainCollection;
+	public static final GroundwaterPump pump;
+	public static final Rockets rockets;
+	public static final WaterworksRecipes recipes;
+
+	static {
+		rainCollection = new RainCollection();
+		pump = new GroundwaterPump();
+		rockets = new Rockets();
+		recipes = new WaterworksRecipes();
+
+		commonConfig = COMMON_BUILDER.build();
+
+	}
+
+	public static void loadConfig(ForgeConfigSpec spec, Path path) {
+		try (final CommentedFileConfig configData = CommentedFileConfig.builder(path).sync().autosave()
+				.writingMode(WritingMode.REPLACE).build();) {
+			configData.load();
+			spec.setConfig(configData);
+		} catch (final Exception e) {
+			Waterworks.LOGGER.error(e);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLoad(@SuppressWarnings("unused") final ModConfig.Loading configEvent) {
+		//
+	}
+
+	@SubscribeEvent
+	public static void onReload(@SuppressWarnings("unused") final ModConfig.ConfigReloading configEvent) {
+		//
+	}
+
+	static int get(ForgeConfigSpec.IntValue value) {
+		return value.get().intValue();
+	}
+
+	static boolean get(ForgeConfigSpec.BooleanValue value) {
+		return value.get().booleanValue();
+	}
+
+	private WaterworksConfig() {
+		// hide me
+	}
+
 	public static class RainCollection {
-		/**
-		 * CONFIG RAIN COLLECTION
-		 */
-		// Simple Rain Tank
-//		@Config.Comment("The fillrate in mB/second for the Wooden Rain Tank.")
-//		@Config.RangeInt(min = 1, max = 8000)
-		public int woodenRainTankFillrate = 10;
 
-//		@Config.Comment("The capacity in mB for the Wooden Rain Tank.")
-//		@Config.RangeInt(min = 1000, max = 1024000)
-		public int woodenRainTankCapacity = 8000;
+		private final ForgeConfigSpec.IntValue woodenRainTankFillrate;
+		private final ForgeConfigSpec.IntValue woodenRainTankCapacity;
+		private final ForgeConfigSpec.IntValue rainCollectorFillrate;
+		private final ForgeConfigSpec.IntValue rainCollectorCapacity;
+		private final ForgeConfigSpec.IntValue rainCollectorRange;
+		private final ForgeConfigSpec.BooleanValue woodenRainTankDescription;
+		private final ForgeConfigSpec.BooleanValue rainCollectorDescription;
+		private final ForgeConfigSpec.BooleanValue wrenchDescription;
 
-		// Multiblock Rain Collector
-//		@Config.Comment("Amount of water per second per connected block.")
-//		@Config.RangeInt(min = 1, max = 8000)
-		public int rainCollectorFillrate = 20;
+		private static final String CATEGORY_RAIN_COLLECTION = "rain_collection";
 
-//		@Config.Comment("The capacity in mB for the Rain Collector Multiblock.")
-//		@Config.RangeInt(min = 8000, max = 1024000)
-		public int rainCollectorCapacity = 32000;
+		private static final String SUBCATEGORY_WOODEN_RAIN_TANK = "wooden_rain_tank";
+		private static final String SUBCATEGORY_MULTIBLOCK_RAIN_COLLECTOR = "multiblock_rain_collector";
 
-//		@Config.Comment("Search radius of the Rain Collector Controller")
-//		@Config.RangeInt(min = 0, max = 7)
-		public int rainCollectorRange = 2;
+		public RainCollection() {
+			COMMON_BUILDER.comment(ForgeI18n.parseMessage("")).push(CATEGORY_RAIN_COLLECTION);
 
-//		@Config.Comment("Turn this to false to disable JEI description for the Wooden Rain Tank.")
-		public boolean woodenRainTankDescription = true;
+			// Simple Rain Tank
+			COMMON_BUILDER.comment("Wooden Rain Tank").push(SUBCATEGORY_WOODEN_RAIN_TANK);
 
-//		@Config.Comment("Turn this to false to disable JEI description for the Rain Collector Multiblock.")
-		public boolean rainCollectorDescription = true;
+			this.woodenRainTankFillrate = COMMON_BUILDER.comment("The fillrate in mB/second for the Wooden Rain Tank.")
+					.defineInRange("woodenRainTankFillrate", 10, 1, 8000);
 
-//		@Config.Comment("Turn this to false to disable JEI description for the Wrench.")
-		public boolean wrenchDescription = true;
+			this.woodenRainTankCapacity = COMMON_BUILDER.comment("The capacity in mB for the Wooden Rain Tank.")
+					.defineInRange("woodenRainTankCapacity", 8000, 1000, 1024000);
+
+			COMMON_BUILDER.pop();
+
+			// Multiblock Rain Collector
+			COMMON_BUILDER.comment("Multiblock Rain Collector").push(SUBCATEGORY_MULTIBLOCK_RAIN_COLLECTOR);
+			this.rainCollectorFillrate = COMMON_BUILDER.comment("Amount of water per second per connected block.")
+					.defineInRange("rainCollectorFillrate", 20, 1, 8000);
+
+			this.rainCollectorCapacity = COMMON_BUILDER.comment("The capacity in mB for the Rain Collector Multiblock.")
+					.defineInRange("rainCollectorCapacity", 32000, 8000, 1024000);
+
+			this.rainCollectorRange = COMMON_BUILDER.comment("Search radius of the Rain Collector Controller.")
+					.defineInRange("rainCollectorRange", 2, 0, 7);
+
+			this.woodenRainTankDescription = COMMON_BUILDER
+					.comment("Turn this to false to disable JEI description for the Wooden Rain Tank.")
+					.define("woodenRainTankDescription", true);
+
+			this.rainCollectorDescription = COMMON_BUILDER
+					.comment("Turn this to false to disable JEI description for the Rain Collector Multiblock.")
+					.define("rainCollectorDescription", true);
+
+			this.wrenchDescription = COMMON_BUILDER
+					.comment("Turn this to false to disable JEI description for the Wrench.")
+					.define("wrenchDescription", true);
+
+			COMMON_BUILDER.pop();
+
+			COMMON_BUILDER.pop();
+		}
+
+		public int getWoodenRainTankFillrate() {
+			return get(this.woodenRainTankFillrate);
+		}
+
+		public int getWoodenRainTankCapacity() {
+			return get(this.woodenRainTankCapacity);
+		}
+
+		public int getRainCollectorFillrate() {
+			return get(this.rainCollectorFillrate);
+		}
+
+		public int getRainCollectorCapacity() {
+			return get(this.rainCollectorCapacity);
+		}
+
+		public int getRainCollectorRange() {
+			return get(this.rainCollectorRange);
+		}
+
+		public boolean getWoodenRainTankDescription() {
+			return get(this.woodenRainTankDescription);
+		}
+
+		public boolean getRainCollectorDescription() {
+			return get(this.rainCollectorDescription);
+		}
+
+		public boolean getWrenchDescription() {
+			return get(this.wrenchDescription);
+		}
 	}
 
 	public static class GroundwaterPump {
-		/**
-		 * CONFIG GROUNDWATER PUMP
-		 */
-//		@Config.Comment("The fillrate in mB/second for the Groundwater Pump.")
-//		@Config.RangeInt(min = 1, max = 8000)
-		public int groundwaterPumpFillrate = 500;
+		private final ForgeConfigSpec.IntValue groundwaterPumpFillrate;
+		private final ForgeConfigSpec.IntValue groundwaterPumpCapacity;
+		private final ForgeConfigSpec.IntValue groundwaterPumpEnergyBaseUsage;
+		private final ForgeConfigSpec.IntValue groundwaterPumpEnergyPipeMultiplier;
+		private final ForgeConfigSpec.IntValue groundwaterPumpEnergyCapacity;
+		private final ForgeConfigSpec.IntValue groundwaterPumpEnergyInput;
+		private final ForgeConfigSpec.IntValue groundwaterPumpEnergyPipePlacement;
+		private final ForgeConfigSpec.BooleanValue groundwaterPumpSafety;
+		private final ForgeConfigSpec.BooleanValue groundwaterPumpCheckBedrock;
+		private final ForgeConfigSpec.BooleanValue groundwaterPumpDescription;
 
-//		@Config.Comment("The capacity in mB for the Groundwater Pump.")
-//		@Config.RangeInt(min = 8000, max = 1024000)
-		public int groundwaterPumpCapacity = 32000;
+		private static final String CATEGORY_GROUNDWATER_PUMP = "groundwater_pump";
 
-//		@Config.Comment("Pump energy base usage in forge energy units. Needed for each pump operation.")
-//		@Config.RangeInt(min = 20, max = 1024000)
-		public int groundwaterPumpEnergyBaseUsage = 1600;
+		public GroundwaterPump() {
 
-//		@Config.Comment("Additional to base usage. Each used pipe will multiplied with this value.")
-//		@Config.RangeInt(min = 0, max = 1024000)
-		public int groundwaterPumpEnergyPipeMultiplier = 20;
+			COMMON_BUILDER.comment(ForgeI18n.parseMessage("")).push(CATEGORY_GROUNDWATER_PUMP);
 
-//		@Config.Comment("Pump energy capacity in forge energy units.")
-//		@Config.RangeInt(min = 8000, max = 1024000)
-		public int groundwaterPumpEnergyCapacity = 16000;
+			this.groundwaterPumpFillrate = COMMON_BUILDER.comment("The fillrate in mB/second for the Groundwater Pump.")
+					.defineInRange("groundwaterPumpFillrate", 500, 1, 8000);
 
-//		@Config.Comment("Pump energy input rate in forge energy units.")
-//		@Config.RangeInt(min = 20, max = 1024000)
-		public int groundwaterPumpEnergyInput = 500;
+			this.groundwaterPumpCapacity = COMMON_BUILDER.comment("The capacity in mB for the Groundwater Pump.")
+					.defineInRange("groundwaterPumpCapacity", 32000, 8000, 1024000);
 
-//		@Config.Comment("Energy used to place a pipe.")
-//		@Config.RangeInt(min = 0, max = 1024000)
-		public int groundwaterPumpEnergyPipePlacement = 2500;
+			this.groundwaterPumpEnergyBaseUsage = COMMON_BUILDER
+					.comment("Pump energy base usage in forge energy units. Needed for each pump operation.")
+					.defineInRange("groundwaterPumpEnergyBaseUsage", 1600, 20, 1024000);
 
-//		@Config.Comment("Should the Groundwater Pump spawn a slab to close the hole?")
-		public boolean groundwaterPumpSafety = true;
+			this.groundwaterPumpEnergyPipeMultiplier = COMMON_BUILDER
+					.comment("Additional to base usage. Each used pipe will multiplied with this value.")
+					.defineInRange("groundwaterPumpEnergyPipeMultiplier", 20, 0, 1024000);
 
-//		@Config.Comment("Turn this to false if your world does not generate Bedrock. (Skyblock)")
-		public boolean groundwaterPumpCheckBedrock = true;
+			this.groundwaterPumpEnergyCapacity = COMMON_BUILDER.comment("Pump energy capacity in forge energy units.")
+					.defineInRange("groundwaterPumpEnergyCapacity", 16000, 8000, 1024000);
 
-//		@Config.Comment("Turn this to false to disable JEI description for the Groundwater Pump.")
-		public boolean groundwaterPumpDescription = true;
+			this.groundwaterPumpEnergyInput = COMMON_BUILDER.comment("Pump energy input rate in forge energy units.")
+					.defineInRange("groundwaterPumpEnergyInput", 500, 20, 1024000);
+
+			this.groundwaterPumpEnergyPipePlacement = COMMON_BUILDER.comment("Energy used to place a pipe.")
+					.defineInRange("groundwaterPumpEnergyPipePlacement", 2500, 0, 1024000);
+
+			this.groundwaterPumpSafety = COMMON_BUILDER
+					.comment("Should the Groundwater Pump spawn a slab to close the hole?")
+					.define("groundwaterPumpSafety", true);
+
+			this.groundwaterPumpCheckBedrock = COMMON_BUILDER
+					.comment("Turn this to false if your world does not generate Bedrock. (Skyblock)")
+					.define("groundwaterPumpCheckBedrock", true);
+
+			this.groundwaterPumpDescription = COMMON_BUILDER
+					.comment("Turn this to false to disable JEI description for the Groundwater Pump.")
+					.define("groundwaterPumpDescription", true);
+
+			COMMON_BUILDER.pop();
+		}
+
+		public int getGroundwaterPumpFillrate() {
+			return get(this.groundwaterPumpFillrate);
+		}
+
+		public int getGroundwaterPumpCapacity() {
+			return get(this.groundwaterPumpCapacity);
+		}
+
+		public int getGroundwaterPumpEnergyBaseUsage() {
+			return get(this.groundwaterPumpEnergyBaseUsage);
+		}
+
+		public int getGroundwaterPumpEnergyPipeMultiplier() {
+			return get(this.groundwaterPumpEnergyPipeMultiplier);
+		}
+
+		public int getGroundwaterPumpEnergyCapacity() {
+			return get(this.groundwaterPumpEnergyCapacity);
+		}
+
+		public int getGroundwaterPumpEnergyInput() {
+			return get(this.groundwaterPumpEnergyInput);
+		}
+
+		public int getGroundwaterPumpEnergyPipePlacement() {
+			return get(this.groundwaterPumpEnergyPipePlacement);
+		}
+
+		public boolean getGroundwaterPumpSafety() {
+			return get(this.groundwaterPumpSafety);
+		}
+
+		public boolean getGroundwaterPumpCheckBedrock() {
+			return get(this.groundwaterPumpCheckBedrock);
+		}
+
+		public boolean getGroundwaterPumpDescription() {
+			return get(this.groundwaterPumpDescription);
+		}
 	}
 
 	public static class Rockets {
-		/**
-		 * CONFIG ROCKETS
-		 */
-		// Rain Rocket
-//		@Config.Comment("Rain duration with x1 multiplier.")
-//		@Config.RangeInt(min = 1, max = 12000)
-		public int rainDuration = 3000;
+		private static final String CATEGORY_ROCKETS = "rockets";
 
-//		@Config.Comment("Maximum rain multiplier.")
-//		@Config.RangeInt(min = 1, max = 24)
-		public int rainMaxMultiplier = 8;
+		private final ForgeConfigSpec.IntValue rainDuration;
+		private final ForgeConfigSpec.IntValue rainMaxMultiplier;
+		private final ForgeConfigSpec.IntValue clearSkyDuration;
+		private final ForgeConfigSpec.IntValue clearSkyMaxMultiplier;
+		private final ForgeConfigSpec.IntValue clearSkyMaxRandomAdditionalDays;
+		private final ForgeConfigSpec.BooleanValue fireworkRocketsDescription;
+		private final ForgeConfigSpec.BooleanValue fireworkChargeDescription;
+		private final ForgeConfigSpec.BooleanValue fireworksDescription;
 
-		// Anti Rain Rocket
-//		@Config.Comment("Clear sky duration with x1 multiplier.")
-//		@Config.RangeInt(min = 100, max = 6000)
-		public int clearSkyDuration = 4000;
+		public Rockets() {
 
-//		@Config.Comment("Maximum clear sky multiplier.")
-//		@Config.RangeInt(min = 100, max = 6000)
-		public int clearSkyMaxMultiplier = 12;
+			COMMON_BUILDER.comment(ForgeI18n.parseMessage("")).push(CATEGORY_ROCKETS);
 
-//		@Config.Comment("Maximum days of clear sky that will added to the calculated time.")
-//		@Config.RangeInt(min = 0, max = 7)
-		public int clearSkyMaxRandomAdditionalDays = 3;
+			// Rain Rocket
+			this.rainDuration = COMMON_BUILDER.comment("Rain duration with x1 multiplier.")
+					.defineInRange("rainDuration", 3000, 1, 12000);
 
-//		@Config.Comment("Turn this to false to disable JEI description for the Rockets.")
-		public boolean fireworkRocketsDescription = true;
+			this.rainMaxMultiplier = COMMON_BUILDER.comment("Maximum rain multiplier.")
+					.defineInRange("rainMaxMultiplier", 8, 1, 24);
 
-		// Vanilla Firework
-//		@Config.Comment("JEI: Adds a small description for firework star.")
-		public boolean fireworkChargeDescription = true;
-//		@Config.Comment("JEI: Adds a small description for fireworks.")
-		public boolean fireworksDescription = true;
-	}
+			// Anti Rain Rocket
+			this.clearSkyDuration = COMMON_BUILDER.comment("Clear sky duration with x1 multiplier.")
+					.defineInRange("clearSkyDuration", 4000, 100, 6000);
 
-	public static class WaterworksRegister {
-		/**
-		 * DISABLE REGISTER
-		 */
-		// ITEMS
-//		@Config.Comment("If true, the Rain Rocket is registered")
-		public boolean rainRocket = true;
-//		@Config.Comment("If true, the Anti Rain Rocket is registered")
-		public boolean antiRainRocket = true;
+			this.clearSkyMaxMultiplier = COMMON_BUILDER.comment("Maximum clear sky multiplier.")
+					.defineInRange("clearSkyMaxMultiplier", 12, 1, 36);
 
-		// BLOCKS
-//		@Config.Comment("If true, the Groundwater Pump is registered")
-		public boolean groundwaterPump = true;
-//		@Config.Comment("If true, the Rain Collector and Rain Collector Controller are registered")
-		public boolean rainCollectorMultiblock = true;
-//		@Config.Comment("If true, the Water Pipe is registered")
-		public boolean waterPipe = true;
-//		@Config.Comment("If true, the Wooden Rain Tank is registered")
-		public boolean woodenRainTank = true;
+			this.clearSkyMaxRandomAdditionalDays = COMMON_BUILDER
+					.comment("Maximum days of clear sky that will added to the calculated time.")
+					.defineInRange("clearSkyMaxRandomAdditionalDays", 3, 0, 7);
+
+			this.fireworkRocketsDescription = COMMON_BUILDER
+					.comment("Turn this to false to disable JEI description for the Rockets.")
+					.define("fireworkRocketsDescription", true);
+
+			// Vanilla Firework
+			this.fireworkChargeDescription = COMMON_BUILDER.comment("JEI: Adds a small description for firework star.")
+					.define("fireworkChargeDescription", true);
+
+			this.fireworksDescription = COMMON_BUILDER.comment("JEI: Adds a small description for fireworks.")
+					.define("fireworksDescription", true);
+
+			COMMON_BUILDER.pop();
+		}
+
+		public int getRainDuration() {
+			return get(this.rainDuration);
+		}
+
+		public int getRainMaxMultiplier() {
+			return get(this.rainMaxMultiplier);
+		}
+
+		public int getClearSkyDuration() {
+			return get(this.clearSkyDuration);
+		}
+
+		public int getClearSkyMaxMultiplier() {
+			return get(this.clearSkyMaxMultiplier);
+		}
+
+		public int getClearSkyMaxRandomAdditionalDays() {
+			return get(this.clearSkyMaxRandomAdditionalDays);
+		}
+
+		public boolean getFireworkRocketsDescription() {
+			return get(this.fireworkRocketsDescription);
+		}
+
+		public boolean getFireworkChargeDescription() {
+			return get(this.fireworkChargeDescription);
+		}
+
+		public boolean getFireworksDescription() {
+			return get(this.fireworksDescription);
+		}
 	}
 
 	public static class WaterworksRecipes {
-		/**
-		 * DISABLE RECIPE
-		 */
-		// ITEMS
-//		@Config.Comment("If true, the Rain Rocket has a recipe")
-		public boolean recipeRainRocket = true;
 
-//		@Config.Comment("If true, the Anti Rain Rocket has a recipe")
-		public boolean recipeAntiRainRocket = true;
+		private static final String CATEGORY_RECIPES = "recipes";
 
-	}
+		private final ForgeConfigSpec.BooleanValue recipeRainRocket;
+		private final ForgeConfigSpec.BooleanValue recipeAntiRainRocket;
 
-	@Mod.EventBusSubscriber(modid = WaterworksReference.MODID)
-	private static class EventHandler {
+		public WaterworksRecipes() {
 
-		/**
-		 * Inject the new values and save to the config file when the config has been
-		 * changed from the GUI.
-		 *
-		 * @param event The event
-		 */
-		@SubscribeEvent
-		public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
-			if (event.getModID().equals(WaterworksReference.MODID)) {
-//				ConfigManager.sync(WaterworksReference.MODID, Config.Type.INSTANCE);
-			}
+			COMMON_BUILDER.comment(ForgeI18n.parseMessage("")).push(CATEGORY_RECIPES);
+
+			this.recipeRainRocket = COMMON_BUILDER.comment("If true, the Rain Rocket has a recipe.")
+					.define("recipeRainRocket", true);
+
+			this.recipeAntiRainRocket = COMMON_BUILDER.comment("If true, the Anti Rain Rocket has a recipe.")
+					.define("recipeAntiRainRocket", true);
+
+			COMMON_BUILDER.pop();
+		}
+
+		public boolean getRecipeRainRocket() {
+			return get(this.recipeRainRocket);
+		}
+
+		public boolean getRecipeAntiRainRocket() {
+			return get(this.recipeAntiRainRocket);
 		}
 	}
+
+//	@Mod.EventBusSubscriber(modid = WaterworksReference.MODID)
+//	private static class EventHandler {
+
+//	/**
+//	 * Inject the new values and save to the config file when the config has been changed
+//	 * from the GUI.
+//	 *
+//	 * @param event The event
+//	*/
+//		@SubscribeEvent
+//		public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
+//			if (event.getModID().equals(WaterworksReference.MODID)) {
+//				ConfigManager.sync(WaterworksReference.MODID, Config.Type.INSTANCE);
+//			}
+//		}
+//	}
+
 }

@@ -129,7 +129,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 		}
 		if (count > 0) {
 			spawnAsEntity(world, pos, new ItemStack(WaterworksBlocks.waterPipe, count));
-			if (WaterworksConfig.pump.groundwaterPumpSafety) {
+			if (WaterworksConfig.pump.getGroundwaterPumpSafety()) {
 				world.setBlockState(pos.down(), Blocks.COBBLESTONE_SLAB.getDefaultState());
 			}
 

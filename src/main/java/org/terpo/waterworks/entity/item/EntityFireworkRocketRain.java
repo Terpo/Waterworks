@@ -28,7 +28,7 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 
 	public EntityFireworkRocketRain(EntityType<? extends EntityFireworkRocketRain> entity, World world) {
 		super(entity, world);
-		this.duration = WaterworksConfig.rockets.rainDuration;
+		this.duration = WaterworksConfig.rockets.getRainDuration();
 	}
 
 	public EntityFireworkRocketRain(World worldIn, double x, double y, double z, ItemStack itemstack) {
@@ -105,7 +105,7 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 
 	@Override
 	protected int calculateDurationFromMultiplier(int rainMultiplier) {
-		return WaterworksConfig.rockets.rainDuration * rainMultiplier;
+		return WaterworksConfig.rockets.getRainDuration() * rainMultiplier;
 	}
 
 	@Override
@@ -115,6 +115,6 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 
 	@Override
 	protected int getConfiguredDuration() {
-		return WaterworksConfig.rockets.rainDuration;
+		return WaterworksConfig.rockets.getRainDuration();
 	}
 }

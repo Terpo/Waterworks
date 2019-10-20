@@ -62,7 +62,7 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 			if (nbtCompound == null) {
 				nbtCompound = new CompoundNBT();
 			}
-			if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.clearSkyMaxMultiplier) {
+			if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.getClearSkyMaxMultiplier()) {
 				return false;
 			}
 			nbtCompound.putInt("ANTIRAIN", multiplierOld + multiplierAdd);
@@ -80,7 +80,7 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 					multiplierOld = nbtCompound.getInt("ANTIRAIN");
 				}
 			}
-			if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.clearSkyMaxMultiplier) {
+			if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.getClearSkyMaxMultiplier()) {
 				return false;
 			}
 			newTag.putInt("ANTIRAIN", multiplierOld + multiplierAdd);

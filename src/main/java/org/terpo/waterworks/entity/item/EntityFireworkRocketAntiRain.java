@@ -29,11 +29,11 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 	private static final DataParameter<Boolean> SHOT_AT_ANGLE_ANTI_RAINROCKET_BOOLEAN = EntityDataManager
 			.createKey(EntityFireworkRocketAntiRain.class, DataSerializers.BOOLEAN);
 
-	private int realClearSky = WaterworksConfig.rockets.clearSkyDuration;
+	private int realClearSky = WaterworksConfig.rockets.getClearSkyDuration();
 
 	public EntityFireworkRocketAntiRain(EntityType<? extends EntityFireworkRocketAntiRain> entity, World world) {
 		super(entity, world);
-		this.duration = WaterworksConfig.rockets.clearSkyDuration;
+		this.duration = WaterworksConfig.rockets.getClearSkyDuration();
 	}
 
 	public EntityFireworkRocketAntiRain(World worldIn, double x, double y, double z, ItemStack itemstack) {
@@ -113,7 +113,7 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 
 	@Override
 	protected int calculateDurationFromMultiplier(int rainMultiplier) {
-		final int minimumClearSky = WaterworksConfig.rockets.clearSkyDuration * this.durationMultiplier;
+		final int minimumClearSky = WaterworksConfig.rockets.getClearSkyDuration() * this.durationMultiplier;
 		this.realClearSky = minimumClearSky + calculateRealClearSky(this.durationMultiplier);
 		return this.realClearSky;
 	}
@@ -125,17 +125,17 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 
 	@Override
 	protected int getConfiguredDuration() {
-		return WaterworksConfig.rockets.clearSkyDuration;
+		return WaterworksConfig.rockets.getClearSkyDuration();
 	}
 
 	private int calculateRealClearSky(int multiplier) {
-		final int MAX_CLEAR_DAYS = WaterworksConfig.rockets.clearSkyMaxRandomAdditionalDays;
+		final int MAX_CLEAR_DAYS = WaterworksConfig.rockets.getClearSkyMaxRandomAdditionalDays();
 		if (MAX_CLEAR_DAYS == 0) {
 			return 0;
 		}
 		final int DAYTICKS = 24000;
 		final int maxClearTicks = MAX_CLEAR_DAYS * DAYTICKS;
-		final float multi = (WaterworksConfig.rockets.clearSkyMaxMultiplier) / ((multiplier + 0.001f) * 6);
+		final float multi = (WaterworksConfig.rockets.getClearSkyMaxMultiplier()) / ((multiplier + 0.001f) * 6);
 		final float randomMultiplier = multi * (this.rand.nextFloat() * 48) + 1;
 		double log = Math.log(randomMultiplier) / 4;
 		if (log > 1) {

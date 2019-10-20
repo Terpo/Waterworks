@@ -59,7 +59,7 @@ public class RainRocketRecipe extends SpecialRecipe {
 			if (nbtCompound == null) {
 				nbtCompound = new CompoundNBT();
 			}
-			if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.rainMaxMultiplier) {
+			if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.getRainMaxMultiplier()) {
 				return false;
 			}
 			nbtCompound.putInt("RAIN", multiplierOld + multiplierAdd);
@@ -77,7 +77,7 @@ public class RainRocketRecipe extends SpecialRecipe {
 					multiplierOld = nbtCompound.getInt("RAIN");
 				}
 			}
-			if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.rainMaxMultiplier) {
+			if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.getRainMaxMultiplier()) {
 				return false;
 			}
 			newTag.putInt("RAIN", multiplierOld + multiplierAdd);

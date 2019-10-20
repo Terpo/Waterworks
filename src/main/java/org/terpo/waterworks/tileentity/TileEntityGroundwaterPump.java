@@ -54,13 +54,13 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	private int energyUsage;
 
 	public TileEntityGroundwaterPump() {
-		this(WaterworksConfig.pump.groundwaterPumpFillrate, WaterworksConfig.pump.groundwaterPumpCapacity);
+		this(WaterworksConfig.pump.getGroundwaterPumpFillrate(), WaterworksConfig.pump.getGroundwaterPumpCapacity());
 	}
 	public TileEntityGroundwaterPump(int fillrate, int capacity) {
 		super(WaterworksTileEntities.groundwaterPump, PUMP_INVENTORY_SLOTS, capacity);
 
-		this.energyUsage = WaterworksConfig.pump.groundwaterPumpEnergyBaseUsage
-				+ WaterworksConfig.pump.groundwaterPumpEnergyPipeMultiplier * this.pipeCounter;
+		this.energyUsage = WaterworksConfig.pump.getGroundwaterPumpEnergyBaseUsage()
+				+ WaterworksConfig.pump.getGroundwaterPumpEnergyPipeMultiplier() * this.pipeCounter;
 
 		this.resourceWater = new FluidStack(Fluids.WATER, fillrate);
 
@@ -76,8 +76,8 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		this.itemStackHandler.setInputFlagForIndex(4, true);
 	}
 	private WaterworksBattery createBattery() {
-		return new WaterworksBattery(WaterworksConfig.pump.groundwaterPumpEnergyCapacity,
-				WaterworksConfig.pump.groundwaterPumpEnergyInput, 0, this);
+		return new WaterworksBattery(WaterworksConfig.pump.getGroundwaterPumpEnergyCapacity(),
+				WaterworksConfig.pump.getGroundwaterPumpEnergyInput(), 0, this);
 	}
 
 	@Override
@@ -106,11 +106,11 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		final WaterworksBattery waterworksBattery = this.battery.orElse(null);
 		if (waterworksBattery != null && waterworksBattery.getEnergyStored() >= this.energyUsage) {
 			final int filled = this.fluidTank.fill(this.resourceWater, FluidAction.EXECUTE);
-			if (filled == WaterworksConfig.pump.groundwaterPumpFillrate) {
+			if (filled == WaterworksConfig.pump.getGroundwaterPumpFillrate()) {
 				return waterworksBattery.extractInternal(this.energyUsage, false) > 0;
 			} else if (filled > 0) {
 				final int energy = this.energyUsage
-						* Math.round(((float) filled) / WaterworksConfig.pump.groundwaterPumpFillrate);
+						* Math.round(((float) filled) / WaterworksConfig.pump.getGroundwaterPumpFillrate());
 				return waterworksBattery.extractInternal(energy, false) > 0;
 			}
 		}
@@ -149,16 +149,18 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 						continue;
 					}
 				}
-				if (bedrocks.contains(block) || (!WaterworksConfig.pump.groundwaterPumpCheckBedrock && y < 0)) {
+				if (bedrocks.contains(block) || (!WaterworksConfig.pump.getGroundwaterPumpCheckBedrock() && y < 0)) {
 					this.structureComplete = true;
 					this.pipeCounter = count;
-					this.energyUsage = WaterworksConfig.pump.groundwaterPumpEnergyBaseUsage
-							+ WaterworksConfig.pump.groundwaterPumpEnergyPipeMultiplier * this.pipeCounter;
+					this.energyUsage = WaterworksConfig.pump.getGroundwaterPumpEnergyBaseUsage()
+							+ WaterworksConfig.pump.getGroundwaterPumpEnergyPipeMultiplier() * this.pipeCounter;
 					return;
 				} else if (block.equals(Blocks.AIR)
-						&& internalBattery.hasEnoughEnergy(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement)
+						&& internalBattery
+								.hasEnoughEnergy(WaterworksConfig.pump.getGroundwaterPumpEnergyPipePlacement())
 						&& placePipe(currentPos)) {
-					internalBattery.extractInternal(WaterworksConfig.pump.groundwaterPumpEnergyPipePlacement, false);
+					internalBattery.extractInternal(WaterworksConfig.pump.getGroundwaterPumpEnergyPipePlacement(),
+							false);
 					break;
 				}
 				this.structureComplete = false;

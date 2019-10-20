@@ -27,13 +27,7 @@ public class InitRecipes {
 		WaterworksRecipes.recipeFireworkRain = specialRecipeFireworkRain;
 	}
 
-	public static void registerFireworks() {
-		if (WaterworksConfig.recipes.recipeRainRocket && WaterworksConfig.register.rainRocket) {
-			// TODO recipe register
-		}
-		if (WaterworksConfig.recipes.recipeAntiRainRocket && WaterworksConfig.register.antiRainRocket) {
-//TODO recipe register
-		}
-
+	private InitRecipes() {
+		// hide me
 	}
 }

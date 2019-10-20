@@ -21,13 +21,13 @@ public class TileEntityRainTankWood extends TileWaterworks {
 	private static final int INVENTORY_SLOT_COUNT = 2;
 
 	public TileEntityRainTankWood() {
-		this(WaterworksTileEntities.rainTankWood, WaterworksConfig.rainCollection.woodenRainTankFillrate,
-				WaterworksConfig.rainCollection.woodenRainTankCapacity);
+		this(WaterworksTileEntities.rainTankWood, WaterworksConfig.rainCollection.getWoodenRainTankFillrate(),
+				WaterworksConfig.rainCollection.getWoodenRainTankCapacity());
 	}
 
 	public TileEntityRainTankWood(TileEntityType<?> tileEntityTypeIn) {
-		this(tileEntityTypeIn, WaterworksConfig.rainCollection.woodenRainTankFillrate,
-				WaterworksConfig.rainCollection.woodenRainTankCapacity);
+		this(tileEntityTypeIn, WaterworksConfig.rainCollection.getWoodenRainTankFillrate(),
+				WaterworksConfig.rainCollection.getWoodenRainTankCapacity());
 	}
 	public TileEntityRainTankWood(TileEntityType<?> tileEntityTypeIn, int fillrate, int capacity) {
 		super(tileEntityTypeIn, INVENTORY_SLOT_COUNT, capacity);

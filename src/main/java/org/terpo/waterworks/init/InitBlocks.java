@@ -19,24 +19,17 @@ public class InitBlocks {
 
 	public static void initBlocks(Register<Block> event) {
 		final IForgeRegistry<Block> registry = event.getRegistry();
-		if (WaterworksConfig.register.woodenRainTank) {
-			WaterworksBlocks.rainTankWood = registerBlock(registry, new BlockRainTankWood(),
-					WaterworksRegistryNames.BLOCK_RAIN_TANK_WOOD);
-		}
-		if (WaterworksConfig.register.waterPipe) {
-			WaterworksBlocks.waterPipe = registerBlock(registry, new BlockWaterPipe(),
-					WaterworksRegistryNames.BLOCK_WATER_PIPE);
-		}
-		if (WaterworksConfig.register.rainCollectorMultiblock) {
-			WaterworksBlocks.rainCollector = registerBlock(registry, new BlockRainCollector(),
-					WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR);
-			WaterworksBlocks.rainCollectorController = registerBlock(registry, new BlockRainCollectorController(),
-					WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR_CONTROLLER);
-		}
-		if (WaterworksConfig.register.groundwaterPump) {
-			WaterworksBlocks.groundwaterPump = registerBlock(registry, new BlockGroundwaterPump(),
-					WaterworksRegistryNames.BLOCK_GROUNDWATER_PUMP);
-		}
+		WaterworksBlocks.rainTankWood = registerBlock(registry, new BlockRainTankWood(),
+				WaterworksRegistryNames.BLOCK_RAIN_TANK_WOOD);
+		WaterworksBlocks.waterPipe = registerBlock(registry, new BlockWaterPipe(),
+				WaterworksRegistryNames.BLOCK_WATER_PIPE);
+		WaterworksBlocks.rainCollector = registerBlock(registry, new BlockRainCollector(),
+				WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR);
+		WaterworksBlocks.rainCollectorController = registerBlock(registry, new BlockRainCollectorController(),
+				WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR_CONTROLLER);
+		WaterworksBlocks.groundwaterPump = registerBlock(registry, new BlockGroundwaterPump(),
+				WaterworksRegistryNames.BLOCK_GROUNDWATER_PUMP);
+
 	}
 
 	public static Block registerBlock(IForgeRegistry<Block> registry, Block block, String name) {
@@ -46,19 +39,11 @@ public class InitBlocks {
 	}
 
 	public static void initItemBlocks(IForgeRegistry<Item> registry) {
-		if (WaterworksConfig.register.woodenRainTank) {
-			registerItemBlock(registry, WaterworksBlocks.rainTankWood);
-		}
-		if (WaterworksConfig.register.waterPipe) {
-			registerItemBlock(registry, WaterworksBlocks.waterPipe);
-		}
-		if (WaterworksConfig.register.rainCollectorMultiblock) {
-			registerItemBlock(registry, WaterworksBlocks.rainCollector);
-			registerItemBlock(registry, WaterworksBlocks.rainCollectorController);
-		}
-		if (WaterworksConfig.register.groundwaterPump) {
-			registerItemBlock(registry, WaterworksBlocks.groundwaterPump);
-		}
+		registerItemBlock(registry, WaterworksBlocks.rainTankWood);
+		registerItemBlock(registry, WaterworksBlocks.waterPipe);
+		registerItemBlock(registry, WaterworksBlocks.rainCollector);
+		registerItemBlock(registry, WaterworksBlocks.rainCollectorController);
+		registerItemBlock(registry, WaterworksBlocks.groundwaterPump);
 	}
 
 	public static void registerItemBlock(IForgeRegistry<Item> registry, Block block) {

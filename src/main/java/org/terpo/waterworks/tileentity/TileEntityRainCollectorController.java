@@ -29,7 +29,8 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	private int countValidCollectors = 0;
 
 	public TileEntityRainCollectorController() {
-		super(WaterworksTileEntities.rainCollectorController, 0, WaterworksConfig.rainCollection.rainCollectorCapacity);
+		super(WaterworksTileEntities.rainCollectorController, 0,
+				WaterworksConfig.rainCollection.getRainCollectorCapacity());
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 		if (this.currentValidationPos == this.areaCount) {
 			this.validCollectors = this.countValidCollectors;
 			this.fluidResource = getWaterFluidStack(
-					this.validCollectors * WaterworksConfig.rainCollection.rainCollectorFillrate);
+					this.validCollectors * WaterworksConfig.rainCollection.getRainCollectorFillrate());
 			this.countValidCollectors = 0;
 			this.currentValidationPos = 0;
 		}
@@ -84,7 +85,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 		resetController();
 		this.connectedCollectors = getAllConnectedBlocks();
 		this.fluidResource = getWaterFluidStack(
-				this.connectedCollectors * WaterworksConfig.rainCollection.rainCollectorFillrate);
+				this.connectedCollectors * WaterworksConfig.rainCollection.getRainCollectorFillrate());
 		return this.connectedCollectors;
 	}
 
@@ -137,7 +138,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 			if (compound.contains("validCollectors")) {
 				this.validCollectors = compound.getInt("validCollectors");
 				this.fluidResource = getWaterFluidStack(
-						this.validCollectors * WaterworksConfig.rainCollection.rainCollectorFillrate);
+						this.validCollectors * WaterworksConfig.rainCollection.getRainCollectorFillrate());
 			}
 		}
 	}

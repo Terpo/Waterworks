@@ -12,6 +12,7 @@ import org.terpo.waterworks.init.InitItems;
 import org.terpo.waterworks.init.InitModCompat;
 import org.terpo.waterworks.init.InitRecipes;
 import org.terpo.waterworks.init.InitTileEntities;
+import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksContainers;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 import org.terpo.waterworks.proxy.ClientProxy;
@@ -29,13 +30,16 @@ import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.IForgeRegistry;
 
 @Mod(WaterworksReference.MODID)
@@ -51,6 +55,9 @@ public class Waterworks {
 //		FluidRegistry.enableUniversalBucket(); // Must be called before preInit
 //	}
 	public Waterworks() {
+
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, WaterworksConfig.commonConfig);
+
 		// Register the setup method for modloading
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 		// Register the enqueueIMC method for modloading
@@ -59,6 +66,9 @@ public class Waterworks {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
 		// Register the doClientStuff method for modloading
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+
+		WaterworksConfig.loadConfig(WaterworksConfig.commonConfig,
+				FMLPaths.CONFIGDIR.get().resolve("waterworks-common.toml"));
 
 		// Register ourselves for server and other game events we are interested in
 //		MinecraftForge.EVENT_BUS.register(this);
