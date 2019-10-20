@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -28,7 +28,8 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 	protected WaterworksBattery battery;
 	protected ResourceLocation gui;
 	protected Rectangle2d tankRectangle;
-	private final ResourceLocation waterResource = Fluids.WATER.getAttributes().getStillTexture();
+	private final ResourceLocation waterResource;
+	private final float[] colors;
 
 	public FluidContainerScreen(ResourceLocation gui, Rectangle2d tankRectangle, ContainerBase screenContainer,
 			PlayerInventory inv, ITextComponent title) {
@@ -40,6 +41,13 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 		}
 		this.gui = gui;
 		this.tankRectangle = tankRectangle;
+
+		// define water colors
+		final Fluid fluid = this.fluidTank.getFluid().getFluid();
+		this.waterResource = fluid.getAttributes().getStillTexture();
+		final int color = fluid.getAttributes().getColor();
+		this.colors = new float[]{((color >> 16) & 0xFf) / 255.0f, ((color >> 8) & 0xFf) / 255.0f,
+				(color & 0xFf) / 255.0f, ((color >> 24) & 0xFf) / 255.0f};
 
 	}
 
@@ -59,7 +67,6 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.minecraft.getTextureManager().bindTexture(this.gui);
-//		this.blit(relX, relY, 0, 0, this.xSize, this.ySize);
 		this.blit(getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
 		drawTank(this.tankRectangle.getX(), this.tankRectangle.getWidth(), this.tankRectangle.getY(),
 				this.tankRectangle.getHeight());
@@ -76,10 +83,12 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 		if (this.fluidTank != null) {
 			final int fillHeight = this.fluidTank.getFluidAmount() * tankSizeY / this.fluidTank.getCapacity();
 			final TextureAtlasSprite sprite = this.minecraft.getTextureMap().getSprite(this.waterResource);
-
 			this.minecraft.getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+
+			GlStateManager.color4f(this.colors[0], this.colors[1], this.colors[2], this.colors[3]);
 			AbstractGui.blit(getGuiLeft() + tankPosX, getGuiTop() + tankPosY + tankSizeY - fillHeight, 0, tankSizeX,
 					fillHeight, sprite);
+			GlStateManager.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 		}
 	}
 	protected void drawBattery(Rectangle2d batteryRect) {
