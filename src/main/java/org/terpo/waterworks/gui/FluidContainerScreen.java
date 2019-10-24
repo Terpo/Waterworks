@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.terpo.waterworks.api.constants.WaterworksReference;
-import org.terpo.waterworks.energy.WaterworksBattery;
 import org.terpo.waterworks.fluid.WaterworksTank;
-import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
@@ -19,28 +17,28 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 //Client Side
 public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
-
 	protected WaterworksTank fluidTank;
-	protected WaterworksBattery battery;
+
 	protected ResourceLocation gui;
 	protected Rectangle2d tankRectangle;
-	private final ResourceLocation waterResource;
-	private final float[] colors;
+	private ResourceLocation waterResource;
+	private float[] colors;
 
-	public FluidContainerScreen(ResourceLocation gui, Rectangle2d tankRectangle, ContainerBase screenContainer,
-			PlayerInventory inv, ITextComponent title) {
+	public FluidContainerScreen(ContainerBase screenContainer, PlayerInventory inv, ITextComponent title) {
 		super(screenContainer, inv, title);
+		prepare(new ResourceLocation(WaterworksReference.MODID, "textures/gui/container/rain_tank_wood.png"),
+				new Rectangle2d(80, 17, 16, 52), screenContainer);
+
+	}
+
+	protected void prepare(ResourceLocation newGui, Rectangle2d newTankRectangle, ContainerBase screenContainer) {
 		this.fluidTank = screenContainer.getTileWaterworks().getFluidTank();
-		if (screenContainer.getTileWaterworks() instanceof TileEntityGroundwaterPump) {
-			this.battery = (WaterworksBattery) screenContainer.getTileWaterworks()
-					.getCapability(CapabilityEnergy.ENERGY).orElse(null);
-		}
-		this.gui = gui;
-		this.tankRectangle = tankRectangle;
+
+		this.gui = newGui;
+		this.tankRectangle = newTankRectangle;
 
 		// define water colors
 		final Fluid fluid = this.fluidTank.getFluid().getFluid();
@@ -48,12 +46,6 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 		final int color = fluid.getAttributes().getColor();
 		this.colors = new float[]{((color >> 16) & 0xFf) / 255.0f, ((color >> 8) & 0xFf) / 255.0f,
 				(color & 0xFf) / 255.0f, ((color >> 24) & 0xFf) / 255.0f};
-
-	}
-
-	public FluidContainerScreen(ContainerBase screenContainer, PlayerInventory inv, ITextComponent title) {
-		this(new ResourceLocation(WaterworksReference.MODID, "textures/gui/container/rain_tank_wood.png"),
-				new Rectangle2d(80, 17, 16, 52), screenContainer, inv, title);
 	}
 
 	@Override
@@ -91,19 +83,6 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 			GlStateManager.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 		}
 	}
-	protected void drawBattery(Rectangle2d batteryRect) {
-		if (this.battery != null) {
-
-			final int fillHeight = this.battery.getEnergyStored() * batteryRect.getHeight()
-					/ this.battery.getMaxEnergyStored();
-
-			this.minecraft.getTextureManager()
-					.bindTexture(new ResourceLocation("waterworks:textures/blocks/energy_overlay.png"));
-			this.blit(getGuiLeft() + batteryRect.getX(),
-					getGuiTop() + batteryRect.getY() + batteryRect.getHeight() - fillHeight, 0, 0,
-					batteryRect.getWidth(), fillHeight);
-		}
-	}
 
 	protected void drawTankTooltip(int mouseX, int mouseY, int xStartTank, int xSizeTank, int yStartTank,
 			int ySizeTank) {
@@ -113,20 +92,6 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 			toolTipText.add(tooltip);
 			if (getGuiLeft() + xStartTank <= mouseX && mouseX < getGuiLeft() + xStartTank + xSizeTank
 					&& mouseY >= getGuiTop() + yStartTank && mouseY < getGuiTop() + yStartTank + ySizeTank) {
-				renderTooltip(toolTipText, mouseX - getGuiLeft() + 10, mouseY - getGuiTop());
-			}
-		}
-	}
-	protected void drawBatteryTooltip(int mouseX, int mouseY, Rectangle2d batteryRect) {
-		if (this.battery != null) {
-			final String tooltip = this.battery.getEnergyStored() + "/" + this.battery.getMaxEnergyStored() + " RF";
-
-			if (getGuiLeft() + batteryRect.getX() <= mouseX
-					&& mouseX < getGuiLeft() + batteryRect.getX() + batteryRect.getWidth()
-					&& mouseY >= getGuiTop() + batteryRect.getY()
-					&& mouseY < getGuiTop() + batteryRect.getY() + batteryRect.getHeight()) {
-				final List<String> toolTipText = new ArrayList<>();
-				toolTipText.add(tooltip);
 				renderTooltip(toolTipText, mouseX - getGuiLeft() + 10, mouseY - getGuiTop());
 			}
 		}
