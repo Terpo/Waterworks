@@ -17,8 +17,10 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-//Client Side
+@OnlyIn(Dist.CLIENT)
 public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 	protected WaterworksTank fluidTank;
 

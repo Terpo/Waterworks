@@ -12,8 +12,11 @@ import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.energy.CapabilityEnergy;
 
+@OnlyIn(Dist.CLIENT)
 public class PumpContainerScreen extends FluidContainerScreen {
 	protected Rectangle2d batteryRectangle;
 	protected WaterworksBattery battery;
