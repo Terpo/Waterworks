@@ -36,7 +36,7 @@ import net.minecraftforge.fml.network.FMLPlayMessages.SpawnEntity;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
-public class EntityWeatherFireworkRocket extends Entity
+public abstract class EntityWeatherFireworkRocket extends Entity
 		implements IRendersAsItem, IProjectile, IEntityAdditionalSpawnData {
 
 	public static final String NBT_FIREWORKS = "Fireworks";
@@ -116,10 +116,36 @@ public class EntityWeatherFireworkRocket extends Entity
 	}
 
 	/**
+	 * Handler for {@link World#setEntityState}
+	 */
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void handleStatusUpdate(byte id) {
+		if (id == 17 && this.world.isRemote) {
+			final ItemStack itemstack = getRocketItem();
+			final CompoundNBT compoundnbt = itemstack.isEmpty() ? null : itemstack.getChildTag(NBT_FIREWORKS);
+			final Vec3d vec3d = this.getMotion();
+			this.world.makeFireworks(this.posX, this.posY, this.posZ, vec3d.x, vec3d.y, vec3d.z, compoundnbt);
+
+		}
+
+		super.handleStatusUpdate(id);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	protected void announceRocket(int time) {
+		final int days = time / 24000;
+		final int hours = (time % 24000) / 1000;
+		final int min = ((time % 24000) % 1000) / 17;
+		Waterworks.proxy.getClientPlayerEntity()
+				.sendMessage(new StringTextComponent(getAnnouncementText(time, days, hours, min)));
+	}
+
+	/**
 	 * Called to update the entity's position/logic.
 	 */
 	@Override
-	public void tick() {
+	public void tick() { // NOSONAR
 		this.lastTickPosX = this.posX;
 		this.lastTickPosY = this.posY;
 		this.lastTickPosZ = this.posZ;
@@ -242,7 +268,7 @@ public class EntityWeatherFireworkRocket extends Entity
 
 	// eclipse thinks listnbt has a potential null pointer access
 	@SuppressWarnings("null")
-	private void dealExplosionDamage() {
+	private void dealExplosionDamage() { // NOSONAR
 		float f = 0.0F;
 		final ItemStack itemstack = getRocketItem();
 		final CompoundNBT compoundnbt = itemstack.isEmpty() ? null : itemstack.getChildTag(NBT_FIREWORKS);
@@ -286,54 +312,6 @@ public class EntityWeatherFireworkRocket extends Entity
 
 	}
 
-	private boolean isAttachedToEntity() {
-		return getBoostedEntity().isPresent();
-	}
-
-	/**
-	 * Handler for {@link World#setEntityState}
-	 */
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void handleStatusUpdate(byte id) {
-		if (id == 17 && this.world.isRemote) {
-			final ItemStack itemstack = getRocketItem();
-			final CompoundNBT compoundnbt = itemstack.isEmpty() ? null : itemstack.getChildTag(NBT_FIREWORKS);
-			final Vec3d vec3d = this.getMotion();
-			this.world.makeFireworks(this.posX, this.posY, this.posZ, vec3d.x, vec3d.y, vec3d.z, compoundnbt);
-
-		}
-
-		super.handleStatusUpdate(id);
-	}
-
-	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		compound.putInt("Life", this.fireworkAge);
-		compound.putInt("LifeTime", this.lifetime);
-		final ItemStack itemstack = getRocketItem();
-		if (!itemstack.isEmpty()) {
-			compound.put("FireworksItem", itemstack.write(new CompoundNBT()));
-		}
-
-		compound.putBoolean(NBT_SHOT_AT_ANGLE, isShotAtAngle());
-	}
-
-	@Override
-	public void readAdditional(CompoundNBT compound) {
-		this.fireworkAge = compound.getInt("Life");
-		this.lifetime = compound.getInt("LifeTime");
-		final ItemStack itemstack = ItemStack.read(compound.getCompound("FireworksItem"));
-		if (!itemstack.isEmpty()) {
-			setRocketItem(itemstack);
-		}
-
-		if (compound.contains(NBT_SHOT_AT_ANGLE)) {
-			setShotAtAngle(Boolean.valueOf(compound.getBoolean(NBT_SHOT_AT_ANGLE)));
-		}
-
-	}
-
 	/**
 	 * Returns true if it's possible to attack this entity with an item.
 	 */
@@ -342,18 +320,13 @@ public class EntityWeatherFireworkRocket extends Entity
 		return false;
 	}
 
+	private boolean isAttachedToEntity() {
+		return getBoostedEntity().isPresent();
+	}
+
 	@Override
 	public IPacket<?> createSpawnPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	protected void announceRocket(int time) {
-		final int days = time / 24000;
-		final int hours = (time % 24000) / 1000;
-		final int min = ((time % 24000) % 1000) / 17;
-		Waterworks.proxy.getClientPlayerEntity()
-				.sendMessage(new StringTextComponent(getAnnouncementText(time, days, hours, min)));
 	}
 
 	/**
@@ -374,71 +347,6 @@ public class EntityWeatherFireworkRocket extends Entity
 		this.setMotion(x, y, z);
 	}
 
-	/**
-	 * Override this methods to use your own registry fields
-	 *
-	 */
-
-	@Override
-	protected void registerData() {
-		//
-	}
-
-	@SuppressWarnings("static-method")
-	public boolean isShotAtAngle() {
-		return false;
-	}
-
-	@SuppressWarnings("unused")
-	public void setShotAtAngle(Boolean shotAtAngle) {
-		//
-	}
-
-	@SuppressWarnings("static-method")
-	public ItemStack getRocketItem() {
-		return ItemStack.EMPTY;
-	}
-
-	@SuppressWarnings("unused")
-	public void setRocketItem(ItemStack givenItem) {
-		//
-	}
-
-	@SuppressWarnings("static-method")
-	public OptionalInt getBoostedEntity() {
-		return OptionalInt.of(0);
-	}
-
-	@SuppressWarnings("unused")
-	public void setBoostedEntity(LivingEntity entity) {
-		//
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public ItemStack getItem() {
-		return ItemStack.EMPTY;
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	protected String getAnnouncementText(int time, final int days, final int hours, final int min) {
-		return null;
-	}
-
-	@SuppressWarnings({"static-method", "unused"})
-	protected int calculateDurationFromMultiplier(int rainMultiplier) {
-		return 0;
-	}
-
-	@SuppressWarnings("static-method")
-	protected String getRocketTypeTag() {
-		return "";
-	}
-
-	protected int getConfiguredDuration() {
-		return 0;
-	}
-
 	@Override
 	public void writeSpawnData(PacketBuffer buffer) {
 		buffer.writeInt(this.duration);
@@ -448,4 +356,62 @@ public class EntityWeatherFireworkRocket extends Entity
 	public void readSpawnData(PacketBuffer additionalData) {
 		this.announcementTime = additionalData.readInt();
 	}
+
+	@Override
+	public void writeAdditional(CompoundNBT compound) {
+		compound.putInt("Life", this.fireworkAge);
+		compound.putInt("LifeTime", this.lifetime);
+		final ItemStack itemstack = getRocketItem();
+		if (!itemstack.isEmpty()) {
+			compound.put("FireworksItem", itemstack.write(new CompoundNBT()));
+		}
+		compound.putBoolean(NBT_SHOT_AT_ANGLE, isShotAtAngle());
+	}
+
+	@Override
+	public void readAdditional(CompoundNBT compound) {
+		this.fireworkAge = compound.getInt("Life");
+		this.lifetime = compound.getInt("LifeTime");
+		final ItemStack itemstack = ItemStack.read(compound.getCompound("FireworksItem"));
+		if (!itemstack.isEmpty()) {
+			setRocketItem(itemstack);
+		}
+
+		if (compound.contains(NBT_SHOT_AT_ANGLE)) {
+			setShotAtAngle(Boolean.valueOf(compound.getBoolean(NBT_SHOT_AT_ANGLE)));
+		}
+	}
+
+	/**
+	 * Override this methods to use your own registry fields
+	 *
+	 */
+
+	@OnlyIn(Dist.CLIENT)
+	protected abstract String getAnnouncementText(int time, final int days, final int hours, final int min);
+
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public abstract ItemStack getItem();
+
+	@Override
+	protected abstract void registerData();
+
+	protected abstract boolean isShotAtAngle();
+
+	protected abstract void setShotAtAngle(Boolean shotAtAngle);
+
+	protected abstract ItemStack getRocketItem();
+
+	protected abstract void setRocketItem(ItemStack givenItem);
+
+	protected abstract OptionalInt getBoostedEntity();
+
+	protected abstract void setBoostedEntity(LivingEntity entity);
+
+	protected abstract int calculateDurationFromMultiplier(int rainMultiplier);
+
+	protected abstract String getRocketTypeTag();
+
+	protected abstract int getConfiguredDuration();
 }

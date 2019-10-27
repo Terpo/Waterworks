@@ -68,8 +68,8 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public String getAnnouncementText(int time, final int days, final int hours, final int min) {
-		return new TranslationTextComponent("entity.rain_rocket.announcement", time, days, hours, min)
-				.getFormattedText();
+		return new TranslationTextComponent("entity.rain_rocket.announcement", Integer.valueOf(time),
+				Integer.valueOf(days), Integer.valueOf(hours), Integer.valueOf(min)).getFormattedText();
 	}
 
 	@Override
