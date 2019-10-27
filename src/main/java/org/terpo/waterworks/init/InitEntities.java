@@ -10,21 +10,14 @@ import net.minecraft.entity.EntityType;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class InitEntities {
-	// FIXME possible missing specific entity id
 	public static void register(IForgeRegistry<EntityType<?>> registry) {
-
-//		final List<EntityType<?>> entityEntries = new ArrayList<>();
-//		if (WaterworksConfig.register.rainRocket) {
 		final EntityType<EntityFireworkRocketRain> rainRocketBuilder = EntityType.Builder
 				.<EntityFireworkRocketRain>create(EntityFireworkRocketRain::new, EntityClassification.MISC)
-				.setTrackingRange(64).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true)
-				.build(WaterworksRegistryNames.ENTITY_FIREWORK_RAIN);
+				.setCustomClientFactory(EntityFireworkRocketRain::new).setTrackingRange(64).setUpdateInterval(3)
+				.setShouldReceiveVelocityUpdates(true).build(WaterworksRegistryNames.ENTITY_FIREWORK_RAIN);
 		rainRocketBuilder.setRegistryName(WaterworksReference.MODID, WaterworksRegistryNames.ENTITY_FIREWORK_RAIN);
 		registry.register(rainRocketBuilder);
 		WaterworksEntities.itemFireworkRain = rainRocketBuilder;
-//		}
-
-//		if (WaterworksConfig.register.antiRainRocket) {
 
 		final EntityType<EntityFireworkRocketAntiRain> antiRainRocketBuilder = EntityType.Builder
 				.<EntityFireworkRocketAntiRain>create(EntityFireworkRocketAntiRain::new, EntityClassification.MISC)
@@ -35,11 +28,6 @@ public class InitEntities {
 		registry.register(antiRainRocketBuilder);
 		WaterworksEntities.itemFireworkAntiRain = antiRainRocketBuilder;
 
-//		}
-
-//		if (!entityEntries.isEmpty()) {
-//			registry.registerAll(entityEntries.toArray(new EntityType<?>[entityEntries.size()]));
-//		}
 	}
 
 	private InitEntities() {

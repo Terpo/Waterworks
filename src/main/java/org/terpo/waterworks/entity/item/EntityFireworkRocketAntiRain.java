@@ -15,10 +15,12 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.FMLPlayMessages.SpawnEntity;
 
 public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 
@@ -30,6 +32,16 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 			.createKey(EntityFireworkRocketAntiRain.class, DataSerializers.BOOLEAN);
 
 	private int realClearSky = WaterworksConfig.rockets.getClearSkyDuration();
+
+	/**
+	 * This is used for the Client Side Rocket
+	 * 
+	 * @param spawnEntity information
+	 * @param world the world
+	 */
+	public EntityFireworkRocketAntiRain(SpawnEntity spawnEntity, World world) {
+		super(WaterworksEntities.itemFireworkAntiRain, world, spawnEntity);
+	}
 
 	public EntityFireworkRocketAntiRain(EntityType<? extends EntityFireworkRocketAntiRain> entity, World world) {
 		super(entity, world);
@@ -44,10 +56,11 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 		super(WaterworksEntities.itemFireworkAntiRain, worldIn, itemstack, entity);
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public String getAnnouncementText(int time, final int days, final int hours, final int min) {
-		return "Anti Rain Rocket was launched. Clear sky for the next " + time + " Ticks (" + days + " Days " + hours
-				+ " Hours " + min + " Minutes)";
+		return new TranslationTextComponent("entity.anti_rain_rocket.announcement", time, days, hours, min)
+				.getFormattedText();
 	}
 
 	@Override
@@ -112,9 +125,9 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 	}
 
 	@Override
-	protected int calculateDurationFromMultiplier(int rainMultiplier) {
-		final int minimumClearSky = WaterworksConfig.rockets.getClearSkyDuration() * this.durationMultiplier;
-		this.realClearSky = minimumClearSky + calculateRealClearSky(this.durationMultiplier);
+	protected int calculateDurationFromMultiplier(int durationMultiplier) {
+		final int minimumClearSky = WaterworksConfig.rockets.getClearSkyDuration() * durationMultiplier;
+		this.realClearSky = minimumClearSky + calculateRealClearSky(durationMultiplier);
 		return this.realClearSky;
 	}
 

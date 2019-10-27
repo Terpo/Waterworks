@@ -9,6 +9,8 @@
 	"block.waterworks.rain_collector": "Collector Block",
 	"block.waterworks.rain_collector_controller": "Rain Collector Controller",
 	"block.waterworks.groundwater_pump": "Groundwater Pump",
+	"entity.anti_rain_rocket.announcement": "Anti Rain Rocket was launched. Clear sky for the next {0} Ticks ({1} Days {2} Hours {3} Minutes)",
+	"entity.rain_rocket.announcement": "Rain Rocket was launched. Bad weather for the next {0} Ticks ({1} Days {2} Hours {3} Minutes)",
 	"itemGroup.waterworks": "Waterworks",
 	"tooltip.rain_collector": "Used to increase size of multiblock rain collector",
 	"tooltip.rain_collector_controller": "Controller for the multiblock rain collector",

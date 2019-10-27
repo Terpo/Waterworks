@@ -2,6 +2,8 @@ package org.terpo.waterworks.entity.item;
 
 import java.util.OptionalInt;
 
+import org.terpo.waterworks.Waterworks;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IProjectile;
@@ -14,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.network.play.server.SSpawnObjectPacket;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
@@ -29,10 +31,13 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.network.FMLPlayMessages.SpawnEntity;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
-public class EntityWeatherFireworkRocket extends Entity implements IRendersAsItem, IProjectile {
+public class EntityWeatherFireworkRocket extends Entity
+		implements IRendersAsItem, IProjectile, IEntityAdditionalSpawnData {
 
 	public static final String NBT_FIREWORKS = "Fireworks";
 	public static final String NBT_SHOT_AT_ANGLE = "ShotAtAngle";
@@ -48,6 +53,23 @@ public class EntityWeatherFireworkRocket extends Entity implements IRendersAsIte
 
 	protected int duration;
 	protected int durationMultiplier;
+
+	/**
+	 * used for client side announcement
+	 */
+	private int announcementTime = 0;
+
+	/**
+	 * This is used for the Client Side Rocket
+	 * 
+	 * @param spawnEntity information
+	 * @param world the world
+	 */
+	public EntityWeatherFireworkRocket(EntityType<? extends EntityWeatherFireworkRocket> type, World world,
+			SpawnEntity spawnEntity) {
+		this(type, world);
+	}
+
 	public EntityWeatherFireworkRocket(EntityType<? extends EntityWeatherFireworkRocket> entity, World world) {
 		super(entity, world);
 	}
@@ -76,9 +98,6 @@ public class EntityWeatherFireworkRocket extends Entity implements IRendersAsIte
 			}
 			if (this.durationMultiplier != -1) {
 				this.duration = calculateDurationFromMultiplier(this.durationMultiplier);
-				if (!worldIn.isRemote) {
-					announceRocket(this.duration);
-				}
 			}
 		}
 	}
@@ -171,6 +190,10 @@ public class EntityWeatherFireworkRocket extends Entity implements IRendersAsIte
 		if (this.fireworkAge == 0 && !this.isSilent()) {
 			this.world.playSound((PlayerEntity) null, this.posX, this.posY, this.posZ,
 					SoundEvents.ENTITY_FIREWORK_ROCKET_LAUNCH, SoundCategory.AMBIENT, 3.0F, 1.0F);
+		}
+
+		if (this.world.isRemote && this.fireworkAge == 0) {
+			announceRocket(this.announcementTime);
 		}
 
 		++this.fireworkAge;
@@ -321,15 +344,16 @@ public class EntityWeatherFireworkRocket extends Entity implements IRendersAsIte
 
 	@Override
 	public IPacket<?> createSpawnPacket() {
-		return new SSpawnObjectPacket(this);
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	protected void announceRocket(int time) {
 		final int days = time / 24000;
 		final int hours = (time % 24000) / 1000;
 		final int min = ((time % 24000) % 1000) / 17;
-		final String announcement = getAnnouncementText(time, days, hours, min);
-		ServerLifecycleHooks.getCurrentServer().getPlayerList().sendMessage(new StringTextComponent(announcement));
+		Waterworks.proxy.getClientPlayerEntity()
+				.sendMessage(new StringTextComponent(getAnnouncementText(time, days, hours, min)));
 	}
 
 	/**
@@ -396,10 +420,9 @@ public class EntityWeatherFireworkRocket extends Entity implements IRendersAsIte
 		return ItemStack.EMPTY;
 	}
 
-	@SuppressWarnings({"static-method", "unused"})
+	@OnlyIn(Dist.CLIENT)
 	protected String getAnnouncementText(int time, final int days, final int hours, final int min) {
-		final String announcement = "";
-		return announcement;
+		return null;
 	}
 
 	@SuppressWarnings({"static-method", "unused"})
@@ -416,4 +439,13 @@ public class EntityWeatherFireworkRocket extends Entity implements IRendersAsIte
 		return 0;
 	}
 
+	@Override
+	public void writeSpawnData(PacketBuffer buffer) {
+		buffer.writeInt(this.duration);
+	}
+
+	@Override
+	public void readSpawnData(PacketBuffer additionalData) {
+		this.announcementTime = additionalData.readInt();
+	}
 }

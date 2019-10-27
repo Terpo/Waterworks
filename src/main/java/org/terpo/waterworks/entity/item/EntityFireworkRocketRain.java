@@ -12,10 +12,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.FMLPlayMessages.SpawnEntity;
 
 public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 
@@ -25,6 +27,16 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 			.createKey(EntityFireworkRocketRain.class, DataSerializers.OPTIONAL_VARINT);
 	private static final DataParameter<Boolean> SHOT_AT_ANGLE_RAINROCKET_BOOLEAN = EntityDataManager
 			.createKey(EntityFireworkRocketRain.class, DataSerializers.BOOLEAN);
+
+	/**
+	 * This is used for the Client Side Rocket
+	 * 
+	 * @param spawnEntity information
+	 * @param world the world
+	 */
+	public EntityFireworkRocketRain(SpawnEntity spawnEntity, World world) {
+		super(WaterworksEntities.itemFireworkRain, world, spawnEntity);
+	}
 
 	public EntityFireworkRocketRain(EntityType<? extends EntityFireworkRocketRain> entity, World world) {
 		super(entity, world);
@@ -53,10 +65,11 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 		return itemstack.isEmpty() ? new ItemStack(WaterworksItems.itemFireworkRain) : itemstack;
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public String getAnnouncementText(int time, final int days, final int hours, final int min) {
-		return "Rain Rocket was launched. Bad weather for the next " + time + " Ticks (" + days + " Days " + hours
-				+ " Hours " + min + " Minutes)";
+		return new TranslationTextComponent("entity.rain_rocket.announcement", time, days, hours, min)
+				.getFormattedText();
 	}
 
 	@Override
