@@ -21,7 +21,7 @@ archivesBaseName = "${mod_id}"
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    mappings channel: 'snapshot', version: '20191020-1.14.3'
+    mappings channel: 'snapshot', version: '20190719-1.14.3'
 
     runs {
         client {
@@ -69,10 +69,10 @@ repositories {
 	//	name 'Hwyla mcp maven'
 	//	url = "https://tehnut.info/maven/" 
 	//}
-	//maven { // TOP mcjty/
-    //    name 'tterrag maven'
-    //    url "https://maven.tterrag.com/"
-    //}
+	maven { // TOP mcjty/
+        name 'tterrag maven'
+        url "https://maven.tterrag.com/"
+    }
     //maven {
     //    name = "CoFH Maven"
     //    url = "https://maven.covers1624.net/"
@@ -81,6 +81,11 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
+	
+	compile fg.deobf(project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}") {
+            transitive = false
+        })
+	
 	compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
 	runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
 }
