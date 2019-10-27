@@ -1,9 +1,13 @@
 package org.terpo.waterworks.compat.waila.provider;
 
 //TODO restore Waila Compatibility
-public class ProviderTileWaterworks
-//implements IWailaDataProvider
-{
+//public class ProviderTileWaterworks implements IServerDataProvider<TileEntity> {
+//
+//	@Override
+//	public void appendServerData(CompoundNBT nbt, ServerPlayerEntity player, World world, TileEntity tile) {
+//		// TODO Auto-generated method stub
+//
+//	}
 //
 //	@Override
 //	public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
@@ -60,4 +64,4 @@ public class ProviderTileWaterworks
 //		return tag;
 //	}
 
-}
+//}

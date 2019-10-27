@@ -65,10 +65,10 @@ repositories {
 		name 'JEI mezz maven'
 		url = "https://dvs1.progwml6.com/files/maven/"
 	}
-    //maven {
-	//	name 'Hwyla mcp maven'
-	//	url = "https://tehnut.info/maven/" 
-	//}
+    maven {
+		name 'Hwyla mcp maven'
+		url = "https://tehnut.info/maven/" 
+	}
 	maven { // TOP mcjty/
         name 'tterrag maven'
         url "https://maven.tterrag.com/"
@@ -83,6 +83,10 @@ dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 	
 	compile fg.deobf(project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}") {
+            transitive = false
+        })
+	
+		compile fg.deobf(project.dependencies.create("mcp.mobius.waila:Hwyla:${hwyla_version}") {
             transitive = false
         })
 	

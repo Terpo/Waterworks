@@ -1,11 +1,26 @@
 package org.terpo.waterworks.compat.waila;
 
-//TODO restore Waila Compatibility
-public class WailaCompatibility {
-//	public static String modId = "waila";
-//
-//	public static void register() {
-//		FMLInterModComms.sendMessage(WailaCompatibility.modId, "register",
-//				"org.terpo.waterworks.compat.waila.WailaHandler.register");
-//	}
+import mcp.mobius.waila.api.IRegistrar;
+import mcp.mobius.waila.api.IWailaPlugin;
+import mcp.mobius.waila.api.WailaPlugin;
+
+//FIXME Readd waila compat
+@WailaPlugin
+public class WailaCompatibility implements IWailaPlugin {
+	public static String modId = "waila";
+
+	public static void register() {
+//		InterModComms.sendTo(WailaCompatibility.modId, "register",
+//				() -> "org.terpo.waterworks.compat.waila.WailaHandler.register");
+
+	}
+
+	@Override
+	public void register(IRegistrar registrar) {
+		// providers
+//		registrar.registerBlockDataProvider(new ProviderTileWaterworks(), TileWaterworks.class);
+		// config
+//		registrar.addSyncedConfig(new ResourceLocation(WaterworksReference.MODID, Compat.WAILA_CONFIG_TANKINFO), true);
+
+	}
 }
