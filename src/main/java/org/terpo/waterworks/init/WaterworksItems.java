@@ -7,6 +7,8 @@ import net.minecraft.item.Item;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class WaterworksItems {
+	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.ITEM_WATERWORKS_DEBUGGER)
+	public static Item itemWaterworksDebugger;
 	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.ITEM_PIPE_WRENCH)
 	public static Item itemPipeWrench;
 	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.ITEM_FIREWORK_RAIN)

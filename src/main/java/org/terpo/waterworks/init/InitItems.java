@@ -7,6 +7,7 @@ import org.terpo.waterworks.item.ItemFireworkRain;
 import org.terpo.waterworks.item.ItemMaterialController;
 import org.terpo.waterworks.item.ItemMaterialEnergyAdapter;
 import org.terpo.waterworks.item.ItemPipeWrench;
+import org.terpo.waterworks.item.ItemWaterworksDebugger;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -18,6 +19,8 @@ public class InitItems {
 	}
 
 	public static void registerItems(IForgeRegistry<Item> registry) {
+		WaterworksItems.itemWaterworksDebugger = registerItem(registry, new ItemWaterworksDebugger(),
+				WaterworksRegistryNames.ITEM_WATERWORKS_DEBUGGER);
 		WaterworksItems.itemPipeWrench = registerItem(registry, new ItemPipeWrench(),
 				WaterworksRegistryNames.ITEM_PIPE_WRENCH);
 		WaterworksItems.itemFireworkRain = registerItem(registry, new ItemFireworkRain(),

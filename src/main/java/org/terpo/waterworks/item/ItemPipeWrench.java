@@ -6,6 +6,6 @@ import net.minecraft.item.Item;
 
 public class ItemPipeWrench extends Item {
 	public ItemPipeWrench() {
-		super((new Item.Properties()).group(Waterworks.CREATIVE_TAB));
+		super((new Item.Properties()).maxStackSize(1).group(Waterworks.CREATIVE_TAB));
 	}
 }
