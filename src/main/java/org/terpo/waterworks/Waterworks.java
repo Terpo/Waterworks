@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.api.constants.WaterworksRegistryNames;
+import org.terpo.waterworks.compat.top.TOPCompatibility;
 import org.terpo.waterworks.gui.ContainerBase;
 import org.terpo.waterworks.gui.pump.PumpContainer;
 import org.terpo.waterworks.init.InitBlocks;
@@ -92,8 +93,7 @@ public class Waterworks {
 	}
 
 	private void enqueueIMC(final InterModEnqueueEvent event) {
-		// some example code to dispatch IMC to another mod
-//		InterModComms.sendTo("modid", "method", () -> "IMC");
+		TOPCompatibility.register();
 	}
 
 	private void processIMC(final InterModProcessEvent event) {

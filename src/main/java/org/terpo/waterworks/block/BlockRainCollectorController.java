@@ -10,6 +10,9 @@ import org.terpo.waterworks.inventory.WaterworksInventoryHelper;
 import org.terpo.waterworks.tileentity.TileEntityRainCollectorController;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -100,4 +103,15 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 		return true;
 	}
 
+	@Override
+	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world,
+			BlockState blockState, IProbeHitData data) {
+		if (player.isSneaking()) {
+			final TileEntity te = world.getTileEntity(data.getPos());
+			if (te instanceof TileEntityRainCollectorController) {
+				final TileEntityRainCollectorController tile = (TileEntityRainCollectorController) te;
+				probeInfo.horizontal().text(tile.getConnectedCollectors() + " Collectors");
+			}
+		}
+	}
 }

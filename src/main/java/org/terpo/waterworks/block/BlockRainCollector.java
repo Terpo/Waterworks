@@ -8,6 +8,10 @@ import org.terpo.waterworks.init.WaterworksItems;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
 import org.terpo.waterworks.tileentity.TileEntityRainCollector;
 
+import mcjty.theoneprobe.api.IIconStyle;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -78,5 +82,24 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 	@Override
 	public boolean hasTileEntity(BlockState state) {
 		return true;
+	}
+
+	@Override
+	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world,
+			BlockState blockState, IProbeHitData data) {
+		if (player.isSneaking()) {
+			final TileEntity te = world.getTileEntity(data.getPos());
+			if (te instanceof TileEntityRainCollector) {
+				final IIconStyle iconStyle = probeInfo.defaultIconStyle().textureWidth(32).textureHeight(32);
+				final TileEntityRainCollector tile = (TileEntityRainCollector) te;
+				if (tile.hasController()) {
+					final BlockPos pos = tile.getController().getPos();
+					probeInfo.horizontal().text("Controller ").icon(this.guiIconsTOP, 0, 16, 16, 16, iconStyle)
+							.text("@" + pos.getX() + "," + pos.getY() + "," + pos.getZ());
+				} else {
+					probeInfo.horizontal().text("Controller ").icon(this.guiIconsTOP, 16, 16, 16, 16, iconStyle);
+				}
+			}
+		}
 	}
 }
