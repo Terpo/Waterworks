@@ -20,7 +20,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.FMLPlayMessages.SpawnEntity;
 
 public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 
@@ -31,19 +30,9 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 	private static final DataParameter<Boolean> SHOT_AT_ANGLE_ANTI_RAINROCKET_BOOLEAN = EntityDataManager
 			.createKey(EntityFireworkRocketAntiRain.class, DataSerializers.BOOLEAN);
 
-	/**
-	 * This is used for the Client Side Rocket
-	 * 
-	 * @param spawnEntity information
-	 * @param world the world
-	 */
-	public EntityFireworkRocketAntiRain(SpawnEntity spawnEntity, World world) {
-		super(WaterworksEntities.entityFireworkAntiRain, world, spawnEntity);
-	}
-
 	public EntityFireworkRocketAntiRain(EntityType<? extends EntityFireworkRocketAntiRain> entity, World world) {
 		super(entity, world);
-		this.duration = WaterworksConfig.rockets.getClearSkyDuration();
+//		this.duration = WaterworksConfig.rockets.getClearSkyDuration();
 	}
 
 	public EntityFireworkRocketAntiRain(World worldIn, double x, double y, double z, ItemStack itemstack) {

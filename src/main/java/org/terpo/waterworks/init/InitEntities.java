@@ -13,8 +13,8 @@ public class InitEntities {
 	public static void register(IForgeRegistry<EntityType<?>> registry) {
 		final EntityType<EntityFireworkRocketRain> rainRocketBuilder = EntityType.Builder
 				.<EntityFireworkRocketRain>create(EntityFireworkRocketRain::new, EntityClassification.MISC)
-				.setCustomClientFactory(EntityFireworkRocketRain::new).setTrackingRange(64).setUpdateInterval(3)
-				.setShouldReceiveVelocityUpdates(true).build(WaterworksRegistryNames.ENTITY_FIREWORK_RAIN);
+				.setTrackingRange(64).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true)
+				.build(WaterworksRegistryNames.ENTITY_FIREWORK_RAIN);
 		rainRocketBuilder.setRegistryName(WaterworksReference.MODID, WaterworksRegistryNames.ENTITY_FIREWORK_RAIN);
 		registry.register(rainRocketBuilder);
 		WaterworksEntities.entityFireworkRain = rainRocketBuilder;

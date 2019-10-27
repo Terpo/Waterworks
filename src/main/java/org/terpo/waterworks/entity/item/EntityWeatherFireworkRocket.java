@@ -32,7 +32,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.network.FMLPlayMessages.SpawnEntity;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
@@ -53,22 +52,6 @@ public abstract class EntityWeatherFireworkRocket extends Entity
 
 	protected int duration;
 	protected int durationMultiplier;
-
-	/**
-	 * used for client side announcement
-	 */
-	private int announcementTime = 0;
-
-	/**
-	 * This is used for the Client Side Rocket
-	 * 
-	 * @param spawnEntity information
-	 * @param world the world
-	 */
-	public EntityWeatherFireworkRocket(EntityType<? extends EntityWeatherFireworkRocket> type, World world,
-			SpawnEntity spawnEntity) {
-		this(type, world);
-	}
 
 	public EntityWeatherFireworkRocket(EntityType<? extends EntityWeatherFireworkRocket> entity, World world) {
 		super(entity, world);
@@ -219,7 +202,7 @@ public abstract class EntityWeatherFireworkRocket extends Entity
 		}
 
 		if (this.world.isRemote && this.fireworkAge == 0) {
-			announceRocket(this.announcementTime);
+			announceRocket(this.duration);
 		}
 
 		++this.fireworkAge;
@@ -354,7 +337,7 @@ public abstract class EntityWeatherFireworkRocket extends Entity
 
 	@Override
 	public void readSpawnData(PacketBuffer additionalData) {
-		this.announcementTime = additionalData.readInt();
+		this.duration = additionalData.readInt();
 	}
 
 	@Override
