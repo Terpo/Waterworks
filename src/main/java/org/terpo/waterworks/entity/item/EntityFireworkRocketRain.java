@@ -35,7 +35,7 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 	 * @param world the world
 	 */
 	public EntityFireworkRocketRain(SpawnEntity spawnEntity, World world) {
-		super(WaterworksEntities.itemFireworkRain, world, spawnEntity);
+		super(WaterworksEntities.entityFireworkRain, world, spawnEntity);
 	}
 
 	public EntityFireworkRocketRain(EntityType<? extends EntityFireworkRocketRain> entity, World world) {
@@ -44,11 +44,11 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 	}
 
 	public EntityFireworkRocketRain(World worldIn, double x, double y, double z, ItemStack itemstack) {
-		super(WaterworksEntities.itemFireworkRain, worldIn, x, y, z, itemstack);
+		super(WaterworksEntities.entityFireworkRain, worldIn, x, y, z, itemstack);
 	}
 
 	public EntityFireworkRocketRain(World worldIn, ItemStack itemstack, LivingEntity entity) {
-		super(WaterworksEntities.itemFireworkRain, worldIn, itemstack, entity);
+		super(WaterworksEntities.entityFireworkRain, worldIn, itemstack, entity);
 	}
 
 	@Override

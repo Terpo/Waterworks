@@ -40,7 +40,7 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 	 * @param world the world
 	 */
 	public EntityFireworkRocketAntiRain(SpawnEntity spawnEntity, World world) {
-		super(WaterworksEntities.itemFireworkAntiRain, world, spawnEntity);
+		super(WaterworksEntities.entityFireworkAntiRain, world, spawnEntity);
 	}
 
 	public EntityFireworkRocketAntiRain(EntityType<? extends EntityFireworkRocketAntiRain> entity, World world) {
@@ -49,11 +49,11 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 	}
 
 	public EntityFireworkRocketAntiRain(World worldIn, double x, double y, double z, ItemStack itemstack) {
-		super(WaterworksEntities.itemFireworkAntiRain, worldIn, x, y, z, itemstack);
+		super(WaterworksEntities.entityFireworkAntiRain, worldIn, x, y, z, itemstack);
 	}
 
 	public EntityFireworkRocketAntiRain(World worldIn, ItemStack itemstack, LivingEntity entity) {
-		super(WaterworksEntities.itemFireworkAntiRain, worldIn, itemstack, entity);
+		super(WaterworksEntities.entityFireworkAntiRain, worldIn, itemstack, entity);
 	}
 
 	@OnlyIn(Dist.CLIENT)
