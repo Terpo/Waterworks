@@ -2,8 +2,7 @@ package org.terpo.waterworks.proxy;
 
 import org.terpo.waterworks.entity.item.EntityFireworkRocketAntiRain;
 import org.terpo.waterworks.entity.item.EntityFireworkRocketRain;
-import org.terpo.waterworks.entity.item.RenderFireworkRocketAntiRain;
-import org.terpo.waterworks.entity.item.RenderFireworkRocketRain;
+import org.terpo.waterworks.entity.item.RenderWeatherFireworkRocket;
 import org.terpo.waterworks.gui.FluidContainerScreen;
 import org.terpo.waterworks.gui.pump.PumpContainerScreen;
 import org.terpo.waterworks.init.WaterworksContainers;
@@ -47,8 +46,9 @@ public class ClientProxy implements IProxy {
 
 		// ENTITY RENDERER
 		RenderingRegistry.registerEntityRenderingHandler(EntityFireworkRocketAntiRain.class,
-				RenderFireworkRocketAntiRain::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityFireworkRocketRain.class, RenderFireworkRocketRain::new);
+				RenderWeatherFireworkRocket::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityFireworkRocketRain.class,
+				RenderWeatherFireworkRocket::new);
 
 		// TESR
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRainTankWood.class, new TileEntityWaterRenderer());
