@@ -5,8 +5,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import org.terpo.waterworks.helper.FluidHelper;
+import org.terpo.waterworks.helper.WaterworksInventoryHelper;
 import org.terpo.waterworks.init.WaterworksItems;
-import org.terpo.waterworks.inventory.WaterworksInventoryHelper;
 import org.terpo.waterworks.tileentity.TileEntityRainCollectorController;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 

@@ -3,7 +3,7 @@ package org.terpo.waterworks.block;
 import javax.annotation.Nullable;
 
 import org.terpo.waterworks.helper.FluidHelper;
-import org.terpo.waterworks.inventory.WaterworksInventoryHelper;
+import org.terpo.waterworks.helper.WaterworksInventoryHelper;
 import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 

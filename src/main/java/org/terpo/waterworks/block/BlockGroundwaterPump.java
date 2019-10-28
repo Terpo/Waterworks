@@ -1,10 +1,10 @@
 package org.terpo.waterworks.block;
 
 import org.terpo.waterworks.helper.FluidHelper;
+import org.terpo.waterworks.helper.WaterworksInventoryHelper;
 import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksItems;
-import org.terpo.waterworks.inventory.WaterworksInventoryHelper;
 import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 

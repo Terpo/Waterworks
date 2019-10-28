@@ -1,4 +1,4 @@
-package org.terpo.waterworks.inventory;
+package org.terpo.waterworks.helper;
 
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -8,10 +8,9 @@ import net.minecraftforge.items.IItemHandler;
 
 public class WaterworksInventoryHelper {
 	public static void dropItemsFromInventory(World world, BlockPos pos, IItemHandler inventory) {
-		int x, y, z;
-		x = pos.getX();
-		y = pos.getY();
-		z = pos.getZ();
+		final int x = pos.getX();
+		final int y = pos.getY();
+		final int z = pos.getZ();
 
 		for (int i = 0; i < inventory.getSlots(); ++i) {
 			final ItemStack itemstack = inventory.getStackInSlot(i);
@@ -19,5 +18,9 @@ public class WaterworksInventoryHelper {
 				InventoryHelper.spawnItemStack(world, x, y, z, itemstack);
 			}
 		}
+	}
+
+	private WaterworksInventoryHelper() {
+		// hidden
 	}
 }
