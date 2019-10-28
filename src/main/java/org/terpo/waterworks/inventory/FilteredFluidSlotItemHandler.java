@@ -19,13 +19,13 @@ public class FilteredFluidSlotItemHandler extends FluidSlotItemHandler {
 	protected boolean additionalFilters(ItemStack stack) {
 		final Item item = stack.getItem();
 		if (!this.filter.isEmpty()) {
-			return this.filter.stream().filter(filterItem -> filterItem.equals(item)).findFirst().isPresent();
+			return this.filter.stream().anyMatch(filterItem -> filterItem.equals(item));
 		}
 		return false;
 	}
 
 	public void addItemToFilter(Item item) {
-		if (!(this.filter.stream().filter(filterItem -> filterItem.equals(item)).findFirst().isPresent())) {
+		if (!(this.filter.stream().anyMatch(filterItem -> filterItem.equals(item)))) {
 			this.filter.add(item);
 		}
 

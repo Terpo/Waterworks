@@ -85,11 +85,7 @@ public class GeneralItemStackHandler extends ItemStackHandler {
 			return ItemStack.EMPTY;
 		}
 
-		if (!isValidItemStack(stack, slot)) {
-			return stack;
-		}
-
-		if (!isInputSlot(slot)) {
+		if (!isValidItemStack(stack, slot) || !isInputSlot(slot)) {
 			return stack;
 		}
 

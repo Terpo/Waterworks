@@ -25,10 +25,6 @@ public class InitTileEntities {
 		registry.register(TileEntityType.Builder
 				.create(TileEntityGroundwaterPump::new, WaterworksBlocks.groundwaterPump).build(null)
 				.setRegistryName(WaterworksReference.MODID, WaterworksRegistryNames.TILE_ENTITY_GROUNDWATER_PUMP));
-//		registry.register(TileEntityType.Builder.create(BaseTileEntity::new).build(null).setRegistryName(
-//				new ResourceLocation(WaterworksReference.MODID, WaterworksRegistryNames.TILE_ENTITY_BASE)));
-//		registry.register(TileEntityType.Builder.create(TileWaterworks::new).build(null).setRegistryName(
-//				new ResourceLocation(WaterworksReference.MODID, WaterworksRegistryNames.TILE_ENTITY_WATERWORKS)));
 	}
 
 	private InitTileEntities() {

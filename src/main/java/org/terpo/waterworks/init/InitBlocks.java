@@ -40,15 +40,17 @@ public class InitBlocks {
 
 	public static void initItemBlocks(IForgeRegistry<Item> registry) {
 		registerItemBlock(registry, WaterworksBlocks.rainTankWood);
-		registerItemBlock(registry, WaterworksBlocks.waterPipe);
+		WaterworksBlocks.itemBlockWaterPipe = registerItemBlock(registry, WaterworksBlocks.waterPipe);
 		registerItemBlock(registry, WaterworksBlocks.rainCollector);
 		registerItemBlock(registry, WaterworksBlocks.rainCollectorController);
 		registerItemBlock(registry, WaterworksBlocks.groundwaterPump);
 	}
 
-	public static void registerItemBlock(IForgeRegistry<Item> registry, Block block) {
-		registry.register(new BlockItem(block, new Item.Properties().group(Waterworks.CREATIVE_TAB))
-				.setRegistryName(block.getRegistryName()));
+	public static Item registerItemBlock(IForgeRegistry<Item> registry, Block block) {
+		final Item item = new BlockItem(block, new Item.Properties().group(Waterworks.CREATIVE_TAB))
+				.setRegistryName(block.getRegistryName());
+		registry.register(item);
+		return item;
 	}
 
 	private InitBlocks() {

@@ -56,4 +56,8 @@ public class FluidHelper {
 		}
 		return false;
 	}
+
+	private FluidHelper() {
+		// hidden
+	}
 }

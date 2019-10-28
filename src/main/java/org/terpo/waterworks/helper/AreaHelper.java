@@ -11,4 +11,8 @@ public class AreaHelper {
 	public static boolean isInRange2D(int posX, int posZ, int tEPosXmin, int tEPosXmax, int tEPosZmin, int tEPosZmax) {
 		return (posX >= tEPosXmin && posX <= tEPosXmax && posZ >= tEPosZmin && posZ <= tEPosZmax);
 	}
+
+	private AreaHelper() {
+		// hidden
+	}
 }
