@@ -42,10 +42,7 @@ public class FluidSlotItemHandler extends SlotItemHandler {
 	}
 
 	protected boolean isSlotValid() {
-		if (this.slotDefinition == SlotDefinition.O) {
-			return false;
-		}
-		return true;
+		return !(this.slotDefinition == SlotDefinition.O);
 	}
 
 	@Override

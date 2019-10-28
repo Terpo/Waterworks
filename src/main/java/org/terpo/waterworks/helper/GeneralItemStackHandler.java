@@ -16,8 +16,8 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class GeneralItemStackHandler extends ItemStackHandler {
 
-	private boolean inputSlots[];
-	private boolean outputSlots[];
+	private boolean[] inputSlots;
+	private boolean[] outputSlots;
 	HashMap<Item, SlotDefinition> filter = new HashMap<>();
 	protected TileEntity tile;
 

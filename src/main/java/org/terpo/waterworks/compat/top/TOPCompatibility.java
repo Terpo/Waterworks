@@ -5,7 +5,7 @@ import net.minecraftforge.fml.InterModComms;
 
 public class TOPCompatibility {
 
-	public static String modId = "theoneprobe";
+	public static final String TOP_MOD_ID = "theoneprobe";
 	private static boolean registered;
 	public static ITheOneProbe probe;
 
@@ -14,7 +14,7 @@ public class TOPCompatibility {
 			return;
 		}
 		registered = true;
-		InterModComms.sendTo(TOPCompatibility.modId, "getTheOneProbe", TOPRegistration::new);
+		InterModComms.sendTo(TOPCompatibility.TOP_MOD_ID, "getTheOneProbe", TOPRegistration::new);
 	}
 
 	private TOPCompatibility() {

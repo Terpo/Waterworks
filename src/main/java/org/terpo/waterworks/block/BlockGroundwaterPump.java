@@ -138,14 +138,14 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos,
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, // NOSONAR
 			ISelectionContext context) {
 		final Direction direction = state.get(BlockStateProperties.HORIZONTAL_FACING);
 		return direction.getAxis() == Direction.Axis.X ? xAxisShape : zAxisShape;
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) { // NOSONAR
 		final Direction direction = state.get(BlockStateProperties.HORIZONTAL_FACING);
 		return direction.getAxis() == Direction.Axis.X ? xAxisShape : zAxisShape;
 	}

@@ -1,9 +1,9 @@
 package org.terpo.waterworks.compat.jei.rockets;
 
 //TODO restore JEI Compatibility
-public class JEIAntiRainRocketRecipeWrapperFactory
+//public class JEIAntiRainRocketRecipeWrapperFactory
 //implements IRecipeWrapperFactory<AntiRainRocketRecipe> 
-{
+//{
 
 //	private class RecipeWrapper implements IRecipeWrapper	{
 //		public RecipeWrapper() {
@@ -40,4 +40,4 @@ public class JEIAntiRainRocketRecipeWrapperFactory
 //	public IRecipeWrapper getRecipeWrapper(AntiRainRocketRecipe recipe) {
 //		return new RecipeWrapper();
 //	}
-}
+//}

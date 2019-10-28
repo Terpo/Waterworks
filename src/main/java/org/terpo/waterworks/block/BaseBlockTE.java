@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 
 public class BaseBlockTE<T extends BaseTileEntity> extends Block implements TOPInfoProvider {
 
-	protected final ResourceLocation guiIconsTOP = new ResourceLocation(TOPCompatibility.modId,
+	protected final ResourceLocation guiIconsTOP = new ResourceLocation(TOPCompatibility.TOP_MOD_ID,
 			"textures/gui/icons.png");
 
 	public BaseBlockTE(Block.Properties builder) {
