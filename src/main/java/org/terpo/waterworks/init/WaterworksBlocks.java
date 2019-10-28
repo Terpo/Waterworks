@@ -4,6 +4,7 @@ import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.api.constants.WaterworksRegistryNames;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class WaterworksBlocks {
@@ -17,6 +18,8 @@ public class WaterworksBlocks {
 	public static Block rainCollectorController;
 	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.BLOCK_GROUNDWATER_PUMP)
 	public static Block groundwaterPump;
+
+	public static Item itemBlockWaterPipe;
 
 	private WaterworksBlocks() {
 		// hidme

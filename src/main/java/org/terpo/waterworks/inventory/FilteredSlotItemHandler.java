@@ -2,7 +2,6 @@ package org.terpo.waterworks.inventory;
 
 import org.terpo.waterworks.init.WaterworksBlocks;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
@@ -15,7 +14,7 @@ public class FilteredSlotItemHandler extends FluidSlotItemHandler {
 
 	@Override
 	protected boolean isFilteredItemValid(ItemStack stack) {
-		return (stack.getItem().equals(Item.getItemFromBlock(WaterworksBlocks.waterPipe)));
+		return WaterworksBlocks.itemBlockWaterPipe.equals(stack.getItem());
 	}
 
 }
