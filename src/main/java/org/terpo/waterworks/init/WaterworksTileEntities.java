@@ -10,14 +10,15 @@ import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.registries.ObjectHolder;
 
+@ObjectHolder(WaterworksReference.MODID)
 public class WaterworksTileEntities {
-	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.BLOCK_RAIN_TANK_WOOD)
+	@ObjectHolder(WaterworksRegistryNames.BLOCK_RAIN_TANK_WOOD)
 	public static final TileEntityType<TileEntityRainTankWood> rainTankWood = null;
-	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR)
+	@ObjectHolder(WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR)
 	public static final TileEntityType<TileEntityRainCollector> rainCollector = null;
-	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR_CONTROLLER)
+	@ObjectHolder(WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR_CONTROLLER)
 	public static final TileEntityType<TileEntityRainCollectorController> rainCollectorController = null;
-	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.BLOCK_GROUNDWATER_PUMP)
+	@ObjectHolder(WaterworksRegistryNames.BLOCK_GROUNDWATER_PUMP)
 	public static final TileEntityType<TileEntityGroundwaterPump> groundwaterPump = null;
 
 	private WaterworksTileEntities() {

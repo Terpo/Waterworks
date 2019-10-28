@@ -7,12 +7,12 @@ import org.terpo.waterworks.item.crafting.RainRocketRecipe;
 
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraftforge.registries.ObjectHolder;
-
+@ObjectHolder(WaterworksReference.MODID)
 public class WaterworksRecipes {
 
-	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.ITEM_FIREWORK_RAIN)
+	@ObjectHolder(WaterworksRegistryNames.ITEM_FIREWORK_RAIN)
 	public static final SpecialRecipeSerializer<RainRocketRecipe> recipeFireworkRain = null;
-	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.ITEM_FIREWORK_ANTI_RAIN)
+	@ObjectHolder(WaterworksRegistryNames.ITEM_FIREWORK_ANTI_RAIN)
 	public static final SpecialRecipeSerializer<AntiRainRocketRecipe> recipeFireworkAntiRain = null;
 
 	private WaterworksRecipes() {
