@@ -7,7 +7,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.terpo.waterworks.compat.bedrockbgone.BBGCompatibility;
 import org.terpo.waterworks.energy.WaterworksBattery;
 import org.terpo.waterworks.gui.pump.PumpContainer;
 import org.terpo.waterworks.helper.PumpItemStackHandler;
@@ -135,10 +134,6 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 
 		final List<Block> bedrocks = new ArrayList<>();
 		bedrocks.add(Blocks.BEDROCK);
-
-		if (BBGCompatibility.BETTER_BEDROCK != null) {
-			bedrocks.add(BBGCompatibility.BETTER_BEDROCK);
-		}
 
 		final WaterworksBattery internalBattery = this.battery.orElse(null);
 		if (internalBattery != null) {
