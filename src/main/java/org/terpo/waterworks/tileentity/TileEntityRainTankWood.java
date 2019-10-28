@@ -52,12 +52,6 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		super.updateServerSide();
 	}
 
-	// FIXME should refresh
-//	@Override
-//	public boolean shouldRefresh(World worldIn, BlockPos posIn, BlockState oldState, BlockState newState) {
-//		return oldState.getBlock() != newState.getBlock();
-//	}
-
 	public int getStateLevel() {
 		return Math.round((this.fluidTank.getFluidAmount() * 4.0f / this.fluidTank.getCapacity()));
 	}

@@ -37,4 +37,8 @@ public class WaterworksRegistryNames {
 	public static final String CONTAINER_WATERWORKS = "container_waterworks";
 	public static final String CONTAINER_GROUNDWATER_PUMP = "container_groundwater_pump";
 
+	private WaterworksRegistryNames() {
+		// hidden
+	}
+
 }
