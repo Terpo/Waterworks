@@ -1,5 +1,8 @@
 package org.terpo.waterworks.item.crafting;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksItems;
 import org.terpo.waterworks.init.WaterworksRecipes;
@@ -20,9 +23,12 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 	private static final String NBT_ANTIRAIN = "ANTIRAIN";
 
 	private ItemStack resultItem = ItemStack.EMPTY;
+	private final List<Item> validItems;
 
 	public AntiRainRocketRecipe(ResourceLocation idIn) {
 		super(idIn);
+		this.validItems = Arrays.asList(Items.FIREWORK_ROCKET, WaterworksItems.itemFireworkAntiRain,
+				Item.BLOCK_TO_ITEM.get(Blocks.SPONGE));
 	}
 
 	@Override
@@ -30,67 +36,86 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 		this.resultItem = ItemStack.EMPTY;
 
 		int rocketStack = -1;
-		boolean isFireworks = false;
-		boolean isAntiRainRocket = false;
+		int isFireworks = 0;
+		int isAntiRainRocket = 0;
 		int multiplierAdd = 0;
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			final ItemStack itemstack = inv.getStackInSlot(i);
+			final ItemStack stack = inv.getStackInSlot(i);
+			final Item item = stack.getItem();
 
-			if (itemstack.getItem() == Items.FIREWORK_ROCKET) {
-				isFireworks = true;
-				rocketStack = i;
-				continue;
+			if (validateStack(stack, item)) {
+				return false;
 			}
-			if (itemstack.getItem() == WaterworksItems.itemFireworkAntiRain) {
-				isAntiRainRocket = true;
-				rocketStack = i;
-				continue;
+
+			if (item == Items.FIREWORK_ROCKET) {
+				isFireworks++;
 			}
-			if (itemstack.getItem() == Item.BLOCK_TO_ITEM.get(Blocks.SPONGE)) {
+
+			if (item == WaterworksItems.itemFireworkAntiRain) {
+				isAntiRainRocket++;
+			}
+
+			if (item == Items.FIREWORK_ROCKET || item == WaterworksItems.itemFireworkAntiRain) {
+				rocketStack = i;
+			} else if (item == Item.BLOCK_TO_ITEM.get(Blocks.SPONGE)) {
 				multiplierAdd++;
 			}
 		}
 
-		if ((isAntiRainRocket && isFireworks) || multiplierAdd <= 0) {
+		if ((isAntiRainRocket + isFireworks) > 1 || multiplierAdd == 0) {
 			return false;
 		}
+
 		this.resultItem = new ItemStack(WaterworksItems.itemFireworkAntiRain);
 
-		int multiplierOld = 0;
-		if (isFireworks) {
-			final ItemStack rocket = inv.getStackInSlot(rocketStack);
-			CompoundNBT nbtCompound = rocket.getTag();
-
-			if (nbtCompound == null) {
-				nbtCompound = new CompoundNBT();
-			}
-			if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.getClearSkyMaxMultiplier()) {
-				return false;
-			}
-			nbtCompound.putInt(NBT_ANTIRAIN, multiplierOld + multiplierAdd);
-			this.resultItem.setTag(nbtCompound);
-			return true;
+		if (isFireworks > 0) {
+			return handleFireworksRocket(inv, rocketStack, multiplierAdd);
 		}
 
-		if (isAntiRainRocket) {
-			final ItemStack rocket = inv.getStackInSlot(rocketStack);
-			final CompoundNBT nbtCompound = rocket.getTag();
-			CompoundNBT newTag = new CompoundNBT();
-			if (nbtCompound != null) {
-				newTag = nbtCompound.copy();
-				if (nbtCompound.contains(NBT_ANTIRAIN)) {
-					multiplierOld = nbtCompound.getInt(NBT_ANTIRAIN);
-				}
-			}
-			if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.getClearSkyMaxMultiplier()) {
-				return false;
-			}
-			newTag.putInt(NBT_ANTIRAIN, multiplierOld + multiplierAdd);
-			this.resultItem.setTag(newTag);
-			return true;
+		if (isAntiRainRocket > 0) {
+			return handleAntiRainRocket(inv, rocketStack, multiplierAdd);
 		}
 
 		return false;
+	}
+
+	protected boolean validateStack(final ItemStack stack, final Item item) {
+		return !stack.isEmpty() && !this.validItems.contains(item);
+	}
+
+	protected boolean handleFireworksRocket(CraftingInventory inv, int rocketStack, int multiplierAdd) {
+		final int multiplierOld = 0;
+		final ItemStack rocket = inv.getStackInSlot(rocketStack);
+		CompoundNBT nbtCompound = rocket.getTag();
+
+		if (nbtCompound == null) {
+			nbtCompound = new CompoundNBT();
+		}
+		if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.getClearSkyMaxMultiplier()) {
+			return false;
+		}
+		nbtCompound.putInt(NBT_ANTIRAIN, multiplierOld + multiplierAdd);
+		this.resultItem.setTag(nbtCompound);
+		return true;
+	}
+
+	protected boolean handleAntiRainRocket(CraftingInventory inv, int rocketStack, int multiplierAdd) {
+		int multiplierOld = 0;
+		final ItemStack rocket = inv.getStackInSlot(rocketStack);
+		final CompoundNBT nbtCompound = rocket.getTag();
+		CompoundNBT newTag = new CompoundNBT();
+		if (nbtCompound != null) {
+			newTag = nbtCompound.copy();
+			if (nbtCompound.contains(NBT_ANTIRAIN)) {
+				multiplierOld = nbtCompound.getInt(NBT_ANTIRAIN);
+			}
+		}
+		if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.getClearSkyMaxMultiplier()) {
+			return false;
+		}
+		newTag.putInt(NBT_ANTIRAIN, multiplierOld + multiplierAdd);
+		this.resultItem.setTag(newTag);
+		return true;
 	}
 
 	@Override
