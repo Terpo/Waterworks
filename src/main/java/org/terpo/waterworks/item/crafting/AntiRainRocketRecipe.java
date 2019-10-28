@@ -17,6 +17,8 @@ import net.minecraft.world.World;
 
 public class AntiRainRocketRecipe extends SpecialRecipe {
 
+	private static final String NBT_ANTIRAIN = "ANTIRAIN";
+
 	private ItemStack resultItem = ItemStack.EMPTY;
 
 	public AntiRainRocketRecipe(ResourceLocation idIn) {
@@ -65,7 +67,7 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 			if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.getClearSkyMaxMultiplier()) {
 				return false;
 			}
-			nbtCompound.putInt("ANTIRAIN", multiplierOld + multiplierAdd);
+			nbtCompound.putInt(NBT_ANTIRAIN, multiplierOld + multiplierAdd);
 			this.resultItem.setTag(nbtCompound);
 			return true;
 		}
@@ -76,14 +78,14 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 			CompoundNBT newTag = new CompoundNBT();
 			if (nbtCompound != null) {
 				newTag = nbtCompound.copy();
-				if (nbtCompound.contains("ANTIRAIN")) {
-					multiplierOld = nbtCompound.getInt("ANTIRAIN");
+				if (nbtCompound.contains(NBT_ANTIRAIN)) {
+					multiplierOld = nbtCompound.getInt(NBT_ANTIRAIN);
 				}
 			}
 			if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.getClearSkyMaxMultiplier()) {
 				return false;
 			}
-			newTag.putInt("ANTIRAIN", multiplierOld + multiplierAdd);
+			newTag.putInt(NBT_ANTIRAIN, multiplierOld + multiplierAdd);
 			this.resultItem.setTag(newTag);
 			return true;
 		}

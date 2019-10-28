@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TileEntityRainCollector extends BaseTileEntity {
+	private static final String NBT_CONTROLLER_POS = "controllerPos";
 	private TileEntityRainCollectorController controller = null;
 	private BlockPos controllerPosition = null;
 	public TileEntityRainCollector() {
@@ -22,10 +23,8 @@ public class TileEntityRainCollector extends BaseTileEntity {
 		if (this.controller != null) {
 			return true;
 		}
-		if (this.controllerPosition != null && verifyControllerPosition(this.controllerPosition)) {
-			return true;
-		}
-		return false;
+		return (this.controllerPosition != null && verifyControllerPosition(this.controllerPosition));
+
 	}
 
 	public TileEntityRainCollectorController getController() {
@@ -43,7 +42,7 @@ public class TileEntityRainCollector extends BaseTileEntity {
 		super.write(compound);
 		if (this.hasController()) {
 			final BlockPos controllerPos = this.controller.getPos();
-			compound.putLong("controllerPos", controllerPos.toLong());
+			compound.putLong(NBT_CONTROLLER_POS, controllerPos.toLong());
 		}
 		return compound;
 	}
@@ -51,9 +50,8 @@ public class TileEntityRainCollector extends BaseTileEntity {
 	@Override
 	public void read(CompoundNBT compound) {
 		super.read(compound);
-		if (compound.contains("controllerPos")) {
-			this.controllerPosition = (BlockPos.fromLong(compound.getLong("controllerPos")));
-			// setController(this.controllerPosition);
+		if (compound.contains(NBT_CONTROLLER_POS)) {
+			this.controllerPosition = (BlockPos.fromLong(compound.getLong(NBT_CONTROLLER_POS)));
 		}
 	}
 

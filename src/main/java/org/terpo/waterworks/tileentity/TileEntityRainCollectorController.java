@@ -17,20 +17,33 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class TileEntityRainCollectorController extends TileEntityRainTankWood {
-	private final int controllerRange = 2;
-	private final int areaCount = (int) Math.pow(this.controllerRange * 2.0d + 1, 2);
-	private BlockPos[] rainCollectorBlocks = new BlockPos[this.areaCount];
-	protected int connectedCollectors = 1;
+	private static final String NBT_VALID_COLLECTORS = "validCollectors";
+	private static final String NBT_COLLECTOR_POS_LIST = "collectorPosList";
+	private static final String NBT_CONNECTED_BLOCKS = "connectedBlocks";
+
+	private final int controllerRange;
+	private final int areaCount;
+	private BlockPos[] rainCollectorBlocks;
+	protected int connectedCollectors;
 
 	private boolean isReset = false;
 
-	protected int validCollectors = 0;
-	private int currentValidationPos = 0;
-	private int countValidCollectors = 0;
+	protected int validCollectors;
+	private int currentValidationPos;
+	private int countValidCollectors;
 
 	public TileEntityRainCollectorController() {
 		super(WaterworksTileEntities.rainCollectorController, 0,
 				WaterworksConfig.rainCollection.getRainCollectorCapacity());
+
+		this.controllerRange = WaterworksConfig.rainCollection.getRainCollectorRange();
+		this.areaCount = (int) Math.pow(this.controllerRange * 2.0d + 1, 2);
+		this.rainCollectorBlocks = new BlockPos[this.areaCount];
+		this.connectedCollectors = 1;
+		this.isReset = false;
+		this.validCollectors = 0;
+		this.currentValidationPos = 0;
+		this.countValidCollectors = 0;
 	}
 
 	@Override
@@ -89,11 +102,11 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 		return this.connectedCollectors;
 	}
 
-	public void debugCollectors() {
-		Waterworks.LOGGER.info("Fill Multiplier @" + this.connectedCollectors);
+	public void debugCollectors() { // for debug only
+		Waterworks.LOGGER.info("Fill Multiplier @" + this.connectedCollectors); // NOSONAR
 		for (final BlockPos blockPos : this.rainCollectorBlocks) {
 			if (blockPos != null) {
-				Waterworks.LOGGER.info("Collector @" + blockPos.toString());
+				Waterworks.LOGGER.info("Collector @" + blockPos.toString()); // NOSONAR
 			}
 		}
 	}
@@ -113,19 +126,19 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 				connectedBlocks++;
 			}
 		}
-		compound.putInt("connectedBlocks", connectedBlocks);
-		compound.put("collectorPosList", list);
-		compound.putInt("validCollectors", this.validCollectors);
+		compound.putInt(NBT_CONNECTED_BLOCKS, connectedBlocks);
+		compound.put(NBT_COLLECTOR_POS_LIST, list);
+		compound.putInt(NBT_VALID_COLLECTORS, this.validCollectors);
 		return compound;
 	}
 
 	@Override
 	public void read(CompoundNBT compound) {
 		super.read(compound);
-		if (compound.contains("connectedBlocks")) {
-			this.connectedCollectors = compound.getInt("connectedBlocks");
-			if (compound.contains("collectorPosList")) {
-				final ListNBT list = compound.getList("collectorPosList", 10);
+		if (compound.contains(NBT_CONNECTED_BLOCKS)) {
+			this.connectedCollectors = compound.getInt(NBT_CONNECTED_BLOCKS);
+			if (compound.contains(NBT_COLLECTOR_POS_LIST)) {
+				final ListNBT list = compound.getList(NBT_COLLECTOR_POS_LIST, 10);
 				if (list.size() > this.areaCount) {
 					this.rainCollectorBlocks = new BlockPos[list.size()];
 					this.isReset = true;
@@ -135,8 +148,8 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 					this.rainCollectorBlocks[i] = (BlockPos.fromLong(nbt.getLong("collectorPos")));
 				}
 			}
-			if (compound.contains("validCollectors")) {
-				this.validCollectors = compound.getInt("validCollectors");
+			if (compound.contains(NBT_VALID_COLLECTORS)) {
+				this.validCollectors = compound.getInt(NBT_VALID_COLLECTORS);
 				this.fluidResource = getWaterFluidStack(
 						this.validCollectors * WaterworksConfig.rainCollection.getRainCollectorFillrate());
 			}
@@ -145,27 +158,21 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 
 	private boolean isValidBlock(BlockPos blockPos, int currentIndex) {
 		final TileEntity tileEntity = this.world.getTileEntity(blockPos);
-		// is correct class?
-		final boolean ret = tileEntity instanceof TileEntityRainCollector
-				&& AreaHelper.isInRange2D(blockPos, this.pos, this.controllerRange);
-
-		if (!ret) {
+		// not correct class, not in range or already has a controller?
+		if (!(tileEntity instanceof TileEntityRainCollector)
+				|| !(AreaHelper.isInRange2D(blockPos, this.pos, this.controllerRange))
+				|| ((TileEntityRainCollector) tileEntity).hasController()) {
 			return false;
 		}
 
-		if (((TileEntityRainCollector) tileEntity).hasController()) {
-			return false;
-		}
-
-		// if yes, then is it already in our list?
-		if (ret) {
-			for (int i = 0; i < currentIndex; i++) {
-				if (this.rainCollectorBlocks[i].equals(blockPos)) {
-					return false;
-				}
+		// it is valid
+		for (int i = 0; i < currentIndex; i++) {
+			if (this.rainCollectorBlocks[i].equals(blockPos)) {
+				return false;
 			}
 		}
-		return ret;
+
+		return true;
 
 	}
 

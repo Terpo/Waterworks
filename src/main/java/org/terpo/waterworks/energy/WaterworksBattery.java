@@ -1,6 +1,5 @@
 package org.terpo.waterworks.energy;
 
-import org.terpo.waterworks.api.constants.NBTContants;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -8,6 +7,7 @@ import net.minecraftforge.energy.EnergyStorage;
 
 public class WaterworksBattery extends EnergyStorage {
 
+	private static final String NBT_ENERGY_STORED = "energyStored";
 	private final TileWaterworks tile;
 	int lastTick = 0;
 	private boolean dirty;
@@ -57,13 +57,13 @@ public class WaterworksBattery extends EnergyStorage {
 	}
 
 	public CompoundNBT write(CompoundNBT compound) {
-		compound.putInt(NBTContants.ENERGY_STORED, this.energy);
+		compound.putInt(WaterworksBattery.NBT_ENERGY_STORED, this.energy);
 		return compound;
 	}
 
 	public WaterworksBattery read(CompoundNBT compound) {
-		if (compound.contains(NBTContants.ENERGY_STORED)) {
-			this.energy = compound.getInt(NBTContants.ENERGY_STORED);
+		if (compound.contains(WaterworksBattery.NBT_ENERGY_STORED)) {
+			this.energy = compound.getInt(WaterworksBattery.NBT_ENERGY_STORED);
 		}
 		return this;
 	}
