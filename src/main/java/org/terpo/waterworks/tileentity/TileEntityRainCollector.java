@@ -88,10 +88,14 @@ public class TileEntityRainCollector extends BaseTileEntity {
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return LazyOptional.of(() -> (T) this.controller.itemStackHandler);
+			return this.controller != null
+					? (LazyOptional.of(() -> (T) this.controller.itemStackHandler))
+					: LazyOptional.empty();
 		}
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return LazyOptional.of(() -> (T) this.controller.fluidTank);
+			return this.controller != null
+					? (LazyOptional.of(() -> (T) this.controller.fluidTank))
+					: LazyOptional.empty();
 		}
 		return super.getCapability(capability, side);
 	}
