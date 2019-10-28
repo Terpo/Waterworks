@@ -14,7 +14,7 @@ public class FilteredSlotItemHandler extends FluidSlotItemHandler {
 
 	@Override
 	protected boolean isFilteredItemValid(ItemStack stack) {
-		return WaterworksBlocks.itemBlockWaterPipe.equals(stack.getItem());
+		return WaterworksBlocks.blockItemWaterPipe.equals(stack.getItem());
 	}
 
 }

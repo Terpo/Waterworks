@@ -19,7 +19,7 @@ public class WaterworksBlocks {
 	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.BLOCK_GROUNDWATER_PUMP)
 	public static Block groundwaterPump;
 
-	public static Item itemBlockWaterPipe;
+	public static Item blockItemWaterPipe;
 
 	private WaterworksBlocks() {
 		// hidme

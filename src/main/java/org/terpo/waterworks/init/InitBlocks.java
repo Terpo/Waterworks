@@ -40,7 +40,7 @@ public class InitBlocks {
 
 	public static void initItemBlocks(IForgeRegistry<Item> registry) {
 		registerItemBlock(registry, WaterworksBlocks.rainTankWood);
-		WaterworksBlocks.itemBlockWaterPipe = registerItemBlock(registry, WaterworksBlocks.waterPipe);
+		WaterworksBlocks.blockItemWaterPipe = registerItemBlock(registry, WaterworksBlocks.waterPipe);
 		registerItemBlock(registry, WaterworksBlocks.rainCollector);
 		registerItemBlock(registry, WaterworksBlocks.rainCollectorController);
 		registerItemBlock(registry, WaterworksBlocks.groundwaterPump);
