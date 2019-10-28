@@ -11,9 +11,9 @@ import net.minecraftforge.registries.ObjectHolder;
 public class WaterworksRecipes {
 
 	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.ITEM_FIREWORK_RAIN)
-	public static SpecialRecipeSerializer<RainRocketRecipe> recipeFireworkRain;
+	public static final SpecialRecipeSerializer<RainRocketRecipe> recipeFireworkRain = null;
 	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.ITEM_FIREWORK_ANTI_RAIN)
-	public static SpecialRecipeSerializer<AntiRainRocketRecipe> recipeFireworkAntiRain;
+	public static final SpecialRecipeSerializer<AntiRainRocketRecipe> recipeFireworkAntiRain = null;
 
 	private WaterworksRecipes() {
 		// hide me

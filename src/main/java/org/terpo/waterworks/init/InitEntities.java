@@ -17,7 +17,6 @@ public class InitEntities {
 				.build(WaterworksRegistryNames.ENTITY_FIREWORK_RAIN);
 		rainRocketBuilder.setRegistryName(WaterworksReference.MODID, WaterworksRegistryNames.ENTITY_FIREWORK_RAIN);
 		registry.register(rainRocketBuilder);
-		WaterworksEntities.entityFireworkRain = rainRocketBuilder;
 
 		final EntityType<EntityFireworkRocketAntiRain> antiRainRocketBuilder = EntityType.Builder
 				.<EntityFireworkRocketAntiRain>create(EntityFireworkRocketAntiRain::new, EntityClassification.MISC)
@@ -26,8 +25,6 @@ public class InitEntities {
 		antiRainRocketBuilder.setRegistryName(WaterworksReference.MODID,
 				WaterworksRegistryNames.ENTITY_FIREWORK_ANTI_RAIN);
 		registry.register(antiRainRocketBuilder);
-		WaterworksEntities.entityFireworkAntiRain = antiRainRocketBuilder;
-
 	}
 
 	private InitEntities() {

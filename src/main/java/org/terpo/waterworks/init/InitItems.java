@@ -19,18 +19,12 @@ public class InitItems {
 	}
 
 	public static void registerItems(IForgeRegistry<Item> registry) {
-		WaterworksItems.itemWaterworksDebugger = registerItem(registry, new ItemWaterworksDebugger(),
-				WaterworksRegistryNames.ITEM_WATERWORKS_DEBUGGER);
-		WaterworksItems.itemPipeWrench = registerItem(registry, new ItemPipeWrench(),
-				WaterworksRegistryNames.ITEM_PIPE_WRENCH);
-		WaterworksItems.itemFireworkRain = registerItem(registry, new ItemFireworkRain(),
-				WaterworksRegistryNames.ITEM_FIREWORK_RAIN);
-		WaterworksItems.itemFireworkAntiRain = registerItem(registry, new ItemFireworkAntiRain(),
-				WaterworksRegistryNames.ITEM_FIREWORK_ANTI_RAIN);
-		WaterworksItems.itemMaterialEnergyAdapter = registerItem(registry, new ItemMaterialEnergyAdapter(),
-				WaterworksRegistryNames.ITEM_MATERIAL_ENERGY_ADAPTER);
-		WaterworksItems.itemMaterialController = registerItem(registry, new ItemMaterialController(),
-				WaterworksRegistryNames.ITEM_MATERIAL_CONTROLLER);
+		registerItem(registry, new ItemWaterworksDebugger(), WaterworksRegistryNames.ITEM_WATERWORKS_DEBUGGER);
+		registerItem(registry, new ItemPipeWrench(), WaterworksRegistryNames.ITEM_PIPE_WRENCH);
+		registerItem(registry, new ItemFireworkRain(), WaterworksRegistryNames.ITEM_FIREWORK_RAIN);
+		registerItem(registry, new ItemFireworkAntiRain(), WaterworksRegistryNames.ITEM_FIREWORK_ANTI_RAIN);
+		registerItem(registry, new ItemMaterialEnergyAdapter(), WaterworksRegistryNames.ITEM_MATERIAL_ENERGY_ADAPTER);
+		registerItem(registry, new ItemMaterialController(), WaterworksRegistryNames.ITEM_MATERIAL_CONTROLLER);
 	}
 
 	private static Item registerItem(IForgeRegistry<Item> registry, Item item, String name) {

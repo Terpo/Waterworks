@@ -12,13 +12,13 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class WaterworksTileEntities {
 	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.BLOCK_RAIN_TANK_WOOD)
-	public static TileEntityType<TileEntityRainTankWood> rainTankWood;
+	public static final TileEntityType<TileEntityRainTankWood> rainTankWood = null;
 	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR)
-	public static TileEntityType<TileEntityRainCollector> rainCollector;
+	public static final TileEntityType<TileEntityRainCollector> rainCollector = null;
 	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR_CONTROLLER)
-	public static TileEntityType<TileEntityRainCollectorController> rainCollectorController;
+	public static final TileEntityType<TileEntityRainCollectorController> rainCollectorController = null;
 	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.BLOCK_GROUNDWATER_PUMP)
-	public static TileEntityType<TileEntityGroundwaterPump> groundwaterPump;
+	public static final TileEntityType<TileEntityGroundwaterPump> groundwaterPump = null;
 
 	private WaterworksTileEntities() {
 		// hidme

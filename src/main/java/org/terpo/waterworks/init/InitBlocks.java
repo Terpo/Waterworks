@@ -19,16 +19,12 @@ public class InitBlocks {
 
 	public static void initBlocks(Register<Block> event) {
 		final IForgeRegistry<Block> registry = event.getRegistry();
-		WaterworksBlocks.rainTankWood = registerBlock(registry, new BlockRainTankWood(),
-				WaterworksRegistryNames.BLOCK_RAIN_TANK_WOOD);
-		WaterworksBlocks.waterPipe = registerBlock(registry, new BlockWaterPipe(),
-				WaterworksRegistryNames.BLOCK_WATER_PIPE);
-		WaterworksBlocks.rainCollector = registerBlock(registry, new BlockRainCollector(),
-				WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR);
-		WaterworksBlocks.rainCollectorController = registerBlock(registry, new BlockRainCollectorController(),
+		registerBlock(registry, new BlockRainTankWood(), WaterworksRegistryNames.BLOCK_RAIN_TANK_WOOD);
+		registerBlock(registry, new BlockWaterPipe(), WaterworksRegistryNames.BLOCK_WATER_PIPE);
+		registerBlock(registry, new BlockRainCollector(), WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR);
+		registerBlock(registry, new BlockRainCollectorController(),
 				WaterworksRegistryNames.BLOCK_RAIN_COLLECTOR_CONTROLLER);
-		WaterworksBlocks.groundwaterPump = registerBlock(registry, new BlockGroundwaterPump(),
-				WaterworksRegistryNames.BLOCK_GROUNDWATER_PUMP);
+		registerBlock(registry, new BlockGroundwaterPump(), WaterworksRegistryNames.BLOCK_GROUNDWATER_PUMP);
 
 	}
 
@@ -40,7 +36,7 @@ public class InitBlocks {
 
 	public static void initItemBlocks(IForgeRegistry<Item> registry) {
 		registerItemBlock(registry, WaterworksBlocks.rainTankWood);
-		WaterworksBlocks.blockItemWaterPipe = registerItemBlock(registry, WaterworksBlocks.waterPipe);
+		registerItemBlock(registry, WaterworksBlocks.waterPipe);
 		registerItemBlock(registry, WaterworksBlocks.rainCollector);
 		registerItemBlock(registry, WaterworksBlocks.rainCollectorController);
 		registerItemBlock(registry, WaterworksBlocks.groundwaterPump);

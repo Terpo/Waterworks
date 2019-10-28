@@ -10,9 +10,9 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class WaterworksEntities {
 	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.ENTITY_FIREWORK_RAIN)
-	public static EntityType<EntityFireworkRocketRain> entityFireworkRain;
+	public static final EntityType<EntityFireworkRocketRain> entityFireworkRain = null;
 	@ObjectHolder(WaterworksReference.DOMAIN + WaterworksRegistryNames.ENTITY_FIREWORK_ANTI_RAIN)
-	public static EntityType<EntityFireworkRocketAntiRain> entityFireworkAntiRain;
+	public static final EntityType<EntityFireworkRocketAntiRain> entityFireworkAntiRain = null;
 
 	private WaterworksEntities() {
 		// hide me

@@ -17,14 +17,12 @@ public class InitRecipes {
 		specialRecipeFireworkAntiRain.setRegistryName(WaterworksReference.MODID,
 				WaterworksRegistryNames.RECIPE_FIREWORK_ANTI_RAIN);
 		registry.register(specialRecipeFireworkAntiRain);
-		WaterworksRecipes.recipeFireworkAntiRain = specialRecipeFireworkAntiRain;
 
 		final SpecialRecipeSerializer<RainRocketRecipe> specialRecipeFireworkRain = new SpecialRecipeSerializer<>(
 				RainRocketRecipe::new);
 		specialRecipeFireworkRain.setRegistryName(WaterworksReference.MODID,
 				WaterworksRegistryNames.RECIPE_FIREWORK_RAIN);
 		registry.register(specialRecipeFireworkRain);
-		WaterworksRecipes.recipeFireworkRain = specialRecipeFireworkRain;
 	}
 
 	private InitRecipes() {

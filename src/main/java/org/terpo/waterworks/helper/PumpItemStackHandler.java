@@ -1,6 +1,6 @@
 package org.terpo.waterworks.helper;
 
-import org.terpo.waterworks.init.WaterworksBlocks;
+import org.terpo.waterworks.init.WaterworksItems;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -15,7 +15,7 @@ public class PumpItemStackHandler extends GeneralItemStackHandler {
 	}
 	@Override
 	protected boolean isValidItemStack(ItemStack stack, int slot) {
-		if (slot > 1 && WaterworksBlocks.blockItemWaterPipe.equals(stack.getItem())) {
+		if (slot > 1 && WaterworksItems.blockItemWaterPipe.equals(stack.getItem())) {
 			return true;
 		}
 		return super.isValidItemStack(stack, slot);
