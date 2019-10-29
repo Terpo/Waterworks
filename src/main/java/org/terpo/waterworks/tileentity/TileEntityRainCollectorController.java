@@ -14,6 +14,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class TileEntityRainCollectorController extends TileEntityRainTankWood {
@@ -259,4 +261,8 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 		return false;
 	}
 
+	@Override
+	public ITextComponent getDisplayName() {
+		return new TranslationTextComponent("block.waterworks.rain_collector");
+	}
 }

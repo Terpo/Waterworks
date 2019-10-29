@@ -7,7 +7,7 @@
 	"item.waterworks.material_controller": "Controller",
 	"block.waterworks.rain_tank_wood": "Wooden Rain Tank",
 	"block.waterworks.water_pipe": "Water Pipe",
-	"block.waterworks.rain_collector": "Collector Block",
+	"block.waterworks.rain_collector": "Rain Collector",
 	"block.waterworks.rain_collector_controller": "Rain Collector Controller",
 	"block.waterworks.groundwater_pump": "Groundwater Pump",
 	"entity.anti_rain_rocket.announcement": "Anti Rain Rocket was launched. Clear sky for the next {0} Ticks ({1} Days {2} Hours {3} Minutes)",

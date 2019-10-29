@@ -221,9 +221,4 @@ public abstract class TileWaterworks extends BaseTileEntity implements ITickable
 	public int getCurrentTick() {
 		return this.currentTick;
 	}
-
-	// server side GUI container
-
-	// server side GUI container
-
 }

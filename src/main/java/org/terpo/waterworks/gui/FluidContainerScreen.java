@@ -68,6 +68,11 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+		final String s = this.title.getFormattedText();
+		this.font.drawString(s, this.xSize / 2f - this.font.getStringWidth(s) / 2f, 6.0F, 4210752);
+		this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, this.ySize - 96 + 2f,
+				4210752);
+
 		// draw Tooltip
 		drawTankTooltip(mouseX, mouseY, this.tankRectangle.getX(), this.tankRectangle.getWidth(),
 				this.tankRectangle.getY(), this.tankRectangle.getHeight());
