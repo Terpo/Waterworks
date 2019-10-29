@@ -33,13 +33,15 @@ public class TileEntityRainTankWood extends TileWaterworks {
 	public TileEntityRainTankWood(TileEntityType<?> tileEntityTypeIn, int fillrate, int capacity) {
 		super(tileEntityTypeIn, INVENTORY_SLOT_COUNT, capacity);
 		this.fluidResource = new FluidStack(Fluids.WATER, fillrate);
-
-		this.itemStackHandler = new GeneralItemStackHandler(this.inventorySize, this);
-
-		this.itemStackHandler.setInputFlagForIndex(0, true);
-		this.itemStackHandler.setOutputFlagForIndex(1, true);
 	}
 
+	@Override
+	protected GeneralItemStackHandler createItemHandler() {
+		final GeneralItemStackHandler handler = new GeneralItemStackHandler(this.inventorySize, this);
+		handler.setInputFlagForIndex(0, true);
+		handler.setOutputFlagForIndex(1, true);
+		return handler;
+	}
 	@Override
 	protected void updateServerSide() {
 

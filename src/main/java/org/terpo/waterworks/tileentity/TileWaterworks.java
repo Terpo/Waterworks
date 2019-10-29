@@ -36,18 +36,19 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class TileWaterworks extends BaseTileEntity implements ITickableTileEntity, INamedContainerProvider {
 
+	private static final String NBT_ITEMS = "items";
 	private static final Random random = new Random();
 	private int currentTick = random.nextInt(256);
 	protected final LazyOptional<WaterworksTank> fluidTank = LazyOptional.of(this::createTank);
+	protected LazyOptional<GeneralItemStackHandler> itemStackHandler = LazyOptional.of(this::createItemHandler);
 
 	protected int inventorySize;
 	protected int tankSize;
 
-	// This item handler will hold our two inventory slots
-	protected GeneralItemStackHandler itemStackHandler;
 	// TileEntity
 	public TileWaterworks(TileEntityType<?> tileEntityTypeIn, int inventorySize, int tankSize) {
 		super(tileEntityTypeIn);
@@ -55,22 +56,29 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 		this.tankSize = tankSize;
 	}
 
+	public TileWaterworks(TileEntityType<?> tileEntityTypeIn) {
+		this(tileEntityTypeIn, 2, 8000);
+	}
+
 	protected WaterworksTank createTank() {
 		return new WaterworksTank(this.tankSize, this);
+	}
+
+	protected GeneralItemStackHandler createItemHandler() {
+		final GeneralItemStackHandler itemHandler = new GeneralItemStackHandler(this.inventorySize, this);
+		itemHandler.setInputFlagForIndex(0, true);
+		itemHandler.setOutputFlagForIndex(1, true);
+		return itemHandler;
 	}
 
 	protected void sendUpdatePacket() {
 		WaterworksPacketHandler.sendToAllAround(new TankPacket(this), this);
 	}
 
-	public TileWaterworks(TileEntityType<?> tileEntityTypeIn) {
-		this(tileEntityTypeIn, 2, 8000);
-	}
-
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
 		super.write(compound);
-		compound.put("items", this.itemStackHandler.serializeNBT());
+		this.itemStackHandler.ifPresent(handler -> compound.put(NBT_ITEMS, handler.serializeNBT()));
 		this.fluidTank.ifPresent(tank -> tank.writeToNBT(compound));
 		return compound;
 	}
@@ -78,20 +86,18 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 	@Override
 	public void read(CompoundNBT compound) {
 		super.read(compound);
-		if (compound.contains("items")) {
-			this.itemStackHandler.deserializeNBT(compound.getCompound("items"));
+		if (compound.contains(NBT_ITEMS)) {
+			this.itemStackHandler.ifPresent(handler -> handler.deserializeNBT(compound.getCompound(NBT_ITEMS)));
 		}
 		this.fluidTank.ifPresent(tank -> tank.readFromNBT(compound));
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
-		// FIXME see lazy handling in groundwater pump
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return LazyOptional.of(() -> (T) this.itemStackHandler);
+			return this.itemStackHandler.cast();
 		}
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return this.fluidTank.cast();
@@ -172,9 +178,10 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 	// FluidStuff
 	protected boolean fillFluid() {
 		final WaterworksTank tank = this.fluidTank.orElseGet(this::createTank);
+		final GeneralItemStackHandler handler = this.itemStackHandler.orElseGet(this::createItemHandler);
 		final int internalFluidAmount = tank.getFluidAmount();
 		if (internalFluidAmount > 0) {
-			final ItemStack stackInput = this.itemStackHandler.getStackInSlot(0);
+			final ItemStack stackInput = handler.getStackInSlot(0);
 			if (!stackInput.isEmpty()) {
 				final LazyOptional<IFluidHandlerItem> capability = stackInput
 						.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
@@ -184,13 +191,13 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 							Integer.MAX_VALUE, null, false);
 					if (filledSimulated.isSuccess()) {
 						final ItemStack simResult = filledSimulated.getResult();
-						final ItemStack outputSlot = this.itemStackHandler.getStackInSlot(1);
+						final ItemStack outputSlot = handler.getStackInSlot(1);
 						if (checkOutputSlot(outputSlot, simResult)) {
 							final FluidActionResult fillResult = FluidUtil.tryFillContainer(stackInput, tank,
 									Integer.MAX_VALUE, null, true);
 							if (fillResult.isSuccess()) {
 								final ItemStack realResult = fillResult.getResult();
-								moveFilledInputToOutput(stackInput, outputSlot, realResult);
+								moveFilledInputToOutput(stackInput, outputSlot, realResult, handler);
 								return true;
 							}
 						}
@@ -198,12 +205,12 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 				}
 				if (stackInput.getItem().equals(Items.GLASS_BOTTLE)) {
 					if (internalFluidAmount >= 1000) {
-						final ItemStack outputSlot = this.itemStackHandler.getStackInSlot(1);
+						final ItemStack outputSlot = handler.getStackInSlot(1);
 						final ItemStack outputStack = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION),
 								Potions.WATER);
 						if (checkOutputSlot(outputSlot, outputStack)) {
 							tank.drain(1000, FluidAction.EXECUTE);
-							moveFilledInputToOutput(stackInput, outputSlot, outputStack);
+							moveFilledInputToOutput(stackInput, outputSlot, outputStack, handler);
 							return true;
 						}
 					}
@@ -219,17 +226,17 @@ public class TileWaterworks extends BaseTileEntity implements ITickableTileEntit
 		return (outputSlot.isEmpty() || (isItemIdentical) && (hasSpace));
 	}
 
-	private void moveFilledInputToOutput(final ItemStack stackInput, final ItemStack outputSlot,
-			final ItemStack realResult) {
+	private static void moveFilledInputToOutput(final ItemStack stackInput, final ItemStack outputSlot,
+			final ItemStack realResult, ItemStackHandler handler) {
 		if (outputSlot.isEmpty()) {
-			this.itemStackHandler.setStackInSlot(1, realResult);
+			handler.setStackInSlot(1, realResult);
 		} else {
 			outputSlot.grow(1);
 		}
 		if (stackInput.getCount() > 1) {
 			stackInput.shrink(1);
 		} else {
-			this.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
+			handler.setStackInSlot(0, ItemStack.EMPTY);
 		}
 	}
 	protected static FluidStack getWaterFluidStack(int amount) {
