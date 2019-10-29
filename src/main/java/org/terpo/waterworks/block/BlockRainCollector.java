@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.init.WaterworksItems;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
 import org.terpo.waterworks.tileentity.TileEntityRainCollector;
+import org.terpo.waterworks.tileentity.TileEntityRainCollectorController;
 
 import mcjty.theoneprobe.api.IIconStyle;
 import mcjty.theoneprobe.api.IProbeHitData;
@@ -16,6 +18,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
@@ -27,6 +32,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 
@@ -54,21 +60,36 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 			final TileEntity tileEntity = getTE(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainCollector) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (heldItem.getItem() == WaterworksItems.itemPipeWrench) {
-					final TileEntityRainCollector collector = (TileEntityRainCollector) tileEntity;
-					String out;
-					if (collector.hasController()) {
-						final BlockPos controllerPos = collector.getController().getPos();
-						out = "Found Controller at" + " " + controllerPos.getX() + "," + controllerPos.getY() + ","
-								+ controllerPos.getZ();
-					} else {
-						out = "No Controller found";
-					}
-					playerIn.sendMessage(new StringTextComponent(out));
+				final TileEntityRainCollector collector = (TileEntityRainCollector) tileEntity;
+				final Item item = heldItem.getItem();
+				if (item == WaterworksItems.itemPipeWrench) {
+					handleRightClickWithWrench(playerIn, collector);
+					return true;
+				}
+				if (item == Item.BLOCK_TO_ITEM.get(WaterworksBlocks.rainCollector)) {
+					return false;
+				}
+				if (collector.hasController()) {
+					final TileEntityRainCollectorController controller = collector.getController();
+					NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) controller,
+							controller.getPos());
+					return true;
 				}
 			}
 		}
-		return super.onBlockActivated(state, worldIn, pos, playerIn, hand, facing);
+		return false;
+	}
+
+	protected static void handleRightClickWithWrench(PlayerEntity playerIn, final TileEntityRainCollector collector) {
+		String out;
+		if (collector.hasController()) {
+			final BlockPos controllerPos = collector.getController().getPos();
+			out = "Found Controller at" + " " + controllerPos.getX() + "," + controllerPos.getY() + ","
+					+ controllerPos.getZ();
+		} else {
+			out = "No Controller found";
+		}
+		playerIn.sendMessage(new StringTextComponent(out));
 	}
 
 	@Override
