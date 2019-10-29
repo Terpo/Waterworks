@@ -1,5 +1,6 @@
 package org.terpo.waterworks.block;
 
+import org.terpo.waterworks.api.constants.WaterworksConstants;
 import org.terpo.waterworks.compat.top.TOPCompatibility;
 import org.terpo.waterworks.compat.top.provider.TOPInfoProvider;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
@@ -15,6 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 
 public abstract class BaseBlockTE<T extends BaseTileEntity> extends Block implements TOPInfoProvider {
 
@@ -40,4 +42,11 @@ public abstract class BaseBlockTE<T extends BaseTileEntity> extends Block implem
 		return Block.Properties.create(Material.IRON).hardnessAndResistance(2F, 6.0F).sound(SoundType.METAL);
 	}
 
+	@Override
+	public boolean isToolEffective(BlockState state, ToolType tool) {
+		if (WaterworksConstants.WATERWORKS_TOOL_TYPE.equals(tool.getName())) {
+			return true;
+		}
+		return super.isToolEffective(state, tool);
+	}
 }

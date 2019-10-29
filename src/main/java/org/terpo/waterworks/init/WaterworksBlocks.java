@@ -1,7 +1,11 @@
 package org.terpo.waterworks.init;
 
+import java.util.Set;
+
 import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.api.constants.WaterworksRegistryNames;
+
+import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.registries.ObjectHolder;
@@ -21,5 +25,9 @@ public class WaterworksBlocks {
 
 	private WaterworksBlocks() {
 		// hide me
+	}
+
+	public static Set<Block> getAllWaterworksBlocks() {
+		return Sets.newHashSet(rainTankWood, waterPipe, rainCollector, rainCollectorController, groundwaterPump);
 	}
 }
