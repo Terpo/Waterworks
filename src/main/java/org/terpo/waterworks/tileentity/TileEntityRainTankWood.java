@@ -13,6 +13,8 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
@@ -73,5 +75,10 @@ public class TileEntityRainTankWood extends TileWaterworks {
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity entity) {
 		return new ContainerBase(WaterworksContainers.rainTankWood, windowId, inventory, this);
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return new StringTextComponent(getType().getRegistryName().getPath());
 	}
 }

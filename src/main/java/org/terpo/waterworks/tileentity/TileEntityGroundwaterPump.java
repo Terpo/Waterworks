@@ -29,6 +29,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -251,5 +253,10 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity entity) {
 		return new PumpContainer(windowId, inventory, this);
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return new StringTextComponent(getType().getRegistryName().getPath());
 	}
 }
