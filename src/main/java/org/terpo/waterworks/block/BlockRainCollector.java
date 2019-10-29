@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.init.WaterworksItems;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
 import org.terpo.waterworks.tileentity.TileEntityRainCollector;
@@ -66,9 +65,6 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 					handleRightClickWithWrench(playerIn, collector);
 					return true;
 				}
-				if (item == Item.BLOCK_TO_ITEM.get(WaterworksBlocks.rainCollector)) {
-					return false;
-				}
 				if (collector.hasController()) {
 					final TileEntityRainCollectorController controller = collector.getController();
 					NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) controller,
@@ -77,7 +73,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 
 	protected static void handleRightClickWithWrench(PlayerEntity playerIn, final TileEntityRainCollector collector) {
@@ -103,6 +99,23 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 	@Override
 	public boolean hasTileEntity(BlockState state) {
 		return true;
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride(BlockState bs) { // NOSONAR
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(BlockState bs, World world, BlockPos pos) { // NOSONAR
+		final TileEntity tileEntity = getTileEntity(world, pos);
+		if (tileEntity instanceof TileEntityRainCollector) {
+			final TileEntityRainCollector collector = (TileEntityRainCollector) tileEntity;
+			if (collector.hasController()) {
+				return collector.getController().getComparatorOutput();
+			}
+		}
+		return 0;
 	}
 
 	@Override

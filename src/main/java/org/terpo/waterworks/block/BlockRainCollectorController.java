@@ -104,6 +104,20 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 	}
 
 	@Override
+	public boolean hasComparatorInputOverride(BlockState bs) { // NOSONAR
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(BlockState bs, World world, BlockPos pos) { // NOSONAR
+		final TileEntity te = getTileEntity(world, pos);
+		if (te instanceof TileWaterworks) {
+			return getTileEntity(world, pos).getComparatorOutput();
+		}
+		return 0;
+	}
+
+	@Override
 	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world,
 			BlockState blockState, IProbeHitData data) {
 		if (player.isSneaking()) {
