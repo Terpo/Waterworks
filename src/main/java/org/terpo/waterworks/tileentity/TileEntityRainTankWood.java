@@ -1,5 +1,6 @@
 package org.terpo.waterworks.tileentity;
 
+import org.terpo.waterworks.fluid.WaterworksTank;
 import org.terpo.waterworks.gui.ContainerBase;
 import org.terpo.waterworks.helper.GeneralItemStackHandler;
 import org.terpo.waterworks.init.WaterworksConfig;
@@ -53,14 +54,15 @@ public class TileEntityRainTankWood extends TileWaterworks {
 	}
 
 	public int getStateLevel() {
-		return Math.round((this.fluidTank.getFluidAmount() * 4.0f / this.fluidTank.getCapacity()));
+		final WaterworksTank tank = getFluidTank();
+		return Math.round((tank.getFluidAmount() * 4.0f / tank.getCapacity()));
 	}
 
 	protected boolean isRefilling() {
 		final BlockPos position = getPos().up();
 
 		if (this.world.isRainingAt(position)) {
-			this.fluidTank.fill(this.fluidResource, FluidAction.EXECUTE);
+			getFluidTank().fill(this.fluidResource, FluidAction.EXECUTE);
 			return true;
 		}
 		return false;

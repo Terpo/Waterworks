@@ -112,9 +112,9 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 
 	}
 	private boolean refill() {
-		final WaterworksBattery waterworksBattery = this.battery.orElse(null);
+		final WaterworksBattery waterworksBattery = this.battery.orElseGet(this::createBattery);
 		if (waterworksBattery != null && waterworksBattery.getEnergyStored() >= this.energyUsage) {
-			final int filled = this.fluidTank.fill(this.resourceWater, FluidAction.EXECUTE);
+			final int filled = getFluidTank().fill(this.resourceWater, FluidAction.EXECUTE);
 			if (filled == WaterworksConfig.pump.getGroundwaterPumpFillrate()) {
 				return waterworksBattery.extractInternal(this.energyUsage, false) > 0;
 			} else if (filled > 0) {
