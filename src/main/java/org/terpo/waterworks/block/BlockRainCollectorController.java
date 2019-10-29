@@ -14,7 +14,6 @@ import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -26,7 +25,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -48,7 +47,7 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip,
 			ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add(new StringTextComponent(I18n.format("tooltip.rain_collector_controller")));
+		tooltip.add(new TranslationTextComponent("tooltip.rain_collector_controller"));
 	}
 
 	@Override
@@ -65,8 +64,9 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				if (heldItem.getItem() == WaterworksItems.itemPipeWrench) {
 					final int collectors = ((TileEntityRainCollectorController) tileEntity).findRainCollectors();
-					final String out = collectors - 1 + " " + "Collectors found";
-					playerIn.sendMessage(new StringTextComponent(out));
+					playerIn.sendMessage(
+							new TranslationTextComponent("block.waterworks.rain_collector_controller.controllers",
+									Integer.valueOf((collectors - 1))));
 					return true;
 				}
 				if (!heldItem.isEmpty() && !playerIn.isSneaking()
@@ -124,7 +124,8 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 			final TileEntity te = world.getTileEntity(data.getPos());
 			if (te instanceof TileEntityRainCollectorController) {
 				final TileEntityRainCollectorController tile = (TileEntityRainCollectorController) te;
-				probeInfo.horizontal().text(tile.getConnectedCollectors() + " Collectors");
+				probeInfo.horizontal().text(new TranslationTextComponent("tooltip.collectors",
+						Integer.valueOf(tile.getConnectedCollectors())).getFormattedText());
 			}
 		}
 	}

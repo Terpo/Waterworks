@@ -14,7 +14,6 @@ import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -26,7 +25,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -44,7 +43,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip,
 			ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add(new StringTextComponent(I18n.format("tooltip.rain_collector")));
+		tooltip.add(new TranslationTextComponent("tooltip.rain_collector"));
 	}
 
 	@Override
@@ -77,15 +76,16 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 	}
 
 	protected static void handleRightClickWithWrench(PlayerEntity playerIn, final TileEntityRainCollector collector) {
-		String out;
+		ITextComponent out;
 		if (collector.hasController()) {
 			final BlockPos controllerPos = collector.getController().getPos();
-			out = "Found Controller at" + " " + controllerPos.getX() + "," + controllerPos.getY() + ","
-					+ controllerPos.getZ();
+			out = new TranslationTextComponent("block.waterworks.rain_collector.has_controller",
+					Integer.valueOf(controllerPos.getX()), Integer.valueOf(controllerPos.getY()),
+					Integer.valueOf(controllerPos.getZ()));
 		} else {
-			out = "No Controller found";
+			out = new TranslationTextComponent("block.waterworks.rain_collector.no_controller");
 		}
-		playerIn.sendMessage(new StringTextComponent(out));
+		playerIn.sendMessage(out);
 	}
 
 	@Override
@@ -126,12 +126,13 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 			if (te instanceof TileEntityRainCollector) {
 				final IIconStyle iconStyle = probeInfo.defaultIconStyle().textureWidth(32).textureHeight(32);
 				final TileEntityRainCollector tile = (TileEntityRainCollector) te;
+				final String tooltip = new TranslationTextComponent("tooltip.controller").getFormattedText();
 				if (tile.hasController()) {
 					final BlockPos pos = tile.getController().getPos();
-					probeInfo.horizontal().text("Controller ").icon(this.guiIconsTOP, 0, 16, 16, 16, iconStyle)
+					probeInfo.horizontal().text(tooltip).icon(this.guiIconsTOP, 0, 16, 16, 16, iconStyle)
 							.text("@" + pos.getX() + "," + pos.getY() + "," + pos.getZ());
 				} else {
-					probeInfo.horizontal().text("Controller ").icon(this.guiIconsTOP, 16, 16, 16, 16, iconStyle);
+					probeInfo.horizontal().text(tooltip).icon(this.guiIconsTOP, 16, 16, 16, 16, iconStyle);
 				}
 			}
 		}
