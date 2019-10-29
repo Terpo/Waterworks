@@ -50,7 +50,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 			BlockRayTraceResult facing) {
 
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
-			final TileEntity tileEntity = getTE(worldIn, pos);
+			final TileEntity tileEntity = getTileEntity(worldIn, pos);
 			if (tileEntity instanceof TileEntityGroundwaterPump) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				if (heldItem.getItem() == WaterworksItems.itemPipeWrench) {
@@ -94,16 +94,16 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 
 	@Override
 	public int getComparatorInputOverride(BlockState bs, World world, BlockPos pos) {
-		final TileEntity te = getTE(world, pos);
+		final TileEntity te = getTileEntity(world, pos);
 		if (te instanceof TileEntityGroundwaterPump) {
-			return getTE(world, pos).getComparatorOutput();
+			return getTileEntity(world, pos).getComparatorOutput();
 		}
 		return 0;
 	}
 
 	@Override
 	public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		final TileEntity tileEntity = getTE(world, pos);
+		final TileEntity tileEntity = getTileEntity(world, pos);
 		if (tileEntity instanceof TileWaterworks) {
 			final LazyOptional<IItemHandler> capability = tileEntity
 					.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
@@ -159,6 +159,15 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 	@Override
 	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(BlockStateProperties.HORIZONTAL_FACING);
+	}
+
+	@Override
+	protected TileEntityGroundwaterPump getTileEntity(World world, BlockPos pos) {
+		final TileEntity tE = world.getTileEntity(pos);
+		if (tE instanceof TileEntityGroundwaterPump) {
+			return (TileEntityGroundwaterPump) tE;
+		}
+		return null;
 	}
 
 }

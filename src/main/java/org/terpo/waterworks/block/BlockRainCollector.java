@@ -57,7 +57,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand,
 			BlockRayTraceResult facing) {
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
-			final TileEntity tileEntity = getTE(worldIn, pos);
+			final TileEntity tileEntity = getTileEntity(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainCollector) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				final TileEntityRainCollector collector = (TileEntityRainCollector) tileEntity;
@@ -94,7 +94,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 
 	@Override
 	public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		final TileEntity tileEntity = getTE(world, pos);
+		final TileEntity tileEntity = getTileEntity(world, pos);
 		if (tileEntity instanceof TileEntityRainCollector) {
 			((TileEntityRainCollector) tileEntity).informAboutBlockBreak();
 		}
@@ -122,5 +122,14 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 				}
 			}
 		}
+	}
+
+	@Override
+	protected BaseTileEntity getTileEntity(World world, BlockPos pos) {
+		final TileEntity tE = world.getTileEntity(pos);
+		if (tE instanceof BaseTileEntity) {
+			return (BaseTileEntity) tE;
+		}
+		return null;
 	}
 }

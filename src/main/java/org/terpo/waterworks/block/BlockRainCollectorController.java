@@ -60,7 +60,7 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand,
 			BlockRayTraceResult facing) {
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
-			final TileEntity tileEntity = getTE(worldIn, pos);
+			final TileEntity tileEntity = getTileEntity(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainCollectorController) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				if (heldItem.getItem() == WaterworksItems.itemPipeWrench) {
@@ -86,8 +86,8 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 
 	@Override
 	public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		final TileEntity tileEntity = getTE(world, pos);
-		if (tileEntity instanceof TileWaterworks) {
+		final TileEntity tileEntity = getTileEntity(world, pos);
+		if (tileEntity != null) {
 			final LazyOptional<IItemHandler> capability = tileEntity
 					.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			capability.ifPresent(handler -> WaterworksInventoryHelper.dropItemsFromInventory(world, pos, handler));
@@ -113,5 +113,14 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 				probeInfo.horizontal().text(tile.getConnectedCollectors() + " Collectors");
 			}
 		}
+	}
+
+	@Override
+	protected TileWaterworks getTileEntity(World world, BlockPos pos) {
+		final TileEntity tE = world.getTileEntity(pos);
+		if (tE instanceof TileWaterworks) {
+			return (TileWaterworks) tE;
+		}
+		return null;
 	}
 }

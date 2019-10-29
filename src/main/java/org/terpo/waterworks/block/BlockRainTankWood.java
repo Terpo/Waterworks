@@ -32,18 +32,11 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 		super(Block.Properties.create(Material.WOOD).hardnessAndResistance(2F, 3.0F).sound(SoundType.WOOD));
 	}
 
-//	@Override
-//	public boolean isOpaqueCube(BlockState state) {
-//		return false;
-//	}
-
-	// isNormalCube and isFullCube could also help here for the TESR
-
 	@Override
 	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand,
 			BlockRayTraceResult facing) {
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
-			final TileEntity tileEntity = getTE(worldIn, pos);
+			final TileEntity tileEntity = getTileEntity(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainTankWood) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				if (!heldItem.isEmpty() && !playerIn.isSneaking()
@@ -72,15 +65,15 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride(BlockState bs) {
+	public boolean hasComparatorInputOverride(BlockState bs) { // NOSONAR
 		return true;
 	}
 
 	@Override
-	public int getComparatorInputOverride(BlockState bs, World world, BlockPos pos) {
-		final TileEntity te = getTE(world, pos);
-		if (te instanceof TileEntityRainTankWood) {
-			return getTE(world, pos).getComparatorOutput();
+	public int getComparatorInputOverride(BlockState bs, World world, BlockPos pos) { // NOSONAR
+		final TileEntity te = getTileEntity(world, pos);
+		if (te instanceof TileWaterworks) {
+			return getTileEntity(world, pos).getComparatorOutput();
 		}
 		return 0;
 	}
@@ -88,13 +81,22 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 	@Override
 	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te,
 			ItemStack stack) {
-		final TileEntity tileEntity = getTE(world, pos);
+		final TileEntity tileEntity = getTileEntity(world, pos);
 		if (tileEntity instanceof TileWaterworks) {
 			final LazyOptional<IItemHandler> capability = tileEntity
 					.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			capability.ifPresent(handler -> WaterworksInventoryHelper.dropItemsFromInventory(world, pos, handler));
 		}
 		super.harvestBlock(world, player, pos, state, te, stack);
+	}
+
+	@Override
+	protected TileWaterworks getTileEntity(World world, BlockPos pos) {
+		final TileEntity tE = world.getTileEntity(pos);
+		if (tE instanceof TileWaterworks) {
+			return (TileWaterworks) tE;
+		}
+		return null;
 	}
 
 }
