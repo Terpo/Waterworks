@@ -34,7 +34,6 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket im
 
 	public EntityFireworkRocketAntiRain(EntityType<? extends EntityFireworkRocketAntiRain> entity, World world) {
 		super(entity, world);
-//		this.duration = WaterworksConfig.rockets.getClearSkyDuration();
 	}
 
 	public EntityFireworkRocketAntiRain(World worldIn, double x, double y, double z, ItemStack itemstack) {

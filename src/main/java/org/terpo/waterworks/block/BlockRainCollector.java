@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.terpo.waterworks.helper.FluidHelper;
 import org.terpo.waterworks.init.WaterworksItems;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
 import org.terpo.waterworks.tileentity.TileEntityRainCollector;
@@ -30,6 +31,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
@@ -66,6 +68,14 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 				}
 				if (collector.hasController()) {
 					final TileEntityRainCollectorController controller = collector.getController();
+
+					if (!heldItem.isEmpty() && !playerIn.isSneaking()
+							&& controller.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent()
+							&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, controller,
+									heldItem)) {
+						return true;
+					}
+
 					NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) controller,
 							controller.getPos());
 					return true;
