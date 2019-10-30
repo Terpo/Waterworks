@@ -1,6 +1,7 @@
 {
     "textures": 
     {
+    "particle": "waterworks:models/rain_collector_bottom",
 		"0": "waterworks:models/rain_collector_side",
 		"1": "block/piston_inner",
 		"2": "waterworks:models/rain_collector_bottom"

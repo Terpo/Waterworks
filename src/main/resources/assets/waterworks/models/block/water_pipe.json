@@ -1,5 +1,6 @@
 {
     "textures": {
+    	"particle": "block/iron_block",
         "water_pipe": "waterworks:models/water_pipe"
     },
       "display": {
