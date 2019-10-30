@@ -7,7 +7,6 @@ import org.terpo.waterworks.Waterworks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,9 +33,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
-public abstract class EntityWeatherFireworkRocket extends Entity
-		implements IRendersAsItem, IProjectile, IEntityAdditionalSpawnData {
+public abstract class EntityWeatherFireworkRocket extends Entity implements IProjectile, IEntityAdditionalSpawnData {
 
 	public static final String NBT_FIREWORKS = "Fireworks";
 	public static final String NBT_SHOT_AT_ANGLE = "ShotAtAngle";
@@ -373,12 +370,11 @@ public abstract class EntityWeatherFireworkRocket extends Entity
 	@OnlyIn(Dist.CLIENT)
 	protected abstract String getAnnouncementText(int time, final int days, final int hours, final int min);
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public abstract ItemStack getItem();
-
 	@Override
 	protected abstract void registerData();
+
+	@OnlyIn(Dist.CLIENT)
+	public abstract ItemStack getItemFromEntity();
 
 	protected abstract boolean isShotAtAngle();
 

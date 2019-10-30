@@ -7,6 +7,7 @@ import org.terpo.waterworks.init.WaterworksEntities;
 import org.terpo.waterworks.init.WaterworksItems;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
@@ -18,7 +19,8 @@ import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
+@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
+public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket implements IRendersAsItem {
 
 	private static final DataParameter<ItemStack> RAINROCKET_ITEM = EntityDataManager
 			.createKey(EntityFireworkRocketRain.class, DataSerializers.ITEMSTACK);
@@ -29,7 +31,6 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 
 	public EntityFireworkRocketRain(EntityType<? extends EntityFireworkRocketRain> entity, World world) {
 		super(entity, world);
-//		this.duration = WaterworksConfig.rockets.getRainDuration();
 	}
 
 	public EntityFireworkRocketRain(World worldIn, double x, double y, double z, ItemStack itemstack) {
@@ -118,5 +119,11 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 	@Override
 	protected int getConfiguredDuration() {
 		return WaterworksConfig.rockets.getRainDuration();
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public ItemStack getItemFromEntity() {
+		return getItem();
 	}
 }

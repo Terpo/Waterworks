@@ -8,6 +8,7 @@ import org.terpo.waterworks.init.WaterworksItems;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,8 @@ import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
+@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
+public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket implements IRendersAsItem {
 
 	private static final DataParameter<ItemStack> ANTI_RAINROCKET_ITEM = EntityDataManager
 			.createKey(EntityFireworkRocketAntiRain.class, DataSerializers.ITEMSTACK);
@@ -154,5 +156,10 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 										: new ItemStack(Blocks.SPONGE, 1)));
 			}
 		}
+	}
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public ItemStack getItemFromEntity() {
+		return getItem();
 	}
 }

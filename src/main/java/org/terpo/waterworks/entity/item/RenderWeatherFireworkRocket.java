@@ -50,7 +50,7 @@ public class RenderWeatherFireworkRocket extends EntityRenderer<EntityWeatherFir
 
 		@SuppressWarnings("deprecation")
 		final net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType transform = net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType.GROUND;
-		this.itemRenderer.renderItem(entity.getItem(), transform);
+		this.itemRenderer.renderItem(entity.getItemFromEntity(), transform);
 
 		if (this.renderOutlines) {
 			GlStateManager.tearDownSolidRenderingTextureCombine();
