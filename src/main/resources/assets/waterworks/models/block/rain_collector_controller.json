@@ -2,7 +2,10 @@
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
     "particle": "waterworks:models/rain_collector_controller",
-        "0": "waterworks:models/rain_collector_controller"
+        "0": "waterworks:models/rain_collector_controller",
+		"1": "waterworks:models/rain_collector_side",
+		"2": "waterworks:models/rain_collector_bottom",
+		"3": "waterworks:models/rain_collector_controller_top"
     },      
     "display": {
         "gui": {
@@ -42,12 +45,12 @@
             "from": [ 0.0, 0.0, 0.0 ], 
             "to": [ 16.0, 16.0, 16.0 ], 
             "faces": {
-                "north": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-                "east": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-                "south": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-                "west": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-                "up": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-                "down": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
+                "north": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "east": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "south": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "west": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "up": { "texture": "#3", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "#2", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
             }
         }
     ]

@@ -1,10 +1,9 @@
 {
-    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": 
     {
-        "particle": "block/jukebox_side",
 		"0": "waterworks:models/rain_collector_side",
-		"1": "block/piston_inner"
+		"1": "block/piston_inner",
+		"2": "waterworks:models/rain_collector_bottom"
     },      
     "display": {
         "gui": {
@@ -49,7 +48,7 @@
                 "south": { "texture": "#0", "uv": [ 0.0, 4.0, 16.0, 16.0 ] },
                 "west": { "texture": "#0", "uv": [ 0.0, 4.0, 16.0, 16.0 ] },
                 "up": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-                "down": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
+                "down": { "texture": "#2", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
             }
         },
         {
