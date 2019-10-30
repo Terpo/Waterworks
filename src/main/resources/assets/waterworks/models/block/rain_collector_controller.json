@@ -1,57 +1,8 @@
 {
-    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+    "parent": "block/cube_bottom_top",
     "textures": {
-    "particle": "waterworks:models/rain_collector_controller",
-        "0": "waterworks:models/rain_collector_controller",
-		"1": "waterworks:models/rain_collector_side",
-		"2": "waterworks:models/rain_collector_bottom",
-		"3": "waterworks:models/rain_collector_controller_top"
-    },      
-    "display": {
-        "gui": {
-            "rotation": [ 30, 225, 0 ],
-            "translation": [ 0, 0, 0],
-            "scale":[ 0.625, 0.625, 0.625 ]
-        },
-        "ground": {
-            "rotation": [ 0, 0, 0 ],
-            "translation": [ 0, 3, 0],
-            "scale":[ 0.25, 0.25, 0.25 ]
-        },
-        "fixed": {
-            "rotation": [ 0, 0, 0 ],
-            "translation": [ 0, 0, 0],
-            "scale":[ 0.5, 0.5, 0.5 ]
-        },
-        "thirdperson_righthand": {
-            "rotation": [ 75, 45, 0 ],
-            "translation": [ 0, 2.5, 0],
-            "scale": [ 0.375, 0.375, 0.375 ]
-        },
-        "firstperson_righthand": {
-            "rotation": [ 0, 45, 0 ],
-            "translation": [ 0, 0, 0 ],
-            "scale": [ 0.40, 0.40, 0.40 ]
-        },
-        "firstperson_lefthand": {
-            "rotation": [ 0, 225, 0 ],
-            "translation": [ 0, 0, 0 ],
-            "scale": [ 0.40, 0.40, 0.40 ]
-        }
-    },
-    "elements": [
-        {
-            "name": "Cube",
-            "from": [ 0.0, 0.0, 0.0 ], 
-            "to": [ 16.0, 16.0, 16.0 ], 
-            "faces": {
-                "north": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-                "east": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-                "south": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-                "west": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-                "up": { "texture": "#3", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-                "down": { "texture": "#2", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
-            }
-        }
-    ]
+        "top": "waterworks:models/rain_collector_controller_top",
+        "side": "waterworks:models/rain_collector_side",
+        "bottom": "waterworks:models/rain_collector_bottom"
+    }
 }
