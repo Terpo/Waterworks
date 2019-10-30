@@ -28,6 +28,7 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 	protected Rectangle2d tankRectangle;
 	private ResourceLocation waterResource;
 	private float[] colors;
+	private boolean hasColorAttributes;
 
 	public FluidContainerScreen(ContainerBase screenContainer, PlayerInventory inv, ITextComponent title) {
 		super(screenContainer, inv, title);
@@ -43,11 +44,17 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 		this.tankRectangle = newTankRectangle;
 
 		// define water colors
+		this.hasColorAttributes = defineColors();
+	}
+
+	protected boolean defineColors() {
 		final Fluid fluid = this.fluidTank.getFluid().getFluid();
 		this.waterResource = fluid.getAttributes().getStillTexture();
 		final int color = fluid.getAttributes().getColor();
 		this.colors = new float[]{((color >> 16) & 0xFf) / 255.0f, ((color >> 8) & 0xFf) / 255.0f,
 				(color & 0xFf) / 255.0f, ((color >> 24) & 0xFf) / 255.0f};
+
+		return (0f != this.colors[0]);
 	}
 
 	@Override
@@ -79,11 +86,15 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 	}
 
 	protected void drawTank(int tankPosX, int tankSizeX, int tankPosY, int tankSizeY) {
+
 		if (this.fluidTank != null) {
+			if (!this.hasColorAttributes) {
+				this.hasColorAttributes = defineColors();
+			}
+
 			final int fillHeight = this.fluidTank.getFluidAmount() * tankSizeY / this.fluidTank.getCapacity();
 			final TextureAtlasSprite sprite = this.minecraft.getTextureMap().getSprite(this.waterResource);
 			this.minecraft.getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-
 			GlStateManager.color4f(this.colors[0], this.colors[1], this.colors[2], this.colors[3]);
 			AbstractGui.blit(getGuiLeft() + tankPosX, getGuiTop() + tankPosY + tankSizeY - fillHeight, 0, tankSizeX,
 					fillHeight, sprite);
