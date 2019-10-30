@@ -7,7 +7,7 @@ import org.terpo.waterworks.energy.WaterworksBattery;
 import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -49,7 +49,7 @@ public class PumpPacket extends TankPacket {
 	public static void consume(PumpPacket message, Supplier<Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			final BlockPos pos = message.tileEntityPosition;
-			final ClientPlayerEntity clientPlayerEntity = Waterworks.proxy.getClientPlayerEntity();
+			final PlayerEntity clientPlayerEntity = Waterworks.proxy.getClientPlayerEntity();
 			if (clientPlayerEntity.world.isAreaLoaded(pos, 0)) {
 				final TileEntity tileEntity = getTileEntity(clientPlayerEntity.world, pos);
 				if (tileEntity instanceof TileWaterworks) {

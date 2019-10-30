@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -54,7 +54,7 @@ public class TankPacket extends BasePacket {
 	public static void consume(TankPacket message, Supplier<Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			final BlockPos pos = message.tileEntityPosition;
-			final ClientPlayerEntity clientPlayerEntity = Waterworks.proxy.getClientPlayerEntity();
+			final PlayerEntity clientPlayerEntity = Waterworks.proxy.getClientPlayerEntity();
 			if (clientPlayerEntity.world.isAreaLoaded(pos, 0)) {
 				final TileEntity tileEntity = getTileEntity(clientPlayerEntity.world, pos);
 				if (tileEntity instanceof TileWaterworks) {
