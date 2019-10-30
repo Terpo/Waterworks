@@ -5,8 +5,8 @@
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
 		"P P",
-		"PSP",
-		"BBB"
+		"PBP",
+		"PSP"
 	],
 	"key": {
 		"P": {
@@ -16,7 +16,7 @@
 			"tag": "minecraft:wooden_slabs"
 		},
 		"B": {
-			"tag": "forge:stone"
+			"item": "minecraft:bowl"
 		}
 	}
 }
