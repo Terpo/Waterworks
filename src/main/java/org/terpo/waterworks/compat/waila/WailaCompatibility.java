@@ -7,12 +7,13 @@ import mcp.mobius.waila.api.WailaPlugin;
 //FIXME Readd waila compat
 @WailaPlugin
 public class WailaCompatibility implements IWailaPlugin {
-	public static String modId = "waila";
+	public static final String WAILA_MOD_ID = "waila";
 
 	public static void register() {
+//		if (ModList.get().isLoaded(WAILA_MOD_ID)) {
 //		InterModComms.sendTo(WailaCompatibility.modId, "register",
 //				() -> "org.terpo.waterworks.compat.waila.WailaHandler.register");
-
+//		}
 	}
 
 	@Override
