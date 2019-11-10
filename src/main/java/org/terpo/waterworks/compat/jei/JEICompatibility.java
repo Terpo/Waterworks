@@ -16,16 +16,12 @@ public class JEICompatibility implements IModPlugin {
 	}
 
 	@Override
-	public void registerRecipes(IRecipeRegistration registry) {
-
-		// FIXME add recipe handlers for JEI
-		// Add Rocket Recipe Handler
-//		registry.handleRecipes(RainRocketRecipe.class, new JEIRainRocketRecipeWrapperFactory(),
-//				VanillaRecipeCategoryUid.CRAFTING);
-//		registry.handleRecipes(AntiRainRocketRecipe.class, new JEIAntiRainRocketRecipeWrapperFactory(),
-//				VanillaRecipeCategoryUid.CRAFTING);
-
+	public void registerRecipes(IRecipeRegistration registration) {
 		// Add Descriptions
-		JEIDescription.addJEIDescriptions(registry);
+		JEIDescription.addJEIDescriptions(registration);
+
+		// Add Rocket Recipe Handler
+		JEIRocketRecipes.addRocketRecipes(registration);
 	}
+
 }
