@@ -171,7 +171,7 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 			this.isAirBorne = true;
 		}
 
-		final float f = MathHelper.sqrt(func_213296_b(vec3d2));
+		final float f = MathHelper.sqrt(horizontalMag(vec3d2));
 		this.rotationYaw = (float) (MathHelper.atan2(vec3d2.x, vec3d2.z) * (180F / (float) Math.PI));
 
 		for (this.rotationPitch = (float) (MathHelper.atan2(vec3d2.y, f) * (180F / (float) Math.PI)); this.rotationPitch
