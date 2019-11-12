@@ -3,6 +3,7 @@ package org.terpo.waterworks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.terpo.waterworks.api.constants.WaterworksReference;
+import org.terpo.waterworks.compat.minecraft.MinecraftCompatibility;
 import org.terpo.waterworks.compat.top.TOPCompatibility;
 import org.terpo.waterworks.init.InitBlocks;
 import org.terpo.waterworks.init.InitContainers;
@@ -86,6 +87,8 @@ public class Waterworks {
 	private void enqueueIMC(final InterModEnqueueEvent event) {
 		LOGGER.info("Waterworks IMC to other mods");
 		TOPCompatibility.register();
+
+		MinecraftCompatibility.registerWeatherRocketDispenserBehavior();
 	}
 
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
