@@ -57,14 +57,24 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	protected void updateServerSide() {
 		if (this.isReset && needsUpdate(10)) {
 			this.isDirty = true;
-			resetController();
 			findRainCollectors();
 			this.isReset = false;
 		}
 		if (needsUpdate(15) && this.world.isRaining()) {
+			checkSelf();
 			countValidCollectors();
 		}
 		super.updateServerSide();
+	}
+
+	/**
+	 * just checks if the controller is missing itself<br>
+	 * setting the pos in the constructor does not work because pos is empty
+	 */
+	private void checkSelf() {
+		if (this.rainCollectorBlocks[0] == null) {
+			this.rainCollectorBlocks[0] = this.pos;
+		}
 	}
 
 	@Override
@@ -86,6 +96,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 				this.countValidCollectors++;
 			}
 		}
+
 		this.currentValidationPos = maxValid;
 		if (this.currentValidationPos == this.areaCount) {
 			this.validCollectors = this.countValidCollectors;
