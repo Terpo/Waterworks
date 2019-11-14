@@ -263,6 +263,7 @@ public class WaterworksConfig {
 		private final ForgeConfigSpec.IntValue clearSkyMaxMultiplier;
 		private final ForgeConfigSpec.IntValue clearSkyMaxRandomAdditionalDays;
 		private final ForgeConfigSpec.BooleanValue fireworkRocketsDescription;
+		private final ForgeConfigSpec.BooleanValue fireworkRocketsJEIRecipes;
 		private final ForgeConfigSpec.BooleanValue fireworkChargeDescription;
 		private final ForgeConfigSpec.BooleanValue fireworksDescription;
 
@@ -288,11 +289,15 @@ public class WaterworksConfig {
 					.comment("Maximum days of clear sky that will added to the calculated time.")
 					.defineInRange("clearSkyMaxRandomAdditionalDays", 3, 0, 7);
 
+			// JEI
 			this.fireworkRocketsDescription = COMMON_BUILDER
 					.comment("Turn this to false to disable JEI description for the Rockets.")
 					.define("fireworkRocketsDescription", true);
+			this.fireworkRocketsJEIRecipes = COMMON_BUILDER
+					.comment("Turn this to false to disable JEI recipe information for the Rockets.")
+					.define("fireworkRocketsJEIRecipes", true);
 
-			// Vanilla Firework
+			// JEI Vanilla Firework
 			this.fireworkChargeDescription = COMMON_BUILDER.comment("JEI: Adds a small description for firework star.")
 					.define("fireworkChargeDescription", true);
 
@@ -324,6 +329,10 @@ public class WaterworksConfig {
 
 		public boolean getFireworkRocketsDescription() {
 			return get(this.fireworkRocketsDescription);
+		}
+
+		public boolean getFireworkRocketsJEIRecipes() {
+			return get(this.fireworkRocketsJEIRecipes);
 		}
 
 		public boolean getFireworkChargeDescription() {
@@ -363,22 +372,4 @@ public class WaterworksConfig {
 			return get(this.recipeAntiRainRocket);
 		}
 	}
-
-//	@Mod.EventBusSubscriber(modid = WaterworksReference.MODID)
-//	private static class EventHandler {
-
-//	/**
-//	 * Inject the new values and save to the config file when the config has been changed
-//	 * from the GUI.
-//	 *
-//	 * @param event The event
-//	*/
-//		@SubscribeEvent
-//		public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
-//			if (event.getModID().equals(WaterworksReference.MODID)) {
-//				ConfigManager.sync(WaterworksReference.MODID, Config.Type.INSTANCE);
-//			}
-//		}
-//	}
-
 }

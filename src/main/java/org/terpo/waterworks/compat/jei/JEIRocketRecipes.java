@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.api.constants.WaterworksRegistryNames;
+import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksItems;
 
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
@@ -24,10 +25,12 @@ public class JEIRocketRecipes {
 	private static final String ROCKET_GROUP = WaterworksReference.MODID + ".rocket.crafting";
 
 	static void addRocketRecipes(IRecipeRegistration registration) {
-		final List<ShapelessRecipe> recipes = new ArrayList<>(2);
-		recipes.add(createAntiRainRocketRecipe());
-		recipes.add(createRainRocketRecipe());
-		registration.addRecipes(recipes, VanillaRecipeCategoryUid.CRAFTING);
+		if (WaterworksConfig.rockets.getFireworkRocketsJEIRecipes()) {
+			final List<ShapelessRecipe> recipes = new ArrayList<>(2);
+			recipes.add(createAntiRainRocketRecipe());
+			recipes.add(createRainRocketRecipe());
+			registration.addRecipes(recipes, VanillaRecipeCategoryUid.CRAFTING);
+		}
 
 	}
 
