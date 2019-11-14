@@ -4,6 +4,7 @@ import org.terpo.waterworks.entity.item.EntityFireworkRocketAntiRain;
 import org.terpo.waterworks.entity.item.EntityFireworkRocketRain;
 import org.terpo.waterworks.entity.item.RenderWeatherFireworkRocket;
 import org.terpo.waterworks.gui.FluidContainerScreen;
+import org.terpo.waterworks.gui.RainCollectorControllerContainerScreen;
 import org.terpo.waterworks.gui.pump.PumpContainerScreen;
 import org.terpo.waterworks.init.WaterworksContainers;
 import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
@@ -41,7 +42,8 @@ public class ClientProxy implements IProxy {
 	public void init() {
 		// GUI
 		ScreenManager.registerFactory(WaterworksContainers.rainTankWood, FluidContainerScreen::new);
-		ScreenManager.registerFactory(WaterworksContainers.rainCollectorController, FluidContainerScreen::new);
+		ScreenManager.registerFactory(WaterworksContainers.rainCollectorController,
+				RainCollectorControllerContainerScreen::new);
 		ScreenManager.registerFactory(WaterworksContainers.groundwaterPump, PumpContainerScreen::new);
 
 		// ENTITY RENDERER

@@ -27,6 +27,8 @@ public class WaterworksPacketHandler {
 				TankPacket::consume);
 		INSTANCE.registerMessage(packetId++, PumpPacket.class, PumpPacket::encode, PumpPacket::decode,
 				PumpPacket::consume);
+		INSTANCE.registerMessage(packetId++, ControllerRefreshPacket.class, ControllerRefreshPacket::encode,
+				ControllerRefreshPacket::decode, ControllerRefreshPacket::consume);
 	}
 
 	public static void sendToAllAround(BasePacket packet, TileEntity tE, int range) {
