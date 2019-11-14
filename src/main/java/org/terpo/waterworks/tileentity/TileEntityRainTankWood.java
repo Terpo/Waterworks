@@ -66,7 +66,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 		final BlockPos position = getPos().up();
 
 		if (this.world.isRainingAt(position)) {
-			getFluidTank().fill(this.fluidResource, FluidAction.EXECUTE);
+			getFluidTank().fillInternal(this.fluidResource, FluidAction.EXECUTE);
 			return true;
 		}
 		return false;

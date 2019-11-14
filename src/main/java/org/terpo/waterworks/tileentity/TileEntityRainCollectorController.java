@@ -70,7 +70,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	@Override
 	protected boolean isRefilling() {
 		if (this.world.isRaining()) {
-			getFluidTank().fill(this.fluidResource, FluidAction.EXECUTE);
+			getFluidTank().fillInternal(this.fluidResource, FluidAction.EXECUTE);
 			return true;
 		}
 		return false;
