@@ -42,7 +42,6 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 	public BlockGroundwaterPump() {
 		super();
 		this.setDefaultState(getDefaultState().with(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH));
-
 	}
 
 	@Override

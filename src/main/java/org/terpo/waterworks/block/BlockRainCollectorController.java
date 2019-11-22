@@ -19,7 +19,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.IntegerProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -38,7 +37,6 @@ import net.minecraftforge.items.IItemHandler;
 
 public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 
-	public static final IntegerProperty LEVEL = IntegerProperty.create("level", 0, 4);
 	public BlockRainCollectorController() {
 		super();
 	}
