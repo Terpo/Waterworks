@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.terpo.waterworks.block.BlockWaterPipe;
 import org.terpo.waterworks.energy.WaterworksBattery;
 import org.terpo.waterworks.gui.pump.PumpContainer;
 import org.terpo.waterworks.helper.GeneralItemStackHandler;
@@ -163,7 +164,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 				this.energyUsage = WaterworksConfig.pump.getGroundwaterPumpEnergyBaseUsage()
 						+ WaterworksConfig.pump.getGroundwaterPumpEnergyPipeMultiplier() * this.pipeCounter;
 				return;
-			} else if (block instanceof AirBlock
+			} else if ((block instanceof AirBlock || block == Blocks.WATER)
 					&& internalBattery.hasEnoughEnergy(WaterworksConfig.pump.getGroundwaterPumpEnergyPipePlacement())
 					&& placePipe(currentPos, handler)) {
 				internalBattery.extractInternal(WaterworksConfig.pump.getGroundwaterPumpEnergyPipePlacement(), false);
@@ -179,7 +180,9 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		final HashMap<ItemStack, Integer> stacks = getPipeStacks(handler);
 		if (!stacks.isEmpty()) {
 			stacks.forEach((stack, slot) -> {
-				if (this.world.setBlockState(currentPos, WaterworksBlocks.waterPipe.getDefaultState(), 2)) {
+				if (WaterworksBlocks.waterPipe != null && this.world.setBlockState(currentPos,
+						((BlockWaterPipe) WaterworksBlocks.waterPipe).getBlockStateForPlacement(this.world, currentPos),
+						2)) {
 					if (stack.getCount() > 1) {
 						stack.shrink(1);
 					} else {
