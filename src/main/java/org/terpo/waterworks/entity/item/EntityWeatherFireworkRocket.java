@@ -162,7 +162,7 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 		}
 
 		final Vec3d vec3d2 = this.getMotion();
-		final RayTraceResult raytraceresult = ProjectileHelper.func_221267_a(this,
+		final RayTraceResult raytraceresult = ProjectileHelper.rayTrace(this,
 				this.getBoundingBox().expand(vec3d2).grow(1.0D),
 				entitiy -> !entitiy.isSpectator() && entitiy.isAlive() && entitiy.canBeCollidedWith(),
 				RayTraceContext.BlockMode.COLLIDER, true);
