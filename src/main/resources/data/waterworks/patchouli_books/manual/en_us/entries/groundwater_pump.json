@@ -1,0 +1,13 @@
+{
+    "name": "Groundwater Pump",
+    "icon": "waterworks:groundwater_pump",
+    "category": "water_collection",
+    "read_by_default":true,
+    "sortnum": 4,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Groundwater Pump needs clear sight to Bedrock. You can insert Water Pipes in the right slots of the GUI. The Pump will try to build a long pipe down to the Bedrock. In order to get Water you must feed it with power. The Forge Energy system is available for you in this case. The mod itself does not have any FE generating blocks. When breaking the Groundwater Pump it will try to break all connected Water Pipes too. A default option is to place a safety Stone Slab which closes the hole temporarily."
+        }
+    ]
+}

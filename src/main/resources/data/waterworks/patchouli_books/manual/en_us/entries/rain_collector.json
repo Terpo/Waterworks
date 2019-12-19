@@ -1,0 +1,15 @@
+{
+    "name": "Rain Collector",
+    "icon": "waterworks:rain_collector",
+    "category": "water_collection",
+    "read_by_default":true,
+    "sortnum": 2,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Rain Collector is part of the Rain Collector multiblock structure. 
+            The block itself can not do anything. As it contains a Tile Entity, I would not recommend using it as a decorative block. 
+            You need a Rain Collector Controller to make use of it. When connected with a Controller, you can access its fluid tank and inventory."
+        }
+    ]
+}

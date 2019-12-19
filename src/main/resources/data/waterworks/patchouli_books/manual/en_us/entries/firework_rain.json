@@ -1,0 +1,13 @@
+{
+    "name": "Rain Rocket",
+    "icon": "waterworks:firework_rain",
+    "category": "weather_manipulation",
+    "read_by_default":true,
+    "sortnum": 1,
+    "pages": [
+        {
+            "type": "text",
+            "text": "This rocket will start the rain when it explodes in the sky. Craft a Firework Rocket and add some Ghast Tears. The more tears the longer it will rain."
+        }
+    ]
+}

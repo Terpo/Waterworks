@@ -1,0 +1,10 @@
+{
+	"name": "Waterworks Manual",
+	"landing_text": "Waterworks is a mod that adds serveral water collecting and weather manipulating mechanics.$(br2)This manual will show information for all blocks and items that Waterworks has to offer.",
+	"creative_tab": "waterworks",
+	"book_texture": "patchouli:textures/gui/book_blue.png",
+	"model":"waterworks:manual",
+	"show_progress": false,
+	"show_toasts": false,
+	"version": 1
+}

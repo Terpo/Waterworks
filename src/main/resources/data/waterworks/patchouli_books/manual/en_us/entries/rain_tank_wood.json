@@ -1,0 +1,13 @@
+{
+    "name": "Wooden Rain Tank",
+    "icon": "waterworks:rain_tank_wood",
+    "category": "water_collection",
+    "read_by_default":true,
+    "sortnum": 1,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Rain Tank is a early game block which collects rain. It needs a proper biome and clear line of sight to the sky."
+        }
+    ]
+}

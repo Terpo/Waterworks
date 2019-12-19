@@ -1,0 +1,15 @@
+{
+    "name": "Rain Collector Controller",
+    "icon": "waterworks:rain_collector_controller",
+    "category": "water_collection",
+    "read_by_default":true,
+    "sortnum": 3,
+    "pages": [
+        {
+            "type": "text",
+            "text": "This block is the heart of the Rain Collector multiblock structure. 
+            Place down the controller. On its cardinal point faces you can place down Rain Collectors. 
+            Use the Pipe Wrench with a right click on the Controller to let it search for connected collectors. Alternativly you can search for blocks using the button the in the GUI."
+        }
+    ]
+}

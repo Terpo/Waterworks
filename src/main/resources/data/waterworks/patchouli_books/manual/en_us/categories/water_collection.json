@@ -1,0 +1,6 @@
+{
+	"name": "Water Collection",
+	"description": "This category shows information about blocks that collect water.",
+	"icon": "waterworks:rain_tank_wood",
+	"sortnum": 1
+}

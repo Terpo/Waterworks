@@ -1,0 +1,10 @@
+{
+	"components": [
+		{
+			"type": "text",
+			"text": "This is a placeholder template.",
+			"x": 20,
+			"y": 30
+		}
+	]
+}
