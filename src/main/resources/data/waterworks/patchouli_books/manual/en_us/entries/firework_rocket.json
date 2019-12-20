@@ -1,0 +1,24 @@
+{
+    "name": "Firework Rocket",
+    "icon": "minecraft:firework_rocket",
+    "category": "uncategorized",
+    "read_by_default":true,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Firework Rocket is the main component for the $(l:firework_rain)Rain$(/l) -and $(l:firework_anti_rain)Anti Rain Rockets$(/l) of Waterworks.$(br2)They are part of vanilla Minecraft.$(br2)The next pages will give some information on how to craft Firework Rockets."
+        },
+        {
+        	"type": "spotlight",
+        	"item": "minecraft:firework_rocket",
+        	"title": "Crafting",
+        	"text": "Firework Rockets use a shapeless recipe form.$(br)The easiest crafting recipe is by using a single Paper and a Gunpowder.$(br)You will get some rockets with a flight duration of \"1\".$(br)Adding more Gunpowder to the recipe will increase the flight duration."
+        },
+        {
+        	"type": "spotlight",
+        	"item": "minecraft:firework_star",
+        	"title": "Crafting",
+        	"text": "Additional to Paper and Gunpowder, a Firework Star can be added.$(br)As there are nearly unlimited combination of items for the star, the $(l:https://minecraft.gamepedia.com/Firework_Star) Minecraft Wiki$(/l) page will be a better place."
+        }
+    ]
+}

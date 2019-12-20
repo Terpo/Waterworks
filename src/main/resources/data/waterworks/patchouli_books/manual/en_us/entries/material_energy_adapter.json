@@ -1,0 +1,16 @@
+{
+    "name": "Energy Adapter",
+    "icon": "waterworks:material_energy_adapter",
+    "category": "uncategorized",
+    "read_by_default":true,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Energy Adapter is a crafting component ."
+        },
+        {
+        	"type": "crafting",
+        	"recipe": "waterworks:material_energy_adapter"
+        }
+    ]
+}

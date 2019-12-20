@@ -7,7 +7,13 @@
     "pages": [
         {
             "type": "text",
-            "text": "This rocket will start the rain when it explodes in the sky. Craft a Firework Rocket and add some Ghast Tears. The more tears the longer it will rain."
+            "text": "This rocket will start the rain when it explodes in the sky.$(br2)The more Ghast Tears are added to the rocket the longer the rain duration.$(br2)Dispensers can be used to automate this rocket."
+        },
+        {
+        	"type": "spotlight",
+        	"item": "waterworks:firework_rain",
+        	"title": "Crafting",
+        	"text": "Craft one $(l:firework_rocket)Firework Rocket$(/l) along with Ghast Tears to get a Rain Rocket.$(br2)You can also use a existing Rain Rocket and add more Ghast Tears to it.$(br2)The recipe is shapeless."
         }
     ]
 }

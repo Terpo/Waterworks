@@ -7,7 +7,11 @@
     "pages": [
         {
             "type": "text",
-            "text": "The Rain Tank is a early game block which collects rain. It needs a proper biome and clear line of sight to the sky."
+            "text": "The Wooden Rain Tank is an early game block which collects rain.$(br2)It needs to be placed in a biome that allows rain and clear line of sight to the sky.$(br2)The block is fully automatable.$(br2)A comparator can be used to read the water level of the tank."
+        },
+        {
+        	"type": "crafting",
+        	"recipe": "waterworks:rain_tank_wood"
         }
     ]
 }

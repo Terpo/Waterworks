@@ -7,9 +7,23 @@
     "pages": [
         {
             "type": "text",
-            "text": "This block is the heart of the Rain Collector multiblock structure. 
-            Place down the controller. On its cardinal point faces you can place down Rain Collectors. 
-            Use the Pipe Wrench with a right click on the Controller to let it search for connected collectors. Alternativly you can search for blocks using the button the in the GUI."
+            "text": "This block is the heart of the Rain Collector multiblock structure. $(br)Place down the controller. On its cardinal point faces you can place down $(l:rain_collector)Rain Collectors$(/l).$(br)Use the $(l:pipe_wrench)Pipe Wrench$(/l) with a right click on the Controller to let it search for connected collectors.$(br)Alternativly you can search for blocks using the button the in the GUI."
+        },
+        {
+        	"type": "crafting",
+        	"title": "R. Collector Controller",
+        	"recipe": "waterworks:rain_collector_controller",
+        	"text": "On its own it acts quite similar to the $(l:rain_tank_wood)Wooden Rain Tank$(/l) but collects more water.$(br)The block is fully automatable.$(br)A comparator can be used to read the water level of the tank."
+        },
+        {
+        	"type": "image",
+        	"images": ["waterworks:textures/patchouli/valid.png"],
+        	"text": "This image shows an example of a valid setup for the Rain Collector multiblock."
+        },
+        {
+        	"type": "image",
+        	"images": ["waterworks:textures/patchouli/invalid.png"],
+        	"text": "This image shows an example of an invalid setup for the Rain Collector multiblock."
         }
     ]
 }

@@ -6,9 +6,12 @@
     "pages": [
         {
             "type": "text",
-            "text": "This Wrench can connect the Rain Collector Controller with its Rain Collectors. Right click on a Controller to let is search for valid Collectors. Right click a Collector to give information if it already has a Controller connection.
-
-Change in 1.14: The Wrench acts now as a tool and can break Waterworks blocks quickly. It can be repaired with Iron Ingots and used as a slow weapon."
+            "text": "This Wrench can connect the $(l:rain_collector_controller)Rain Collector Controller$(/l) with its $(l:rain_collector)Rain Collectors$(/l).$(br2)Right click on a $(l:rain_collector_controller)Controller$(/l) to let is search for valid $(l:rain_collector)Collectors$(/l).$(br2)Right click a $(l:rain_collector)Collector$(/l) to give information if it already has a $(l:rain_collector_controller)Controller$(/l) connection."
+        },
+        {
+        	"type": "crafting",
+        	"recipe": "waterworks:pipe_wrench",
+        	"text": "The Wrench acts now as a tool and can break Waterworks blocks quickly.$(br2)It can be repaired with Iron Ingots and used as a slow weapon."
         }
     ]
 }
