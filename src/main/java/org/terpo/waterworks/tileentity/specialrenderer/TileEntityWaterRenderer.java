@@ -64,7 +64,8 @@ public class TileEntityWaterRenderer extends TileEntityRenderer<TileWaterworks> 
 				this.minV = sprite.getMinV() + this.diffV * multiplier;
 				this.maxV = sprite.getMaxV() - this.diffV * multiplier;
 
-				final int i = getWorld().getCombinedLight(te.getPos(), fluid.getAttributes().getLuminosity());
+				// pos.up is really important here, otherwise the lighing is broken
+				final int i = getWorld().getCombinedLight(te.getPos().up(), fluid.getAttributes().getLuminosity());
 				this.lightx = i >> 0x10 & 0xFFFF;
 				this.lighty = i & 0xFFFF;
 
