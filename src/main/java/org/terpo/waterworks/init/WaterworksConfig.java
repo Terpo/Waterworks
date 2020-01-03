@@ -117,7 +117,7 @@ public class WaterworksConfig {
 		public int clearSkyDuration = 4000;
 
 		@Config.Comment("Maximum clear sky multiplier.")
-		@Config.RangeInt(min = 100, max = 6000)
+		@Config.RangeInt(min = 1, max = 36)
 		public int clearSkyMaxMultiplier = 12;
 
 		@Config.Comment("Maximum days of clear sky that will added to the calculated time.")
