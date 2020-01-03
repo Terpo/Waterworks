@@ -1,5 +1,6 @@
 package org.terpo.waterworks.init;
 
+import org.terpo.waterworks.compat.minecraft.MinecraftCompatibility;
 import org.terpo.waterworks.compat.top.TOPCompatibility;
 import org.terpo.waterworks.compat.waila.WailaCompatibility;
 
@@ -18,6 +19,7 @@ public class InitModCompat {
 				if (Loader.isModLoaded(WailaCompatibility.modId)) {
 					WailaCompatibility.register();
 				}
+				MinecraftCompatibility.registerWeatherRocketDispenserBehavior();
 				break;
 			case "post" :
 				break;
