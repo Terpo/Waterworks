@@ -70,9 +70,9 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 
 	@Override
 	public int getComparatorInputOverride(IBlockState bs, World world, BlockPos pos) {
-		final TileEntity te = getTE(world, pos);
-		if (te instanceof TileEntityRainTankWood) {
-			return getTE(world, pos).getComparatorOutput();
+		final TileWaterworks te = getTE(world, pos);
+		if (te != null) {
+			return te.getComparatorOutput();
 		}
 		return 0;
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import org.terpo.waterworks.init.WaterworksItems;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
 import org.terpo.waterworks.tileentity.TileEntityRainCollector;
+import org.terpo.waterworks.tileentity.TileEntityRainCollectorController;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -61,6 +62,23 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 			}
 		}
 		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride(IBlockState bs) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(IBlockState bs, World world, BlockPos pos) {
+		final BaseTileEntity te = getTE(world, pos);
+		if (te instanceof TileEntityRainCollector) {
+			final TileEntityRainCollectorController controller = ((TileEntityRainCollector) te).getController();
+			if (controller != null) {
+				return controller.getComparatorOutput();
+			}
+		}
+		return 0;
 	}
 
 	@Override
