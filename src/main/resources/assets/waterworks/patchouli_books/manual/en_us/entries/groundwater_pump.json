@@ -1,0 +1,22 @@
+{
+    "name": "Groundwater Pump",
+    "icon": "waterworks:groundwater_pump",
+    "category": "water_collection",
+    "read_by_default":true,
+    "sortnum": 4,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Groundwater Pump is a Forge Energy (FE) using blocks, that collects water from below Bedrock.$(br2)In order to work it needs clear sight to Bedrock.$(br)Insert $(l:water_pipe)Water Pipes$(/l) in the right slots of the GUI.$(br)The Pump will try to build a long pipe down to the Bedrock. If the pipe is finished, and more power provided, it will generate water."
+        },
+        {
+        	"type": "crafting",
+        	"recipe": "waterworks:groundwater_pump",
+        	"text": "The block is fully automatable.$(br)A comparator can be used to read the water level of the tank.$(br)When breaking the Groundwater Pump it will try to break all connected $(l:water_pipe)Water Pipes$(/l) too."
+        },
+        {
+            "type": "text",
+            "text": "$(br)A default option is to place a safety Stone Slab which closes the hole temporarily."
+        }
+    ]
+}

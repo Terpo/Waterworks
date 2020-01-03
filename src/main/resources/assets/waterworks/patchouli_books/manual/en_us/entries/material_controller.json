@@ -1,0 +1,16 @@
+{
+    "name": "Controller",
+    "icon": "waterworks:material_controller",
+    "category": "uncategorized",
+    "read_by_default":true,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Controller is a crafting component ."
+        },
+        {
+        	"type": "crafting",
+        	"recipe": "waterworks:material_controller"
+        }
+    ]
+}

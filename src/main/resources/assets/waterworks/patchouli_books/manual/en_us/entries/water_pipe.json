@@ -1,0 +1,17 @@
+{
+    "name": "Water Pipe",
+    "icon": "waterworks:water_pipe",
+    "category": "water_collection",
+    "read_by_default":true,
+    "sortnum": 5,
+    "pages": [
+        {
+            "type": "text",
+            "text": "The Water Pipe is a decorative block.$(br2)The Groundwater Pump needs this block to build a pipe to the Bedrock.$(br2)This block can be waterlogged."
+        },
+        {
+        	"type": "crafting",
+        	"recipe": "waterworks:water_pipe"
+        }
+    ]
+}

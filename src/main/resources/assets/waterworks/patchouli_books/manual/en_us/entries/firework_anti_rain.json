@@ -1,0 +1,19 @@
+{
+    "name": "Anti Rain Rocket",
+    "icon": "waterworks:firework_anti_rain",
+    "category": "weather_manipulation",
+    "read_by_default":true,
+    "sortnum": 2,
+    "pages": [
+        {
+            "type": "text",
+            "text": "This rocket will end the rain when it explodes in the sky.$(br2)The more Sponges are added to the Anti Rain Rocket the longer it will stay clear.$(br2)Every inserted Sponge will spawn as Wet Sponge when the rocket explodes.$(br2)Dispensers can be used to automate this rocket."
+        },
+        {
+        	"type": "spotlight",
+        	"item": "waterworks:firework_anti_rain",
+        	"title": "Crafting",
+        	"text": "Craft one $(l:firework_rocket)Firework Rocket$(/l) along with Sponges (dry) to get an Anti Rain Rocket.$(br2)You can also use an existing Anti Rain Rocket and add more Sponges to it.$(br2)The recipe is shapeless."
+        }
+    ]
+}
