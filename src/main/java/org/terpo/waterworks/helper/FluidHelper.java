@@ -16,6 +16,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 
 public class FluidHelper {
@@ -36,7 +38,8 @@ public class FluidHelper {
 	public static boolean fillWaterBottle(World worldIn, BlockPos pos, EntityPlayer playerIn, ItemStack itemstack,
 			EnumHand hand, TileWaterworks tileEntity) {
 		final WaterworksTank tank = tileEntity.getFluidTank();
-		if (tank.getFluidAmount() >= 1000) {
+		if (tank.getFluidAmount() >= 1000 && tank.getFluid() != null
+				&& FluidRegistry.WATER.equals(tank.getFluid().getFluid())) {
 			if (!playerIn.capabilities.isCreativeMode) {
 				tank.drainInternal(1000, true);
 				final ItemStack stackWaterBottle = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM),
@@ -54,5 +57,18 @@ public class FluidHelper {
 			return true;
 		}
 		return false;
+	}
+
+	public static FluidStack getFluidResource(String fluidName, int amount) {
+		return new FluidStack(
+				FluidRegistry.isFluidRegistered(fluidName) ? FluidRegistry.getFluid(fluidName) : FluidRegistry.WATER,
+				amount);
+	}
+
+	public static FluidStack recalculateFillrate(FluidStack stack, int newFillrate, String fluidName) {
+		if (stack != null) {
+			return new FluidStack(stack, newFillrate);
+		}
+		return getFluidResource(fluidName, newFillrate);
 	}
 }

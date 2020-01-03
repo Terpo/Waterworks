@@ -2,6 +2,7 @@ package org.terpo.waterworks.tileentity;
 
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.helper.AreaHelper;
+import org.terpo.waterworks.helper.FluidHelper;
 import org.terpo.waterworks.init.WaterworksConfig;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,7 +23,8 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	private int countValidCollectors = 0;
 
 	public TileEntityRainCollectorController() {
-		super(WaterworksConfig.rainCollection.rainCollectorFillrate,
+		super(FluidHelper.getFluidResource(WaterworksConfig.rainCollection.rainCollectorCollectedFluidName,
+				WaterworksConfig.rainCollection.rainCollectorFillrate),
 				WaterworksConfig.rainCollection.rainCollectorCapacity);
 	}
 
@@ -62,8 +64,9 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 		this.currentValidationPos = maxValid;
 		if (this.currentValidationPos == this.areaCount) {
 			this.validCollectors = this.countValidCollectors;
-			this.fluidResource = getWaterFluidStack(
-					this.validCollectors * WaterworksConfig.rainCollection.rainCollectorFillrate);
+			this.fluidResource = FluidHelper.recalculateFillrate(this.fluidResource,
+					this.validCollectors * WaterworksConfig.rainCollection.rainCollectorFillrate,
+					WaterworksConfig.rainCollection.rainCollectorCollectedFluidName);
 			this.countValidCollectors = 0;
 			this.currentValidationPos = 0;
 		}
@@ -72,8 +75,9 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	public int findRainCollectors() {
 		resetController();
 		this.connectedCollectors = getAllConnectedBlocks();
-		this.fluidResource = getWaterFluidStack(
-				this.connectedCollectors * WaterworksConfig.rainCollection.rainCollectorFillrate);
+		this.fluidResource = FluidHelper.recalculateFillrate(this.fluidResource,
+				this.validCollectors * WaterworksConfig.rainCollection.rainCollectorFillrate,
+				WaterworksConfig.rainCollection.rainCollectorCollectedFluidName);
 		return this.connectedCollectors;
 	}
 
@@ -124,8 +128,9 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 			}
 			if (compound.hasKey("validCollectors")) {
 				this.validCollectors = compound.getInteger("validCollectors");
-				this.fluidResource = getWaterFluidStack(
-						this.validCollectors * WaterworksConfig.rainCollection.rainCollectorFillrate);
+				this.fluidResource = FluidHelper.recalculateFillrate(this.fluidResource,
+						this.validCollectors * WaterworksConfig.rainCollection.rainCollectorFillrate,
+						WaterworksConfig.rainCollection.rainCollectorCollectedFluidName);
 			}
 		}
 	}

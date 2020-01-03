@@ -47,7 +47,8 @@ public class ProviderTileWaterworks implements IWailaDataProvider {
 				final WaterworksTank tank = tileWaterworks.getFluidTank();
 				final int capacity = tank.getCapacity();
 				final int amount = tank.getFluidAmount();
-				currenttip.add(amount + "/" + capacity + " mB");
+				final String fluidInfo = tank.getFluid() != null ? " (" + tank.getFluid().getLocalizedName() + ")" : "";
+				currenttip.add(amount + "/" + capacity + " mB" + fluidInfo);
 			}
 			if (tileEntity instanceof TileEntityGroundwaterPump) {
 				final TileEntityGroundwaterPump pump = (TileEntityGroundwaterPump) tileEntity;

@@ -7,6 +7,7 @@ import org.terpo.waterworks.init.InitEntities;
 import org.terpo.waterworks.init.InitItems;
 import org.terpo.waterworks.init.InitModCompat;
 import org.terpo.waterworks.init.InitTileEntities;
+import org.terpo.waterworks.init.WaterworksConfig;
 import org.terpo.waterworks.init.WaterworksCrafting;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 
@@ -37,9 +38,9 @@ public class CommonProxy {
 		NetworkRegistry.INSTANCE.registerGuiHandler(Waterworks.instance, new GuiProxy());
 	}
 
-	@SuppressWarnings({"unused"})
+	@SuppressWarnings({"unused", "static-method"})
 	public void postInit(FMLPostInitializationEvent event) {
-		//
+		WaterworksConfig.verifyFluidNameConfig();
 	}
 
 	@SubscribeEvent

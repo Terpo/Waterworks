@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.terpo.waterworks.compat.bedrockbgone.BBGCompatibility;
 import org.terpo.waterworks.energy.WaterworksBattery;
+import org.terpo.waterworks.helper.FluidHelper;
 import org.terpo.waterworks.helper.PumpItemStackHandler;
 import org.terpo.waterworks.init.WaterworksBlocks;
 import org.terpo.waterworks.init.WaterworksConfig;
@@ -22,7 +23,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntityGroundwaterPump extends TileWaterworks {
@@ -58,7 +58,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		this.energyUsage = WaterworksConfig.pump.groundwaterPumpEnergyBaseUsage
 				+ WaterworksConfig.pump.groundwaterPumpEnergyPipeMultiplier * this.pipeCounter;
 
-		this.resourceWater = new FluidStack(FluidRegistry.WATER, fillrate);
+		this.resourceWater = FluidHelper.getFluidResource(WaterworksConfig.pump.groundwaterPumpFluidName, fillrate);
 
 		this.fluidTank.setCanFill(false);
 		this.fluidTank.setTileEntity(this);

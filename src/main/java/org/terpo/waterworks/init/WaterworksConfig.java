@@ -1,9 +1,12 @@
 package org.terpo.waterworks.init;
 
+import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.api.constants.WaterworksReference;
 
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -28,6 +31,15 @@ public class WaterworksConfig {
 		@Config.Comment("The fillrate in mB/second for the Wooden Rain Tank.")
 		@Config.RangeInt(min = 1, max = 8000)
 		public int woodenRainTankFillrate = 10;
+
+		@Config.Comment("The fluid name that will be collected by the Rain Tank.")
+		public String woodenRainTankCollectedFluidName = "water";
+
+		@Config.Comment("The fluid name that will be collected by the Rain Collector Multiblock.")
+		public String rainCollectorCollectedFluidName = "water";
+
+		@Config.Comment("Log all registered fluids.")
+		public boolean logFluids = false;
 
 		@Config.Comment("The capacity in mB for the Wooden Rain Tank.")
 		@Config.RangeInt(min = 1000, max = 1024000)
@@ -63,6 +75,9 @@ public class WaterworksConfig {
 		@Config.Comment("The fillrate in mB/second for the Groundwater Pump.")
 		@Config.RangeInt(min = 1, max = 8000)
 		public int groundwaterPumpFillrate = 500;
+
+		@Config.Comment("The fluid name that will be collected by the Groundwater Pump.")
+		public String groundwaterPumpFluidName = "water";
 
 		@Config.Comment("The capacity in mB for the Groundwater Pump.")
 		@Config.RangeInt(min = 8000, max = 1024000)
@@ -183,5 +198,32 @@ public class WaterworksConfig {
 				ConfigManager.sync(WaterworksReference.MODID, Config.Type.INSTANCE);
 			}
 		}
+	}
+
+	/**
+	 * verify the configuration for the collected fluids and allows debug output
+	 */
+	public static void verifyFluidNameConfig() {
+		if (!FluidRegistry.isFluidRegistered(WaterworksConfig.rainCollection.woodenRainTankCollectedFluidName)) {
+			Waterworks.LOGGER
+					.error("The configured fluid for the Wooden Rain Tank is not registered. Waterworks uses water.");
+		}
+		if (!FluidRegistry.isFluidRegistered(WaterworksConfig.rainCollection.rainCollectorCollectedFluidName)) {
+			Waterworks.LOGGER.error(
+					"The configured fluid for the Rain Collector Multiblock is not registered. Waterworks uses water.");
+		}
+		if (!FluidRegistry.isFluidRegistered(WaterworksConfig.pump.groundwaterPumpFluidName)) {
+			Waterworks.LOGGER
+					.error("The configured fluid for the Groundwater Pump is not registered. Waterworks uses water.");
+		}
+		if (WaterworksConfig.rainCollection.logFluids) {
+			Waterworks.LOGGER.info("Logging all registered fluids.");
+			FluidRegistry.getRegisteredFluids().entrySet().forEach(e -> {
+				final String fluidRegistryName = e.getKey();
+				final String modId = FluidRegistry.getModId(new FluidStack(e.getValue(), 1000));
+				Waterworks.LOGGER.info("\"" + fluidRegistryName + "\" by " + modId);
+			});
+		}
+
 	}
 }

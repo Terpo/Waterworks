@@ -8,11 +8,11 @@ import org.terpo.waterworks.fluid.WaterworksTank;
 import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidRegistry;
 
 //Client Side
 public class GuiFluidContainer extends GuiContainerBase {
@@ -32,12 +32,13 @@ public class GuiFluidContainer extends GuiContainerBase {
 	protected void drawTank(int tankPosX, int tankSizeX, int tankPosY, int tankSizeY) {
 		if (this.fluidTank != null) {
 			final int fillHeight = this.fluidTank.getFluidAmount() * tankSizeY / this.fluidTank.getCapacity();
-
-			final ResourceLocation waterResource = FluidRegistry.WATER.getStill();
-			final TextureAtlasSprite sprite = this.mc.getTextureMapBlocks().getAtlasSprite(waterResource.toString());
-			this.mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-			this.drawTexturedModalRect(getGuiLeft() + tankPosX, getGuiTop() + tankPosY + tankSizeY - fillHeight, sprite,
-					tankSizeX, fillHeight);
+			if (this.fluidTank.getFluid() != null && this.fluidTank.getFluid().getFluid() != null) {
+				final TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks()
+						.getTextureExtry(this.fluidTank.getFluid().getFluid().getStill().toString());
+				this.mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+				this.drawTexturedModalRect(getGuiLeft() + tankPosX, getGuiTop() + tankPosY + tankSizeY - fillHeight,
+						sprite, tankSizeX, fillHeight);
+			}
 		}
 	}
 	protected void drawBattery(int batteryPosX, int batterySizeX, int batteryPosY, int batterySizeY) {
@@ -53,7 +54,10 @@ public class GuiFluidContainer extends GuiContainerBase {
 
 	protected void drawTankTooltip(int mouseX, int mouseY, int xStartTank, int xSizeTank, int yStartTank,
 			int ySizeTank) {
-		final String tooltip = this.fluidTank.getFluidAmount() + "/" + this.fluidTank.getCapacity() + " mB";
+		final String fluidInfo = this.fluidTank.getFluid() != null
+				? " (" + this.fluidTank.getFluid().getLocalizedName() + ")"
+				: "";
+		final String tooltip = this.fluidTank.getFluidAmount() + "/" + this.fluidTank.getCapacity() + " mB" + fluidInfo;
 		final List<String> toolTipText = new ArrayList<>();
 		toolTipText.add(tooltip);
 		if (getGuiLeft() + xStartTank <= mouseX && mouseX < getGuiLeft() + xStartTank + xSizeTank

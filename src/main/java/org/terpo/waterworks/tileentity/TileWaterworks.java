@@ -18,7 +18,6 @@ import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -190,7 +189,8 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 					}
 				}
 				if (stackInput.getItem().equals(Items.GLASS_BOTTLE)) {
-					if (internalFluidAmount >= 1000) {
+					if (internalFluidAmount >= 1000 && this.fluidTank.getFluid() != null
+							&& FluidRegistry.WATER.equals(this.fluidTank.getFluid().getFluid())) {
 						final ItemStack outputSlot = this.itemStackHandler.getStackInSlot(1);
 						final ItemStack outputStack = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM),
 								PotionTypes.WATER);
@@ -225,10 +225,6 @@ public class TileWaterworks extends BaseTileEntity implements ITickable {
 			this.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
 		}
 	}
-	protected static FluidStack getWaterFluidStack(int amount) {
-		return new FluidStack(FluidRegistry.WATER, amount);
-	}
-
 	public int getCurrentTick() {
 		return this.currentTick;
 	}
