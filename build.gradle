@@ -45,6 +45,10 @@ repositories {
         name = "CoFH Maven"
         url = "http://maven.covers1624.net"
     }
+	maven { 
+		name = "Patchouli Maven"
+		url = "https://maven.blamejared.com"
+	}
 }
 
 
@@ -55,7 +59,7 @@ dependencies {
 	deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:${top_version}"
 	deobfCompile "cofh:RedstoneFlux:${rf_version}:universal"
 	runtime "mezz.jei:jei_${mc_version}:${jei_version}"
-
+	compile "vazkii.patchouli:Patchouli:${patchouli_version}"
 }
 
 processResources {
