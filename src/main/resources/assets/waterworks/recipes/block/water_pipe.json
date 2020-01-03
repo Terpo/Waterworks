@@ -1,6 +1,7 @@
 {
 	"result": {
-		"item": "waterworks:water_pipe"
+		"item": "waterworks:water_pipe",
+		"count" : 8
 	},
 	"pattern": [
 		"IBI",
