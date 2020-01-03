@@ -18,6 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class RainRocketRecipe extends SpecialRecipe {
+	private static final String NBT_RAIN = "RAIN";
 	private ItemStack resultItem = ItemStack.EMPTY;
 	private final List<Item> validItems;
 	public RainRocketRecipe(ResourceLocation idIn) {
@@ -84,14 +85,14 @@ public class RainRocketRecipe extends SpecialRecipe {
 		CompoundNBT newTag = new CompoundNBT();
 		if (nbtCompound != null) {
 			newTag = nbtCompound.copy();
-			if (nbtCompound.contains("RAIN")) {
-				multiplierOld = nbtCompound.getInt("RAIN");
+			if (nbtCompound.contains(NBT_RAIN)) {
+				multiplierOld = nbtCompound.getInt(NBT_RAIN);
 			}
 		}
 		if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.getRainMaxMultiplier()) {
 			return false;
 		}
-		newTag.putInt("RAIN", multiplierOld + multiplierAdd);
+		newTag.putInt(NBT_RAIN, multiplierOld + multiplierAdd);
 		this.resultItem.setTag(newTag);
 		return true;
 	}
@@ -107,7 +108,7 @@ public class RainRocketRecipe extends SpecialRecipe {
 		if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.getRainMaxMultiplier()) {
 			return false;
 		}
-		nbtCompound.putInt("RAIN", multiplierOld + multiplierAdd);
+		nbtCompound.putInt(NBT_RAIN, multiplierOld + multiplierAdd);
 		this.resultItem.setTag(nbtCompound);
 		return true;
 	}
