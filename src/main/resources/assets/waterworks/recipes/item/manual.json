@@ -1,0 +1,23 @@
+{
+	"result": {
+		"item": "patchouli:guide_book",
+		"nbt": {
+		    "patchouli:book": "waterworks:manual"
+		},
+		"count": 1
+	},
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"bw ",
+		"   ",
+		"   "
+	],
+	"key": {
+		"b": {
+			"item": "minecraft:book"
+		},
+		"w": {
+			"item": "waterworks:water_pipe"
+		}
+	}
+}
