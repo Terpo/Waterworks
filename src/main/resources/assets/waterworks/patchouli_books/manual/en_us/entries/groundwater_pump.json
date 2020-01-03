@@ -11,7 +11,7 @@
         },
         {
         	"type": "crafting",
-        	"recipe": "waterworks:groundwater_pump",
+        	"recipe": "waterworks:block/groundwater_pump",
         	"text": "The block is fully automatable.$(br)A comparator can be used to read the water level of the tank.$(br)When breaking the Groundwater Pump it will try to break all connected $(l:water_pipe)Water Pipes$(/l) too."
         },
         {

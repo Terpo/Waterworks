@@ -7,11 +7,11 @@
     "pages": [
         {
             "type": "text",
-            "text": "The Rain Collector is part of the Rain Collector multiblock structure.$(br)Connect this block to a $(l:rain_collector_controller)Rain Collector Controller$(/l) using the GUI or a $(l:pipe_wrench)Pipe Wrench$(/l).$(br)When connected to a Controller, you can access its fluid tank and inventory.$(br)The block is fully automatable.$(br)A comparator can be used to read the water level of the tank."
+            "text": "The Rain Collector is part of the Rain Collector multiblock structure.$(br)Connect this block to a $(l:rain_collector_controller)Rain Collector Controller$(/l) using a $(l:pipe_wrench)Pipe Wrench$(/l).$(br)When connected to a Controller, you can access its fluid tank and inventory.$(br)The block is fully automatable.$(br)A comparator can be used to read the water level of the tank."
         },
         {
         	"type": "crafting",
-        	"recipe": "waterworks:rain_collector",
+        	"recipe": "waterworks:block/rain_collector",
         	"text": "As the Rain Collector contains a Tile Entity, it is not recommended to use it for decoration purposes."
         }
     ]

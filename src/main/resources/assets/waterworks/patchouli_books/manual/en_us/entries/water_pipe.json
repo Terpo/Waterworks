@@ -11,7 +11,7 @@
         },
         {
         	"type": "crafting",
-        	"recipe": "waterworks:water_pipe"
+        	"recipe": "waterworks:block/water_pipe"
         }
     ]
 }

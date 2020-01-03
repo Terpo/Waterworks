@@ -1,6 +1,6 @@
 {
     "name": "Energy Adapter",
-    "icon": "waterworks:material_energy_adapter",
+    "icon": "waterworks:materials",
     "category": "uncategorized",
     "read_by_default":true,
     "pages": [
@@ -10,7 +10,7 @@
         },
         {
         	"type": "crafting",
-        	"recipe": "waterworks:material_energy_adapter"
+        	"recipe": "waterworks:item/materials_energy_adapter"
         }
     ]
 }

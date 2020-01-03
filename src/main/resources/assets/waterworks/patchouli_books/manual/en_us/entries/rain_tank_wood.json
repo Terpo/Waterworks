@@ -11,7 +11,7 @@
         },
         {
         	"type": "crafting",
-        	"recipe": "waterworks:rain_tank_wood"
+        	"recipe": "waterworks:block/rain_tank_wood"
         }
     ]
 }
