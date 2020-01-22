@@ -84,7 +84,10 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 
 	public EntityWeatherFireworkRocket(EntityType<?> entityType, World world, ItemStack itemStack,
 			LivingEntity entity) {
-		this(entityType, world, entity.posX, entity.posY, entity.posZ, itemStack);
+		this(entityType, world, entity.func_226277_ct_(), // entity.posX
+				entity.func_226278_cu_(), // entity.posY
+				entity.func_226281_cx_(), // entity.posZ
+				itemStack);
 		setBoostedEntity(entity);
 		this.boostedEntity = entity;
 	}
@@ -105,7 +108,10 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 			final ItemStack itemstack = getRocketItem();
 			final CompoundNBT compoundnbt = itemstack.isEmpty() ? null : itemstack.getChildTag(NBT_FIREWORKS);
 			final Vec3d vec3d = this.getMotion();
-			this.world.makeFireworks(this.posX, this.posY, this.posZ, vec3d.x, vec3d.y, vec3d.z, compoundnbt);
+			this.world.makeFireworks(this.func_226277_ct_(), // this.posX
+					this.func_226278_cu_(), // this.posY
+					this.func_226281_cx_(), // this.posZ
+					vec3d.x, vec3d.y, vec3d.z, compoundnbt);
 
 		}
 
@@ -126,9 +132,6 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 	 */
 	@Override
 	public void tick() { // NOSONAR
-		this.lastTickPosX = this.posX;
-		this.lastTickPosY = this.posY;
-		this.lastTickPosZ = this.posZ;
 		super.tick();
 		if (this.isAttachedToEntity()) {
 			if (this.boostedEntity == null) {
@@ -150,7 +153,9 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 							vec3d.z * 0.1D + (vec3d.z * 1.5D - vec3d1.z) * 0.5D));
 				}
 
-				this.setPosition(this.boostedEntity.posX, this.boostedEntity.posY, this.boostedEntity.posZ);
+				this.setPosition(this.boostedEntity.func_226277_ct_(), // boostedEntity.posX
+						this.boostedEntity.func_226278_cu_(), // boostedEntity.posY
+						this.boostedEntity.func_226281_cx_());// boostedEntity.posZ
 				this.setMotion(this.boostedEntity.getMotion());
 			}
 		} else {
@@ -194,7 +199,9 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 		this.rotationPitch = MathHelper.lerp(0.2F, this.prevRotationPitch, this.rotationPitch);
 		this.rotationYaw = MathHelper.lerp(0.2F, this.prevRotationYaw, this.rotationYaw);
 		if (this.fireworkAge == 0 && !this.isSilent()) {
-			this.world.playSound((PlayerEntity) null, this.posX, this.posY, this.posZ,
+			this.world.playSound((PlayerEntity) null, this.func_226277_ct_(), // this.posX
+					this.func_226278_cu_(), // this.posY
+					this.func_226281_cx_(), // this.posZ
 					SoundEvents.ENTITY_FIREWORK_ROCKET_LAUNCH, SoundCategory.AMBIENT, 3.0F, 1.0F);
 		}
 
@@ -204,7 +211,10 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 
 		++this.fireworkAge;
 		if (this.world.isRemote && this.fireworkAge % 2 < 2) {
-			this.world.addParticle(ParticleTypes.FIREWORK, this.posX, this.posY - 0.3D, this.posZ,
+			this.world.addParticle(ParticleTypes.FIREWORK, this.func_226277_ct_(), // this.posX
+					this.func_226278_cu_() // this.posY
+							- 0.3D,
+					this.func_226281_cx_(), // this.posZ
 					this.rand.nextGaussian() * 0.05D, -this.getMotion().y * 0.5D, this.rand.nextGaussian() * 0.05D);
 		}
 
@@ -252,7 +262,6 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 		float f = 0.0F;
 		final ItemStack itemstack = getRocketItem();
 		final CompoundNBT compoundnbt = itemstack.isEmpty() ? null : itemstack.getChildTag(NBT_FIREWORKS);
-
 		final ListNBT listnbt = compoundnbt != null ? compoundnbt.getList("Explosions", 10) : null;
 		if (listnbt != null && !listnbt.isEmpty()) {
 			f = 5.0F + listnbt.size() * 2;
@@ -264,7 +273,7 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 				this.boostedEntity.attackEntityFrom(DamageSource.FIREWORKS, 5.0F + listnbt.size() * 2);
 			}
 
-			final Vec3d vec3d = new Vec3d(this.posX, this.posY, this.posZ);
+			final Vec3d vec3d = this.getPositionVec();
 
 			for (final LivingEntity livingentity : this.world.getEntitiesWithinAABB(LivingEntity.class,
 					this.getBoundingBox().grow(5.0D))) {
@@ -272,8 +281,10 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 					boolean flag = false;
 
 					for (int i = 0; i < 2; ++i) {
-						final Vec3d vec3d1 = new Vec3d(livingentity.posX,
-								livingentity.posY + livingentity.getHeight() * 0.5D * i, livingentity.posZ);
+						final Vec3d vec3d1 = new Vec3d(livingentity.func_226277_ct_(), // livingentity.posX
+								livingentity.func_226283_e_(0.5D * i), // livingentity
+																		// posY + Height
+								livingentity.func_226281_cx_()); // livingentity.posZ
 						final RayTraceResult raytraceresult = this.world.rayTraceBlocks(new RayTraceContext(vec3d,
 								vec3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
 						if (raytraceresult.getType() == RayTraceResult.Type.MISS) {
