@@ -6,15 +6,15 @@ import java.util.List;
 import org.terpo.waterworks.api.constants.WaterworksReference;
 import org.terpo.waterworks.fluid.WaterworksTank;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.Rectangle2d;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -66,7 +66,7 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.minecraft.getTextureManager().bindTexture(this.gui);
 		this.blit(getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
 		drawTank(this.tankRectangle.getX(), this.tankRectangle.getWidth(), this.tankRectangle.getY(),
@@ -93,12 +93,12 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 			}
 
 			final int fillHeight = this.fluidTank.getFluidAmount() * tankSizeY / this.fluidTank.getCapacity();
-			final TextureAtlasSprite sprite = this.minecraft.getTextureMap().getSprite(this.waterResource);
-			this.minecraft.getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-			GlStateManager.color4f(this.colors[0], this.colors[1], this.colors[2], this.colors[3]);
+			this.minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
+			RenderSystem.color4f(this.colors[0], this.colors[1], this.colors[2], this.colors[3]);
 			AbstractGui.blit(getGuiLeft() + tankPosX, getGuiTop() + tankPosY + tankSizeY - fillHeight, 0, tankSizeX,
-					fillHeight, sprite);
-			GlStateManager.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+					fillHeight, Minecraft.getInstance().getTextureGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE)
+							.apply(this.waterResource));
+			RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 		}
 	}
 

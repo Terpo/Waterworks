@@ -22,6 +22,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -54,8 +55,8 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 	}
 
 	@Override
-	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand,
-			BlockRayTraceResult facing) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
+			Hand hand, BlockRayTraceResult facing) {
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainCollector) {
@@ -64,7 +65,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 				final Item item = heldItem.getItem();
 				if (item == WaterworksItems.itemPipeWrench) {
 					handleRightClickWithWrench(playerIn, collector);
-					return true;
+					return ActionResultType.SUCCESS;
 				}
 				if (collector.hasController()) {
 					final TileEntityRainCollectorController controller = collector.getController();
@@ -73,16 +74,16 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 							&& controller.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent()
 							&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, controller,
 									heldItem)) {
-						return true;
+						return ActionResultType.SUCCESS;
 					}
 
 					NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) controller,
 							controller.getPos());
-					return true;
+					return ActionResultType.SUCCESS;
 				}
 			}
 		}
-		return true;
+		return ActionResultType.SUCCESS;
 	}
 
 	protected static void handleRightClickWithWrench(PlayerEntity playerIn, final TileEntityRainCollector collector) {

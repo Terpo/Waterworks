@@ -16,6 +16,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -33,8 +34,8 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 	}
 
 	@Override
-	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand,
-			BlockRayTraceResult facing) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
+			Hand hand, BlockRayTraceResult facing) {
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainTankWood) {
@@ -43,14 +44,14 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 						&& tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).isPresent()
 						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity,
 								heldItem)) {
-					return true;
+					return ActionResultType.SUCCESS;
 				}
 				NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) tileEntity,
 						tileEntity.getPos());
-				return true;
+				return ActionResultType.SUCCESS;
 			}
 		}
-		return true;
+		return ActionResultType.SUCCESS;
 	}
 
 	@Nullable

@@ -4,18 +4,18 @@ import org.lwjgl.opengl.GL11;
 import org.terpo.waterworks.fluid.WaterworksTank;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidStack;
@@ -52,8 +52,9 @@ public class TileEntityWaterRenderer extends TileEntityRenderer<TileWaterworks> 
 			this.green = (c >> 8) & 0xFF;
 			this.red = (c >> 16) & 0xFF;
 			this.alphaValue = (c >> 24) & 0xFF;
-			final TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMap()
-					.getSprite(fluid.getAttributes().getStillTexture());
+			final TextureAtlasSprite sprite = Minecraft.getInstance()
+					.getTextureGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE)
+					.apply(fluid.getAttributes().getStillTexture());
 			this.diffU = this.maxU - this.minU;
 			this.diffV = this.maxV - this.minV;
 
@@ -74,12 +75,12 @@ public class TileEntityWaterRenderer extends TileEntityRenderer<TileWaterworks> 
 				final double endPos = 1 - startPos;
 				final double yStartOffset = 0.125;
 
-				GlStateManager.disableCull();
-				GlStateManager.disableLighting();
-				GlStateManager.enableBlend();
-				GlStateManager.enableAlphaTest();
-				GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-				Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+				RenderSystem.disableCull();
+				RenderSystem.disableLighting();
+				RenderSystem.enableBlend();
+				RenderSystem.enableAlphaTest();
+				RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+				Minecraft.getInstance().getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
 				final Tessellator tess = Tessellator.getInstance();
 				final BufferBuilder buffer = tess.getBuffer();
 
@@ -99,8 +100,8 @@ public class TileEntityWaterRenderer extends TileEntityRenderer<TileWaterworks> 
 						.endVertex();
 				tess.draw();
 
-				GlStateManager.disableBlend();
-				GlStateManager.enableLighting();
+				RenderSystem.disableBlend();
+				RenderSystem.enableLighting();
 			}
 		}
 	}

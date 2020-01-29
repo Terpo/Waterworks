@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -43,10 +44,9 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 		super();
 		this.setDefaultState(getDefaultState().with(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH));
 	}
-
 	@Override
-	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand,
-			BlockRayTraceResult facing) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
+			Hand hand, BlockRayTraceResult facing) {
 
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
@@ -54,20 +54,20 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				if (heldItem.getItem() == WaterworksItems.itemPipeWrench) {
 					turnPumpModel(worldIn, pos, state);
-					return true;
+					return ActionResultType.SUCCESS;
 				}
 				if (!heldItem.isEmpty() && !playerIn.isSneaking()
 						&& tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).isPresent()
 						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity,
 								heldItem)) {
-					return true;
+					return ActionResultType.SUCCESS;
 				}
 				NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) tileEntity,
 						tileEntity.getPos());
-				return true;
+				return ActionResultType.SUCCESS;
 			}
 		}
-		return true;
+		return ActionResultType.SUCCESS;
 	}
 
 	@Override
