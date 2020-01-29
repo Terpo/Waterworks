@@ -69,10 +69,10 @@ repositories {
 		name 'Hwyla mcp maven'
 		url = "https://tehnut.info/maven/" 
 	}
-	//maven { // TOP mcjty/
-    //    name 'tterrag maven'
-    //    url "https://maven.tterrag.com/"
-    //}
+	maven { // TOP mcjty/
+        name 'tterrag maven'
+        url "https://maven.tterrag.com/"
+    }
     maven { // Patchouli
     	url 'https://maven.blamejared.com' 
     }
@@ -86,17 +86,17 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 	
-	//compile fg.deobf(project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}") {
-    //        transitive = false
-    //})
-	
-	compile fg.deobf(project.dependencies.create("mcp.mobius.waila:Hwyla:${hwyla_version}") {
-       transitive = false
+	compile fg.deobf(project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}") {
+            transitive = false
     })
+	
+	//compile fg.deobf(project.dependencies.create("mcp.mobius.waila:Hwyla:${hwyla_version}") {
+    //   transitive = false
+    //})
 		
-    compile fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}") {
-        transitive = false
-    }
+    //compile fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}") {
+    //    transitive = false
+    //}
 	compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
 	runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
 }
