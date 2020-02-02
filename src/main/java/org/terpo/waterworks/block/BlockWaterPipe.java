@@ -33,27 +33,24 @@ public class BlockWaterPipe extends Block implements IWaterLoggable {
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape boundingBox = VoxelShapes.create(new AxisAlignedBB(.375, 0, .375, .625, 1, .625));
-	private static final VoxelShape collisionBox = VoxelShapes
-			.create(new AxisAlignedBB(.3125, 0, .3125, .7375, 1, .7375));
+	private static final VoxelShape collisionBox = VoxelShapes.create(new AxisAlignedBB(.3125, 0, .3125, .7375, 1, .7375));
 	public BlockWaterPipe() {
 		super(Block.Properties.create(Material.IRON).hardnessAndResistance(2F, 6.0F).sound(SoundType.METAL));
 		this.setDefaultState(this.stateContainer.getBaseState().with(WATERLOGGED, Boolean.FALSE));
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos,
-			ISelectionContext context) {
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) { // NOSONAR
 		return collisionBox;
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) { // NOSONAR
 		return boundingBox;
 	}
 
 	@Override
-	public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state,
-			@Nullable TileEntity te, ItemStack stack) {
+	public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
 		BlockPos newPos = pos;
 		while (true) {
 			newPos = newPos.up();
@@ -61,14 +58,12 @@ public class BlockWaterPipe extends Block implements IWaterLoggable {
 			if (block.equals(WaterworksBlocks.waterPipe)) {
 				continue;
 			}
-			if (block.equals(WaterworksBlocks.groundwaterPump)) {
-				if (block.hasTileEntity(state)) {
-					final TileEntity tE = worldIn.getTileEntity(newPos);
-					if (tE instanceof TileEntityGroundwaterPump) {
-						((TileEntityGroundwaterPump) tE).setStructureComplete(false);
-					}
-					break;
+			if (block.equals(WaterworksBlocks.groundwaterPump) && block.hasTileEntity(state)) {
+				final TileEntity tE = worldIn.getTileEntity(newPos);
+				if (tE instanceof TileEntityGroundwaterPump) {
+					((TileEntityGroundwaterPump) tE).setStructureComplete(false);
 				}
+				break;
 			}
 			break;
 
@@ -78,10 +73,8 @@ public class BlockWaterPipe extends Block implements IWaterLoggable {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED).booleanValue()
-				? Fluids.WATER.getStillFluidState(false)
-				: super.getFluidState(state);
+	public IFluidState getFluidState(BlockState state) { // NOSONAR
+		return state.get(WATERLOGGED).booleanValue() ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
 	@Override
@@ -95,14 +88,13 @@ public class BlockWaterPipe extends Block implements IWaterLoggable {
 	}
 
 	public BlockState getBlockStateForPlacement(World world, BlockPos pos) {
-		return this.getDefaultState().with(WATERLOGGED,
-				Boolean.valueOf(world.getFluidState(pos).getFluid() == Fluids.WATER));
+		return this.getDefaultState().with(WATERLOGGED, Boolean.valueOf(world.getFluidState(pos).getFluid() == Fluids.WATER));
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn,
-			BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, // NOSONAR
+			BlockPos facingPos) {
 		if (stateIn.get(WATERLOGGED).booleanValue()) {
 			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
 		}

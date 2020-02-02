@@ -43,8 +43,7 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 	}
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip,
-			ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		tooltip.add(new TranslationTextComponent("tooltip.rain_collector_controller"));
 	}
@@ -55,7 +54,7 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, // NOSONAR
 			Hand hand, BlockRayTraceResult facing) {
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
@@ -63,20 +62,17 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				if (heldItem.getItem() == WaterworksItems.itemPipeWrench) {
 					final int collectors = ((TileEntityRainCollectorController) tileEntity).findRainCollectors();
-					playerIn.sendMessage(
-							new TranslationTextComponent("block.waterworks.rain_collector_controller.controllers",
-									Integer.valueOf((collectors - 1))));
+					playerIn.sendMessage(new TranslationTextComponent("block.waterworks.rain_collector_controller.controllers",
+							Integer.valueOf((collectors - 1))));
 					return ActionResultType.SUCCESS;
 				}
 				if (!heldItem.isEmpty() && !playerIn.isShiftKeyDown()
 						&& tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent()
-						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity,
-								heldItem)) {
+						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity, heldItem)) {
 					return ActionResultType.SUCCESS;
 
 				}
-				NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) tileEntity,
-						tileEntity.getPos());
+				NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) tileEntity, tileEntity.getPos());
 				return ActionResultType.SUCCESS;
 			}
 		}
@@ -87,8 +83,7 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 	public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		final TileEntity tileEntity = getTileEntity(world, pos);
 		if (tileEntity != null) {
-			final LazyOptional<IItemHandler> capability = tileEntity
-					.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			final LazyOptional<IItemHandler> capability = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			capability.ifPresent(handler -> WaterworksInventoryHelper.dropItemsFromInventory(world, pos, handler));
 		}
 		if (tileEntity instanceof TileEntityRainCollectorController) {
@@ -117,14 +112,15 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 	}
 
 	@Override
-	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world,
-			BlockState blockState, IProbeHitData data) {
+	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState,
+			IProbeHitData data) {
 		if (player.isShiftKeyDown()) {
 			final TileEntity te = world.getTileEntity(data.getPos());
 			if (te instanceof TileEntityRainCollectorController) {
 				final TileEntityRainCollectorController tile = (TileEntityRainCollectorController) te;
-				probeInfo.horizontal().text(new TranslationTextComponent("tooltip.collectors",
-						Integer.valueOf(tile.getConnectedCollectors())).getFormattedText());
+				probeInfo.horizontal()
+						.text(new TranslationTextComponent("tooltip.collectors", Integer.valueOf(tile.getConnectedCollectors()))
+								.getFormattedText());
 			}
 		}
 	}

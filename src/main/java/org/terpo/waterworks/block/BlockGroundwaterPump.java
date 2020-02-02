@@ -45,7 +45,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 		this.setDefaultState(getDefaultState().with(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH));
 	}
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, // NOSONAR
 			Hand hand, BlockRayTraceResult facing) {
 
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
@@ -58,12 +58,10 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 				}
 				if (!heldItem.isEmpty() && !playerIn.isShiftKeyDown()
 						&& tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).isPresent()
-						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity,
-								heldItem)) {
+						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity, heldItem)) {
 					return ActionResultType.SUCCESS;
 				}
-				NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) tileEntity,
-						tileEntity.getPos());
+				NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) tileEntity, tileEntity.getPos());
 				return ActionResultType.SUCCESS;
 			}
 		}
@@ -72,8 +70,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(BlockStateProperties.HORIZONTAL_FACING,
-				context.getPlacementHorizontalFacing());
+		return this.getDefaultState().with(BlockStateProperties.HORIZONTAL_FACING, context.getPlacementHorizontalFacing());
 	}
 
 	@Override
@@ -87,12 +84,12 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride(BlockState bs) {
+	public boolean hasComparatorInputOverride(BlockState bs) { // NOSONAR
 		return true;
 	}
 
 	@Override
-	public int getComparatorInputOverride(BlockState bs, World world, BlockPos pos) {
+	public int getComparatorInputOverride(BlockState bs, World world, BlockPos pos) { // NOSONAR
 		final TileEntity te = getTileEntity(world, pos);
 		if (te instanceof TileEntityGroundwaterPump) {
 			return getTileEntity(world, pos).getComparatorOutput();
@@ -104,8 +101,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 	public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		final TileEntity tileEntity = getTileEntity(world, pos);
 		if (tileEntity instanceof TileWaterworks) {
-			final LazyOptional<IItemHandler> capability = tileEntity
-					.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			final LazyOptional<IItemHandler> capability = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			capability.ifPresent(handler -> WaterworksInventoryHelper.dropItemsFromInventory(world, pos, handler));
 		}
 		BlockGroundwaterPump.breakPipes(world, pos);
@@ -151,8 +147,8 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 
 	// ModelTurning
 	private static void turnPumpModel(World worldIn, BlockPos pos, BlockState state) {
-		worldIn.setBlockState(pos, state.with(BlockStateProperties.HORIZONTAL_FACING,
-				state.get(BlockStateProperties.HORIZONTAL_FACING).rotateY()), 2);
+		worldIn.setBlockState(pos,
+				state.with(BlockStateProperties.HORIZONTAL_FACING, state.get(BlockStateProperties.HORIZONTAL_FACING).rotateY()), 2);
 	}
 
 	@Override

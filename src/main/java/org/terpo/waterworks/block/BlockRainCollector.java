@@ -43,8 +43,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip,
-			ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		tooltip.add(new TranslationTextComponent("tooltip.rain_collector"));
 	}
@@ -55,7 +54,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, // NOSONAR
 			Hand hand, BlockRayTraceResult facing) {
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
@@ -72,13 +71,11 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 
 					if (!heldItem.isEmpty() && !playerIn.isShiftKeyDown()
 							&& controller.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent()
-							&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, controller,
-									heldItem)) {
+							&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, controller, heldItem)) {
 						return ActionResultType.SUCCESS;
 					}
 
-					NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) controller,
-							controller.getPos());
+					NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) controller, controller.getPos());
 					return ActionResultType.SUCCESS;
 				}
 			}
@@ -90,9 +87,8 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 		ITextComponent out;
 		if (collector.hasController()) {
 			final BlockPos controllerPos = collector.getController().getPos();
-			out = new TranslationTextComponent("block.waterworks.rain_collector.has_controller",
-					Integer.valueOf(controllerPos.getX()), Integer.valueOf(controllerPos.getY()),
-					Integer.valueOf(controllerPos.getZ()));
+			out = new TranslationTextComponent("block.waterworks.rain_collector.has_controller", Integer.valueOf(controllerPos.getX()),
+					Integer.valueOf(controllerPos.getY()), Integer.valueOf(controllerPos.getZ()));
 		} else {
 			out = new TranslationTextComponent("block.waterworks.rain_collector.no_controller");
 		}
@@ -130,8 +126,8 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 	}
 
 	@Override
-	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world,
-			BlockState blockState, IProbeHitData data) {
+	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState,
+			IProbeHitData data) {
 		if (player.isShiftKeyDown()) {
 			final TileEntity te = world.getTileEntity(data.getPos());
 			if (te instanceof TileEntityRainCollector) {

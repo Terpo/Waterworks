@@ -12,18 +12,17 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class InitTileEntities {
 	public static void register(IForgeRegistry<TileEntityType<?>> registry) {
-		registry.register(TileEntityType.Builder.create(TileEntityRainTankWood::new, WaterworksBlocks.rainTankWood)
-				.build(null)
+		registry.register(TileEntityType.Builder.create(TileEntityRainTankWood::new, WaterworksBlocks.rainTankWood)//
+				.build(null) // NOSONAR
 				.setRegistryName(WaterworksReference.MODID, WaterworksRegistryNames.TILE_ENTITY_RAIN_TANK_WOOD));
-		registry.register(TileEntityType.Builder
-				.create(TileEntityRainCollectorController::new, WaterworksBlocks.rainCollectorController).build(null)
-				.setRegistryName(WaterworksReference.MODID,
-						WaterworksRegistryNames.TILE_ENTITY_RAIN_COLLECTOR_CONTROLLER));
-		registry.register(TileEntityType.Builder.create(TileEntityRainCollector::new, WaterworksBlocks.rainCollector)
-				.build(null)
+		registry.register(TileEntityType.Builder.create(TileEntityRainCollectorController::new, WaterworksBlocks.rainCollectorController)//
+				.build(null) // NOSONAR
+				.setRegistryName(WaterworksReference.MODID, WaterworksRegistryNames.TILE_ENTITY_RAIN_COLLECTOR_CONTROLLER));
+		registry.register(TileEntityType.Builder.create(TileEntityRainCollector::new, WaterworksBlocks.rainCollector)//
+				.build(null) // NOSONAR
 				.setRegistryName(WaterworksReference.MODID, WaterworksRegistryNames.TILE_ENTITY_RAIN_COLLECTOR));
-		registry.register(TileEntityType.Builder
-				.create(TileEntityGroundwaterPump::new, WaterworksBlocks.groundwaterPump).build(null)
+		registry.register(TileEntityType.Builder.create(TileEntityGroundwaterPump::new, WaterworksBlocks.groundwaterPump)//
+				.build(null) // NOSONAR
 				.setRegistryName(WaterworksReference.MODID, WaterworksRegistryNames.TILE_ENTITY_GROUNDWATER_PUMP));
 	}
 

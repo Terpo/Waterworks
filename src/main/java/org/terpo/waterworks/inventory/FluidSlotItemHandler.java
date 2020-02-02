@@ -13,8 +13,7 @@ public class FluidSlotItemHandler extends SlotItemHandler {
 	private final int index;
 
 	private SlotDefinition slotDefinition = null;
-	public FluidSlotItemHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition,
-			SlotDefinition slotDefinition) {
+	public FluidSlotItemHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition, SlotDefinition slotDefinition) {
 		super(itemHandler, index, xPosition, yPosition);
 		this.index = index;
 		this.slotDefinition = slotDefinition;
@@ -32,8 +31,7 @@ public class FluidSlotItemHandler extends SlotItemHandler {
 	}
 
 	protected boolean isFilteredItemValid(ItemStack stack) {
-		return (stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent()
-				|| additionalFilters(stack));
+		return (stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent() || additionalFilters(stack));
 	}
 
 	@SuppressWarnings({"static-method", "unused"})
@@ -42,7 +40,7 @@ public class FluidSlotItemHandler extends SlotItemHandler {
 	}
 
 	protected boolean isSlotValid() {
-		return !(this.slotDefinition == SlotDefinition.O);
+		return this.slotDefinition != SlotDefinition.O;
 	}
 
 	@Override
