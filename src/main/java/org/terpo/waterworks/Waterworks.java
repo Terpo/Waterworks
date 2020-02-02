@@ -80,11 +80,11 @@ public class Waterworks {
 		LOGGER.info("Waterworks Setup complete");
 	}
 
-	private void doClientStuff(final FMLClientSetupEvent event) {
+	private void doClientStuff(@SuppressWarnings("unused") final FMLClientSetupEvent event) { // NOSONAR
 		LOGGER.info("Waterworks Client Setup");
 	}
 
-	private void enqueueIMC(final InterModEnqueueEvent event) {
+	private void enqueueIMC(@SuppressWarnings("unused") final InterModEnqueueEvent event) {// NOSONAR
 		LOGGER.info("Waterworks IMC to other mods");
 		TOPCompatibility.register();
 

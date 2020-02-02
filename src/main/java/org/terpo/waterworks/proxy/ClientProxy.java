@@ -6,7 +6,7 @@ import org.terpo.waterworks.gui.RainCollectorControllerContainerScreen;
 import org.terpo.waterworks.gui.pump.PumpContainerScreen;
 import org.terpo.waterworks.init.WaterworksContainers;
 import org.terpo.waterworks.init.WaterworksEntities;
-import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
+import org.terpo.waterworks.init.WaterworksTileEntities;
 import org.terpo.waterworks.tileentity.specialrenderer.TileEntityWaterRenderer;
 
 import net.minecraft.client.Minecraft;
@@ -52,6 +52,6 @@ public class ClientProxy implements IProxy {
 				RenderWeatherFireworkRocket::new);
 
 		// TESR
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRainTankWood.class, new TileEntityWaterRenderer());
+		ClientRegistry.bindTileEntityRenderer(WaterworksTileEntities.rainTankWood, TileEntityWaterRenderer::new);
 	}
 }

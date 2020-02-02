@@ -61,7 +61,7 @@ public class ItemWaterworksDebugger extends Item {
 		if (!context.getWorld().isRemote) {
 			final TileEntity tileEntity = context.getWorld().getTileEntity(context.getPos());
 			final ItemStack stack = context.getItem();
-			if (tileEntity != null && context.isPlacerSneaking() && !stack.isEmpty()) {
+			if (tileEntity != null && context.getPlayer().isSteppingCarefully() && !stack.isEmpty()) {
 				final CompoundNBT tag = stack.getTag();
 				final boolean energyMode = (tag != null && tag.contains(ItemWaterworksDebugger.ENERGY_MODE)
 						&& tag.getBoolean(ItemWaterworksDebugger.ENERGY_MODE));
@@ -108,7 +108,7 @@ public class ItemWaterworksDebugger extends Item {
 			if (!stack.isEmpty()) {
 				final CompoundNBT tag = stack.getOrCreateTag();
 
-				if (playerIn.isSneaking()) {
+				if (playerIn.isShiftKeyDown()) {
 					if (tag.contains(ItemWaterworksDebugger.DRAIN_MODE)) {
 						tag.putBoolean(ItemWaterworksDebugger.DRAIN_MODE,
 								!tag.getBoolean(ItemWaterworksDebugger.DRAIN_MODE));

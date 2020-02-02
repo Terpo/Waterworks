@@ -34,20 +34,18 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn,
-			Hand hand, BlockRayTraceResult facing) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand,
+			BlockRayTraceResult facing) {
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainTankWood) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (!heldItem.isEmpty() && !playerIn.isSneaking()
+				if (!heldItem.isEmpty() && !playerIn.isShiftKeyDown()
 						&& tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).isPresent()
-						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity,
-								heldItem)) {
+						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity, heldItem)) {
 					return ActionResultType.SUCCESS;
 				}
-				NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) tileEntity,
-						tileEntity.getPos());
+				NetworkHooks.openGui((ServerPlayerEntity) playerIn, (INamedContainerProvider) tileEntity, tileEntity.getPos());
 				return ActionResultType.SUCCESS;
 			}
 		}
@@ -80,12 +78,10 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 	}
 
 	@Override
-	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te,
-			ItemStack stack) {
+	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te, ItemStack stack) {
 		final TileEntity tileEntity = getTileEntity(world, pos);
 		if (tileEntity instanceof TileWaterworks) {
-			final LazyOptional<IItemHandler> capability = tileEntity
-					.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			final LazyOptional<IItemHandler> capability = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			capability.ifPresent(handler -> WaterworksInventoryHelper.dropItemsFromInventory(world, pos, handler));
 		}
 		super.harvestBlock(world, player, pos, state, te, stack);
@@ -99,5 +95,4 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 		}
 		return null;
 	}
-
 }

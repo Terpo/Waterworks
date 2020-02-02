@@ -56,7 +56,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 					turnPumpModel(worldIn, pos, state);
 					return ActionResultType.SUCCESS;
 				}
-				if (!heldItem.isEmpty() && !playerIn.isSneaking()
+				if (!heldItem.isEmpty() && !playerIn.isShiftKeyDown()
 						&& tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).isPresent()
 						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity,
 								heldItem)) {

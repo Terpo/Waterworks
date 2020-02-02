@@ -49,10 +49,11 @@ public class WaterworksConfig {
 		//
 	}
 
-	@SubscribeEvent
-	public static void onReload(@SuppressWarnings("unused") final ModConfig.ConfigReloading configEvent) {
-		//
-	}
+	// TODO reload event
+//	@SubscribeEvent
+//	public static void onReload(@SuppressWarnings("unused") final ModConfig.ConfigReloading configEvent) {
+//		//
+//	}
 
 	static int get(ForgeConfigSpec.IntValue value) {
 		return value.get().intValue();

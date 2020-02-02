@@ -360,6 +360,16 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 		}
 	}
 
+	@Override
+	public boolean equals(Object entity) {
+		return super.equals(entity);
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
 	/**
 	 * Override this methods to use your own registry fields
 	 *
