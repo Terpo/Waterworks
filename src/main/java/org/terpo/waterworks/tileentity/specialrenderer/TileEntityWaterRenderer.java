@@ -1,19 +1,17 @@
 package org.terpo.waterworks.tileentity.specialrenderer;
 
-import org.lwjgl.opengl.GL11;
 import org.terpo.waterworks.fluid.WaterworksTank;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
-import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,85 +22,81 @@ public class TileEntityWaterRenderer extends TileEntityRenderer<TileWaterworks> 
 	int blue;
 	int green;
 	int red;
-	int alphaValue;
+	int alpha;
 	int lightx;
 	int lighty;
-	double minU;
-	double minV;
-	double maxU;
-	double maxV;
-	double diffU;
-	double diffV;
+	float minU;
+	float minV;
+	float maxU;
+	float maxV;
+	float diffU;
+	float diffV;
 
-	public TileEntityWaterRenderer() {
-		super();
+	// model related for drawing in the inner area
+	static final float START_POS = 0.0625f;
+	static final float END_POS = 1 - START_POS;
+	static final float Y_START_OFFSET = 0.125f;
+
+	public TileEntityWaterRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
+		super(rendererDispatcherIn);
 	}
 
 	@Override
-	public void render(TileWaterworks te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileWaterworks te, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight,
+			int combinedOverlay) {
+
 		final WaterworksTank tank = te.getFluidTank();
 		final int amount = tank.getFluidAmount();
-		final int capacity = tank.getCapacity();
-		final FluidStack fluidStack = tank.getFluid();
-		final Fluid fluid = fluidStack.getFluid();
 
-		if (fluid != null) {
-			final int c = fluid.getAttributes().getColor();
-			this.blue = c & 0xFF;
-			this.green = (c >> 8) & 0xFF;
-			this.red = (c >> 16) & 0xFF;
-			this.alphaValue = (c >> 24) & 0xFF;
-			final TextureAtlasSprite sprite = Minecraft.getInstance()
-					.getTextureGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE)
-					.apply(fluid.getAttributes().getStillTexture());
-			this.diffU = this.maxU - this.minU;
-			this.diffV = this.maxV - this.minV;
+		if (amount > 0) {
+			final int capacity = tank.getCapacity();
+			final FluidStack fluidStack = tank.getFluid();
+			final Fluid fluid = fluidStack.getFluid();
 
-			if (sprite != null) {
-				final double multiplier = 0.25;
-				this.minU = sprite.getMinU() + this.diffU * multiplier;
-				this.maxU = sprite.getMaxU() - this.diffU * multiplier;
-				this.minV = sprite.getMinV() + this.diffV * multiplier;
-				this.maxV = sprite.getMaxV() - this.diffV * multiplier;
+			if (fluid != null) {
 
-				// pos.up is really important here, otherwise the lighing is broken
-				final int i = getWorld().getCombinedLight(te.getPos().up(), fluid.getAttributes().getLuminosity());
-				this.lightx = i >> 0x10 & 0xFFFF;
-				this.lighty = i & 0xFFFF;
+				@SuppressWarnings("resource")
+				final TextureAtlasSprite sprite = Minecraft.getInstance().getTextureGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE)
+						.apply(fluid.getAttributes().getStillTexture());
+				final IVertexBuilder builder = buffer.getBuffer(RenderType.translucent());
 
-				final double yFilled = 0.8125 * (amount / (double) capacity);
-				final double startPos = 0.0625;
-				final double endPos = 1 - startPos;
-				final double yStartOffset = 0.125;
+				final int color = fluid.getAttributes().getColor();
+				this.blue = color & 0xFF;
+				this.green = (color >> 8) & 0xFF;
+				this.red = (color >> 16) & 0xFF;
+				this.alpha = (color >> 24) & 0xFF;
 
-				RenderSystem.disableCull();
-				RenderSystem.disableLighting();
-				RenderSystem.enableBlend();
-				RenderSystem.enableAlphaTest();
-				RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-				Minecraft.getInstance().getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
-				final Tessellator tess = Tessellator.getInstance();
-				final BufferBuilder buffer = tess.getBuffer();
+				if (sprite != null) {
+					this.minU = sprite.getMinU();
+					this.maxU = sprite.getMaxU();
+					this.minV = sprite.getMinV();
+					this.maxV = sprite.getMaxV();
 
-				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
+					final float yFilled = 0.8125f * (amount / (float) capacity);
 
-				buffer.pos(x + startPos, y + yStartOffset + yFilled, z + startPos).tex(this.minU, this.minV)
-						.lightmap(this.lightx, this.lighty).color(this.red, this.green, this.blue, this.alphaValue)
-						.endVertex();
-				buffer.pos(x + endPos, y + yStartOffset + yFilled, z + startPos).tex(this.maxU, this.minV)
-						.lightmap(this.lightx, this.lighty).color(this.red, this.green, this.blue, this.alphaValue)
-						.endVertex();
-				buffer.pos(x + endPos, y + yStartOffset + yFilled, z + endPos).tex(this.maxU, this.maxV)
-						.lightmap(this.lightx, this.lighty).color(this.red, this.green, this.blue, this.alphaValue)
-						.endVertex();
-				buffer.pos(x + startPos, y + yStartOffset + yFilled, z + endPos).tex(this.minU, this.maxV)
-						.lightmap(this.lightx, this.lighty).color(this.red, this.green, this.blue, this.alphaValue)
-						.endVertex();
-				tess.draw();
+					final float yHeight = Y_START_OFFSET + yFilled;
+					matrixStack.push();
 
-				RenderSystem.disableBlend();
-				RenderSystem.enableLighting();
+					// default uv drawing is 0,0 -> 1,0 -> 1,1 -> 0,1
+					// but then our texture is only visible from below
+					// so we turn it around by changing the coordinates to 0,1 -> 1,1 -> 1,0 -> 0,0
+					add(builder, matrixStack, START_POS, yHeight, END_POS, this.minU, this.maxV); // bottom left
+					add(builder, matrixStack, END_POS, yHeight, END_POS, this.maxU, this.maxV); // bottom right
+					add(builder, matrixStack, END_POS, yHeight, START_POS, this.maxU, this.minV); // top right
+					add(builder, matrixStack, START_POS, yHeight, START_POS, this.minU, this.minV); // top left
+
+					matrixStack.pop();
+				}
+
 			}
 		}
+	}
+
+	private void add(IVertexBuilder vertexBuilder, MatrixStack matrixStack, float x, float y, float z, float u, float v) {
+		vertexBuilder.pos(matrixStack.getLast().getPositionMatrix(), x, y, z) //
+				.color(this.red, this.green, this.blue, this.alpha).tex(u, v) //
+				.lightmap(0, 240) // simply make the fluid visible
+				.normal(1, 0, 0) //
+				.endVertex();
 	}
 }
