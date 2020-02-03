@@ -2,9 +2,9 @@ package org.terpo.waterworks.item;
 
 import java.util.List;
 
-import org.terpo.waterworks.Waterworks;
+import org.terpo.waterworks.Config;
 import org.terpo.waterworks.entity.item.EntityFireworkRocketRain;
-import org.terpo.waterworks.init.WaterworksConfig;
+import org.terpo.waterworks.setup.CommonSetup;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +26,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ItemFireworkRain extends FireworkRocketItem {
 
 	public ItemFireworkRain() {
-		super((new Item.Properties()).group(Waterworks.CREATIVE_TAB));
+		super((new Item.Properties()).group(CommonSetup.CREATIVE_TAB));
 	}
 
 	@Override
@@ -76,9 +76,9 @@ public class ItemFireworkRain extends FireworkRocketItem {
 				final int multi = nbttagcompound.getInt("RAIN");
 				tooltip.add(new TranslationTextComponent("tooltip.rain_rocket.bad_weather"));
 				tooltip.add(new TranslationTextComponent("tooltip.rain_rocket.rain_duration")
-						.appendText(": " + multi + "/" + WaterworksConfig.rockets.getRainMaxMultiplier()));
+						.appendText(": " + multi + "/" + Config.rockets.getRainMaxMultiplier()));
 				tooltip.add(new TranslationTextComponent("tooltip.rain_rocket.rain_duration")
-						.appendText(": " + (WaterworksConfig.rockets.getRainDuration() * multi) + " ticks"));
+						.appendText(": " + (Config.rockets.getRainDuration() * multi) + " ticks"));
 			}
 		}
 	}

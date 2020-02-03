@@ -1,6 +1,6 @@
 package org.terpo.waterworks.network;
 
-import org.terpo.waterworks.api.constants.WaterworksReference;
+import org.terpo.waterworks.api.constants.Reference;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -15,7 +15,7 @@ public class WaterworksPacketHandler {
 
 	private static final String PROTOCOL_VERSION = "1";
 	public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-			new ResourceLocation(WaterworksReference.MODID, WaterworksReference.NETWORK), () -> PROTOCOL_VERSION,
+			new ResourceLocation(Reference.MODID, Reference.NETWORK), () -> PROTOCOL_VERSION,
 			PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 
 	private WaterworksPacketHandler() {

@@ -1,6 +1,6 @@
 package org.terpo.waterworks.tileentity;
 
-import org.terpo.waterworks.init.WaterworksTileEntities;
+import org.terpo.waterworks.setup.Registration;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -16,7 +16,7 @@ public class TileEntityRainCollector extends BaseTileEntity {
 	private TileEntityRainCollectorController controller = null;
 	private BlockPos controllerPosition = null;
 	public TileEntityRainCollector() {
-		super(WaterworksTileEntities.rainCollector);
+		super(Registration.rainCollectorTile.get());
 	}
 
 	public boolean hasController() {

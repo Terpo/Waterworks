@@ -7,16 +7,15 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.terpo.waterworks.Config;
 import org.terpo.waterworks.block.BlockWaterPipe;
 import org.terpo.waterworks.energy.WaterworksBattery;
 import org.terpo.waterworks.gui.pump.PumpContainer;
 import org.terpo.waterworks.helper.GeneralItemStackHandler;
 import org.terpo.waterworks.helper.PumpItemStackHandler;
-import org.terpo.waterworks.init.WaterworksBlocks;
-import org.terpo.waterworks.init.WaterworksConfig;
-import org.terpo.waterworks.init.WaterworksTileEntities;
 import org.terpo.waterworks.network.PumpPacket;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
+import org.terpo.waterworks.setup.Registration;
 
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
@@ -61,13 +60,13 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	private int energyUsage;
 
 	public TileEntityGroundwaterPump() {
-		this(WaterworksConfig.pump.getGroundwaterPumpFillrate(), WaterworksConfig.pump.getGroundwaterPumpCapacity());
+		this(Config.pump.getGroundwaterPumpFillrate(), Config.pump.getGroundwaterPumpCapacity());
 	}
 	public TileEntityGroundwaterPump(int fillrate, int capacity) {
-		super(WaterworksTileEntities.groundwaterPump, PUMP_INVENTORY_SLOTS, capacity);
+		super(Registration.groundwaterPumpTile.get(), PUMP_INVENTORY_SLOTS, capacity);
 
-		this.energyUsage = WaterworksConfig.pump.getGroundwaterPumpEnergyBaseUsage()
-				+ WaterworksConfig.pump.getGroundwaterPumpEnergyPipeMultiplier() * this.pipeCounter;
+		this.energyUsage = Config.pump.getGroundwaterPumpEnergyBaseUsage()
+				+ Config.pump.getGroundwaterPumpEnergyPipeMultiplier() * this.pipeCounter;
 
 		this.resourceWater = new FluidStack(Fluids.WATER, fillrate);
 	}
@@ -88,8 +87,8 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	}
 
 	protected WaterworksBattery createBattery() {
-		return new WaterworksBattery(WaterworksConfig.pump.getGroundwaterPumpEnergyCapacity(),
-				WaterworksConfig.pump.getGroundwaterPumpEnergyInput(), 0, this);
+		return new WaterworksBattery(Config.pump.getGroundwaterPumpEnergyCapacity(),
+				Config.pump.getGroundwaterPumpEnergyInput(), 0, this);
 	}
 
 	@Override
@@ -125,11 +124,10 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		final WaterworksBattery waterworksBattery = this.battery.orElseGet(this::createBattery);
 		if (waterworksBattery != null && waterworksBattery.getEnergyStored() >= this.energyUsage) {
 			final int filled = getFluidTank().fillInternal(this.resourceWater, FluidAction.EXECUTE);
-			if (filled == WaterworksConfig.pump.getGroundwaterPumpFillrate()) {
+			if (filled == Config.pump.getGroundwaterPumpFillrate()) {
 				return waterworksBattery.extractInternal(this.energyUsage, false) > 0;
 			} else if (filled > 0) {
-				final int energy = this.energyUsage
-						* Math.round(((float) filled) / WaterworksConfig.pump.getGroundwaterPumpFillrate());
+				final int energy = this.energyUsage * Math.round(((float) filled) / Config.pump.getGroundwaterPumpFillrate());
 				return waterworksBattery.extractInternal(energy, false) > 0;
 			}
 		}
@@ -151,23 +149,23 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 			final BlockPos currentPos = new BlockPos(x, y, z);
 			final BlockState state = this.world.getBlockState(currentPos);
 			final Block block = state.getBlock();
-			if (block.equals(WaterworksBlocks.waterPipe)) {
+			if (block instanceof BlockWaterPipe) {
 				count++;
 				y--;
 				if (y >= 0) {
 					continue;
 				}
 			}
-			if (bedrocks.contains(block) || (!WaterworksConfig.pump.getGroundwaterPumpCheckBedrock() && y < 0)) {
+			if (bedrocks.contains(block) || (!Config.pump.getGroundwaterPumpCheckBedrock() && y < 0)) {
 				this.structureComplete = true;
 				this.pipeCounter = count;
-				this.energyUsage = WaterworksConfig.pump.getGroundwaterPumpEnergyBaseUsage()
-						+ WaterworksConfig.pump.getGroundwaterPumpEnergyPipeMultiplier() * this.pipeCounter;
+				this.energyUsage = Config.pump.getGroundwaterPumpEnergyBaseUsage()
+						+ Config.pump.getGroundwaterPumpEnergyPipeMultiplier() * this.pipeCounter;
 				return;
 			} else if ((block instanceof AirBlock || block == Blocks.WATER)
-					&& internalBattery.hasEnoughEnergy(WaterworksConfig.pump.getGroundwaterPumpEnergyPipePlacement())
+					&& internalBattery.hasEnoughEnergy(Config.pump.getGroundwaterPumpEnergyPipePlacement())
 					&& placePipe(currentPos, handler)) {
-				internalBattery.extractInternal(WaterworksConfig.pump.getGroundwaterPumpEnergyPipePlacement(), false);
+				internalBattery.extractInternal(Config.pump.getGroundwaterPumpEnergyPipePlacement(), false);
 				break;
 			}
 			this.structureComplete = false;
@@ -179,10 +177,9 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	private boolean placePipe(BlockPos currentPos, ItemStackHandler handler) {
 		final HashMap<ItemStack, Integer> stacks = getPipeStacks(handler);
 		if (!stacks.isEmpty()) {
+			final BlockWaterPipe pipe = Registration.waterPipeBlock.get();
 			stacks.forEach((stack, slot) -> {
-				if (WaterworksBlocks.waterPipe != null && this.world.setBlockState(currentPos,
-						((BlockWaterPipe) WaterworksBlocks.waterPipe).getBlockStateForPlacement(this.world, currentPos),
-						2)) {
+				if (pipe != null && this.world.setBlockState(currentPos, pipe.getBlockStateForPlacement(this.world, currentPos), 2)) {
 					if (stack.getCount() > 1) {
 						stack.shrink(1);
 					} else {

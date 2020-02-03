@@ -2,9 +2,8 @@ package org.terpo.waterworks.compat.jei;
 
 import java.util.HashMap;
 
-import org.terpo.waterworks.init.WaterworksBlocks;
-import org.terpo.waterworks.init.WaterworksConfig;
-import org.terpo.waterworks.init.WaterworksItems;
+import org.terpo.waterworks.Config;
+import org.terpo.waterworks.setup.Registration;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -20,30 +19,30 @@ public class JEIDescription {
 		JEIDescription.registry = modRegistry;
 
 		final HashMap<Object, String> descriptionMap = new HashMap<>();
-		if (WaterworksConfig.pump.getGroundwaterPumpDescription()) {
-			descriptionMap.put(WaterworksBlocks.groundwaterPump, "tile.groundwater_pump.description");
-			descriptionMap.put(WaterworksBlocks.waterPipe, "tile.water_pipe.description");
+		if (Config.pump.getGroundwaterPumpDescription()) {
+			descriptionMap.put(Registration.groundwaterPumpBlock, "tile.groundwater_pump.description");
+			descriptionMap.put(Registration.waterPipeBlock, "tile.water_pipe.description");
 		}
-		if (WaterworksConfig.rainCollection.getRainCollectorDescription()) {
-			descriptionMap.put(WaterworksBlocks.rainCollector, "tile.rain_collector.description");
-			descriptionMap.put(WaterworksBlocks.rainCollectorController, "tile.rain_collector_controller.description");
+		if (Config.rainCollection.getRainCollectorDescription()) {
+			descriptionMap.put(Registration.rainCollectorBlock, "tile.rain_collector.description");
+			descriptionMap.put(Registration.rainCollectorControllerBlock, "tile.rain_collector_controller.description");
 		}
-		if (WaterworksConfig.rainCollection.getWoodenRainTankDescription()) {
-			descriptionMap.put(WaterworksBlocks.rainTankWood, "tile.rain_tank_wood.description");
-		}
-
-		if (WaterworksConfig.rockets.getFireworkRocketsDescription()) {
-			descriptionMap.put(WaterworksItems.itemFireworkRain, "item.firework_rain.description");
-			descriptionMap.put(WaterworksItems.itemFireworkAntiRain, "item.firework_anti_rain.description");
+		if (Config.rainCollection.getWoodenRainTankDescription()) {
+			descriptionMap.put(Registration.rainTankWoodBlock, "tile.rain_tank_wood.description");
 		}
 
-		if (WaterworksConfig.rainCollection.getWrenchDescription()) {
-			descriptionMap.put(WaterworksItems.itemPipeWrench, "item.pipe_wrench.description");
+		if (Config.rockets.getFireworkRocketsDescription()) {
+			descriptionMap.put(Registration.itemFireworkRain, "item.firework_rain.description");
+			descriptionMap.put(Registration.itemFireworkAntiRain, "item.firework_anti_rain.description");
 		}
-		if (WaterworksConfig.rockets.getFireworkChargeDescription()) {
+
+		if (Config.rainCollection.getWrenchDescription()) {
+			descriptionMap.put(Registration.itemPipeWrench, "item.pipe_wrench.description");
+		}
+		if (Config.rockets.getFireworkChargeDescription()) {
 			descriptionMap.put(Items.FIREWORK_STAR, "item.firework_charge.description");
 		}
-		if (WaterworksConfig.rockets.getFireworksDescription()) {
+		if (Config.rockets.getFireworksDescription()) {
 			descriptionMap.put(Items.FIREWORK_ROCKET, "item.fireworks.description");
 		}
 		descriptionMap.forEach((obj, descriptionKey) -> {

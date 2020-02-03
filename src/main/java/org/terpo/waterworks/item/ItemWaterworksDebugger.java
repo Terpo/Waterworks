@@ -2,7 +2,7 @@ package org.terpo.waterworks.item;
 
 import java.util.List;
 
-import org.terpo.waterworks.Waterworks;
+import org.terpo.waterworks.setup.CommonSetup;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +32,7 @@ public class ItemWaterworksDebugger extends Item {
 	private static final String ENERGY_MODE = "energyMode";
 
 	public ItemWaterworksDebugger() {
-		super((new Item.Properties()).maxStackSize(1).group(Waterworks.CREATIVE_TAB));
+		super((new Item.Properties()).maxStackSize(1).group(CommonSetup.CREATIVE_TAB));
 	}
 
 	@Override

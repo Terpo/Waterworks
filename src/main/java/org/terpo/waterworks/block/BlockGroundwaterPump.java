@@ -1,10 +1,9 @@
 package org.terpo.waterworks.block;
 
+import org.terpo.waterworks.Config;
 import org.terpo.waterworks.helper.FluidHelper;
 import org.terpo.waterworks.helper.WaterworksInventoryHelper;
-import org.terpo.waterworks.init.WaterworksBlocks;
-import org.terpo.waterworks.init.WaterworksConfig;
-import org.terpo.waterworks.init.WaterworksItems;
+import org.terpo.waterworks.setup.Registration;
 import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
@@ -52,7 +51,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
 			if (tileEntity instanceof TileEntityGroundwaterPump) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (heldItem.getItem() == WaterworksItems.itemPipeWrench) {
+				if (heldItem.getItem() == Registration.itemPipeWrench.get()) { // TODO instanceof
 					turnPumpModel(worldIn, pos, state);
 					return ActionResultType.SUCCESS;
 				}
@@ -114,7 +113,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 		while (y >= 0) {
 			final BlockPos position = new BlockPos(pos.getX(), y, pos.getZ());
 			final BlockState state = world.getBlockState(position);
-			if (state.getBlock().equals(WaterworksBlocks.waterPipe)) {
+			if (state.getBlock() instanceof BlockWaterPipe) {
 				world.destroyBlock(position, false);
 				count++;
 				y--;
@@ -123,8 +122,8 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 			}
 		}
 		if (count > 0) {
-			spawnAsEntity(world, pos, new ItemStack(WaterworksBlocks.waterPipe, count));
-			if (WaterworksConfig.pump.getGroundwaterPumpSafety()) {
+			spawnAsEntity(world, pos, new ItemStack(Registration.waterPipeBlock.get(), count));
+			if (Config.pump.getGroundwaterPumpSafety()) {
 				world.setBlockState(pos.down(), Blocks.COBBLESTONE_SLAB.getDefaultState());
 			}
 

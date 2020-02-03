@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 
 import org.terpo.waterworks.helper.FluidHelper;
 import org.terpo.waterworks.helper.WaterworksInventoryHelper;
-import org.terpo.waterworks.init.WaterworksItems;
+import org.terpo.waterworks.setup.Registration;
 import org.terpo.waterworks.tileentity.TileEntityRainCollectorController;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
@@ -60,7 +60,7 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainCollectorController) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (heldItem.getItem() == WaterworksItems.itemPipeWrench) {
+				if (heldItem.getItem() == Registration.itemPipeWrench.get()) { // TODO instanceof
 					final int collectors = ((TileEntityRainCollectorController) tileEntity).findRainCollectors();
 					playerIn.sendMessage(new TranslationTextComponent("block.waterworks.rain_collector_controller.controllers",
 							Integer.valueOf((collectors - 1))));

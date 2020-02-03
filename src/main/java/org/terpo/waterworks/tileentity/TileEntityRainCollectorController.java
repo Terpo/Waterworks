@@ -1,11 +1,10 @@
 package org.terpo.waterworks.tileentity;
 
+import org.terpo.waterworks.Config;
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.gui.ContainerBase;
 import org.terpo.waterworks.helper.AreaHelper;
-import org.terpo.waterworks.init.WaterworksConfig;
-import org.terpo.waterworks.init.WaterworksContainers;
-import org.terpo.waterworks.init.WaterworksTileEntities;
+import org.terpo.waterworks.setup.Registration;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -35,10 +34,9 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	private int countValidCollectors;
 
 	public TileEntityRainCollectorController() {
-		super(WaterworksTileEntities.rainCollectorController, 0,
-				WaterworksConfig.rainCollection.getRainCollectorCapacity());
+		super(Registration.rainCollectorControllerTile.get(), 0, Config.rainCollection.getRainCollectorCapacity());
 
-		this.controllerRange = WaterworksConfig.rainCollection.getRainCollectorRange();
+		this.controllerRange = Config.rainCollection.getRainCollectorRange();
 		this.areaCount = (int) Math.pow(this.controllerRange * 2.0d + 1, 2);
 		this.rainCollectorBlocks = new BlockPos[this.areaCount];
 		this.connectedCollectors = 1;
@@ -50,7 +48,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity entity) {
-		return new ContainerBase(WaterworksContainers.rainCollectorController, windowId, inventory, this);
+		return new ContainerBase(Registration.rainCollectorControllerContainer.get(), windowId, inventory, this);
 	}
 
 	@Override
@@ -87,9 +85,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	}
 
 	private void countValidCollectors() {
-		final int maxValid = (this.currentValidationPos + 5) > this.areaCount
-				? this.areaCount
-				: (this.currentValidationPos + 5);
+		final int maxValid = (this.currentValidationPos + 5) > this.areaCount ? this.areaCount : (this.currentValidationPos + 5);
 		int i;
 		for (i = this.currentValidationPos; i < maxValid; i++) {
 			if (this.rainCollectorBlocks[i] != null && this.world.isRainingAt(this.rainCollectorBlocks[i].up())) {
@@ -100,8 +96,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 		this.currentValidationPos = maxValid;
 		if (this.currentValidationPos == this.areaCount) {
 			this.validCollectors = this.countValidCollectors;
-			this.fluidResource = getWaterFluidStack(
-					this.validCollectors * WaterworksConfig.rainCollection.getRainCollectorFillrate());
+			this.fluidResource = getWaterFluidStack(this.validCollectors * Config.rainCollection.getRainCollectorFillrate());
 			this.countValidCollectors = 0;
 			this.currentValidationPos = 0;
 		}
@@ -110,8 +105,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	public int findRainCollectors() {
 		resetController();
 		this.connectedCollectors = getAllConnectedBlocks();
-		this.fluidResource = getWaterFluidStack(
-				this.connectedCollectors * WaterworksConfig.rainCollection.getRainCollectorFillrate());
+		this.fluidResource = getWaterFluidStack(this.connectedCollectors * Config.rainCollection.getRainCollectorFillrate());
 		return this.connectedCollectors;
 	}
 
@@ -163,8 +157,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 			}
 			if (compound.contains(NBT_VALID_COLLECTORS)) {
 				this.validCollectors = compound.getInt(NBT_VALID_COLLECTORS);
-				this.fluidResource = getWaterFluidStack(
-						this.validCollectors * WaterworksConfig.rainCollection.getRainCollectorFillrate());
+				this.fluidResource = getWaterFluidStack(this.validCollectors * Config.rainCollection.getRainCollectorFillrate());
 			}
 		}
 	}
@@ -172,8 +165,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	private boolean isValidBlock(BlockPos blockPos, int currentIndex) {
 		final TileEntity tileEntity = this.world.getTileEntity(blockPos);
 		// not correct class, not in range or already has a controller?
-		if (!(tileEntity instanceof TileEntityRainCollector)
-				|| !(AreaHelper.isInRange2D(blockPos, this.pos, this.controllerRange))
+		if (!(tileEntity instanceof TileEntityRainCollector) || !(AreaHelper.isInRange2D(blockPos, this.pos, this.controllerRange))
 				|| ((TileEntityRainCollector) tileEntity).hasController()) {
 			return false;
 		}

@@ -3,9 +3,8 @@ package org.terpo.waterworks.item.crafting;
 import java.util.Arrays;
 import java.util.List;
 
-import org.terpo.waterworks.init.WaterworksConfig;
-import org.terpo.waterworks.init.WaterworksItems;
-import org.terpo.waterworks.init.WaterworksRecipes;
+import org.terpo.waterworks.Config;
+import org.terpo.waterworks.setup.Registration;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.inventory.CraftingInventory;
@@ -27,7 +26,7 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 
 	public AntiRainRocketRecipe(ResourceLocation idIn) {
 		super(idIn);
-		this.validItems = Arrays.asList(Items.FIREWORK_ROCKET, WaterworksItems.itemFireworkAntiRain,
+		this.validItems = Arrays.asList(Items.FIREWORK_ROCKET, Registration.itemFireworkAntiRain.get(),
 				Item.BLOCK_TO_ITEM.get(Blocks.SPONGE));
 	}
 
@@ -51,11 +50,11 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 				isFireworks++;
 			}
 
-			if (item == WaterworksItems.itemFireworkAntiRain) {
+			if (item == Registration.itemFireworkAntiRain.get()) {
 				isAntiRainRocket++;
 			}
 
-			if (item == Items.FIREWORK_ROCKET || item == WaterworksItems.itemFireworkAntiRain) {
+			if (item == Items.FIREWORK_ROCKET || item == Registration.itemFireworkAntiRain.get()) {
 				rocketStack = i;
 			} else if (item == Item.BLOCK_TO_ITEM.get(Blocks.SPONGE)) {
 				multiplierAdd++;
@@ -66,7 +65,7 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 			return false;
 		}
 
-		this.resultItem = new ItemStack(WaterworksItems.itemFireworkAntiRain);
+		this.resultItem = new ItemStack(Registration.itemFireworkAntiRain.get());
 
 		if (isFireworks > 0) {
 			return handleFireworksRocket(inv, rocketStack, multiplierAdd);
@@ -91,7 +90,7 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 		if (nbtCompound == null) {
 			nbtCompound = new CompoundNBT();
 		}
-		if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.getClearSkyMaxMultiplier()) {
+		if (multiplierOld + multiplierAdd > Config.rockets.getClearSkyMaxMultiplier()) {
 			return false;
 		}
 		nbtCompound.putInt(NBT_ANTIRAIN, multiplierOld + multiplierAdd);
@@ -110,7 +109,7 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 				multiplierOld = nbtCompound.getInt(NBT_ANTIRAIN);
 			}
 		}
-		if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.getClearSkyMaxMultiplier()) {
+		if ((multiplierOld + multiplierAdd) > Config.rockets.getClearSkyMaxMultiplier()) {
 			return false;
 		}
 		newTag.putInt(NBT_ANTIRAIN, multiplierOld + multiplierAdd);
@@ -130,7 +129,7 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 
 	@Override
 	public IRecipeSerializer<?> getSerializer() {
-		return WaterworksRecipes.recipeFireworkAntiRain;
+		return Registration.recipeFireworkAntiRain.get();
 	}
 
 }

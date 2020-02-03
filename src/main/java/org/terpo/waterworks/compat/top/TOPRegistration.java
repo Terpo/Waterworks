@@ -5,7 +5,7 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import org.terpo.waterworks.Waterworks;
-import org.terpo.waterworks.api.constants.WaterworksReference;
+import org.terpo.waterworks.api.constants.Reference;
 import org.terpo.waterworks.compat.top.provider.TOPInfoProvider;
 
 import mcjty.theoneprobe.api.IProbeHitData;
@@ -27,7 +27,7 @@ public class TOPRegistration implements Function<ITheOneProbe, Void> {
 		TOPCompatibility.probe.registerProvider(new IProbeInfoProvider() {
 			@Override
 			public String getID() {
-				return WaterworksReference.DOMAIN + "top";
+				return Reference.DOMAIN + "top";
 			}
 
 			@Override

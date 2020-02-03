@@ -1,10 +1,10 @@
 package org.terpo.waterworks.api.constants;
 
-public class WaterworksConstants {
+public class Constants {
 
 	public static final String WATERWORKS_TOOL_TYPE = "waterworks_tool";
 
-	private WaterworksConstants() {
+	private Constants() {
 		// hide me
 	}
 }

@@ -2,7 +2,7 @@ package org.terpo.waterworks.compat.minecraft;
 
 import org.terpo.waterworks.entity.item.EntityFireworkRocketAntiRain;
 import org.terpo.waterworks.entity.item.EntityFireworkRocketRain;
-import org.terpo.waterworks.init.WaterworksItems;
+import org.terpo.waterworks.setup.Registration;
 
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.item.ItemStack;
@@ -12,9 +12,9 @@ import net.minecraft.world.World;
 public class MinecraftCompatibility {
 
 	public static void registerWeatherRocketDispenserBehavior() {
-		DispenserBlock.registerDispenseBehavior(WaterworksItems.itemFireworkAntiRain,
+		DispenserBlock.registerDispenseBehavior(Registration.itemFireworkAntiRain.get(),
 				new WeatherRocketDispenserBehavior(MinecraftCompatibility::spawnAntiRainRocket));
-		DispenserBlock.registerDispenseBehavior(WaterworksItems.itemFireworkRain,
+		DispenserBlock.registerDispenseBehavior(Registration.itemFireworkRain.get(),
 				new WeatherRocketDispenserBehavior(MinecraftCompatibility::spawnRainRocket));
 	}
 

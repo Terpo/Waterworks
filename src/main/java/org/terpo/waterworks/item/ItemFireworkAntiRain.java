@@ -2,9 +2,9 @@ package org.terpo.waterworks.item;
 
 import java.util.List;
 
-import org.terpo.waterworks.Waterworks;
+import org.terpo.waterworks.Config;
 import org.terpo.waterworks.entity.item.EntityFireworkRocketAntiRain;
-import org.terpo.waterworks.init.WaterworksConfig;
+import org.terpo.waterworks.setup.CommonSetup;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +26,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ItemFireworkAntiRain extends FireworkRocketItem {
 
 	public ItemFireworkAntiRain() {
-		super((new Item.Properties()).group(Waterworks.CREATIVE_TAB));
+		super((new Item.Properties()).group(CommonSetup.CREATIVE_TAB));
 	}
 
 	@Override
@@ -78,11 +78,11 @@ public class ItemFireworkAntiRain extends FireworkRocketItem {
 				final int multi = nbttagcompound.getInt("ANTIRAIN");
 				tooltip.add(new TranslationTextComponent("tooltip.anti_rain_rocket.good_weather"));
 				tooltip.add(new TranslationTextComponent("tooltip.anti_rain_rocket.sunshine_multiplier")
-						.appendText(": " + multi + "/" + WaterworksConfig.rockets.getClearSkyMaxMultiplier()));
+						.appendText(": " + multi + "/" + Config.rockets.getClearSkyMaxMultiplier()));
 				tooltip.add(new TranslationTextComponent("tooltip.anti_rain_rocket.sunshine_duration")
-						.appendText(": " + (WaterworksConfig.rockets.getClearSkyDuration() * multi) + " ticks"));
+						.appendText(": " + (Config.rockets.getClearSkyDuration() * multi) + " ticks"));
 				tooltip.add(new TranslationTextComponent("tooltip.anti_rain_rocket.max_additional_days")
-						.appendText(": " + WaterworksConfig.rockets.getClearSkyMaxRandomAdditionalDays()));
+						.appendText(": " + Config.rockets.getClearSkyMaxRandomAdditionalDays()));
 			}
 		}
 

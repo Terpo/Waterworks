@@ -2,7 +2,7 @@ package org.terpo.waterworks.block;
 
 import javax.annotation.Nullable;
 
-import org.terpo.waterworks.init.WaterworksBlocks;
+import org.terpo.waterworks.setup.Registration;
 import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 
 import net.minecraft.block.Block;
@@ -55,10 +55,10 @@ public class BlockWaterPipe extends Block implements IWaterLoggable {
 		while (true) {
 			newPos = newPos.up();
 			final Block block = worldIn.getBlockState(newPos).getBlock();
-			if (block.equals(WaterworksBlocks.waterPipe)) {
+			if (block.equals(Registration.waterPipeBlock)) {
 				continue;
 			}
-			if (block.equals(WaterworksBlocks.groundwaterPump) && block.hasTileEntity(state)) {
+			if (block.equals(Registration.groundwaterPumpBlock) && block.hasTileEntity(state)) {
 				final TileEntity tE = worldIn.getTileEntity(newPos);
 				if (tE instanceof TileEntityGroundwaterPump) {
 					((TileEntityGroundwaterPump) tE).setStructureComplete(false);

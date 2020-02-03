@@ -1,11 +1,10 @@
 package org.terpo.waterworks.tileentity;
 
+import org.terpo.waterworks.Config;
 import org.terpo.waterworks.fluid.WaterworksTank;
 import org.terpo.waterworks.gui.ContainerBase;
 import org.terpo.waterworks.helper.GeneralItemStackHandler;
-import org.terpo.waterworks.init.WaterworksConfig;
-import org.terpo.waterworks.init.WaterworksContainers;
-import org.terpo.waterworks.init.WaterworksTileEntities;
+import org.terpo.waterworks.setup.Registration;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -24,13 +23,13 @@ public class TileEntityRainTankWood extends TileWaterworks {
 	private static final int INVENTORY_SLOT_COUNT = 2;
 
 	public TileEntityRainTankWood() {
-		this(WaterworksTileEntities.rainTankWood, WaterworksConfig.rainCollection.getWoodenRainTankFillrate(),
-				WaterworksConfig.rainCollection.getWoodenRainTankCapacity());
+		this(Registration.rainTankWoodTile.get(), Config.rainCollection.getWoodenRainTankFillrate(),
+				Config.rainCollection.getWoodenRainTankCapacity());
 	}
 
 	public TileEntityRainTankWood(TileEntityType<?> tileEntityTypeIn) {
-		this(tileEntityTypeIn, WaterworksConfig.rainCollection.getWoodenRainTankFillrate(),
-				WaterworksConfig.rainCollection.getWoodenRainTankCapacity());
+		this(tileEntityTypeIn, Config.rainCollection.getWoodenRainTankFillrate(),
+				Config.rainCollection.getWoodenRainTankCapacity());
 	}
 	public TileEntityRainTankWood(TileEntityType<?> tileEntityTypeIn, int fillrate, int capacity) {
 		super(tileEntityTypeIn, INVENTORY_SLOT_COUNT, capacity);
@@ -74,7 +73,7 @@ public class TileEntityRainTankWood extends TileWaterworks {
 
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity entity) {
-		return new ContainerBase(WaterworksContainers.rainTankWood, windowId, inventory, this);
+		return new ContainerBase(Registration.rainTankWoodContainer.get(), windowId, inventory, this);
 	}
 
 	@Override

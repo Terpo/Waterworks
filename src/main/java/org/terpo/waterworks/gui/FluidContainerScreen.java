@@ -3,7 +3,7 @@ package org.terpo.waterworks.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.terpo.waterworks.api.constants.WaterworksReference;
+import org.terpo.waterworks.api.constants.Reference;
 import org.terpo.waterworks.fluid.WaterworksTank;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -32,7 +32,7 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 
 	public FluidContainerScreen(ContainerBase screenContainer, PlayerInventory inv, ITextComponent title) {
 		super(screenContainer, inv, title);
-		prepare(new ResourceLocation(WaterworksReference.MODID, "textures/gui/container/rain_tank_wood.png"),
+		prepare(new ResourceLocation(Reference.MODID, "textures/gui/container/rain_tank_wood.png"),
 				new Rectangle2d(80, 17, 16, 52), screenContainer);
 
 	}

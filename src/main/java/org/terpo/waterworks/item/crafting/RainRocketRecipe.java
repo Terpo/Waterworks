@@ -3,9 +3,8 @@ package org.terpo.waterworks.item.crafting;
 import java.util.Arrays;
 import java.util.List;
 
-import org.terpo.waterworks.init.WaterworksConfig;
-import org.terpo.waterworks.init.WaterworksItems;
-import org.terpo.waterworks.init.WaterworksRecipes;
+import org.terpo.waterworks.Config;
+import org.terpo.waterworks.setup.Registration;
 
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
@@ -23,7 +22,7 @@ public class RainRocketRecipe extends SpecialRecipe {
 	private final List<Item> validItems;
 	public RainRocketRecipe(ResourceLocation idIn) {
 		super(idIn);
-		this.validItems = Arrays.asList(Items.FIREWORK_ROCKET, WaterworksItems.itemFireworkRain, Items.GHAST_TEAR);
+		this.validItems = Arrays.asList(Items.FIREWORK_ROCKET, Registration.itemFireworkRain.get(), Items.GHAST_TEAR);
 	}
 
 	@Override
@@ -46,11 +45,11 @@ public class RainRocketRecipe extends SpecialRecipe {
 				isFireworks++;
 			}
 
-			if (item == WaterworksItems.itemFireworkRain) {
+			if (item == Registration.itemFireworkRain.get()) {
 				isRainRocket++;
 			}
 
-			if (item == Items.FIREWORK_ROCKET || item == WaterworksItems.itemFireworkRain) {
+			if (item == Items.FIREWORK_ROCKET || item == Registration.itemFireworkRain.get()) {
 				rocketStack = i;
 			} else if (item == Items.GHAST_TEAR) {
 				multiplierAdd++;
@@ -61,7 +60,7 @@ public class RainRocketRecipe extends SpecialRecipe {
 			return false;
 		}
 
-		this.resultItem = new ItemStack(WaterworksItems.itemFireworkRain);
+		this.resultItem = new ItemStack(Registration.itemFireworkRain.get());
 
 		if (isFireworks > 0) {
 			return handleFireworksRocket(inv, rocketStack, multiplierAdd);
@@ -89,7 +88,7 @@ public class RainRocketRecipe extends SpecialRecipe {
 				multiplierOld = nbtCompound.getInt(NBT_RAIN);
 			}
 		}
-		if ((multiplierOld + multiplierAdd) > WaterworksConfig.rockets.getRainMaxMultiplier()) {
+		if ((multiplierOld + multiplierAdd) > Config.rockets.getRainMaxMultiplier()) {
 			return false;
 		}
 		newTag.putInt(NBT_RAIN, multiplierOld + multiplierAdd);
@@ -105,7 +104,7 @@ public class RainRocketRecipe extends SpecialRecipe {
 		if (nbtCompound == null) {
 			nbtCompound = new CompoundNBT();
 		}
-		if (multiplierOld + multiplierAdd > WaterworksConfig.rockets.getRainMaxMultiplier()) {
+		if (multiplierOld + multiplierAdd > Config.rockets.getRainMaxMultiplier()) {
 			return false;
 		}
 		nbtCompound.putInt(NBT_RAIN, multiplierOld + multiplierAdd);
@@ -125,6 +124,6 @@ public class RainRocketRecipe extends SpecialRecipe {
 
 	@Override
 	public IRecipeSerializer<?> getSerializer() {
-		return WaterworksRecipes.recipeFireworkRain;
+		return Registration.recipeFireworkRain.get();
 	}
 }

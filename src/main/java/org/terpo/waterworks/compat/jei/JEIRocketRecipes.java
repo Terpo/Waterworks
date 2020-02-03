@@ -3,10 +3,10 @@ package org.terpo.waterworks.compat.jei;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.terpo.waterworks.api.constants.WaterworksReference;
-import org.terpo.waterworks.api.constants.WaterworksRegistryNames;
-import org.terpo.waterworks.init.WaterworksConfig;
-import org.terpo.waterworks.init.WaterworksItems;
+import org.terpo.waterworks.Config;
+import org.terpo.waterworks.api.constants.Reference;
+import org.terpo.waterworks.api.constants.RegistryNames;
+import org.terpo.waterworks.setup.Registration;
 
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -22,10 +22,10 @@ import net.minecraft.util.ResourceLocation;
 public class JEIRocketRecipes {
 
 	private static final String JEI = ".jei";
-	private static final String ROCKET_GROUP = WaterworksReference.MODID + ".rocket.crafting";
+	private static final String ROCKET_GROUP = Reference.MODID + ".rocket.crafting";
 
 	static void addRocketRecipes(IRecipeRegistration registration) {
-		if (WaterworksConfig.rockets.getFireworkRocketsJEIRecipes()) {
+		if (Config.rockets.getFireworkRocketsJEIRecipes()) {
 			final List<ShapelessRecipe> recipes = new ArrayList<>(2);
 			recipes.add(createAntiRainRocketRecipe());
 			recipes.add(createRainRocketRecipe());
@@ -35,27 +35,25 @@ public class JEIRocketRecipes {
 	}
 
 	protected static ShapelessRecipe createRainRocketRecipe() {
-		final Ingredient rocketInput = Ingredient.fromItems(WaterworksItems.itemFireworkRain, Items.FIREWORK_ROCKET);
+		final Ingredient rocketInput = Ingredient.fromItems(Registration.itemFireworkRain.get(), Items.FIREWORK_ROCKET);
 		final Ingredient rainItem = Ingredient.fromItems(Items.GHAST_TEAR);
 		final NonNullList<Ingredient> inputs = NonNullList.from(Ingredient.EMPTY, rocketInput, rainItem);
-		final ItemStack output = new ItemStack(WaterworksItems.itemFireworkRain);
+		final ItemStack output = new ItemStack(Registration.itemFireworkRain.get());
 
-		final ResourceLocation id2 = new ResourceLocation(WaterworksReference.MODID,
-				WaterworksRegistryNames.RECIPE_FIREWORK_RAIN + JEI);
+		final ResourceLocation id2 = new ResourceLocation(Reference.MODID, RegistryNames.RECIPE_FIREWORK_RAIN + JEI);
 
 		return new ShapelessRecipe(id2, ROCKET_GROUP, output, inputs);
 
 	}
 
 	protected static ShapelessRecipe createAntiRainRocketRecipe() {
-		final Ingredient rocketInput = Ingredient.fromItems(WaterworksItems.itemFireworkAntiRain,
-				Items.FIREWORK_ROCKET);
+		final Ingredient rocketInput = Ingredient.fromItems(Registration.itemFireworkAntiRain.get(), Items.FIREWORK_ROCKET);
 		final Ingredient antiRainItem = Ingredient.fromItems(Item.BLOCK_TO_ITEM.get(Blocks.SPONGE));
 		final NonNullList<Ingredient> inputs = NonNullList.from(Ingredient.EMPTY, rocketInput, antiRainItem);
-		final ItemStack output = new ItemStack(WaterworksItems.itemFireworkAntiRain);
+		final ItemStack output = new ItemStack(Registration.itemFireworkAntiRain.get());
 
-		final ResourceLocation id = new ResourceLocation(WaterworksReference.MODID,
-				WaterworksRegistryNames.RECIPE_FIREWORK_ANTI_RAIN + JEI);
+		final ResourceLocation id = new ResourceLocation(Reference.MODID,
+				RegistryNames.RECIPE_FIREWORK_ANTI_RAIN + JEI);
 
 		return new ShapelessRecipe(id, ROCKET_GROUP, output, inputs);
 	}

@@ -1,6 +1,6 @@
 package org.terpo.waterworks.api.constants;
 
-public class WaterworksRegistryNames {
+public class RegistryNames {
 
 	// BLOCKS
 	public static final String BLOCK_RAIN_TANK_WOOD = "rain_tank_wood";
@@ -37,7 +37,7 @@ public class WaterworksRegistryNames {
 	public static final String CONTAINER_WATERWORKS = "container_waterworks";
 	public static final String CONTAINER_GROUNDWATER_PUMP = "container_groundwater_pump";
 
-	private WaterworksRegistryNames() {
+	private RegistryNames() {
 		// hidden
 	}
 

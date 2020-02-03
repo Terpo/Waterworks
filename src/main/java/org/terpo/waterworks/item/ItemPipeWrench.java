@@ -2,9 +2,9 @@ package org.terpo.waterworks.item;
 
 import java.util.Set;
 
-import org.terpo.waterworks.Waterworks;
-import org.terpo.waterworks.api.constants.WaterworksConstants;
-import org.terpo.waterworks.init.WaterworksBlocks;
+import org.terpo.waterworks.api.constants.Constants;
+import org.terpo.waterworks.setup.CommonSetup;
+import org.terpo.waterworks.setup.Registration;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -19,10 +19,10 @@ public class ItemPipeWrench extends ToolItem {
 
 	private final Set<Block> effectiveOn;
 	public ItemPipeWrench() {
-		super(6.0F, -3.1F, ItemTier.IRON, WaterworksBlocks.getAllWaterworksBlocks(),
-				new Item.Properties().setNoRepair().maxStackSize(1).group(Waterworks.CREATIVE_TAB).addToolType(
-						ToolType.get(WaterworksConstants.WATERWORKS_TOOL_TYPE), ItemTier.IRON.getHarvestLevel()));
-		this.effectiveOn = WaterworksBlocks.getAllWaterworksBlocks();
+		super(6.0F, -3.1F, ItemTier.IRON, Registration.getAllWaterworksBlocks(),
+				new Item.Properties().setNoRepair().maxStackSize(1).group(CommonSetup.CREATIVE_TAB).addToolType(
+						ToolType.get(Constants.WATERWORKS_TOOL_TYPE), ItemTier.IRON.getHarvestLevel()));
+		this.effectiveOn = Registration.getAllWaterworksBlocks();
 	}
 
 	@Override

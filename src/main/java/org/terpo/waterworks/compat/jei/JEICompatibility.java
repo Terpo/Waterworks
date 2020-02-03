@@ -1,6 +1,6 @@
 package org.terpo.waterworks.compat.jei;
 
-import org.terpo.waterworks.api.constants.WaterworksReference;
+import org.terpo.waterworks.api.constants.Reference;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -12,7 +12,7 @@ public class JEICompatibility implements IModPlugin {
 
 	@Override
 	public ResourceLocation getPluginUid() {
-		return new ResourceLocation(WaterworksReference.MODID, "jeiplugin");
+		return new ResourceLocation(Reference.MODID, "jeiplugin");
 	}
 
 	@Override

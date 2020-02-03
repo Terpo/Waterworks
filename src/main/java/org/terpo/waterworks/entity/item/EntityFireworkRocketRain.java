@@ -2,9 +2,8 @@ package org.terpo.waterworks.entity.item;
 
 import java.util.OptionalInt;
 
-import org.terpo.waterworks.init.WaterworksConfig;
-import org.terpo.waterworks.init.WaterworksEntities;
-import org.terpo.waterworks.init.WaterworksItems;
+import org.terpo.waterworks.Config;
+import org.terpo.waterworks.setup.Registration;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
@@ -22,8 +21,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket implements IRendersAsItem {
 
-	private static final DataParameter<ItemStack> RAINROCKET_ITEM = EntityDataManager
-			.createKey(EntityFireworkRocketRain.class, DataSerializers.ITEMSTACK);
+	private static final DataParameter<ItemStack> RAINROCKET_ITEM = EntityDataManager.createKey(EntityFireworkRocketRain.class,
+			DataSerializers.ITEMSTACK);
 	private static final DataParameter<OptionalInt> BOOSTED_RAINROCKET_ENTITY_ID = EntityDataManager
 			.createKey(EntityFireworkRocketRain.class, DataSerializers.OPTIONAL_VARINT);
 	private static final DataParameter<Boolean> SHOT_AT_ANGLE_RAINROCKET_BOOLEAN = EntityDataManager
@@ -34,11 +33,11 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket implem
 	}
 
 	public EntityFireworkRocketRain(World worldIn, double x, double y, double z, ItemStack itemstack) {
-		super(WaterworksEntities.entityFireworkRain, worldIn, x, y, z, itemstack);
+		super(Registration.entityFireworkRain.get(), worldIn, x, y, z, itemstack);
 	}
 
 	public EntityFireworkRocketRain(World worldIn, ItemStack itemstack, LivingEntity entity) {
-		super(WaterworksEntities.entityFireworkRain, worldIn, itemstack, entity);
+		super(Registration.entityFireworkRain.get(), worldIn, itemstack, entity);
 	}
 
 	@Override
@@ -52,14 +51,14 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket implem
 	@Override
 	public ItemStack getItem() {
 		final ItemStack itemstack = getRocketItem();
-		return itemstack.isEmpty() ? new ItemStack(WaterworksItems.itemFireworkRain) : itemstack;
+		return itemstack.isEmpty() ? new ItemStack(Registration.itemFireworkRain.get()) : itemstack;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public String getAnnouncementText(int time, final int days, final int hours, final int min) {
-		return new TranslationTextComponent("entity.rain_rocket.announcement", Integer.valueOf(time),
-				Integer.valueOf(days), Integer.valueOf(hours), Integer.valueOf(min)).getFormattedText();
+		return new TranslationTextComponent("entity.rain_rocket.announcement", Integer.valueOf(time), Integer.valueOf(days),
+				Integer.valueOf(hours), Integer.valueOf(min)).getFormattedText();
 	}
 
 	@Override
@@ -108,7 +107,7 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket implem
 
 	@Override
 	protected int calculateDurationFromMultiplier(int rainMultiplier) {
-		return WaterworksConfig.rockets.getRainDuration() * rainMultiplier;
+		return Config.rockets.getRainDuration() * rainMultiplier;
 	}
 
 	@Override
@@ -118,7 +117,7 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket implem
 
 	@Override
 	protected int getConfiguredDuration() {
-		return WaterworksConfig.rockets.getRainDuration();
+		return Config.rockets.getRainDuration();
 	}
 
 	@OnlyIn(Dist.CLIENT)

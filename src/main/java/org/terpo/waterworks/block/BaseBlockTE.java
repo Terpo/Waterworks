@@ -1,6 +1,6 @@
 package org.terpo.waterworks.block;
 
-import org.terpo.waterworks.api.constants.WaterworksConstants;
+import org.terpo.waterworks.api.constants.Constants;
 import org.terpo.waterworks.compat.top.TOPCompatibility;
 import org.terpo.waterworks.compat.top.provider.TOPInfoProvider;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
@@ -44,7 +44,7 @@ public abstract class BaseBlockTE<T extends BaseTileEntity> extends Block implem
 
 	@Override
 	public boolean isToolEffective(BlockState state, ToolType tool) {
-		if (WaterworksConstants.WATERWORKS_TOOL_TYPE.equals(tool.getName())) {
+		if (Constants.WATERWORKS_TOOL_TYPE.equals(tool.getName())) {
 			return true;
 		}
 		return super.isToolEffective(state, tool);

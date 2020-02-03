@@ -1,6 +1,6 @@
 package org.terpo.waterworks.gui;
 
-import org.terpo.waterworks.api.constants.WaterworksReference;
+import org.terpo.waterworks.api.constants.Reference;
 import org.terpo.waterworks.network.ControllerRefreshPacket;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 
@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RainCollectorControllerContainerScreen extends FluidContainerScreen {
-	private static final ResourceLocation REFRESH_TEXTURE = new ResourceLocation(WaterworksReference.MODID,
+	private static final ResourceLocation REFRESH_TEXTURE = new ResourceLocation(Reference.MODID,
 			"textures/gui/container/refresh_button.png");
 
 	public RainCollectorControllerContainerScreen(ContainerBase screenContainer, PlayerInventory inv,

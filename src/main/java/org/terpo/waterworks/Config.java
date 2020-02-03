@@ -1,8 +1,6 @@
-package org.terpo.waterworks.init;
+package org.terpo.waterworks;
 
 import java.nio.file.Path;
-
-import org.terpo.waterworks.Waterworks;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
@@ -14,7 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 
 @Mod.EventBusSubscriber
-public class WaterworksConfig {
+public class Config {
 
 	static final ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
 	public static ForgeConfigSpec commonConfig; // NOSONAR
@@ -31,12 +29,11 @@ public class WaterworksConfig {
 		recipes = new WaterworksRecipes();
 
 		commonConfig = COMMON_BUILDER.build();
-
 	}
 
 	public static void loadConfig(ForgeConfigSpec spec, Path path) {
-		try (final CommentedFileConfig configData = CommentedFileConfig.builder(path).sync().autosave()
-				.writingMode(WritingMode.REPLACE).build();) {
+		try (final CommentedFileConfig configData = CommentedFileConfig.builder(path).sync().autosave().writingMode(WritingMode.REPLACE)
+				.build();) {
 			configData.load();
 			spec.setConfig(configData);
 		} catch (final Exception e) {
@@ -49,11 +46,10 @@ public class WaterworksConfig {
 		//
 	}
 
-	// TODO reload event
-//	@SubscribeEvent
-//	public static void onReload(@SuppressWarnings("unused") final ModConfig.ConfigReloading configEvent) {
-//		//
-//	}
+	@SubscribeEvent
+	public static void onReload(@SuppressWarnings("unused") final ModConfig.Reloading configEvent) {
+		//
+	}
 
 	static int get(ForgeConfigSpec.IntValue value) {
 		return value.get().intValue();
@@ -63,7 +59,7 @@ public class WaterworksConfig {
 		return value.get().booleanValue();
 	}
 
-	private WaterworksConfig() {
+	private Config() {
 		// hide me
 	}
 
@@ -116,8 +112,7 @@ public class WaterworksConfig {
 					.comment("Turn this to false to disable JEI description for the Rain Collector Multiblock.")
 					.define("rainCollectorDescription", true);
 
-			this.wrenchDescription = COMMON_BUILDER
-					.comment("Turn this to false to disable JEI description for the Wrench.")
+			this.wrenchDescription = COMMON_BUILDER.comment("Turn this to false to disable JEI description for the Wrench.")
 					.define("wrenchDescription", true);
 
 			COMMON_BUILDER.pop();
@@ -199,8 +194,7 @@ public class WaterworksConfig {
 			this.groundwaterPumpEnergyPipePlacement = COMMON_BUILDER.comment("Energy used to place a pipe.")
 					.defineInRange("groundwaterPumpEnergyPipePlacement", 2500, 0, 1024000);
 
-			this.groundwaterPumpSafety = COMMON_BUILDER
-					.comment("Should the Groundwater Pump spawn a slab to close the hole?")
+			this.groundwaterPumpSafety = COMMON_BUILDER.comment("Should the Groundwater Pump spawn a slab to close the hole?")
 					.define("groundwaterPumpSafety", true);
 
 			this.groundwaterPumpCheckBedrock = COMMON_BUILDER
@@ -273,29 +267,25 @@ public class WaterworksConfig {
 			COMMON_BUILDER.comment(ForgeI18n.parseMessage("")).push(CATEGORY_ROCKETS);
 
 			// Rain Rocket
-			this.rainDuration = COMMON_BUILDER.comment("Rain duration with x1 multiplier.")
-					.defineInRange("rainDuration", 3000, 1, 12000);
+			this.rainDuration = COMMON_BUILDER.comment("Rain duration with x1 multiplier.").defineInRange("rainDuration", 3000, 1, 12000);
 
-			this.rainMaxMultiplier = COMMON_BUILDER.comment("Maximum rain multiplier.")
-					.defineInRange("rainMaxMultiplier", 8, 1, 24);
+			this.rainMaxMultiplier = COMMON_BUILDER.comment("Maximum rain multiplier.").defineInRange("rainMaxMultiplier", 8, 1, 24);
 
 			// Anti Rain Rocket
-			this.clearSkyDuration = COMMON_BUILDER.comment("Clear sky duration with x1 multiplier.")
-					.defineInRange("clearSkyDuration", 4000, 100, 6000);
+			this.clearSkyDuration = COMMON_BUILDER.comment("Clear sky duration with x1 multiplier.").defineInRange("clearSkyDuration", 4000,
+					100, 6000);
 
-			this.clearSkyMaxMultiplier = COMMON_BUILDER.comment("Maximum clear sky multiplier.")
-					.defineInRange("clearSkyMaxMultiplier", 12, 1, 36);
+			this.clearSkyMaxMultiplier = COMMON_BUILDER.comment("Maximum clear sky multiplier.").defineInRange("clearSkyMaxMultiplier", 12,
+					1, 36);
 
 			this.clearSkyMaxRandomAdditionalDays = COMMON_BUILDER
 					.comment("Maximum days of clear sky that will added to the calculated time.")
 					.defineInRange("clearSkyMaxRandomAdditionalDays", 3, 0, 7);
 
 			// JEI
-			this.fireworkRocketsDescription = COMMON_BUILDER
-					.comment("Turn this to false to disable JEI description for the Rockets.")
+			this.fireworkRocketsDescription = COMMON_BUILDER.comment("Turn this to false to disable JEI description for the Rockets.")
 					.define("fireworkRocketsDescription", true);
-			this.fireworkRocketsJEIRecipes = COMMON_BUILDER
-					.comment("Turn this to false to disable JEI recipe information for the Rockets.")
+			this.fireworkRocketsJEIRecipes = COMMON_BUILDER.comment("Turn this to false to disable JEI recipe information for the Rockets.")
 					.define("fireworkRocketsJEIRecipes", true);
 
 			// JEI Vanilla Firework
@@ -356,11 +346,10 @@ public class WaterworksConfig {
 
 			COMMON_BUILDER.comment(ForgeI18n.parseMessage("")).push(CATEGORY_RECIPES);
 
-			this.recipeRainRocket = COMMON_BUILDER.comment("If true, the Rain Rocket has a recipe.")
-					.define("recipeRainRocket", true);
+			this.recipeRainRocket = COMMON_BUILDER.comment("If true, the Rain Rocket has a recipe.").define("recipeRainRocket", true);
 
-			this.recipeAntiRainRocket = COMMON_BUILDER.comment("If true, the Anti Rain Rocket has a recipe.")
-					.define("recipeAntiRainRocket", true);
+			this.recipeAntiRainRocket = COMMON_BUILDER.comment("If true, the Anti Rain Rocket has a recipe.").define("recipeAntiRainRocket",
+					true);
 
 			COMMON_BUILDER.pop();
 		}
