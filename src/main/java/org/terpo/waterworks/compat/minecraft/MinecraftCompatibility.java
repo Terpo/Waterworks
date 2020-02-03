@@ -12,9 +12,9 @@ import net.minecraft.world.World;
 public class MinecraftCompatibility {
 
 	public static void registerWeatherRocketDispenserBehavior() {
-		DispenserBlock.registerDispenseBehavior(Registration.itemFireworkAntiRain.get(),
+		DispenserBlock.registerDispenseBehavior(Registration.fireworkAntiRainItem.get(),
 				new WeatherRocketDispenserBehavior(MinecraftCompatibility::spawnAntiRainRocket));
-		DispenserBlock.registerDispenseBehavior(Registration.itemFireworkRain.get(),
+		DispenserBlock.registerDispenseBehavior(Registration.fireworkRainItem.get(),
 				new WeatherRocketDispenserBehavior(MinecraftCompatibility::spawnRainRocket));
 	}
 

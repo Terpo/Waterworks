@@ -26,8 +26,8 @@ public class ClientSetup {
 		ScreenManager.registerFactory(Registration.groundwaterPumpContainer.get(), PumpContainerScreen::new);
 
 		// ENTITY RENDERER
-		RenderingRegistry.registerEntityRenderingHandler(Registration.entityFireworkAntiRain.get(), RenderWeatherFireworkRocket::new);
-		RenderingRegistry.registerEntityRenderingHandler(Registration.entityFireworkRain.get(), RenderWeatherFireworkRocket::new);
+		RenderingRegistry.registerEntityRenderingHandler(Registration.fireworkAntiRainEntity.get(), RenderWeatherFireworkRocket::new);
+		RenderingRegistry.registerEntityRenderingHandler(Registration.fireworkRainEntity.get(), RenderWeatherFireworkRocket::new);
 
 		// TESR
 		ClientRegistry.bindTileEntityRenderer(Registration.rainTankWoodTile.get(), TileEntityWaterRenderer::new);

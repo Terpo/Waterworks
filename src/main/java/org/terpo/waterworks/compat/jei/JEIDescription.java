@@ -32,12 +32,12 @@ public class JEIDescription {
 		}
 
 		if (Config.rockets.getFireworkRocketsDescription()) {
-			descriptionMap.put(Registration.itemFireworkRain, "item.firework_rain.description");
-			descriptionMap.put(Registration.itemFireworkAntiRain, "item.firework_anti_rain.description");
+			descriptionMap.put(Registration.fireworkRainItem, "item.firework_rain.description");
+			descriptionMap.put(Registration.fireworkAntiRainItem, "item.firework_anti_rain.description");
 		}
 
 		if (Config.rainCollection.getWrenchDescription()) {
-			descriptionMap.put(Registration.itemPipeWrench, "item.pipe_wrench.description");
+			descriptionMap.put(Registration.pipeWrenchItem, "item.pipe_wrench.description");
 		}
 		if (Config.rockets.getFireworkChargeDescription()) {
 			descriptionMap.put(Items.FIREWORK_STAR, "item.firework_charge.description");

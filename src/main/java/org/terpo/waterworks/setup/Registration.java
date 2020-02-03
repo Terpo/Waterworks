@@ -68,38 +68,36 @@ public class Registration {
 	/*
 	 * BLOCKS
 	 */
-	public static final RegistryObject<BlockRainTankWood> rainTankWoodBlock = BLOCKS.register(RegistryNames.BLOCK_RAIN_TANK_WOOD,
+	public static final RegistryObject<BlockRainTankWood> rainTankWoodBlock = BLOCKS.register(RegistryNames.RAIN_TANK_WOOD,
 			BlockRainTankWood::new);
 
-	public static final RegistryObject<BlockWaterPipe> waterPipeBlock = BLOCKS.register(RegistryNames.BLOCK_WATER_PIPE,
-			BlockWaterPipe::new);
+	public static final RegistryObject<BlockWaterPipe> waterPipeBlock = BLOCKS.register(RegistryNames.WATER_PIPE, BlockWaterPipe::new);
 
-	public static final RegistryObject<BlockRainCollector> rainCollectorBlock = BLOCKS
-			.register(RegistryNames.BLOCK_RAIN_COLLECTOR, BlockRainCollector::new);
+	public static final RegistryObject<BlockRainCollector> rainCollectorBlock = BLOCKS.register(RegistryNames.RAIN_COLLECTOR,
+			BlockRainCollector::new);
 
 	public static final RegistryObject<BlockRainCollectorController> rainCollectorControllerBlock = BLOCKS
-			.register(RegistryNames.BLOCK_RAIN_COLLECTOR_CONTROLLER, BlockRainCollectorController::new);
+			.register(RegistryNames.RAIN_COLLECTOR_CONTROLLER, BlockRainCollectorController::new);
 
-	public static final RegistryObject<BlockGroundwaterPump> groundwaterPumpBlock = BLOCKS
-			.register(RegistryNames.BLOCK_GROUNDWATER_PUMP, BlockGroundwaterPump::new);
+	public static final RegistryObject<BlockGroundwaterPump> groundwaterPumpBlock = BLOCKS.register(RegistryNames.GROUNDWATER_PUMP,
+			BlockGroundwaterPump::new);
 
 	/*
 	 * BLOCK ITEMS
 	 */
-	public static final RegistryObject<Item> rainTankWoodBlockItem = ITEMS.register(RegistryNames.BLOCK_RAIN_TANK_WOOD,
+	public static final RegistryObject<Item> rainTankWoodBlockItem = ITEMS.register(RegistryNames.RAIN_TANK_WOOD,
 			() -> new BlockItem(rainTankWoodBlock.get(), new Item.Properties().group(CommonSetup.CREATIVE_TAB)));
 
-	public static final RegistryObject<Item> waterPipeBlockItem = ITEMS.register(RegistryNames.BLOCK_WATER_PIPE,
+	public static final RegistryObject<Item> waterPipeBlockItem = ITEMS.register(RegistryNames.WATER_PIPE,
 			() -> new BlockItem(waterPipeBlock.get(), new Item.Properties().group(CommonSetup.CREATIVE_TAB)));
 
-	public static final RegistryObject<Item> rainCollectorBlockItem = ITEMS.register(RegistryNames.BLOCK_RAIN_COLLECTOR,
+	public static final RegistryObject<Item> rainCollectorBlockItem = ITEMS.register(RegistryNames.RAIN_COLLECTOR,
 			() -> new BlockItem(rainCollectorBlock.get(), new Item.Properties().group(CommonSetup.CREATIVE_TAB)));
 
-	public static final RegistryObject<Item> rainCollectorControllerBlockItem = ITEMS.register(
-			RegistryNames.BLOCK_RAIN_COLLECTOR_CONTROLLER,
+	public static final RegistryObject<Item> rainCollectorControllerBlockItem = ITEMS.register(RegistryNames.RAIN_COLLECTOR_CONTROLLER,
 			() -> new BlockItem(rainCollectorControllerBlock.get(), new Item.Properties().group(CommonSetup.CREATIVE_TAB)));
 
-	public static final RegistryObject<Item> groundwaterPumpBlockItem = ITEMS.register(RegistryNames.BLOCK_GROUNDWATER_PUMP,
+	public static final RegistryObject<Item> groundwaterPumpBlockItem = ITEMS.register(RegistryNames.GROUNDWATER_PUMP,
 			() -> new BlockItem(groundwaterPumpBlock.get(), new Item.Properties().group(CommonSetup.CREATIVE_TAB)));
 
 	/*
@@ -107,84 +105,82 @@ public class Registration {
 	 */
 
 	public static final RegistryObject<TileEntityType<TileEntityRainTankWood>> rainTankWoodTile = TILES.register(
-			RegistryNames.BLOCK_RAIN_TANK_WOOD,
+			RegistryNames.RAIN_TANK_WOOD,
 			() -> TileEntityType.Builder.create(TileEntityRainTankWood::new, rainTankWoodBlock.get()).build(null));
 
 	public static final RegistryObject<TileEntityType<TileEntityRainCollector>> rainCollectorTile = TILES.register(
-			RegistryNames.BLOCK_RAIN_COLLECTOR,
+			RegistryNames.RAIN_COLLECTOR,
 			() -> TileEntityType.Builder.create(TileEntityRainCollector::new, rainCollectorBlock.get()).build(null));
 
 	public static final RegistryObject<TileEntityType<TileEntityRainCollectorController>> rainCollectorControllerTile = TILES.register(
-			RegistryNames.BLOCK_RAIN_COLLECTOR_CONTROLLER,
+			RegistryNames.RAIN_COLLECTOR_CONTROLLER,
 			() -> TileEntityType.Builder.create(TileEntityRainCollectorController::new, rainCollectorControllerBlock.get()).build(null));
 
 	public static final RegistryObject<TileEntityType<TileEntityGroundwaterPump>> groundwaterPumpTile = TILES.register(
-			RegistryNames.BLOCK_GROUNDWATER_PUMP,
+			RegistryNames.GROUNDWATER_PUMP,
 			() -> TileEntityType.Builder.create(TileEntityGroundwaterPump::new, groundwaterPumpBlock.get()).build(null));
 
 	/*
 	 * ITEMS
 	 */
-	public static final RegistryObject<ItemWaterworksDebugger> itemWaterworksDebugger = ITEMS
-			.register(RegistryNames.ITEM_WATERWORKS_DEBUGGER, ItemWaterworksDebugger::new);
+	public static final RegistryObject<ItemWaterworksDebugger> waterworksDebuggerItem = ITEMS.register(RegistryNames.WATERWORKS_DEBUGGER,
+			ItemWaterworksDebugger::new);
 
-	public static final RegistryObject<ItemPipeWrench> itemPipeWrench = ITEMS.register(RegistryNames.ITEM_PIPE_WRENCH,
-			ItemPipeWrench::new);
+	public static final RegistryObject<ItemPipeWrench> pipeWrenchItem = ITEMS.register(RegistryNames.PIPE_WRENCH, ItemPipeWrench::new);
 
-	public static final RegistryObject<ItemFireworkRain> itemFireworkRain = ITEMS.register(RegistryNames.ITEM_FIREWORK_RAIN,
+	public static final RegistryObject<ItemFireworkRain> fireworkRainItem = ITEMS.register(RegistryNames.FIREWORK_RAIN,
 			ItemFireworkRain::new);
 
-	public static final RegistryObject<ItemFireworkAntiRain> itemFireworkAntiRain = ITEMS
-			.register(RegistryNames.ITEM_FIREWORK_ANTI_RAIN, ItemFireworkAntiRain::new);
+	public static final RegistryObject<ItemFireworkAntiRain> fireworkAntiRainItem = ITEMS.register(RegistryNames.FIREWORK_ANTI_RAIN,
+			ItemFireworkAntiRain::new);
 
-	public static final RegistryObject<ItemMaterialEnergyAdapter> itemMaterialEnergyAdapter = ITEMS
-			.register(RegistryNames.ITEM_MATERIAL_ENERGY_ADAPTER, ItemMaterialEnergyAdapter::new);
+	public static final RegistryObject<ItemMaterialEnergyAdapter> materialEnergyAdapterItem = ITEMS
+			.register(RegistryNames.MATERIAL_ENERGY_ADAPTER, ItemMaterialEnergyAdapter::new);
 
-	public static final RegistryObject<ItemMaterialController> itemMaterialController = ITEMS
-			.register(RegistryNames.ITEM_MATERIAL_CONTROLLER, ItemMaterialController::new);
+	public static final RegistryObject<ItemMaterialController> materialControllerItem = ITEMS.register(RegistryNames.MATERIAL_CONTROLLER,
+			ItemMaterialController::new);
 
 	/*
 	 * ENTITIES
 	 */
 
-	public static final RegistryObject<EntityType<EntityFireworkRocketRain>> entityFireworkRain = ENTITIES.register(
-			RegistryNames.ENTITY_FIREWORK_RAIN,
-			() -> EntityType.Builder.<EntityFireworkRocketRain>create(EntityFireworkRocketRain::new, EntityClassification.MISC)
-					.setTrackingRange(64).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true)
-					.build(RegistryNames.ENTITY_FIREWORK_RAIN));
+	public static final RegistryObject<EntityType<EntityFireworkRocketRain>> fireworkRainEntity = ENTITIES
+			.register(RegistryNames.FIREWORK_RAIN,
+					() -> EntityType.Builder.<EntityFireworkRocketRain>create(EntityFireworkRocketRain::new, EntityClassification.MISC)
+							.setTrackingRange(64).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true)
+							.build(RegistryNames.FIREWORK_RAIN));
 
-	public static final RegistryObject<EntityType<EntityFireworkRocketAntiRain>> entityFireworkAntiRain = ENTITIES.register(
-			RegistryNames.ENTITY_FIREWORK_ANTI_RAIN,
+	public static final RegistryObject<EntityType<EntityFireworkRocketAntiRain>> fireworkAntiRainEntity = ENTITIES.register(
+			RegistryNames.FIREWORK_ANTI_RAIN,
 			() -> EntityType.Builder.<EntityFireworkRocketAntiRain>create(EntityFireworkRocketAntiRain::new, EntityClassification.MISC)
-					.setTrackingRange(64).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true)
-					.build(RegistryNames.ENTITY_FIREWORK_ANTI_RAIN));
+					.setTrackingRange(64).setUpdateInterval(3).setShouldReceiveVelocityUpdates(true).build(RegistryNames.FIREWORK_RAIN));
 
 	/*
 	 * CONTAINERS
 	 */
 	public static final RegistryObject<ContainerType<ContainerBase>> rainTankWoodContainer = CONTAINERS.register(
-			RegistryNames.BLOCK_RAIN_TANK_WOOD,
+			RegistryNames.RAIN_TANK_WOOD,
 			() -> IForgeContainerType.create((windowId, inventory, data) -> new ContainerBase(Registration.rainTankWoodContainer.get(),
 					windowId, inventory, Waterworks.proxy.getClientWorld().getTileEntity(data.readBlockPos()))));
 
 	public static final RegistryObject<ContainerType<ContainerBase>> rainCollectorControllerContainer = CONTAINERS.register(
-			RegistryNames.BLOCK_RAIN_COLLECTOR_CONTROLLER,
+			RegistryNames.RAIN_COLLECTOR_CONTROLLER,
 			() -> IForgeContainerType
 					.create((windowId, inventory, data) -> new ContainerBase(Registration.rainCollectorControllerContainer.get(), windowId,
 							inventory, Waterworks.proxy.getClientWorld().getTileEntity(data.readBlockPos()))));
 
 	public static final RegistryObject<ContainerType<PumpContainer>> groundwaterPumpContainer = CONTAINERS
-			.register(RegistryNames.BLOCK_GROUNDWATER_PUMP, () -> IForgeContainerType.create((windowId, inventory,
+			.register(RegistryNames.GROUNDWATER_PUMP, () -> IForgeContainerType.create((windowId, inventory,
 					data) -> new PumpContainer(windowId, inventory, Waterworks.proxy.getClientWorld().getTileEntity(data.readBlockPos()))));
 
 	/*
 	 * RECIPES
 	 */
 
-	public static final RegistryObject<IRecipeSerializer<RainRocketRecipe>> recipeFireworkRain = RECIPES
-			.register(RegistryNames.ITEM_FIREWORK_RAIN, () -> new SpecialRecipeSerializer<>(RainRocketRecipe::new));
-	public static final RegistryObject<IRecipeSerializer<AntiRainRocketRecipe>> recipeFireworkAntiRain = RECIPES
-			.register(RegistryNames.RECIPE_FIREWORK_ANTI_RAIN, () -> new SpecialRecipeSerializer<>(AntiRainRocketRecipe::new));
+	public static final RegistryObject<IRecipeSerializer<RainRocketRecipe>> fireworkRainRecipe = RECIPES
+			.register(RegistryNames.FIREWORK_RAIN, () -> new SpecialRecipeSerializer<>(RainRocketRecipe::new));
+	public static final RegistryObject<IRecipeSerializer<AntiRainRocketRecipe>> fireworkAntiRainRecipe = RECIPES
+			.register(RegistryNames.FIREWORK_ANTI_RAIN, () -> new SpecialRecipeSerializer<>(AntiRainRocketRecipe::new));
 
 	private Registration() {
 		// hide me

@@ -26,7 +26,7 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 
 	public AntiRainRocketRecipe(ResourceLocation idIn) {
 		super(idIn);
-		this.validItems = Arrays.asList(Items.FIREWORK_ROCKET, Registration.itemFireworkAntiRain.get(),
+		this.validItems = Arrays.asList(Items.FIREWORK_ROCKET, Registration.fireworkAntiRainItem.get(),
 				Item.BLOCK_TO_ITEM.get(Blocks.SPONGE));
 	}
 
@@ -50,11 +50,11 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 				isFireworks++;
 			}
 
-			if (item == Registration.itemFireworkAntiRain.get()) {
+			if (item == Registration.fireworkAntiRainItem.get()) {
 				isAntiRainRocket++;
 			}
 
-			if (item == Items.FIREWORK_ROCKET || item == Registration.itemFireworkAntiRain.get()) {
+			if (item == Items.FIREWORK_ROCKET || item == Registration.fireworkAntiRainItem.get()) {
 				rocketStack = i;
 			} else if (item == Item.BLOCK_TO_ITEM.get(Blocks.SPONGE)) {
 				multiplierAdd++;
@@ -65,7 +65,7 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 			return false;
 		}
 
-		this.resultItem = new ItemStack(Registration.itemFireworkAntiRain.get());
+		this.resultItem = new ItemStack(Registration.fireworkAntiRainItem.get());
 
 		if (isFireworks > 0) {
 			return handleFireworksRocket(inv, rocketStack, multiplierAdd);
@@ -129,7 +129,7 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 
 	@Override
 	public IRecipeSerializer<?> getSerializer() {
-		return Registration.recipeFireworkAntiRain.get();
+		return Registration.fireworkAntiRainRecipe.get();
 	}
 
 }

@@ -60,7 +60,7 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainCollectorController) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (heldItem.getItem() == Registration.itemPipeWrench.get()) { // TODO instanceof
+				if (heldItem.getItem() == Registration.pipeWrenchItem.get()) { // TODO instanceof
 					final int collectors = ((TileEntityRainCollectorController) tileEntity).findRainCollectors();
 					playerIn.sendMessage(new TranslationTextComponent("block.waterworks.rain_collector_controller.controllers",
 							Integer.valueOf((collectors - 1))));

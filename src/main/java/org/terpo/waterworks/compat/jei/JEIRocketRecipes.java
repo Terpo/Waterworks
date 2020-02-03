@@ -35,25 +35,24 @@ public class JEIRocketRecipes {
 	}
 
 	protected static ShapelessRecipe createRainRocketRecipe() {
-		final Ingredient rocketInput = Ingredient.fromItems(Registration.itemFireworkRain.get(), Items.FIREWORK_ROCKET);
+		final Ingredient rocketInput = Ingredient.fromItems(Registration.fireworkRainItem.get(), Items.FIREWORK_ROCKET);
 		final Ingredient rainItem = Ingredient.fromItems(Items.GHAST_TEAR);
 		final NonNullList<Ingredient> inputs = NonNullList.from(Ingredient.EMPTY, rocketInput, rainItem);
-		final ItemStack output = new ItemStack(Registration.itemFireworkRain.get());
+		final ItemStack output = new ItemStack(Registration.fireworkRainItem.get());
 
-		final ResourceLocation id2 = new ResourceLocation(Reference.MODID, RegistryNames.RECIPE_FIREWORK_RAIN + JEI);
+		final ResourceLocation id2 = new ResourceLocation(Reference.MODID, RegistryNames.FIREWORK_RAIN + JEI);
 
 		return new ShapelessRecipe(id2, ROCKET_GROUP, output, inputs);
 
 	}
 
 	protected static ShapelessRecipe createAntiRainRocketRecipe() {
-		final Ingredient rocketInput = Ingredient.fromItems(Registration.itemFireworkAntiRain.get(), Items.FIREWORK_ROCKET);
+		final Ingredient rocketInput = Ingredient.fromItems(Registration.fireworkAntiRainItem.get(), Items.FIREWORK_ROCKET);
 		final Ingredient antiRainItem = Ingredient.fromItems(Item.BLOCK_TO_ITEM.get(Blocks.SPONGE));
 		final NonNullList<Ingredient> inputs = NonNullList.from(Ingredient.EMPTY, rocketInput, antiRainItem);
-		final ItemStack output = new ItemStack(Registration.itemFireworkAntiRain.get());
+		final ItemStack output = new ItemStack(Registration.fireworkAntiRainItem.get());
 
-		final ResourceLocation id = new ResourceLocation(Reference.MODID,
-				RegistryNames.RECIPE_FIREWORK_ANTI_RAIN + JEI);
+		final ResourceLocation id = new ResourceLocation(Reference.MODID, RegistryNames.FIREWORK_ANTI_RAIN + JEI);
 
 		return new ShapelessRecipe(id, ROCKET_GROUP, output, inputs);
 	}

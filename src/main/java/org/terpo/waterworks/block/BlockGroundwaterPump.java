@@ -51,7 +51,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
 			if (tileEntity instanceof TileEntityGroundwaterPump) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (heldItem.getItem() == Registration.itemPipeWrench.get()) { // TODO instanceof
+				if (heldItem.getItem() == Registration.pipeWrenchItem.get()) { // TODO instanceof
 					turnPumpModel(worldIn, pos, state);
 					return ActionResultType.SUCCESS;
 				}

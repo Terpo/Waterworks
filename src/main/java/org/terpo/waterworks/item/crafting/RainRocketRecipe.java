@@ -22,7 +22,7 @@ public class RainRocketRecipe extends SpecialRecipe {
 	private final List<Item> validItems;
 	public RainRocketRecipe(ResourceLocation idIn) {
 		super(idIn);
-		this.validItems = Arrays.asList(Items.FIREWORK_ROCKET, Registration.itemFireworkRain.get(), Items.GHAST_TEAR);
+		this.validItems = Arrays.asList(Items.FIREWORK_ROCKET, Registration.fireworkRainItem.get(), Items.GHAST_TEAR);
 	}
 
 	@Override
@@ -45,11 +45,11 @@ public class RainRocketRecipe extends SpecialRecipe {
 				isFireworks++;
 			}
 
-			if (item == Registration.itemFireworkRain.get()) {
+			if (item == Registration.fireworkRainItem.get()) {
 				isRainRocket++;
 			}
 
-			if (item == Items.FIREWORK_ROCKET || item == Registration.itemFireworkRain.get()) {
+			if (item == Items.FIREWORK_ROCKET || item == Registration.fireworkRainItem.get()) {
 				rocketStack = i;
 			} else if (item == Items.GHAST_TEAR) {
 				multiplierAdd++;
@@ -60,7 +60,7 @@ public class RainRocketRecipe extends SpecialRecipe {
 			return false;
 		}
 
-		this.resultItem = new ItemStack(Registration.itemFireworkRain.get());
+		this.resultItem = new ItemStack(Registration.fireworkRainItem.get());
 
 		if (isFireworks > 0) {
 			return handleFireworksRocket(inv, rocketStack, multiplierAdd);
@@ -124,6 +124,6 @@ public class RainRocketRecipe extends SpecialRecipe {
 
 	@Override
 	public IRecipeSerializer<?> getSerializer() {
-		return Registration.recipeFireworkRain.get();
+		return Registration.fireworkRainRecipe.get();
 	}
 }

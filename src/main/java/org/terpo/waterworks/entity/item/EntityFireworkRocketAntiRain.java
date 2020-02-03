@@ -36,11 +36,11 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket im
 	}
 
 	public EntityFireworkRocketAntiRain(World worldIn, double x, double y, double z, ItemStack itemstack) {
-		super(Registration.entityFireworkAntiRain.get(), worldIn, x, y, z, itemstack);
+		super(Registration.fireworkAntiRainEntity.get(), worldIn, x, y, z, itemstack);
 	}
 
 	public EntityFireworkRocketAntiRain(World worldIn, ItemStack itemstack, LivingEntity entity) {
-		super(Registration.entityFireworkAntiRain.get(), worldIn, itemstack, entity);
+		super(Registration.fireworkAntiRainEntity.get(), worldIn, itemstack, entity);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -77,7 +77,7 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket im
 	@Override
 	public ItemStack getItem() {
 		final ItemStack itemstack = getRocketItem();
-		return itemstack.isEmpty() ? new ItemStack(Registration.itemFireworkAntiRain.get()) : itemstack;
+		return itemstack.isEmpty() ? new ItemStack(Registration.fireworkAntiRainItem.get()) : itemstack;
 	}
 
 	@Override

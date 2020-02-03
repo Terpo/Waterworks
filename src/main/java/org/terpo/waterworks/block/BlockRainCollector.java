@@ -62,7 +62,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				final TileEntityRainCollector collector = (TileEntityRainCollector) tileEntity;
 				final Item item = heldItem.getItem();
-				if (item == Registration.itemPipeWrench.get()) { // TODO instanceof
+				if (item == Registration.pipeWrenchItem.get()) { // TODO instanceof
 					handleRightClickWithWrench(playerIn, collector);
 					return ActionResultType.SUCCESS;
 				}
