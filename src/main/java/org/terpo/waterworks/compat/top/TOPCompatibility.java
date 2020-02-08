@@ -7,7 +7,7 @@ import net.minecraftforge.fml.ModList;
 public class TOPCompatibility {
 
 	public static final String TOP_MOD_ID = "theoneprobe";
-	public static ITheOneProbe probe;
+	private static ITheOneProbe probe;
 
 	public static void register() {
 		if (ModList.get().isLoaded(TOP_MOD_ID)) {
@@ -17,5 +17,13 @@ public class TOPCompatibility {
 
 	private TOPCompatibility() {
 		// hidden
+	}
+
+	public static ITheOneProbe getProbe() {
+		return probe;
+	}
+
+	public static void setProbe(ITheOneProbe probe) {
+		TOPCompatibility.probe = probe;
 	}
 }

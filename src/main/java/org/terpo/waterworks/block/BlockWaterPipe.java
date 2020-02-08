@@ -74,7 +74,7 @@ public class BlockWaterPipe extends Block implements IWaterLoggable {
 	@SuppressWarnings("deprecation")
 	@Override
 	public IFluidState getFluidState(BlockState state) { // NOSONAR
-		return state.get(WATERLOGGED).booleanValue() ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.get(WATERLOGGED).booleanValue() ? Fluids.WATER.getStillFluidState(false) : Fluids.EMPTY.getDefaultState();
 	}
 
 	@Override
@@ -99,6 +99,6 @@ public class BlockWaterPipe extends Block implements IWaterLoggable {
 			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
 		}
 
-		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos); // NOSONAR
 	}
 }

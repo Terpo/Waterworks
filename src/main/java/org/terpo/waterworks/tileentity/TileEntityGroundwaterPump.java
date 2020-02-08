@@ -88,8 +88,7 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	}
 
 	protected WaterworksBattery createBattery() {
-		return new WaterworksBattery(Config.pump.getGroundwaterPumpEnergyCapacity(),
-				Config.pump.getGroundwaterPumpEnergyInput(), 0, this);
+		return new WaterworksBattery(Config.pump.getGroundwaterPumpEnergyCapacity(), Config.pump.getGroundwaterPumpEnergyInput(), 0, this);
 	}
 
 	@Override
@@ -147,31 +146,28 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 		final WaterworksBattery internalBattery = this.battery.orElseGet(this::createBattery);
 		final GeneralItemStackHandler handler = this.itemStackHandler.orElseGet(this::createItemHandler);
 		final Mutable currentPos = new BlockPos.Mutable();
-		while (y >= 0) {
-			currentPos.setPos(x, y, z);
-			final BlockState state = this.world.getBlockState(currentPos);
+		boolean stillChecking = true;
+		while (y >= 0 && stillChecking) {
+			final BlockState state = this.world.getBlockState(currentPos.setPos(x, y, z)); // mutable setPos saves itself
 			final Block block = state.getBlock();
 			if (block instanceof BlockWaterPipe) {
 				count++;
 				y--;
-				if (y >= 0) {
-					continue;
+			} else {
+				if (bedrocks.contains(block) || (!Config.pump.getGroundwaterPumpCheckBedrock() && y < 0)) {
+					this.structureComplete = true;
+					this.pipeCounter = count;
+					this.energyUsage = Config.pump.getGroundwaterPumpEnergyBaseUsage()
+							+ Config.pump.getGroundwaterPumpEnergyPipeMultiplier() * this.pipeCounter;
+					return;
+				} else if ((block instanceof AirBlock || block == Blocks.WATER)
+						&& internalBattery.hasEnoughEnergy(Config.pump.getGroundwaterPumpEnergyPipePlacement())
+						&& placePipe(currentPos, handler)) {
+					internalBattery.extractInternal(Config.pump.getGroundwaterPumpEnergyPipePlacement(), false);
 				}
+				this.structureComplete = false;
+				stillChecking = false;
 			}
-			if (bedrocks.contains(block) || (!Config.pump.getGroundwaterPumpCheckBedrock() && y < 0)) {
-				this.structureComplete = true;
-				this.pipeCounter = count;
-				this.energyUsage = Config.pump.getGroundwaterPumpEnergyBaseUsage()
-						+ Config.pump.getGroundwaterPumpEnergyPipeMultiplier() * this.pipeCounter;
-				return;
-			} else if ((block instanceof AirBlock || block == Blocks.WATER)
-					&& internalBattery.hasEnoughEnergy(Config.pump.getGroundwaterPumpEnergyPipePlacement())
-					&& placePipe(currentPos, handler)) {
-				internalBattery.extractInternal(Config.pump.getGroundwaterPumpEnergyPipePlacement(), false);
-				break;
-			}
-			this.structureComplete = false;
-			break;
 		}
 
 	}

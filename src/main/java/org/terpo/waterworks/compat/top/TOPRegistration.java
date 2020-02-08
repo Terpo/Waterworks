@@ -22,17 +22,17 @@ public class TOPRegistration implements Function<ITheOneProbe, Void> {
 	@Nullable
 	@Override
 	public Void apply(ITheOneProbe theOneProbe) {
-		TOPCompatibility.probe = theOneProbe;
+		TOPCompatibility.setProbe(theOneProbe);
 		Waterworks.LOGGER.info("Enabled support for The One Probe");
-		TOPCompatibility.probe.registerProvider(new IProbeInfoProvider() {
+		theOneProbe.registerProvider(new IProbeInfoProvider() {
 			@Override
 			public String getID() {
 				return Reference.DOMAIN + "top";
 			}
 
 			@Override
-			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world,
-					BlockState blockState, IProbeHitData data) {
+			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState,
+					IProbeHitData data) {
 				if (blockState.getBlock() instanceof TOPInfoProvider) {
 					final TOPInfoProvider provider = (TOPInfoProvider) blockState.getBlock();
 					provider.addProbeInfo(mode, probeInfo, player, world, blockState, data);
