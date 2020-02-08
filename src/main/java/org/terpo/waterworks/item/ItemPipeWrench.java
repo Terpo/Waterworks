@@ -20,8 +20,8 @@ public class ItemPipeWrench extends ToolItem {
 	private final Set<Block> effectiveOn;
 	public ItemPipeWrench() {
 		super(6.0F, -3.1F, ItemTier.IRON, Registration.getAllWaterworksBlocks(),
-				new Item.Properties().setNoRepair().maxStackSize(1).group(CommonSetup.CREATIVE_TAB).addToolType(
-						ToolType.get(Constants.WATERWORKS_TOOL_TYPE), ItemTier.IRON.getHarvestLevel()));
+				new Item.Properties().setNoRepair().maxStackSize(1).group(CommonSetup.CREATIVE_TAB)
+						.addToolType(ToolType.get(Constants.WATERWORKS_TOOL_TYPE), ItemTier.IRON.getHarvestLevel()));
 		this.effectiveOn = Registration.getAllWaterworksBlocks();
 	}
 

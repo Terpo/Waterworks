@@ -35,8 +35,7 @@ public class ControllerRefreshPacket extends BasePacket {
 		ctx.get().enqueueWork(() -> {
 			final BlockPos pos = message.tileEntityPosition;
 
-			final TileEntity tileEntity = getTileEntity(ctx.get().getSender().world.getServer().getWorld(message.type),
-					pos);
+			final TileEntity tileEntity = getTileEntity(ctx.get().getSender().world.getServer().getWorld(message.type), pos);
 			if (tileEntity instanceof TileEntityRainCollectorController) {
 				((TileEntityRainCollectorController) tileEntity).findRainCollectors();
 			}

@@ -97,8 +97,7 @@ public class ContainerBase extends Container {
 
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
-		return isWithinUsableDistance(
-				IWorldPosCallable.of(this.tileWaterworks.getWorld(), this.tileWaterworks.getPos()), playerIn,
+		return isWithinUsableDistance(IWorldPosCallable.of(this.tileWaterworks.getWorld(), this.tileWaterworks.getPos()), playerIn,
 				this.tileWaterworks.getBlockState().getBlock());
 	}
 	public TileWaterworks getTileWaterworks() {

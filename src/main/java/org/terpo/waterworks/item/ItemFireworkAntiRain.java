@@ -34,8 +34,7 @@ public class ItemFireworkAntiRain extends FireworkRocketItem {
 		if (!context.getWorld().isRemote) {
 			final ItemStack itemstack = context.getItem();
 			final Vec3d vec3d = context.getHitVec();
-			context.getWorld().addEntity(
-					new EntityFireworkRocketAntiRain(context.getWorld(), vec3d.x, vec3d.y, vec3d.z, itemstack));
+			context.getWorld().addEntity(new EntityFireworkRocketAntiRain(context.getWorld(), vec3d.x, vec3d.y, vec3d.z, itemstack));
 			if (!context.getPlayer().isCreative()) {
 				itemstack.shrink(1);
 			}
@@ -51,8 +50,7 @@ public class ItemFireworkAntiRain extends FireworkRocketItem {
 			final ItemStack itemstack = player.getHeldItem(handIn);
 
 			if (!worldIn.isRemote) {
-				final EntityFireworkRocketAntiRain entityfireworkrocket = new EntityFireworkRocketAntiRain(worldIn,
-						itemstack, player);
+				final EntityFireworkRocketAntiRain entityfireworkrocket = new EntityFireworkRocketAntiRain(worldIn, itemstack, player);
 				worldIn.addEntity(entityfireworkrocket);
 
 				if (!player.isCreative()) {

@@ -15,8 +15,7 @@ public class RainCollectorControllerContainerScreen extends FluidContainerScreen
 	private static final ResourceLocation REFRESH_TEXTURE = new ResourceLocation(Reference.MODID,
 			"textures/gui/container/refresh_button.png");
 
-	public RainCollectorControllerContainerScreen(ContainerBase screenContainer, PlayerInventory inv,
-			ITextComponent title) {
+	public RainCollectorControllerContainerScreen(ContainerBase screenContainer, PlayerInventory inv, ITextComponent title) {
 		super(screenContainer, inv, title);
 	}
 	@Override
@@ -29,7 +28,6 @@ public class RainCollectorControllerContainerScreen extends FluidContainerScreen
 		final int yHeight = 18;
 
 		addButton(new ImageButton(xStart, yStart, xWidth, yHeight, 0, 0, 19, REFRESH_TEXTURE,
-				button -> WaterworksPacketHandler.INSTANCE
-						.sendToServer(new ControllerRefreshPacket(this.container.getTileWaterworks()))));
+				button -> WaterworksPacketHandler.INSTANCE.sendToServer(new ControllerRefreshPacket(this.container.getTileWaterworks()))));
 	}
 }

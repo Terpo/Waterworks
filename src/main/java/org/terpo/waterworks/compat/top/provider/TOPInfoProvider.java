@@ -8,6 +8,5 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
 public interface TOPInfoProvider {
-	void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState,
-			IProbeHitData data);
+	void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data);
 }

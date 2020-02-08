@@ -160,17 +160,14 @@ public abstract class TileWaterworks extends BaseTileEntity implements ITickable
 
 	private static boolean handleFluidCapabilityItem(final WaterworksTank tank, final GeneralItemStackHandler handler,
 			final ItemStack stackInput) {
-		final LazyOptional<IFluidHandlerItem> capability = stackInput
-				.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+		final LazyOptional<IFluidHandlerItem> capability = stackInput.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
 		if (capability.isPresent()) {
-			final FluidActionResult filledSimulated = FluidUtil.tryFillContainer(stackInput, tank, Integer.MAX_VALUE,
-					null, false);
+			final FluidActionResult filledSimulated = FluidUtil.tryFillContainer(stackInput, tank, Integer.MAX_VALUE, null, false);
 			if (filledSimulated.isSuccess()) {
 				final ItemStack simResult = filledSimulated.getResult();
 				final ItemStack outputSlot = handler.getStackInSlot(1);
 				if (checkOutputSlot(outputSlot, simResult)) {
-					final FluidActionResult fillResult = FluidUtil.tryFillContainer(stackInput, tank, Integer.MAX_VALUE,
-							null, true);
+					final FluidActionResult fillResult = FluidUtil.tryFillContainer(stackInput, tank, Integer.MAX_VALUE, null, true);
 					if (fillResult.isSuccess()) {
 						final ItemStack realResult = fillResult.getResult();
 						moveFilledInputToOutput(stackInput, outputSlot, realResult, handler);
@@ -183,8 +180,7 @@ public abstract class TileWaterworks extends BaseTileEntity implements ITickable
 		return false;
 	}
 
-	private static boolean handleGlassBottle(final WaterworksTank tank, final GeneralItemStackHandler handler,
-			final ItemStack stackInput) {
+	private static boolean handleGlassBottle(final WaterworksTank tank, final GeneralItemStackHandler handler, final ItemStack stackInput) {
 		final ItemStack outputSlot = handler.getStackInSlot(1);
 		final ItemStack outputStack = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.WATER);
 		if (checkOutputSlot(outputSlot, outputStack)) {
@@ -201,8 +197,8 @@ public abstract class TileWaterworks extends BaseTileEntity implements ITickable
 		return (outputSlot.isEmpty() || (isItemIdentical) && (hasSpace));
 	}
 
-	private static void moveFilledInputToOutput(final ItemStack stackInput, final ItemStack outputSlot,
-			final ItemStack realResult, ItemStackHandler handler) {
+	private static void moveFilledInputToOutput(final ItemStack stackInput, final ItemStack outputSlot, final ItemStack realResult,
+			ItemStackHandler handler) {
 		if (outputSlot.isEmpty()) {
 			handler.setStackInSlot(1, realResult);
 		} else {

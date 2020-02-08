@@ -22,9 +22,8 @@ public class WeatherRocketDispenserBehavior extends DefaultDispenseItemBehavior 
 	@Override
 	public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
 		final Direction direction = source.getBlockState().get(DispenserBlock.FACING);
-		source.getWorld().addEntity(
-				this.createEntityFunction.apply(source.getWorld(), new Vec3d(source.getX() + direction.getXOffset(),
-						source.getBlockPos().getY() + 0.2D, source.getZ() + direction.getZOffset()), stack));
+		source.getWorld().addEntity(this.createEntityFunction.apply(source.getWorld(), new Vec3d(source.getX() + direction.getXOffset(),
+				source.getBlockPos().getY() + 0.2D, source.getZ() + direction.getZOffset()), stack));
 		stack.shrink(1);
 		return stack;
 	}

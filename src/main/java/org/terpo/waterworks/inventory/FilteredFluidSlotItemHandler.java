@@ -10,8 +10,7 @@ public class FilteredFluidSlotItemHandler extends FluidSlotItemHandler {
 
 	ArrayList<Item> filter = new ArrayList<>();
 
-	public FilteredFluidSlotItemHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition,
-			SlotDefinition slotDefinition) {
+	public FilteredFluidSlotItemHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition, SlotDefinition slotDefinition) {
 		super(itemHandler, index, xPosition, yPosition, slotDefinition);
 	}
 

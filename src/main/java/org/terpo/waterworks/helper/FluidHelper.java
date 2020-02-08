@@ -34,14 +34,13 @@ public class FluidHelper {
 		return false;
 	}
 
-	public static boolean fillWaterBottle(World worldIn, BlockPos pos, PlayerEntity playerIn, ItemStack itemstack,
-			Hand hand, TileWaterworks tileEntity) {
+	public static boolean fillWaterBottle(World worldIn, BlockPos pos, PlayerEntity playerIn, ItemStack itemstack, Hand hand,
+			TileWaterworks tileEntity) {
 		final WaterworksTank tank = tileEntity.getFluidTank();
 		if (tank.getFluidAmount() >= 1000) {
 			if (!playerIn.isCreative()) {
 				tank.drain(1000, FluidAction.EXECUTE);
-				final ItemStack stackWaterBottle = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION),
-						Potions.WATER);
+				final ItemStack stackWaterBottle = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.WATER);
 				itemstack.shrink(1);
 				if (itemstack.isEmpty()) {
 					playerIn.setHeldItem(hand, stackWaterBottle);

@@ -20,8 +20,7 @@ import net.minecraftforge.common.ToolType;
 
 public abstract class BaseBlockTE<T extends BaseTileEntity> extends Block implements TOPInfoProvider {
 
-	protected final ResourceLocation guiIconsTOP = new ResourceLocation(TOPCompatibility.TOP_MOD_ID,
-			"textures/gui/icons.png");
+	protected final ResourceLocation guiIconsTOP = new ResourceLocation(TOPCompatibility.TOP_MOD_ID, "textures/gui/icons.png");
 
 	public BaseBlockTE(Block.Properties builder) {
 		super(builder);
@@ -33,8 +32,8 @@ public abstract class BaseBlockTE<T extends BaseTileEntity> extends Block implem
 	protected abstract T getTileEntity(World world, BlockPos pos);
 
 	@Override
-	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world,
-			BlockState blockState, IProbeHitData data) {
+	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState,
+			IProbeHitData data) {
 		// override me
 	}
 

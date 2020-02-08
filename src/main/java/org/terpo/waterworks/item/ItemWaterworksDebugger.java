@@ -47,13 +47,15 @@ public class ItemWaterworksDebugger extends Item {
 	}
 
 	private static String getEnergyMode(final CompoundNBT tag) {
-		return (tag != null && tag.contains(ItemWaterworksDebugger.ENERGY_MODE)
-				&& tag.getBoolean(ItemWaterworksDebugger.ENERGY_MODE)) ? "energy" : "fluid";
+		return (tag != null && tag.contains(ItemWaterworksDebugger.ENERGY_MODE) && tag.getBoolean(ItemWaterworksDebugger.ENERGY_MODE))
+				? "energy"
+				: "fluid";
 	}
 
 	private static String getDrainMode(final CompoundNBT tag) {
-		return (tag != null && tag.contains(ItemWaterworksDebugger.DRAIN_MODE)
-				&& tag.getBoolean(ItemWaterworksDebugger.DRAIN_MODE)) ? "drain" : "fill";
+		return (tag != null && tag.contains(ItemWaterworksDebugger.DRAIN_MODE) && tag.getBoolean(ItemWaterworksDebugger.DRAIN_MODE))
+				? "drain"
+				: "fill";
 	}
 
 	@Override
@@ -79,8 +81,7 @@ public class ItemWaterworksDebugger extends Item {
 	}
 
 	private static void handleFluid(final TileEntity tileEntity, final boolean drainMode) {
-		final LazyOptional<IFluidHandler> capability = tileEntity
-				.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
+		final LazyOptional<IFluidHandler> capability = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
 		capability.ifPresent(b -> {
 			if (drainMode) {
 				b.drain(1000, FluidAction.EXECUTE);
@@ -110,14 +111,12 @@ public class ItemWaterworksDebugger extends Item {
 
 				if (playerIn.isShiftKeyDown()) {
 					if (tag.contains(ItemWaterworksDebugger.DRAIN_MODE)) {
-						tag.putBoolean(ItemWaterworksDebugger.DRAIN_MODE,
-								!tag.getBoolean(ItemWaterworksDebugger.DRAIN_MODE));
+						tag.putBoolean(ItemWaterworksDebugger.DRAIN_MODE, !tag.getBoolean(ItemWaterworksDebugger.DRAIN_MODE));
 					} else {
 						tag.putBoolean(ItemWaterworksDebugger.DRAIN_MODE, true);
 					}
 				} else if (tag.contains(ItemWaterworksDebugger.ENERGY_MODE)) {
-					tag.putBoolean(ItemWaterworksDebugger.ENERGY_MODE,
-							!tag.getBoolean(ItemWaterworksDebugger.ENERGY_MODE));
+					tag.putBoolean(ItemWaterworksDebugger.ENERGY_MODE, !tag.getBoolean(ItemWaterworksDebugger.ENERGY_MODE));
 				} else {
 					tag.putBoolean(ItemWaterworksDebugger.ENERGY_MODE, true);
 				}

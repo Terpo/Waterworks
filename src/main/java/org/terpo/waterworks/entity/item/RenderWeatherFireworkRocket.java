@@ -24,13 +24,12 @@ public class RenderWeatherFireworkRocket extends EntityRenderer<EntityWeatherFir
 		this.itemRenderer = Minecraft.getInstance().getItemRenderer();
 	}
 	/**
-	 * the texture for the rockets will be fetched from the entity itemStack, no need to
-	 * give a texture information
+	 * the texture for the rockets will be fetched from the entity itemStack, no need to give a texture information
 	 *
 	 */
 	@Override
-	public void render(EntityWeatherFireworkRocket entityIn, float entityYaw, float partialTicks,
-			MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+	public void render(EntityWeatherFireworkRocket entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn,
+			IRenderTypeBuffer bufferIn, int packedLightIn) {
 		matrixStackIn.push();
 		matrixStackIn.rotate(this.renderManager.getCameraOrientation());
 		matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180.0F));
@@ -43,8 +42,8 @@ public class RenderWeatherFireworkRocket extends EntityRenderer<EntityWeatherFir
 		@SuppressWarnings("deprecation")
 		final net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType transform = net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType.GROUND; // NOSONAR
 
-		this.itemRenderer.renderItem(entityIn.getRocketItem(), transform, packedLightIn, OverlayTexture.DEFAULT_LIGHT,
-				matrixStackIn, bufferIn);
+		this.itemRenderer.renderItem(entityIn.getRocketItem(), transform, packedLightIn, OverlayTexture.DEFAULT_LIGHT, matrixStackIn,
+				bufferIn);
 		matrixStackIn.pop();
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
