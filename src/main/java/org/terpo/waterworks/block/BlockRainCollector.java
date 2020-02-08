@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import org.terpo.waterworks.helper.FluidHelper;
-import org.terpo.waterworks.setup.Registration;
+import org.terpo.waterworks.item.ItemPipeWrench;
 import org.terpo.waterworks.tileentity.BaseTileEntity;
 import org.terpo.waterworks.tileentity.TileEntityRainCollector;
 import org.terpo.waterworks.tileentity.TileEntityRainCollectorController;
@@ -19,7 +19,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -61,8 +60,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 			if (tileEntity instanceof TileEntityRainCollector) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
 				final TileEntityRainCollector collector = (TileEntityRainCollector) tileEntity;
-				final Item item = heldItem.getItem();
-				if (item == Registration.pipeWrenchItem.get()) { // TODO instanceof
+				if (heldItem.getItem() instanceof ItemPipeWrench) {
 					handleRightClickWithWrench(playerIn, collector);
 					return ActionResultType.SUCCESS;
 				}

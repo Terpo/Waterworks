@@ -3,6 +3,7 @@ package org.terpo.waterworks.block;
 import org.terpo.waterworks.Config;
 import org.terpo.waterworks.helper.FluidHelper;
 import org.terpo.waterworks.helper.WaterworksInventoryHelper;
+import org.terpo.waterworks.item.ItemPipeWrench;
 import org.terpo.waterworks.setup.Registration;
 import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 import org.terpo.waterworks.tileentity.TileWaterworks;
@@ -23,6 +24,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.Mutable;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -51,7 +53,7 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
 			if (tileEntity instanceof TileEntityGroundwaterPump) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (heldItem.getItem() == Registration.pipeWrenchItem.get()) { // TODO instanceof
+				if (heldItem.getItem() instanceof ItemPipeWrench) {
 					turnPumpModel(worldIn, pos, state);
 					return ActionResultType.SUCCESS;
 				}
@@ -109,9 +111,12 @@ public class BlockGroundwaterPump extends BaseBlockTE<TileEntityGroundwaterPump>
 
 	private static void breakPipes(World world, BlockPos pos) {
 		int y = pos.getY() - 1;
+		final int x = pos.getX();
+		final int z = pos.getZ();
 		int count = 0;
+		final Mutable position = new Mutable();
 		while (y >= 0) {
-			final BlockPos position = new BlockPos(pos.getX(), y, pos.getZ());
+			position.setPos(x, y, z);
 			final BlockState state = world.getBlockState(position);
 			if (state.getBlock() instanceof BlockWaterPipe) {
 				world.destroyBlock(position, false);
