@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.terpo.waterworks.api.constants.Reference;
 import org.terpo.waterworks.fluid.WaterworksTank;
+import org.terpo.waterworks.tileentity.TileWaterworks;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -20,9 +21,11 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+//TODO use capability for fluid tank drawing
 @OnlyIn(Dist.CLIENT)
 public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 	protected WaterworksTank fluidTank;
+	protected TileWaterworks tileEntity;
 
 	protected ResourceLocation gui;
 	protected Rectangle2d tankRectangle;
@@ -32,12 +35,13 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 
 	public FluidContainerScreen(ContainerBase screenContainer, PlayerInventory inv, ITextComponent title) {
 		super(screenContainer, inv, title);
-		prepare(new ResourceLocation(Reference.MODID, "textures/gui/container/rain_tank_wood.png"),
-				new Rectangle2d(80, 17, 16, 52), screenContainer);
+		prepare(new ResourceLocation(Reference.MODID, "textures/gui/container/rain_tank_wood.png"), new Rectangle2d(80, 17, 16, 52),
+				screenContainer);
 
 	}
 
 	protected void prepare(ResourceLocation newGui, Rectangle2d newTankRectangle, ContainerBase screenContainer) {
+		this.tileEntity = screenContainer.getTileWaterworks();
 		this.fluidTank = screenContainer.getTileWaterworks().getFluidTank();
 
 		this.gui = newGui;
@@ -51,8 +55,8 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 		final Fluid fluid = this.fluidTank.getFluid().getFluid();
 		this.waterResource = fluid.getAttributes().getStillTexture();
 		final int color = fluid.getAttributes().getColor();
-		this.colors = new float[]{((color >> 16) & 0xFf) / 255.0f, ((color >> 8) & 0xFf) / 255.0f,
-				(color & 0xFf) / 255.0f, ((color >> 24) & 0xFf) / 255.0f};
+		this.colors = new float[]{((color >> 16) & 0xFf) / 255.0f, ((color >> 8) & 0xFf) / 255.0f, (color & 0xFf) / 255.0f,
+				((color >> 24) & 0xFf) / 255.0f};
 
 		return (0f != this.colors[0]);
 	}
@@ -69,20 +73,18 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.minecraft.getTextureManager().bindTexture(this.gui);
 		this.blit(getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
-		drawTank(this.tankRectangle.getX(), this.tankRectangle.getWidth(), this.tankRectangle.getY(),
-				this.tankRectangle.getHeight());
+		drawTank(this.tankRectangle.getX(), this.tankRectangle.getWidth(), this.tankRectangle.getY(), this.tankRectangle.getHeight());
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		final String s = this.title.getFormattedText();
 		this.font.drawString(s, this.xSize / 2f - this.font.getStringWidth(s) / 2f, 6.0F, 4210752);
-		this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, this.ySize - 96 + 2f,
-				4210752);
+		this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, this.ySize - 96 + 2f, 4210752);
 
 		// draw Tooltip
-		drawTankTooltip(mouseX, mouseY, this.tankRectangle.getX(), this.tankRectangle.getWidth(),
-				this.tankRectangle.getY(), this.tankRectangle.getHeight());
+		drawTankTooltip(mouseX, mouseY, this.tankRectangle.getX(), this.tankRectangle.getWidth(), this.tankRectangle.getY(),
+				this.tankRectangle.getHeight());
 	}
 
 	protected void drawTank(int tankPosX, int tankSizeX, int tankPosY, int tankSizeY) {
@@ -95,21 +97,19 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 			final int fillHeight = this.fluidTank.getFluidAmount() * tankSizeY / this.fluidTank.getCapacity();
 			this.minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
 			RenderSystem.color4f(this.colors[0], this.colors[1], this.colors[2], this.colors[3]);
-			AbstractGui.blit(getGuiLeft() + tankPosX, getGuiTop() + tankPosY + tankSizeY - fillHeight, 0, tankSizeX,
-					fillHeight, Minecraft.getInstance().getTextureGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE)
-							.apply(this.waterResource));
+			AbstractGui.blit(getGuiLeft() + tankPosX, getGuiTop() + tankPosY + tankSizeY - fillHeight, 0, tankSizeX, fillHeight,
+					Minecraft.getInstance().getTextureGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(this.waterResource));
 			RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 		}
 	}
 
-	protected void drawTankTooltip(int mouseX, int mouseY, int xStartTank, int xSizeTank, int yStartTank,
-			int ySizeTank) {
+	protected void drawTankTooltip(int mouseX, int mouseY, int xStartTank, int xSizeTank, int yStartTank, int ySizeTank) {
 		if (this.fluidTank != null) {
 			final String tooltip = this.fluidTank.getFluidAmount() + "/" + this.fluidTank.getCapacity() + " mB";
 			final List<String> toolTipText = new ArrayList<>();
 			toolTipText.add(tooltip);
-			if (getGuiLeft() + xStartTank <= mouseX && mouseX < getGuiLeft() + xStartTank + xSizeTank
-					&& mouseY >= getGuiTop() + yStartTank && mouseY < getGuiTop() + yStartTank + ySizeTank) {
+			if (getGuiLeft() + xStartTank <= mouseX && mouseX < getGuiLeft() + xStartTank + xSizeTank && mouseY >= getGuiTop() + yStartTank
+					&& mouseY < getGuiTop() + yStartTank + ySizeTank) {
 				renderTooltip(toolTipText, mouseX - getGuiLeft() + 10, mouseY - getGuiTop());
 			}
 		}
