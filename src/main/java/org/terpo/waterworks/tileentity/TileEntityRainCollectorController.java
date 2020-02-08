@@ -12,7 +12,9 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.Mutable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
@@ -20,11 +22,12 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	private static final String NBT_VALID_COLLECTORS = "validCollectors";
 	private static final String NBT_COLLECTOR_POS_LIST = "collectorPosList";
+	private static final String NBT_COLLECTOR_POS = "collectorPos";
 	private static final String NBT_CONNECTED_BLOCKS = "connectedBlocks";
 
 	private final int controllerRange;
 	private final int areaCount;
-	private BlockPos[] rainCollectorBlocks;
+	private Mutable[] rainCollectorBlocks;
 	protected int connectedCollectors;
 
 	private boolean isReset = false;
@@ -38,7 +41,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 
 		this.controllerRange = Config.rainCollection.getRainCollectorRange();
 		this.areaCount = (int) Math.pow(this.controllerRange * 2.0d + 1, 2);
-		this.rainCollectorBlocks = new BlockPos[this.areaCount];
+		this.rainCollectorBlocks = new Mutable[this.areaCount];
 		this.connectedCollectors = 1;
 		this.isReset = false;
 		this.validCollectors = 0;
@@ -71,7 +74,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	 */
 	private void checkSelf() {
 		if (this.rainCollectorBlocks[0] == null) {
-			this.rainCollectorBlocks[0] = this.pos;
+			this.rainCollectorBlocks[0] = new Mutable(this.pos);
 		}
 	}
 
@@ -128,7 +131,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 		for (int i = 0; i < this.areaCount; i++) {
 			if (this.rainCollectorBlocks[i] != null) {
 				final CompoundNBT nbt = new CompoundNBT();
-				nbt.putLong("collectorPos", this.rainCollectorBlocks[i].toLong());
+				nbt.putLong(NBT_COLLECTOR_POS, this.rainCollectorBlocks[i].toLong());
 				list.add(nbt);
 				connectedBlocks++;
 			}
@@ -147,12 +150,13 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 			if (compound.contains(NBT_COLLECTOR_POS_LIST)) {
 				final ListNBT list = compound.getList(NBT_COLLECTOR_POS_LIST, 10);
 				if (list.size() > this.areaCount) {
-					this.rainCollectorBlocks = new BlockPos[list.size()];
+					this.rainCollectorBlocks = new Mutable[list.size()];
 					this.isReset = true;
 				}
 				for (int i = 0; i < list.size(); i++) {
 					final CompoundNBT nbt = list.getCompound(i);
-					this.rainCollectorBlocks[i] = (BlockPos.fromLong(nbt.getLong("collectorPos")));
+					final long nbtPos = nbt.getLong(NBT_COLLECTOR_POS);
+					this.rainCollectorBlocks[i] = new Mutable(BlockPos.unpackX(nbtPos), BlockPos.unpackY(nbtPos), BlockPos.unpackZ(nbtPos));
 				}
 			}
 			if (compound.contains(NBT_VALID_COLLECTORS)) {
@@ -185,42 +189,31 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 
 		// our water tank is the first found block
 		int foundBlockCount = 1;
-		this.rainCollectorBlocks[0] = this.pos;
+		this.rainCollectorBlocks[0] = new Mutable(this.pos);
 
 		// iterate over all blocks in our "found"-list
 		int i = 0;
 		while (i < foundBlockCount) {
-			// left of current block
-			BlockPos tempPos = this.rainCollectorBlocks[i].add(-1, 0, 0);
-			if (isValidBlock(tempPos, foundBlockCount)) {
-				this.rainCollectorBlocks[foundBlockCount++] = tempPos;
-				((TileEntityRainCollector) (this.world.getTileEntity(tempPos))).setController(this);
-			}
+			final Mutable tempPos = this.rainCollectorBlocks[i];
 
-			// right of current block
-			tempPos = this.rainCollectorBlocks[i].add(1, 0, 0);
-			if (isValidBlock(tempPos, foundBlockCount)) {
-				this.rainCollectorBlocks[foundBlockCount++] = tempPos;
-				((TileEntityRainCollector) (this.world.getTileEntity(tempPos))).setController(this);
-			}
-
-			// in front of current block
-			tempPos = this.rainCollectorBlocks[i].add(0, 0, 1);
-			if (isValidBlock(tempPos, foundBlockCount)) {
-				this.rainCollectorBlocks[foundBlockCount++] = tempPos;
-				((TileEntityRainCollector) (this.world.getTileEntity(tempPos))).setController(this);
-			}
-
-			// behind current block
-			tempPos = this.rainCollectorBlocks[i].add(0, 0, -1);
-			if (isValidBlock(tempPos, foundBlockCount)) {
-				this.rainCollectorBlocks[foundBlockCount++] = tempPos;
-				((TileEntityRainCollector) (this.world.getTileEntity(tempPos))).setController(this);
+			for (final Direction direction : Direction.Plane.HORIZONTAL) {
+				tempPos.move(direction, 1);
+				foundBlockCount = validateAndAddCollector(foundBlockCount, tempPos);
+				tempPos.move(direction.getOpposite(), 1);
 			}
 			i++;
 		}
 		return foundBlockCount;
 
+	}
+
+	protected int validateAndAddCollector(int foundBlockCount, Mutable tempPos) {
+		int resultFoundBlockCount = foundBlockCount;
+		if (isValidBlock(tempPos, resultFoundBlockCount)) {
+			this.rainCollectorBlocks[resultFoundBlockCount++] = tempPos;
+			((TileEntityRainCollector) (this.world.getTileEntity(tempPos))).setController(this);
+		}
+		return resultFoundBlockCount;
 	}
 
 	public void removeCollector(BlockPos collectorPos) {
@@ -245,7 +238,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 				}
 			}
 		}
-		this.rainCollectorBlocks = new BlockPos[this.areaCount];
+		this.rainCollectorBlocks = new Mutable[this.areaCount];
 	}
 
 	public int getConnectedCollectors() {

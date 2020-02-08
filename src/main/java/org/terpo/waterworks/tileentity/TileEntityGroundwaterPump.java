@@ -29,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.Mutable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
@@ -145,8 +146,9 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 
 		final WaterworksBattery internalBattery = this.battery.orElseGet(this::createBattery);
 		final GeneralItemStackHandler handler = this.itemStackHandler.orElseGet(this::createItemHandler);
+		final Mutable currentPos = new BlockPos.Mutable();
 		while (y >= 0) {
-			final BlockPos currentPos = new BlockPos(x, y, z);
+			currentPos.setPos(x, y, z);
 			final BlockState state = this.world.getBlockState(currentPos);
 			final Block block = state.getBlock();
 			if (block instanceof BlockWaterPipe) {
