@@ -32,7 +32,5 @@ public class Waterworks {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(CommonSetup::init);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(InterModEnqueueSetup::init);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
-
-//		Config.loadConfig(Config.commonConfig, FMLPaths.CONFIGDIR.get().resolve("waterworks-common.toml"));
 	}
 }

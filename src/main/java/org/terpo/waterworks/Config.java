@@ -1,10 +1,5 @@
 package org.terpo.waterworks;
 
-import java.nio.file.Path;
-
-import com.electronwill.nightconfig.core.file.CommentedFileConfig;
-import com.electronwill.nightconfig.core.io.WritingMode;
-
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ForgeI18n;
@@ -29,16 +24,6 @@ public class Config {
 		recipes = new WaterworksRecipes();
 
 		commonConfig = COMMON_BUILDER.build();
-	}
-
-	public static void loadConfig(ForgeConfigSpec spec, Path path) {
-		try (final CommentedFileConfig configData = CommentedFileConfig.builder(path).sync().autosave().writingMode(WritingMode.REPLACE)
-				.build();) {
-			configData.load();
-			spec.setConfig(configData);
-		} catch (final Exception e) {
-			Waterworks.LOGGER.error(e);
-		}
 	}
 
 	@SubscribeEvent
