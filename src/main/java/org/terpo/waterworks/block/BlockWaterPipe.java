@@ -2,7 +2,6 @@ package org.terpo.waterworks.block;
 
 import javax.annotation.Nullable;
 
-import org.terpo.waterworks.setup.Registration;
 import org.terpo.waterworks.tileentity.TileEntityGroundwaterPump;
 
 import net.minecraft.block.Block;
@@ -22,6 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.Mutable;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -51,22 +51,22 @@ public class BlockWaterPipe extends Block implements IWaterLoggable {
 
 	@Override
 	public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
-		BlockPos newPos = pos;
-		while (true) {
-			newPos = newPos.up();
-			final Block block = worldIn.getBlockState(newPos).getBlock();
-			if (block.equals(Registration.waterPipeBlock)) {
-				continue;
-			}
-			if (block.equals(Registration.groundwaterPumpBlock) && block.hasTileEntity(state)) {
-				final TileEntity tE = worldIn.getTileEntity(newPos);
-				if (tE instanceof TileEntityGroundwaterPump) {
-					((TileEntityGroundwaterPump) tE).setStructureComplete(false);
+		final Mutable newPos = new Mutable(pos);
+		boolean stillSearching = true;
+		while (stillSearching) {
+			final Block block = worldIn.getBlockState(newPos.move(0, 1, 0)).getBlock(); // mutable up, saves itself!
+			if (block instanceof BlockGroundwaterPump) {
+				if (block.hasTileEntity(state)) {
+					final TileEntity tE = worldIn.getTileEntity(newPos);
+					if (tE instanceof TileEntityGroundwaterPump) {
+						((TileEntityGroundwaterPump) tE).setStructureComplete(false);
+					}
 				}
-				break;
+				stillSearching = false;
 			}
-			break;
-
+			if (!(block instanceof BlockWaterPipe)) {
+				stillSearching = false;
+			}
 		}
 		super.harvestBlock(worldIn, player, pos, state, te, stack);
 	}
