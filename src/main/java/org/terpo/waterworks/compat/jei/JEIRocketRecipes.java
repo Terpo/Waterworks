@@ -27,8 +27,12 @@ public class JEIRocketRecipes {
 	static void addRocketRecipes(IRecipeRegistration registration) {
 		if (Config.rockets.getFireworkRocketsJEIRecipes()) {
 			final List<ShapelessRecipe> recipes = new ArrayList<>(2);
-			recipes.add(createAntiRainRocketRecipe());
-			recipes.add(createRainRocketRecipe());
+			if (Config.recipes.getRecipeAntiRainRocket()) {
+				recipes.add(createAntiRainRocketRecipe());
+			}
+			if (Config.recipes.getRecipeRainRocket()) {
+				recipes.add(createRainRocketRecipe());
+			}
 			registration.addRecipes(recipes, VanillaRecipeCategoryUid.CRAFTING);
 		}
 

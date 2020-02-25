@@ -19,15 +19,23 @@ import net.minecraft.world.World;
 public class RainRocketRecipe extends SpecialRecipe {
 	private static final String NBT_RAIN = "RAIN";
 	private ItemStack resultItem = ItemStack.EMPTY;
+
+	private final boolean recipeEnabled;
+
 	private final List<Item> validItems;
 	public RainRocketRecipe(ResourceLocation idIn) {
 		super(idIn);
 		this.validItems = Arrays.asList(Items.FIREWORK_ROCKET, Registration.fireworkRainItem.get(), Items.GHAST_TEAR);
+		this.recipeEnabled = Config.recipes.getRecipeRainRocket();
 	}
 
 	@Override
 	public boolean matches(CraftingInventory inv, World worldIn) {
 		this.resultItem = ItemStack.EMPTY;
+
+		if (!this.recipeEnabled) {
+			return false;
+		}
 
 		int rocketStack = -1;
 		int isFireworks = 0;

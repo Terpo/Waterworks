@@ -21,6 +21,8 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 
 	private static final String NBT_ANTIRAIN = "ANTIRAIN";
 
+	private final boolean recipeEnabled;
+
 	private ItemStack resultItem = ItemStack.EMPTY;
 	private final List<Item> validItems;
 
@@ -28,11 +30,15 @@ public class AntiRainRocketRecipe extends SpecialRecipe {
 		super(idIn);
 		this.validItems = Arrays.asList(Items.FIREWORK_ROCKET, Registration.fireworkAntiRainItem.get(),
 				Item.BLOCK_TO_ITEM.get(Blocks.SPONGE));
+		this.recipeEnabled = Config.recipes.getRecipeAntiRainRocket();
 	}
 
 	@Override
 	public boolean matches(CraftingInventory inv, World worldIn) {
 		this.resultItem = ItemStack.EMPTY;
+		if (!this.recipeEnabled) {
+			return false;
+		}
 
 		int rocketStack = -1;
 		int isFireworks = 0;
