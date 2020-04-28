@@ -11,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class TileEntityRainCollectorController extends TileEntityRainTankWood {
-	private final int controllerRange = 2;
+	private final int controllerRange = WaterworksConfig.rainCollection.rainCollectorRange;
 	private final int areaCount = (int) Math.pow(this.controllerRange * 2.0d + 1, 2);
 	private BlockPos[] rainCollectorBlocks = new BlockPos[this.areaCount];
 	protected int connectedCollectors = 1;

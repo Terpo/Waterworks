@@ -97,11 +97,13 @@ public class TileEntityRainCollector extends BaseTileEntity {
 	@SuppressWarnings({"unchecked"})
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return (T) this.controller.itemStackHandler;
-		}
-		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return (T) this.controller.fluidTank;
+		if (hasController()) {
+			if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+				return (T) this.controller.itemStackHandler;
+			}
+			if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+				return (T) this.controller.fluidTank;
+			}
 		}
 		return super.getCapability(capability, facing);
 	}
