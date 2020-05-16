@@ -65,10 +65,10 @@ repositories {
 		name 'JEI mezz maven'
 		url = "https://dvs1.progwml6.com/files/maven/"
 	}
-    maven {
-		name 'Hwyla mcp maven'
-		url = "https://tehnut.info/maven/" 
-	}
+//    maven {
+//		name 'Hwyla mcp maven'
+//		url = "https://tehnut.info/maven/" 
+//	}
 	maven { // TOP mcjty/
         name 'tterrag maven'
         url "https://maven.tterrag.com/"
@@ -114,3 +114,5 @@ jar {
         ])
     }
 }
+
+jar.finalizedBy('reobfJar') 
