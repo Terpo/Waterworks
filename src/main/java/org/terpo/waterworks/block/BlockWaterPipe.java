@@ -71,7 +71,6 @@ public class BlockWaterPipe extends Block implements IWaterLoggable {
 		super.harvestBlock(worldIn, player, pos, state, te, stack);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public IFluidState getFluidState(BlockState state) { // NOSONAR
 		return state.get(WATERLOGGED).booleanValue() ? Fluids.WATER.getStillFluidState(false) : Fluids.EMPTY.getDefaultState();

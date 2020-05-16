@@ -98,7 +98,7 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 			this.minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
 			RenderSystem.color4f(this.colors[0], this.colors[1], this.colors[2], this.colors[3]);
 			AbstractGui.blit(getGuiLeft() + tankPosX, getGuiTop() + tankPosY + tankSizeY - fillHeight, 0, tankSizeX, fillHeight,
-					Minecraft.getInstance().getTextureGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(this.waterResource));
+					Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(this.waterResource));
 			RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 		}
 	}

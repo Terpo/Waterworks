@@ -40,7 +40,7 @@ public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
 			if (tileEntity instanceof TileEntityRainTankWood) {
 				final ItemStack heldItem = playerIn.getHeldItem(hand);
-				if (!heldItem.isEmpty() && !playerIn.isShiftKeyDown()
+				if (!heldItem.isEmpty() && !playerIn.isSneaking()
 						&& tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null).isPresent()
 						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity, heldItem)) {
 					return ActionResultType.SUCCESS;

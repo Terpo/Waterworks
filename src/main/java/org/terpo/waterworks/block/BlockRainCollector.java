@@ -67,7 +67,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 				if (collector.hasController()) {
 					final TileEntityRainCollectorController controller = collector.getController();
 
-					if (!heldItem.isEmpty() && !playerIn.isShiftKeyDown()
+					if (!heldItem.isEmpty() && !playerIn.isSneaking()
 							&& controller.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent()
 							&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, controller, heldItem)) {
 						return ActionResultType.SUCCESS;
@@ -126,7 +126,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 	@Override
 	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState,
 			IProbeHitData data) {
-		if (player.isShiftKeyDown()) {
+		if (player.isSneaking()) {
 			final TileEntity te = world.getTileEntity(data.getPos());
 			if (te instanceof TileEntityRainCollector) {
 				final IIconStyle iconStyle = probeInfo.defaultIconStyle().textureWidth(32).textureHeight(32);

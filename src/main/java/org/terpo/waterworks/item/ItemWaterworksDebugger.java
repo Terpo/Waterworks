@@ -109,7 +109,7 @@ public class ItemWaterworksDebugger extends Item {
 			if (!stack.isEmpty()) {
 				final CompoundNBT tag = stack.getOrCreateTag();
 
-				if (playerIn.isShiftKeyDown()) {
+				if (playerIn.isSneaking()) {
 					if (tag.contains(ItemWaterworksDebugger.DRAIN_MODE)) {
 						tag.putBoolean(ItemWaterworksDebugger.DRAIN_MODE, !tag.getBoolean(ItemWaterworksDebugger.DRAIN_MODE));
 					} else {

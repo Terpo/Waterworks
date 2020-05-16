@@ -42,7 +42,7 @@ public class RenderWeatherFireworkRocket extends EntityRenderer<EntityWeatherFir
 		@SuppressWarnings("deprecation")
 		final net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType transform = net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType.GROUND; // NOSONAR
 
-		this.itemRenderer.renderItem(entityIn.getRocketItem(), transform, packedLightIn, OverlayTexture.DEFAULT_LIGHT, matrixStackIn,
+		this.itemRenderer.renderItem(entityIn.getRocketItem(), transform, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn,
 				bufferIn);
 		matrixStackIn.pop();
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);

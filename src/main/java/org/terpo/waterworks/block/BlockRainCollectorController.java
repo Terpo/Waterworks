@@ -66,7 +66,7 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 							Integer.valueOf((collectors - 1))));
 					return ActionResultType.SUCCESS;
 				}
-				if (!heldItem.isEmpty() && !playerIn.isShiftKeyDown()
+				if (!heldItem.isEmpty() && !playerIn.isSneaking()
 						&& tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent()
 						&& FluidHelper.interactWithFluidHandler(worldIn, pos, playerIn, hand, facing, tileEntity, heldItem)) {
 					return ActionResultType.SUCCESS;
@@ -114,7 +114,7 @@ public class BlockRainCollectorController extends BaseBlockTE<TileWaterworks> {
 	@Override
 	public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState,
 			IProbeHitData data) {
-		if (player.isShiftKeyDown()) {
+		if (player.isSneaking()) {
 			final TileEntity te = world.getTileEntity(data.getPos());
 			if (te instanceof TileEntityRainCollectorController) {
 				final TileEntityRainCollectorController tile = (TileEntityRainCollectorController) te;
