@@ -12,17 +12,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.WorldInfo;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket implements IRendersAsItem {
 
-	private static final DataParameter<ItemStack> RAINROCKET_ITEM = EntityDataManager.createKey(EntityFireworkRocketRain.class,
-			DataSerializers.ITEMSTACK);
+	private static final DataParameter<ItemStack> RAINROCKET_ITEM = EntityDataManager
+			.createKey(EntityFireworkRocketRain.class, DataSerializers.ITEMSTACK);
 	private static final DataParameter<OptionalInt> BOOSTED_RAINROCKET_ENTITY_ID = EntityDataManager
 			.createKey(EntityFireworkRocketRain.class, DataSerializers.OPTIONAL_VARINT);
 	private static final DataParameter<Boolean> SHOT_AT_ANGLE_RAINROCKET_BOOLEAN = EntityDataManager
@@ -56,21 +57,15 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket implem
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public String getAnnouncementText(int time, final int days, final int hours, final int min) {
-		return new TranslationTextComponent("entity.rain_rocket.announcement", Integer.valueOf(time), Integer.valueOf(days),
-				Integer.valueOf(hours), Integer.valueOf(min)).getFormattedText();
+	public ITextComponent getAnnouncementText(int time, final int days, final int hours, final int min) {
+		return new TranslationTextComponent("entity.rain_rocket.announcement", Integer.valueOf(time),
+				Integer.valueOf(days), Integer.valueOf(hours), Integer.valueOf(min));
 	}
 
 	@Override
 	public void remove() {
-		if (!this.getEntityWorld().isRemote) {
-			final WorldInfo worldInfo = this.getEntityWorld().getWorldInfo();
-			worldInfo.setClearWeatherTime(0);
-			worldInfo.setRainTime(this.duration);
-			worldInfo.setThunderTime(this.duration);
-			worldInfo.setRaining(true);
-			worldInfo.setThundering(this.rand.nextInt(10) > 6);
-		}
+		if (!this.getEntityWorld().isRemote)
+			((ServerWorld) this.getEntityWorld()).setWeather(0, this.duration, true, this.rand.nextInt(10) > 6);
 		super.remove();
 	}
 

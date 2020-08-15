@@ -23,9 +23,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -53,7 +55,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, // NOSONAR
+	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, // NOSONAR
 			Hand hand, BlockRayTraceResult facing) {
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
@@ -90,7 +92,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 		} else {
 			out = new TranslationTextComponent("block.waterworks.rain_collector.no_controller");
 		}
-		playerIn.sendMessage(out);
+		playerIn.sendMessage(out,Util.NIL_UUID);
 	}
 
 	@Override
@@ -131,11 +133,11 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 			if (te instanceof TileEntityRainCollector) {
 				final IIconStyle iconStyle = probeInfo.defaultIconStyle().textureWidth(32).textureHeight(32);
 				final TileEntityRainCollector tile = (TileEntityRainCollector) te;
-				final String tooltip = new TranslationTextComponent("tooltip.controller").getFormattedText();
+				final TranslationTextComponent tooltip = new TranslationTextComponent("tooltip.controller");
 				if (tile.hasController()) {
 					final BlockPos pos = tile.getController().getPos();
 					probeInfo.horizontal().text(tooltip).icon(this.guiIconsTOP, 0, 16, 16, 16, iconStyle)
-							.text("@" + pos.getX() + "," + pos.getY() + "," + pos.getZ());
+							.text(new StringTextComponent("@" + pos.getX() + "," + pos.getY() + "," + pos.getZ()));
 				} else {
 					probeInfo.horizontal().text(tooltip).icon(this.guiIconsTOP, 16, 16, 16, 16, iconStyle);
 				}

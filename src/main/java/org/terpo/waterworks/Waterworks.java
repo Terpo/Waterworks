@@ -21,7 +21,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class Waterworks {
 	public static final Logger LOGGER = LogManager.getLogger(Reference.NAME);
 	// do not use a lambda method reference here
-	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy()); // NOSONAR
+	public static IProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> ServerProxy::new); // NOSONAR
 
 	public Waterworks() { // NOSONAR
 

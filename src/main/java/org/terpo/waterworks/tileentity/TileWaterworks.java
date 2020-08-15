@@ -10,6 +10,7 @@ import org.terpo.waterworks.helper.GeneralItemStackHandler;
 import org.terpo.waterworks.network.TankPacket;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
@@ -72,8 +73,8 @@ public abstract class TileWaterworks extends BaseTileEntity implements ITickable
 	}
 
 	@Override
-	public void read(CompoundNBT compound) {
-		super.read(compound);
+	public void fromTag(BlockState state,CompoundNBT compound) {
+		super.fromTag(state, compound);
 		if (compound.contains(NBT_ITEMS)) {
 			this.itemStackHandler.ifPresent(handler -> handler.deserializeNBT(compound.getCompound(NBT_ITEMS)));
 		}

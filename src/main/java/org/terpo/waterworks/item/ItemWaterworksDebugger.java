@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
@@ -63,7 +64,7 @@ public class ItemWaterworksDebugger extends Item {
 		if (!context.getWorld().isRemote) {
 			final TileEntity tileEntity = context.getWorld().getTileEntity(context.getPos());
 			final ItemStack stack = context.getItem();
-			if (tileEntity != null && context.getPlayer().isSteppingCarefully() && !stack.isEmpty()) {
+			if (tileEntity != null && context.getPlayer().isSneaking() && !stack.isEmpty()) {
 				final CompoundNBT tag = stack.getTag();
 				final boolean energyMode = (tag != null && tag.contains(ItemWaterworksDebugger.ENERGY_MODE)
 						&& tag.getBoolean(ItemWaterworksDebugger.ENERGY_MODE));
@@ -120,7 +121,7 @@ public class ItemWaterworksDebugger extends Item {
 				} else {
 					tag.putBoolean(ItemWaterworksDebugger.ENERGY_MODE, true);
 				}
-				playerIn.sendMessage(currentMode(tag));
+				playerIn.sendMessage(currentMode(tag),Util.NIL_UUID);
 			}
 		}
 		return super.onItemRightClick(worldIn, playerIn, handIn);

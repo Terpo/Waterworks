@@ -4,6 +4,8 @@ import org.terpo.waterworks.api.constants.Reference;
 import org.terpo.waterworks.network.ControllerRefreshPacket;
 import org.terpo.waterworks.network.WaterworksPacketHandler;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -19,8 +21,8 @@ public class RainCollectorControllerContainerScreen extends FluidContainerScreen
 		super(screenContainer, inv, title);
 	}
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+	protected void drawBackground(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+		super.drawBackground(matrixStack,partialTicks, mouseX, mouseY);
 		final int xWidth = 24;
 
 		final int xStart = getGuiLeft() + getXSize() - 10 - xWidth;

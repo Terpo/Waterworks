@@ -2,20 +2,21 @@ package org.terpo.waterworks.network;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 
 public class BasePacket {
 	BlockPos tileEntityPosition = null;
-	DimensionType type;
+	RegistryKey<World> type;
 
 	public BasePacket() {
 		// nothing 2do
 	}
 	public BasePacket(TileEntity tileEntity) {
 		this.tileEntityPosition = tileEntity.getPos();
-		this.type = tileEntity.getWorld().getDimension().getType();
+		this.type = tileEntity.getWorld().getRegistryKey();
 
 	}
 
@@ -24,14 +25,14 @@ public class BasePacket {
 		final int y = buf.readInt();
 		final int z = buf.readInt();
 		packet.tileEntityPosition = new BlockPos(x, y, z);
-		packet.type = DimensionType.getById(buf.readInt());
+		packet.type = RegistryKey.of(Registry.field_239699_ae_,buf.readResourceLocation());
 	}
 
 	protected static void writePosition(BasePacket packet, PacketBuffer buf) {
 		buf.writeInt(packet.tileEntityPosition.getX());
 		buf.writeInt(packet.tileEntityPosition.getY());
 		buf.writeInt(packet.tileEntityPosition.getZ());
-		buf.writeInt(packet.type.getId());
+		buf.writeResourceLocation(packet.type.getValue());
 	}
 
 	protected static TileEntity getTileEntity(World worldObj, BlockPos pos) {

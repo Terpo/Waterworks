@@ -2,14 +2,17 @@ package org.terpo.waterworks.entity.item;
 
 import java.util.OptionalInt;
 
+import javax.annotation.Nullable;
+
 import org.terpo.waterworks.Waterworks;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -18,22 +21,23 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public abstract class EntityWeatherFireworkRocket extends Entity implements IProjectile, IEntityAdditionalSpawnData {
+public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
+		implements IRendersAsItem, IEntityAdditionalSpawnData {
 
 	public static final String NBT_FIREWORKS = "Fireworks";
 	public static final String NBT_SHOT_AT_ANGLE = "ShotAtAngle";
@@ -41,7 +45,8 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 	/** The age of the firework in ticks. */
 	protected int fireworkAge;
 	/**
-	 * The lifetime of the firework in ticks. When the age reaches the lifetime the firework explodes.
+	 * The lifetime of the firework in ticks. When the age reaches the lifetime the
+	 * firework explodes.
 	 */
 	protected int lifetime;
 	protected LivingEntity boostedEntity;
@@ -53,7 +58,8 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 		super(entity, world);
 	}
 
-	public EntityWeatherFireworkRocket(EntityType<?> entityType, World worldIn, double x, double y, double z, ItemStack givenItem) {
+	public EntityWeatherFireworkRocket(EntityType<? extends EntityWeatherFireworkRocket> entityType, World worldIn,
+			double x, double y, double z, ItemStack givenItem) {
 		super(entityType, worldIn);
 		this.setPosition(x, y, z);
 		this.duration = getConfiguredDuration();
@@ -80,14 +86,15 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 		}
 	}
 
-	public EntityWeatherFireworkRocket(EntityType<?> entityType, World world, ItemStack itemStack, LivingEntity entity) {
-		this(entityType, world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), itemStack);
+	public EntityWeatherFireworkRocket(EntityType<? extends EntityWeatherFireworkRocket> entityType, World world,
+			ItemStack itemStack, LivingEntity entity) {
+		this(entityType, world, entity.getX(), entity.getY(), entity.getZ(), itemStack);
 		setBoostedEntity(entity);
 		this.boostedEntity = entity;
 	}
 
-	public EntityWeatherFireworkRocket(EntityType<?> entityType, World world, ItemStack itemStack, double x, double y, double z,
-			boolean shotAtAngle) {
+	public EntityWeatherFireworkRocket(EntityType<? extends EntityWeatherFireworkRocket> entityType, World world,
+			ItemStack itemStack, double x, double y, double z, boolean shotAtAngle) {
 		this(entityType, world, x, y, z, itemStack);
 		setShotAtAngle(Boolean.valueOf(shotAtAngle));
 	}
@@ -101,8 +108,8 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 		if (id == 17 && this.world.isRemote) {
 			final ItemStack itemstack = getRocketItem();
 			final CompoundNBT compoundnbt = itemstack.isEmpty() ? null : itemstack.getChildTag(NBT_FIREWORKS);
-			final Vec3d vec3d = this.getMotion();
-			this.world.makeFireworks(this.getPosX(), this.getPosY(), this.getPosZ(), vec3d.x, vec3d.y, vec3d.z, compoundnbt);
+			final Vector3d vec3d = this.getMotion();
+			this.world.makeFireworks(this.getX(), this.getY(), this.getZ(), vec3d.x, vec3d.y, vec3d.z, compoundnbt);
 
 		}
 
@@ -114,7 +121,8 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 		final int days = time / 24000;
 		final int hours = (time % 24000) / 1000;
 		final int min = ((time % 24000) % 1000) / 17;
-		Waterworks.proxy.getClientPlayerEntity().sendMessage(new StringTextComponent(getAnnouncementText(time, days, hours, min)));
+		Waterworks.proxy.getClientPlayerEntity()
+				.sendMessage(getAnnouncementText(time, days, hours, min), Util.NIL_UUID);
 	}
 
 	/**
@@ -136,13 +144,15 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 
 			if (this.boostedEntity != null) {
 				if (this.boostedEntity.isElytraFlying()) {
-					final Vec3d vec3d = this.boostedEntity.getLookVec();
-					final Vec3d vec3d1 = this.boostedEntity.getMotion();
-					this.boostedEntity.setMotion(vec3d1.add(vec3d.x * 0.1D + (vec3d.x * 1.5D - vec3d1.x) * 0.5D,
-							vec3d.y * 0.1D + (vec3d.y * 1.5D - vec3d1.y) * 0.5D, vec3d.z * 0.1D + (vec3d.z * 1.5D - vec3d1.z) * 0.5D));
+					Vector3d vector3d = this.boostedEntity.getLookVec();
+					Vector3d vector3d1 = this.boostedEntity.getMotion();
+					this.boostedEntity
+							.setMotion(vector3d1.add(vector3d.x * 0.1D + (vector3d.x * 1.5D - vector3d1.x) * 0.5D,
+									vector3d.y * 0.1D + (vector3d.y * 1.5D - vector3d1.y) * 0.5D,
+									vector3d.z * 0.1D + (vector3d.z * 1.5D - vector3d1.z) * 0.5D));
 				}
 
-				this.setPosition(this.boostedEntity.getPosX(), this.boostedEntity.getPosY(), this.boostedEntity.getPosZ());
+				this.setPosition(this.boostedEntity.getX(), this.boostedEntity.getY(), this.boostedEntity.getZ());
 				this.setMotion(this.boostedEntity.getMotion());
 			}
 		} else {
@@ -150,42 +160,22 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 				this.setMotion(this.getMotion().mul(1.15D, 1.0D, 1.15D).add(0.0D, 0.04D, 0.0D));
 			}
 
-			this.move(MoverType.SELF, this.getMotion());
+			Vector3d vector3d2 = this.getMotion();
+			this.move(MoverType.SELF, vector3d2);
+			this.setMotion(vector3d2);
 		}
 
-		final Vec3d vec3d2 = this.getMotion();
-		final RayTraceResult raytraceresult = ProjectileHelper.rayTrace(this, this.getBoundingBox().expand(vec3d2).grow(1.0D),
-				entitiy -> !entitiy.isSpectator() && entitiy.isAlive() && entitiy.canBeCollidedWith(), RayTraceContext.BlockMode.COLLIDER,
-				true);
+		RayTraceResult raytraceresult = ProjectileHelper.getCollision(this, this::func_230298_a_,
+				RayTraceContext.BlockMode.COLLIDER);
+
 		if (!this.noClip) {
-			this.computeRayTraceResult(raytraceresult);
+			this.onImpact(raytraceresult);
 			this.isAirBorne = true;
 		}
 
-		final float f = MathHelper.sqrt(horizontalMag(vec3d2));
-		this.rotationYaw = (float) (MathHelper.atan2(vec3d2.x, vec3d2.z) * (180F / (float) Math.PI));
-
-		for (this.rotationPitch = (float) (MathHelper.atan2(vec3d2.y, f) * (180F / (float) Math.PI)); this.rotationPitch
-				- this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
-			//
-		}
-
-		while (this.rotationPitch - this.prevRotationPitch >= 180.0F) {
-			this.prevRotationPitch += 360.0F;
-		}
-
-		while (this.rotationYaw - this.prevRotationYaw < -180.0F) {
-			this.prevRotationYaw -= 360.0F;
-		}
-
-		while (this.rotationYaw - this.prevRotationYaw >= 180.0F) {
-			this.prevRotationYaw += 360.0F;
-		}
-
-		this.rotationPitch = MathHelper.lerp(0.2F, this.prevRotationPitch, this.rotationPitch);
-		this.rotationYaw = MathHelper.lerp(0.2F, this.prevRotationYaw, this.rotationYaw);
+		this.func_234617_x_();
 		if (this.fireworkAge == 0 && !this.isSilent()) {
-			this.world.playSound((PlayerEntity) null, this.getPosX(), this.getPosY(), this.getPosZ(),
+			this.world.playSound((PlayerEntity) null, this.getX(), this.getY(), this.getZ(),
 					SoundEvents.ENTITY_FIREWORK_ROCKET_LAUNCH, SoundCategory.AMBIENT, 3.0F, 1.0F);
 		}
 
@@ -195,7 +185,7 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 
 		++this.fireworkAge;
 		if (this.world.isRemote && this.fireworkAge % 2 < 2) {
-			this.world.addParticle(ParticleTypes.FIREWORK, this.getPosX(), this.getPosY() - 0.3D, this.getPosZ(),
+			this.world.addParticle(ParticleTypes.FIREWORK, this.getX(), this.getY() - 0.3D, this.getZ(),
 					this.rand.nextGaussian() * 0.05D, -this.getMotion().y * 0.5D, this.rand.nextGaussian() * 0.05D);
 		}
 
@@ -211,30 +201,12 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 		this.remove();
 	}
 
-	protected void computeRayTraceResult(RayTraceResult rayTraceResult) {
-		if (rayTraceResult.getType() == RayTraceResult.Type.ENTITY && !this.world.isRemote) {
-			this.setDead();
-		} else if (this.collided) {
-			BlockPos blockpos;
-			if (rayTraceResult.getType() == RayTraceResult.Type.BLOCK) {
-				blockpos = new BlockPos(((BlockRayTraceResult) rayTraceResult).getPos());
-			} else {
-				blockpos = new BlockPos(this);
-			}
-
-			this.world.getBlockState(blockpos).onEntityCollision(this.world, blockpos, this);
-			if (this.hasExplosions()) {
-				this.setDead();
-			}
+	@Override
+	protected void onImpact(RayTraceResult result) {
+		if (result.getType() == RayTraceResult.Type.MISS
+				|| !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, result)) {
+			super.onImpact(result);
 		}
-
-	}
-
-	private boolean hasExplosions() {
-		final ItemStack itemstack = getRocketItem();
-		final CompoundNBT compoundnbt = itemstack.isEmpty() ? null : itemstack.getChildTag(NBT_FIREWORKS);
-		final ListNBT listnbt = compoundnbt != null ? compoundnbt.getList("Explosions", 10) : null;
-		return listnbt != null && !listnbt.isEmpty();
 	}
 
 	// eclipse thinks listnbt has a potential null pointer access
@@ -243,28 +215,29 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 		float f = 0.0F;
 		final ItemStack itemstack = getRocketItem();
 		final CompoundNBT compoundnbt = itemstack.isEmpty() ? null : itemstack.getChildTag(NBT_FIREWORKS);
-		final ListNBT listnbt = compoundnbt != null ? compoundnbt.getList("Explosions", 10) : null;
+		ListNBT listnbt = compoundnbt != null ? compoundnbt.getList("Explosions", 10) : null;
 		if (listnbt != null && !listnbt.isEmpty()) {
-			f = 5.0F + listnbt.size() * 2;
+			f = 5.0F + (float) (listnbt.size() * 2);
 		}
 
 		if (f > 0.0F) {
 			if (this.boostedEntity != null) {
-
-				this.boostedEntity.attackEntityFrom(DamageSource.FIREWORKS, 5.0F + listnbt.size() * 2);
+				this.boostedEntity.attackEntityFrom(firework(this, this.getOwner()),
+						5.0F + (float) (listnbt.size() * 2));
 			}
 
-			final Vec3d vec3d = this.getPositionVec();
+			Vector3d vector3d = this.getPositionVec();
 
-			for (final LivingEntity livingentity : this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(5.0D))) {
+			for (LivingEntity livingentity : this.world.getEntitiesWithinAABB(LivingEntity.class,
+					this.getBoundingBox().grow(5.0D))) {
 				if (livingentity != this.boostedEntity && (this.getDistanceSq(livingentity) <= 25.0D)) {
 					boolean flag = false;
 
 					for (int i = 0; i < 2; ++i) {
-						final Vec3d vec3d1 = new Vec3d(livingentity.getPosX(), livingentity.getPosYHeight(0.5D * i),
-								livingentity.getPosZ());
-						final RayTraceResult raytraceresult = this.world.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1,
-								RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
+						Vector3d vector3d1 = new Vector3d(livingentity.getX(), livingentity.getBodyY(0.5D * (double) i),
+								livingentity.getZ());
+						RayTraceResult raytraceresult = this.world.rayTraceBlocks(new RayTraceContext(vector3d,
+								vector3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
 						if (raytraceresult.getType() == RayTraceResult.Type.MISS) {
 							flag = true;
 							break;
@@ -272,13 +245,17 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 					}
 
 					if (flag) {
-						final float f1 = f * (float) Math.sqrt((5.0D - this.getDistance(livingentity)) / 5.0D);
-						livingentity.attackEntityFrom(DamageSource.FIREWORKS, f1);
+						float f1 = f * (float) Math.sqrt((5.0D - (double) this.getDistance(livingentity)) / 5.0D);
+						livingentity.attackEntityFrom(firework(this, this.getOwner()), f1);
 					}
 				}
 			}
 		}
 
+	}
+
+	private static DamageSource firework(EntityWeatherFireworkRocket enitity, @Nullable Entity owner) {
+		return (new IndirectEntityDamageSource("fireworks", enitity, owner)).setExplosion();
 	}
 
 	/**
@@ -299,7 +276,8 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 	}
 
 	/**
-	 * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
+	 * Similar to setArrowHeading, it's point the throwable entity to a x, y, z
+	 * direction.
 	 */
 	@Override
 	public void shoot(double incomingX, double incomingY, double incomingZ, float velocity, float inaccuracy) {
@@ -367,7 +345,7 @@ public abstract class EntityWeatherFireworkRocket extends Entity implements IPro
 	 */
 
 	@OnlyIn(Dist.CLIENT)
-	protected abstract String getAnnouncementText(int time, final int days, final int hours, final int min);
+	protected abstract ITextComponent getAnnouncementText(int time, final int days, final int hours, final int min);
 
 	@Override
 	protected abstract void registerData();

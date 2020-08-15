@@ -1,5 +1,6 @@
 package org.terpo.waterworks.tileentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -20,8 +21,8 @@ public class BaseTileEntity extends TileEntity {
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundNBT tag) { // on chunk load CLIENT
-		this.read(tag);
+	public void handleUpdateTag(BlockState state, CompoundNBT tag) { // on chunk load CLIENT
+		this.fromTag(state,tag);
 	}
 	// Client Sync End
 

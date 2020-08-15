@@ -2,6 +2,7 @@ package org.terpo.waterworks.tileentity;
 
 import org.terpo.waterworks.setup.Registration;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -48,8 +49,8 @@ public class TileEntityRainCollector extends BaseTileEntity {
 	}
 
 	@Override
-	public void read(CompoundNBT compound) {
-		super.read(compound);
+	public void fromTag(BlockState state, CompoundNBT compound) {
+		super.fromTag(state,compound);
 		if (compound.contains(NBT_CONTROLLER_POS)) {
 			this.controllerPosition = (BlockPos.fromLong(compound.getLong(NBT_CONTROLLER_POS)));
 		}

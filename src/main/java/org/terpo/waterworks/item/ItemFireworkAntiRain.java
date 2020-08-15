@@ -16,7 +16,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -33,7 +33,7 @@ public class ItemFireworkAntiRain extends FireworkRocketItem {
 	public ActionResultType onItemUse(ItemUseContext context) {
 		if (!context.getWorld().isRemote) {
 			final ItemStack itemstack = context.getItem();
-			final Vec3d vec3d = context.getHitVec();
+			final Vector3d vec3d = context.getHitVec();
 			context.getWorld().addEntity(new EntityFireworkRocketAntiRain(context.getWorld(), vec3d.x, vec3d.y, vec3d.z, itemstack));
 			if (!context.getPlayer().isCreative()) {
 				itemstack.shrink(1);
@@ -76,11 +76,11 @@ public class ItemFireworkAntiRain extends FireworkRocketItem {
 				final int multi = nbttagcompound.getInt("ANTIRAIN");
 				tooltip.add(new TranslationTextComponent("tooltip.anti_rain_rocket.good_weather"));
 				tooltip.add(new TranslationTextComponent("tooltip.anti_rain_rocket.sunshine_multiplier")
-						.appendText(": " + multi + "/" + Config.rockets.getClearSkyMaxMultiplier()));
+						.append(": " + multi + "/" + Config.rockets.getClearSkyMaxMultiplier()));
 				tooltip.add(new TranslationTextComponent("tooltip.anti_rain_rocket.sunshine_duration")
-						.appendText(": " + (Config.rockets.getClearSkyDuration() * multi) + " ticks"));
+						.append(": " + (Config.rockets.getClearSkyDuration() * multi) + " ticks"));
 				tooltip.add(new TranslationTextComponent("tooltip.anti_rain_rocket.max_additional_days")
-						.appendText(": " + Config.rockets.getClearSkyMaxRandomAdditionalDays()));
+						.append(": " + Config.rockets.getClearSkyMaxRandomAdditionalDays()));
 			}
 		}
 

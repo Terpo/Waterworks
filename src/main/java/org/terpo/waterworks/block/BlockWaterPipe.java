@@ -10,8 +10,8 @@ import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -51,7 +51,7 @@ public class BlockWaterPipe extends Block implements IWaterLoggable {
 
 	@Override
 	public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
-		final Mutable newPos = new Mutable(pos);
+		final Mutable newPos = pos.mutableCopy();
 		boolean stillSearching = true;
 		while (stillSearching) {
 			final Block block = worldIn.getBlockState(newPos.move(0, 1, 0)).getBlock(); // mutable up, saves itself!
@@ -72,7 +72,7 @@ public class BlockWaterPipe extends Block implements IWaterLoggable {
 	}
 
 	@Override
-	public IFluidState getFluidState(BlockState state) { // NOSONAR
+	public FluidState getFluidState(BlockState state) { // NOSONAR
 		return state.get(WATERLOGGED).booleanValue() ? Fluids.WATER.getStillFluidState(false) : Fluids.EMPTY.getDefaultState();
 	}
 

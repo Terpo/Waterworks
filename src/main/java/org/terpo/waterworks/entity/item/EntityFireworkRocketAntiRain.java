@@ -15,17 +15,18 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.WorldInfo;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket implements IRendersAsItem {
 
-	private static final DataParameter<ItemStack> ANTI_RAINROCKET_ITEM = EntityDataManager.createKey(EntityFireworkRocketAntiRain.class,
-			DataSerializers.ITEMSTACK);
+	private static final DataParameter<ItemStack> ANTI_RAINROCKET_ITEM = EntityDataManager
+			.createKey(EntityFireworkRocketAntiRain.class, DataSerializers.ITEMSTACK);
 	private static final DataParameter<OptionalInt> BOOSTED_ANTI_RAINROCKET_ENTITY_ID = EntityDataManager
 			.createKey(EntityFireworkRocketAntiRain.class, DataSerializers.OPTIONAL_VARINT);
 	private static final DataParameter<Boolean> SHOT_AT_ANGLE_ANTI_RAINROCKET_BOOLEAN = EntityDataManager
@@ -45,9 +46,9 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket im
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public String getAnnouncementText(int time, final int days, final int hours, final int min) {
-		return new TranslationTextComponent("entity.anti_rain_rocket.announcement", Integer.valueOf(time), Integer.valueOf(days),
-				Integer.valueOf(hours), Integer.valueOf(min)).getFormattedText();
+	public ITextComponent getAnnouncementText(int time, final int days, final int hours, final int min) {
+		return new TranslationTextComponent("entity.anti_rain_rocket.announcement", Integer.valueOf(time),
+				Integer.valueOf(days), Integer.valueOf(hours), Integer.valueOf(min));
 	}
 
 	@Override
@@ -60,15 +61,8 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket im
 	@Override
 	public void remove() {
 		if (!this.getEntityWorld().isRemote) {
-			final WorldInfo worldInfo = this.getEntityWorld().getWorldInfo();
-			worldInfo.setClearWeatherTime(this.duration);
-			worldInfo.setRainTime(0);
-			worldInfo.setThunderTime(0);
-			worldInfo.setRaining(false);
-			worldInfo.setThundering(false);
-
-			final BlockPos pos = this.getPosition();
-			dropSponge(pos);
+			((ServerWorld) this.getEntityWorld()).setWeather(this.duration, 0, false, false);
+			dropSponge(this.getBlockPos());
 		}
 		super.remove();
 	}
@@ -147,11 +141,14 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket im
 			for (int i = 0; i < this.durationMultiplier; i++) {
 				this.getEntityWorld()
 						.addEntity(new ItemEntity(this.getEntityWorld(), pos.getX() + this.rand.nextDouble() * 2 - 1.0d,
-								pos.getY() + this.rand.nextDouble() * 2 - 1.0d, pos.getZ() + this.rand.nextDouble() * 2 - 1.0d,
-								this.getEntityWorld().isRaining() ? new ItemStack(Blocks.WET_SPONGE, 1) : new ItemStack(Blocks.SPONGE, 1)));
+								pos.getY() + this.rand.nextDouble() * 2 - 1.0d,
+								pos.getZ() + this.rand.nextDouble() * 2 - 1.0d,
+								this.getEntityWorld().isRaining() ? new ItemStack(Blocks.WET_SPONGE, 1)
+										: new ItemStack(Blocks.SPONGE, 1)));
 			}
 		}
 	}
+
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ItemStack getItemFromEntity() {

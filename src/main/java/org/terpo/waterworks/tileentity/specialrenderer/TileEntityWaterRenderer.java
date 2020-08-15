@@ -56,7 +56,7 @@ public class TileEntityWaterRenderer extends TileEntityRenderer<TileWaterworks> 
 			if (fluid != null) {
 
 				@SuppressWarnings("resource")
-				final TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE)
+				final TextureAtlasSprite sprite = Minecraft.getInstance().getSpriteAtlas(PlayerContainer.BLOCK_ATLAS_TEXTURE)
 						.apply(fluid.getAttributes().getStillTexture());
 				final IVertexBuilder builder = buffer.getBuffer(RenderType.getTranslucent());
 
@@ -93,9 +93,10 @@ public class TileEntityWaterRenderer extends TileEntityRenderer<TileWaterworks> 
 	}
 
 	private void add(IVertexBuilder vertexBuilder, MatrixStack matrixStack, float x, float y, float z, float u, float v) {
-		vertexBuilder.pos(matrixStack.getLast().getMatrix(), x, y, z) //
-				.color(this.red, this.green, this.blue, this.alpha).tex(u, v) //
-				.lightmap(0, 240) // simply make the fluid visible
+		vertexBuilder.vertex(matrixStack.peek().getModel(), x, y, z) //
+				.color(this.red, this.green, this.blue, this.alpha) //
+				.texture(u, v) //
+				.light(0, 240) // simply make the fluid visible
 				.normal(1, 0, 0) //
 				.endVertex();
 	}

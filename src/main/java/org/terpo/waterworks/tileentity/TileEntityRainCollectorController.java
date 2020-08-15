@@ -6,6 +6,7 @@ import org.terpo.waterworks.gui.ContainerBase;
 import org.terpo.waterworks.helper.AreaHelper;
 import org.terpo.waterworks.setup.Registration;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -143,8 +144,8 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	}
 
 	@Override
-	public void read(CompoundNBT compound) {
-		super.read(compound);
+	public void fromTag(BlockState state, CompoundNBT compound) {
+		super.fromTag(state,compound);
 		if (compound.contains(NBT_CONNECTED_BLOCKS)) {
 			this.connectedCollectors = compound.getInt(NBT_CONNECTED_BLOCKS);
 			if (compound.contains(NBT_COLLECTOR_POS_LIST)) {
@@ -193,7 +194,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 
 		// iterate over all blocks in our "found"-list
 		int i = 0;
-		final Mutable tempPos = new Mutable(this.rainCollectorBlocks[0]);
+		final Mutable tempPos = this.rainCollectorBlocks[0].mutableCopy();
 		while (i < foundBlockCount) {
 			tempPos.setPos(this.rainCollectorBlocks[i]);
 

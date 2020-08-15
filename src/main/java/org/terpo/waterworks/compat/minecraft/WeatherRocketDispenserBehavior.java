@@ -7,22 +7,22 @@ import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class WeatherRocketDispenserBehavior extends DefaultDispenseItemBehavior {
 
-	private final WeatherRocketFunction<EntityWeatherFireworkRocket, World, Vec3d, ItemStack> createEntityFunction;
+	private final WeatherRocketFunction<EntityWeatherFireworkRocket, World, Vector3d, ItemStack> createEntityFunction;
 
 	public WeatherRocketDispenserBehavior(
-			WeatherRocketFunction<EntityWeatherFireworkRocket, World, Vec3d, ItemStack> createEntityFunction) {
+			WeatherRocketFunction<EntityWeatherFireworkRocket, World, Vector3d, ItemStack> createEntityFunction) {
 		this.createEntityFunction = createEntityFunction;
 	}
 
 	@Override
 	public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
 		final Direction direction = source.getBlockState().get(DispenserBlock.FACING);
-		source.getWorld().addEntity(this.createEntityFunction.apply(source.getWorld(), new Vec3d(source.getX() + direction.getXOffset(),
+		source.getWorld().addEntity(this.createEntityFunction.apply(source.getWorld(), new Vector3d(source.getX() + direction.getXOffset(),
 				source.getBlockPos().getY() + 0.2D, source.getZ() + direction.getZOffset()), stack));
 		stack.shrink(1);
 		return stack;

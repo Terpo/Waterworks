@@ -16,7 +16,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -33,7 +33,7 @@ public class ItemFireworkRain extends FireworkRocketItem {
 	public ActionResultType onItemUse(ItemUseContext context) {
 		if (!context.getWorld().isRemote) {
 			final ItemStack itemstack = context.getItem();
-			final Vec3d vec3d = context.getHitVec();
+			final Vector3d vec3d = context.getHitVec();
 			context.getWorld().addEntity(new EntityFireworkRocketRain(context.getWorld(), vec3d.x, vec3d.y, vec3d.z, itemstack));
 			if (!context.getPlayer().isCreative()) {
 				itemstack.shrink(1);
@@ -74,9 +74,9 @@ public class ItemFireworkRain extends FireworkRocketItem {
 				final int multi = nbttagcompound.getInt("RAIN");
 				tooltip.add(new TranslationTextComponent("tooltip.rain_rocket.bad_weather"));
 				tooltip.add(new TranslationTextComponent("tooltip.rain_rocket.rain_duration")
-						.appendText(": " + multi + "/" + Config.rockets.getRainMaxMultiplier()));
+						.append(": " + multi + "/" + Config.rockets.getRainMaxMultiplier()));
 				tooltip.add(new TranslationTextComponent("tooltip.rain_rocket.rain_duration")
-						.appendText(": " + (Config.rockets.getRainDuration() * multi) + " ticks"));
+						.append(": " + (Config.rockets.getRainDuration() * multi) + " ticks"));
 			}
 		}
 	}
