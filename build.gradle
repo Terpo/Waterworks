@@ -22,7 +22,9 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 minecraft {
     mappings channel: 'snapshot', version: "${mcp_mapping}"
-
+	
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')   //We need this for getting access to constructors
+	
     runs {
         client {
             workingDirectory project.file('run')
