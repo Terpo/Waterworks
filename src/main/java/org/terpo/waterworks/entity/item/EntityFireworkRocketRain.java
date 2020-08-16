@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
-public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket implements IRendersAsItem {
+public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 
 	private static final DataParameter<ItemStack> RAINROCKET_ITEM = EntityDataManager
 			.createKey(EntityFireworkRocketRain.class, DataSerializers.ITEMSTACK);

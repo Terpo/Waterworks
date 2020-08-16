@@ -2,6 +2,7 @@ package org.terpo.waterworks.entity.item;
 
 import java.util.OptionalInt;
 
+
 import javax.annotation.Nullable;
 
 import org.terpo.waterworks.Waterworks;
@@ -36,6 +37,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 		implements IRendersAsItem, IEntityAdditionalSpawnData {
 
