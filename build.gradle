@@ -83,6 +83,10 @@ repositories {
     //    name = "CoFH Maven"
     //    url = "https://maven.covers1624.net/"
     //}
+	
+	flatDir {
+        dirs 'externalmods' // put other mods into this externalmods folder and add a dependency for it and do not call this folder libs!
+    }
 }
 
 dependencies {
@@ -101,6 +105,10 @@ dependencies {
     }
 	compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
 	runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
+	
+	//if you have additional mods to load from, put them into the externalmods folder 
+	
+	//compile fg.deobf("com.stal111:forbidden_arcanus-1.15.2:1.5")  //add a dependency for ./externalmods/forbidden_arcanus-1.15.2-1.5.jar
 }
 
 jar {
