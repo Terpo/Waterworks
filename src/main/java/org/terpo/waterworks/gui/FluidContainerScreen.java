@@ -78,10 +78,7 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 
 	@Override
 	protected void drawForeground(MatrixStack matrixStack, int mouseX, int mouseY) {
-		this.textRenderer.draw(matrixStack, this.title, this.xSize / 2f - this.textRenderer.getWidth(this.title) / 2f,
-				6.0F, 4210752);
-		this.textRenderer.draw(matrixStack, this.playerInventory.getDisplayName(), 8.0F, this.ySize - 96 + 2f, 4210752);
-
+		super.drawForeground(matrixStack, mouseX, mouseY);
 		// draw Tooltip
 		drawTankTooltip(matrixStack, mouseX, mouseY, this.tankRectangle.getX(), this.tankRectangle.getWidth(),
 				this.tankRectangle.getY(), this.tankRectangle.getHeight());

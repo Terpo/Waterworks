@@ -167,8 +167,7 @@ public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 			this.setMotion(vector3d2);
 		}
 
-		RayTraceResult raytraceresult = ProjectileHelper.getCollision(this, this::func_230298_a_,
-				RayTraceContext.BlockMode.COLLIDER);
+		RayTraceResult raytraceresult = ProjectileHelper.getCollision(this, this::func_230298_a_);
 
 		if (!this.noClip) {
 			this.onImpact(raytraceresult);
