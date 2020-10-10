@@ -73,8 +73,8 @@ public abstract class TileWaterworks extends BaseTileEntity implements ITickable
 	}
 
 	@Override
-	public void fromTag(BlockState state,CompoundNBT compound) {
-		super.fromTag(state, compound);
+	public void read(BlockState state,CompoundNBT compound) {
+		super.read(state, compound);
 		if (compound.contains(NBT_ITEMS)) {
 			this.itemStackHandler.ifPresent(handler -> handler.deserializeNBT(compound.getCompound(NBT_ITEMS)));
 		}

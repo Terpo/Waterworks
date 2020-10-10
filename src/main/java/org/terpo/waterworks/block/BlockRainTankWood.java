@@ -7,7 +7,6 @@ import org.terpo.waterworks.helper.WaterworksInventoryHelper;
 import org.terpo.waterworks.tileentity.TileEntityRainTankWood;
 import org.terpo.waterworks.tileentity.TileWaterworks;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -30,11 +29,11 @@ import net.minecraftforge.items.IItemHandler;
 
 public class BlockRainTankWood extends BaseBlockTE<TileWaterworks> {
 	public BlockRainTankWood() {
-		super(Block.Properties.create(Material.WOOD).hardnessAndResistance(2F, 3.0F).sound(SoundType.WOOD));
+		super(Properties.create(Material.WOOD).hardnessAndResistance(2F, 3.0F).sound(SoundType.WOOD));
 	}
 
 	@Override
-	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, // NOSONAR
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, // NOSONAR
 			BlockRayTraceResult facing) {
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);

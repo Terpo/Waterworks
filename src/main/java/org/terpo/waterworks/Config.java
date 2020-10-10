@@ -27,12 +27,12 @@ public class Config {
 	}
 
 	@SubscribeEvent
-	public static void onLoad(@SuppressWarnings("unused") final ModConfig.Loading configEvent) {
+	public static void onLoad(final ModConfig.Loading configEvent) {
 		//
 	}
 
 	@SubscribeEvent
-	public static void onReload(@SuppressWarnings("unused") final ModConfig.Reloading configEvent) {
+	public static void onReload(final ModConfig.Reloading configEvent) {
 		//
 	}
 

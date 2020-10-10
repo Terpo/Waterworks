@@ -55,7 +55,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 	}
 
 	@Override
-	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, // NOSONAR
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, // NOSONAR
 			Hand hand, BlockRayTraceResult facing) {
 		if (!worldIn.isRemote && hand == Hand.MAIN_HAND) {// isRemote true = client
 			final TileEntity tileEntity = getTileEntity(worldIn, pos);
@@ -92,7 +92,7 @@ public class BlockRainCollector extends BaseBlockTE<BaseTileEntity> {
 		} else {
 			out = new TranslationTextComponent("block.waterworks.rain_collector.no_controller");
 		}
-		playerIn.sendMessage(out,Util.NIL_UUID);
+		playerIn.sendMessage(out,Util.DUMMY_UUID);
 	}
 
 	@Override

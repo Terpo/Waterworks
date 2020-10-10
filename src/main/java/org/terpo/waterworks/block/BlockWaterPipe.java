@@ -35,7 +35,7 @@ public class BlockWaterPipe extends Block implements IWaterLoggable {
 	private static final VoxelShape boundingBox = VoxelShapes.create(new AxisAlignedBB(.375, 0, .375, .625, 1, .625));
 	private static final VoxelShape collisionBox = VoxelShapes.create(new AxisAlignedBB(.3125, 0, .3125, .7375, 1, .7375));
 	public BlockWaterPipe() {
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(2F, 6.0F).sound(SoundType.METAL));
+		super(Properties.create(Material.IRON).hardnessAndResistance(2F, 6.0F).sound(SoundType.METAL));
 		this.setDefaultState(this.stateContainer.getBaseState().with(WATERLOGGED, Boolean.FALSE));
 	}
 
@@ -51,7 +51,7 @@ public class BlockWaterPipe extends Block implements IWaterLoggable {
 
 	@Override
 	public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
-		final Mutable newPos = pos.mutableCopy();
+		final Mutable newPos = pos.toMutable();
 		boolean stillSearching = true;
 		while (stillSearching) {
 			final Block block = worldIn.getBlockState(newPos.move(0, 1, 0)).getBlock(); // mutable up, saves itself!

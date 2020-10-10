@@ -20,7 +20,7 @@ public class CommonSetup {
 		}
 	};
 
-	public static void init(@SuppressWarnings("unused") final FMLCommonSetupEvent event) { // NOSONAR
+	public static void init(final FMLCommonSetupEvent event) { // NOSONAR
 		Waterworks.LOGGER.info("Waterworks Setup starting");
 		WaterworksPacketHandler.registerMessages();
 		Waterworks.LOGGER.info("Waterworks Setup complete");

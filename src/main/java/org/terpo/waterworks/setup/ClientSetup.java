@@ -18,7 +18,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 @Mod.EventBusSubscriber(modid = Reference.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
 
-	public static void init(@SuppressWarnings("unused") final FMLClientSetupEvent event) { // NOSONAR
+	public static void init(final FMLClientSetupEvent event) { // NOSONAR
 		Waterworks.LOGGER.info("Waterworks Client Setup starting");
 		// GUI
 		ScreenManager.registerFactory(Registration.rainTankWoodContainer.get(), FluidContainerScreen::new);

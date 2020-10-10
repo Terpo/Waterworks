@@ -20,9 +20,10 @@ public class RainCollectorControllerContainerScreen extends FluidContainerScreen
 	public RainCollectorControllerContainerScreen(ContainerBase screenContainer, PlayerInventory inv, ITextComponent title) {
 		super(screenContainer, inv, title);
 	}
+	
 	@Override
-	protected void drawBackground(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-		super.drawBackground(matrixStack,partialTicks, mouseX, mouseY);
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+		super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, x, y);		
 		final int xWidth = 24;
 
 		final int xStart = getGuiLeft() + getXSize() - 10 - xWidth;
@@ -31,5 +32,6 @@ public class RainCollectorControllerContainerScreen extends FluidContainerScreen
 
 		addButton(new ImageButton(xStart, yStart, xWidth, yHeight, 0, 0, 19, REFRESH_TEXTURE,
 				button -> WaterworksPacketHandler.INSTANCE.sendToServer(new ControllerRefreshPacket(this.container.getTileWaterworks()))));
+	
 	}
 }

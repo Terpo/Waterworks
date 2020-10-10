@@ -233,8 +233,8 @@ public class TileEntityGroundwaterPump extends TileWaterworks {
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundNBT compound) {
-		super.fromTag(state,compound);
+	public void read(BlockState state, CompoundNBT compound) {
+		super.read(state,compound);
 		this.battery.ifPresent(b -> b.read(compound));
 		if (compound.contains(NBT_INT_ENERGY_USAGE)) {
 			this.energyUsage = compound.getInt(NBT_INT_ENERGY_USAGE);

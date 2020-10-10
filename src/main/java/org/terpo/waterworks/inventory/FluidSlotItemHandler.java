@@ -34,7 +34,11 @@ public class FluidSlotItemHandler extends SlotItemHandler {
 		return (stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent() || additionalFilters(stack));
 	}
 
-	@SuppressWarnings({"static-method", "unused"})
+	/**
+	 * 
+	 * @param stack use this
+	 * @return
+	 */
 	protected boolean additionalFilters(ItemStack stack) {
 		return false;
 	}

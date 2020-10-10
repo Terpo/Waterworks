@@ -121,7 +121,7 @@ public class ItemWaterworksDebugger extends Item {
 				} else {
 					tag.putBoolean(ItemWaterworksDebugger.ENERGY_MODE, true);
 				}
-				playerIn.sendMessage(currentMode(tag),Util.NIL_UUID);
+				playerIn.sendMessage(currentMode(tag),Util.DUMMY_UUID);
 			}
 		}
 		return super.onItemRightClick(worldIn, playerIn, handIn);

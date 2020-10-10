@@ -49,8 +49,8 @@ public class TileEntityRainCollector extends BaseTileEntity {
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundNBT compound) {
-		super.fromTag(state,compound);
+	public void read(BlockState state, CompoundNBT compound) {
+		super.read(state,compound);
 		if (compound.contains(NBT_CONTROLLER_POS)) {
 			this.controllerPosition = (BlockPos.fromLong(compound.getLong(NBT_CONTROLLER_POS)));
 		}

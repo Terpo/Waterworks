@@ -61,8 +61,8 @@ public class EntityFireworkRocketAntiRain extends EntityWeatherFireworkRocket {
 	@Override
 	public void remove() {
 		if (!this.getEntityWorld().isRemote) {
-			((ServerWorld) this.getEntityWorld()).setWeather(this.duration, 0, false, false);
-			dropSponge(this.getBlockPos());
+			((ServerWorld) this.getEntityWorld()).func_241113_a_(this.duration, 0, false, false); //setWeather
+			dropSponge(this.getPosition());
 		}
 		super.remove();
 	}

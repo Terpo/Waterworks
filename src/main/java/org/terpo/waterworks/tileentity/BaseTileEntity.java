@@ -22,7 +22,7 @@ public class BaseTileEntity extends TileEntity {
 
 	@Override
 	public void handleUpdateTag(BlockState state, CompoundNBT tag) { // on chunk load CLIENT
-		this.fromTag(state,tag);
+		this.read(state,tag);
 	}
 	// Client Sync End
 

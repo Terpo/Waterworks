@@ -30,15 +30,14 @@ public class PumpContainerScreen extends FluidContainerScreen {
 	}
 
 	@Override
-	protected void drawBackground(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-		super.drawBackground(matrixStack,partialTicks, mouseX, mouseY);
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
+		super.drawGuiContainerBackgroundLayer(matrixStack, partialTicks, x, y);
 		drawBattery(matrixStack,this.batteryRectangle);
 	}
 
 	@Override
-	protected void drawForeground(MatrixStack matrixStack, int mouseX, int mouseY) {
-		// draw Tooltip
-		super.drawForeground(matrixStack,mouseX, mouseY);
+	protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
+		super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
 		drawBatteryTooltip(matrixStack,mouseX, mouseY, this.batteryRectangle);
 	}
 
@@ -48,8 +47,8 @@ public class PumpContainerScreen extends FluidContainerScreen {
 			this.tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(battery -> {
 				final int fillHeight = battery.getEnergyStored() * batteryRect.getHeight() / battery.getMaxEnergyStored();
 
-				this.client.getTextureManager().bindTexture(new ResourceLocation("waterworks:textures/blocks/energy_overlay.png"));
-				this.drawTexture(matrixStack,getGuiLeft() + batteryRect.getX(), getGuiTop() + batteryRect.getY() + batteryRect.getHeight() - fillHeight, 0, 0,
+				this.minecraft.getTextureManager().bindTexture(new ResourceLocation("waterworks:textures/blocks/energy_overlay.png"));
+				this.blit(matrixStack,getGuiLeft() + batteryRect.getX(), getGuiTop() + batteryRect.getY() + batteryRect.getHeight() - fillHeight, 0, 0,
 						batteryRect.getWidth(), fillHeight);
 			});
 

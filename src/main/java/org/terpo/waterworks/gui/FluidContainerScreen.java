@@ -64,24 +64,25 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(matrixStack);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
-		this.drawMouseoverTooltip(matrixStack, mouseX, mouseY);
+		this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawBackground(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.client.getTextureManager().bindTexture(this.gui);
-		this.drawTexture(matrixStack,getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
-		drawTank(matrixStack,this.tankRectangle.getX(), this.tankRectangle.getWidth(), this.tankRectangle.getY(),
+		this.minecraft.getTextureManager().bindTexture(this.gui);
+		this.blit(matrixStack, getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
+		drawTank(matrixStack, this.tankRectangle.getX(), this.tankRectangle.getWidth(), this.tankRectangle.getY(),
 				this.tankRectangle.getHeight());
 	}
 
 	@Override
-	protected void drawForeground(MatrixStack matrixStack, int mouseX, int mouseY) {
-		super.drawForeground(matrixStack, mouseX, mouseY);
+	protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
+		super.drawGuiContainerForegroundLayer(matrixStack, mouseX, mouseY);
 		// draw Tooltip
 		drawTankTooltip(matrixStack, mouseX, mouseY, this.tankRectangle.getX(), this.tankRectangle.getWidth(),
 				this.tankRectangle.getY(), this.tankRectangle.getHeight());
+
 	}
 
 	protected void drawTank(MatrixStack matrixStack, int tankPosX, int tankSizeX, int tankPosY, int tankSizeY) {
@@ -92,11 +93,11 @@ public class FluidContainerScreen extends ContainerScreen<ContainerBase> {
 			}
 
 			final int fillHeight = this.fluidTank.getFluidAmount() * tankSizeY / this.fluidTank.getCapacity();
-			this.client.getTextureManager().bindTexture(PlayerContainer.BLOCK_ATLAS_TEXTURE);
+			this.minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
 			RenderSystem.color4f(this.colors[0], this.colors[1], this.colors[2], this.colors[3]);
-			AbstractGui.drawSprite(matrixStack,getGuiLeft() + tankPosX, getGuiTop() + tankPosY + tankSizeY - fillHeight, 0, tankSizeX,
-					fillHeight, Minecraft.getInstance().getSpriteAtlas(PlayerContainer.BLOCK_ATLAS_TEXTURE)
-							.apply(this.waterResource));
+			AbstractGui.blit(matrixStack, getGuiLeft() + tankPosX,
+					getGuiTop() + tankPosY + tankSizeY - fillHeight, 0, tankSizeX, fillHeight, Minecraft.getInstance()
+							.getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(this.waterResource));
 			RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 		}
 	}

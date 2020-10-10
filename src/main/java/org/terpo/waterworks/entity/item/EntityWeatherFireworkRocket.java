@@ -90,7 +90,7 @@ public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 
 	public EntityWeatherFireworkRocket(EntityType<? extends EntityWeatherFireworkRocket> entityType, World world,
 			ItemStack itemStack, LivingEntity entity) {
-		this(entityType, world, entity.getX(), entity.getY(), entity.getZ(), itemStack);
+		this(entityType, world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), itemStack);
 		setBoostedEntity(entity);
 		this.boostedEntity = entity;
 	}
@@ -111,7 +111,7 @@ public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 			final ItemStack itemstack = getRocketItem();
 			final CompoundNBT compoundnbt = itemstack.isEmpty() ? null : itemstack.getChildTag(NBT_FIREWORKS);
 			final Vector3d vec3d = this.getMotion();
-			this.world.makeFireworks(this.getX(), this.getY(), this.getZ(), vec3d.x, vec3d.y, vec3d.z, compoundnbt);
+			this.world.makeFireworks(this.getPosX(), this.getPosY(), this.getPosZ(), vec3d.x, vec3d.y, vec3d.z, compoundnbt);
 
 		}
 
@@ -124,7 +124,7 @@ public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 		final int hours = (time % 24000) / 1000;
 		final int min = ((time % 24000) % 1000) / 17;
 		Waterworks.proxy.getClientPlayerEntity()
-				.sendMessage(getAnnouncementText(time, days, hours, min), Util.NIL_UUID);
+				.sendMessage(getAnnouncementText(time, days, hours, min), Util.DUMMY_UUID);
 	}
 
 	/**
@@ -154,7 +154,7 @@ public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 									vector3d.z * 0.1D + (vector3d.z * 1.5D - vector3d1.z) * 0.5D));
 				}
 
-				this.setPosition(this.boostedEntity.getX(), this.boostedEntity.getY(), this.boostedEntity.getZ());
+				this.setPosition(this.boostedEntity.getPosX(), this.boostedEntity.getPosY(), this.boostedEntity.getPosZ());
 				this.setMotion(this.boostedEntity.getMotion());
 			}
 		} else {
@@ -167,7 +167,7 @@ public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 			this.setMotion(vector3d2);
 		}
 
-		RayTraceResult raytraceresult = ProjectileHelper.getCollision(this, this::func_230298_a_);
+		RayTraceResult raytraceresult = ProjectileHelper.func_234618_a_(this, this::func_230298_a_); //getCollision
 
 		if (!this.noClip) {
 			this.onImpact(raytraceresult);
@@ -176,7 +176,7 @@ public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 
 		this.func_234617_x_();
 		if (this.fireworkAge == 0 && !this.isSilent()) {
-			this.world.playSound((PlayerEntity) null, this.getX(), this.getY(), this.getZ(),
+			this.world.playSound((PlayerEntity) null, this.getPosX(), this.getPosY(), this.getPosZ(),
 					SoundEvents.ENTITY_FIREWORK_ROCKET_LAUNCH, SoundCategory.AMBIENT, 3.0F, 1.0F);
 		}
 
@@ -186,7 +186,7 @@ public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 
 		++this.fireworkAge;
 		if (this.world.isRemote && this.fireworkAge % 2 < 2) {
-			this.world.addParticle(ParticleTypes.FIREWORK, this.getX(), this.getY() - 0.3D, this.getZ(),
+			this.world.addParticle(ParticleTypes.FIREWORK, this.getPosX(), this.getPosY() - 0.3D, this.getPosZ(),
 					this.rand.nextGaussian() * 0.05D, -this.getMotion().y * 0.5D, this.rand.nextGaussian() * 0.05D);
 		}
 
@@ -196,7 +196,8 @@ public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 
 	}
 
-	private void setDead() {
+	@Override
+	protected void setDead() {
 		this.world.setEntityState(this, (byte) 17);
 		this.dealExplosionDamage();
 		this.remove();
@@ -211,7 +212,6 @@ public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 	}
 
 	// eclipse thinks listnbt has a potential null pointer access
-	@SuppressWarnings("null")
 	private void dealExplosionDamage() { // NOSONAR
 		float f = 0.0F;
 		final ItemStack itemstack = getRocketItem();
@@ -223,7 +223,7 @@ public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 
 		if (f > 0.0F) {
 			if (this.boostedEntity != null) {
-				this.boostedEntity.attackEntityFrom(firework(this, this.getOwner()),
+				this.boostedEntity.attackEntityFrom(firework(this, this.func_234616_v_()), //func_234616_v_ -> getOwner
 						5.0F + (float) (listnbt.size() * 2));
 			}
 
@@ -235,8 +235,8 @@ public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 					boolean flag = false;
 
 					for (int i = 0; i < 2; ++i) {
-						Vector3d vector3d1 = new Vector3d(livingentity.getX(), livingentity.getBodyY(0.5D * (double) i),
-								livingentity.getZ());
+						Vector3d vector3d1 = new Vector3d(livingentity.getPosX(), livingentity.getPosYHeight(0.5D * (double) i),
+								livingentity.getPosZ());
 						RayTraceResult raytraceresult = this.world.rayTraceBlocks(new RayTraceContext(vector3d,
 								vector3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
 						if (raytraceresult.getType() == RayTraceResult.Type.MISS) {
@@ -247,7 +247,7 @@ public abstract class EntityWeatherFireworkRocket extends ProjectileEntity
 
 					if (flag) {
 						float f1 = f * (float) Math.sqrt((5.0D - (double) this.getDistance(livingentity)) / 5.0D);
-						livingentity.attackEntityFrom(firework(this, this.getOwner()), f1);
+						livingentity.attackEntityFrom(firework(this, this.func_234616_v_()), f1);//func_234616_v_ -> getOwner
 					}
 				}
 			}

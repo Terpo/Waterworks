@@ -35,7 +35,7 @@ public class WaterworksPacketHandler {
 		final BlockPos blockPos = tE.getPos();
 		if (tE.getWorld().isAreaLoaded(blockPos, 0)) {
 			INSTANCE.send(PacketDistributor.NEAR.with(() -> new TargetPoint(blockPos.getX(), blockPos.getY(),
-					blockPos.getZ(), range, tE.getWorld().getRegistryKey())), packet);
+					blockPos.getZ(), range, tE.getWorld().getDimensionKey())), packet);
 		}
 	}
 

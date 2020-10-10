@@ -18,6 +18,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -76,11 +77,11 @@ public class ItemFireworkAntiRain extends FireworkRocketItem {
 				final int multi = nbttagcompound.getInt("ANTIRAIN");
 				tooltip.add(new TranslationTextComponent("tooltip.anti_rain_rocket.good_weather"));
 				tooltip.add(new TranslationTextComponent("tooltip.anti_rain_rocket.sunshine_multiplier")
-						.append(": " + multi + "/" + Config.rockets.getClearSkyMaxMultiplier()));
+						.append(new StringTextComponent(": " + multi + "/" + Config.rockets.getClearSkyMaxMultiplier())));
 				tooltip.add(new TranslationTextComponent("tooltip.anti_rain_rocket.sunshine_duration")
-						.append(": " + (Config.rockets.getClearSkyDuration() * multi) + " ticks"));
+						.append(new StringTextComponent(": " + (Config.rockets.getClearSkyDuration() * multi) + " ticks")));
 				tooltip.add(new TranslationTextComponent("tooltip.anti_rain_rocket.max_additional_days")
-						.append(": " + Config.rockets.getClearSkyMaxRandomAdditionalDays()));
+						.append(new StringTextComponent(": " + Config.rockets.getClearSkyMaxRandomAdditionalDays())));
 			}
 		}
 

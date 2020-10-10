@@ -65,7 +65,7 @@ public class EntityFireworkRocketRain extends EntityWeatherFireworkRocket {
 	@Override
 	public void remove() {
 		if (!this.getEntityWorld().isRemote)
-			((ServerWorld) this.getEntityWorld()).setWeather(0, this.duration, true, this.rand.nextInt(10) > 6);
+			((ServerWorld) this.getEntityWorld()).func_241113_a_(0, this.duration, true, this.rand.nextInt(10) > 6); //setWeather
 		super.remove();
 	}
 

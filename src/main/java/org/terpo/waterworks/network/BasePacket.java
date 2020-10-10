@@ -16,7 +16,7 @@ public class BasePacket {
 	}
 	public BasePacket(TileEntity tileEntity) {
 		this.tileEntityPosition = tileEntity.getPos();
-		this.type = tileEntity.getWorld().getRegistryKey();
+		this.type = tileEntity.getWorld().getDimensionKey();
 
 	}
 
@@ -25,14 +25,14 @@ public class BasePacket {
 		final int y = buf.readInt();
 		final int z = buf.readInt();
 		packet.tileEntityPosition = new BlockPos(x, y, z);
-		packet.type = RegistryKey.of(Registry.field_239699_ae_,buf.readResourceLocation());
+		packet.type = RegistryKey.getOrCreateKey(Registry.WORLD_KEY,buf.readResourceLocation());
 	}
 
 	protected static void writePosition(BasePacket packet, PacketBuffer buf) {
 		buf.writeInt(packet.tileEntityPosition.getX());
 		buf.writeInt(packet.tileEntityPosition.getY());
 		buf.writeInt(packet.tileEntityPosition.getZ());
-		buf.writeResourceLocation(packet.type.getValue());
+		buf.writeResourceLocation(packet.type.getLocation());
 	}
 
 	protected static TileEntity getTileEntity(World worldObj, BlockPos pos) {

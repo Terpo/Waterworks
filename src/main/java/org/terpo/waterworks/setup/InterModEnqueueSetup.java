@@ -8,7 +8,7 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 
 public class InterModEnqueueSetup {
 
-	public static void init(@SuppressWarnings("unused") final InterModEnqueueEvent event) {// NOSONAR
+	public static void init(final InterModEnqueueEvent event) {// NOSONAR
 		Waterworks.LOGGER.info("Waterworks IMC to other mods starting");
 		TOPCompatibility.register();
 

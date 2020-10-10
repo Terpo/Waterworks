@@ -144,8 +144,8 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 	}
 
 	@Override
-	public void fromTag(BlockState state, CompoundNBT compound) {
-		super.fromTag(state,compound);
+	public void read(BlockState state, CompoundNBT compound) {
+		super.read(state,compound);
 		if (compound.contains(NBT_CONNECTED_BLOCKS)) {
 			this.connectedCollectors = compound.getInt(NBT_CONNECTED_BLOCKS);
 			if (compound.contains(NBT_COLLECTOR_POS_LIST)) {
@@ -194,7 +194,7 @@ public class TileEntityRainCollectorController extends TileEntityRainTankWood {
 
 		// iterate over all blocks in our "found"-list
 		int i = 0;
-		final Mutable tempPos = this.rainCollectorBlocks[0].mutableCopy();
+		final Mutable tempPos = this.rainCollectorBlocks[0].toMutable();
 		while (i < foundBlockCount) {
 			tempPos.setPos(this.rainCollectorBlocks[i]);
 

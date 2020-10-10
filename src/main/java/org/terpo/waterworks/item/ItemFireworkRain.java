@@ -18,6 +18,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -74,9 +75,9 @@ public class ItemFireworkRain extends FireworkRocketItem {
 				final int multi = nbttagcompound.getInt("RAIN");
 				tooltip.add(new TranslationTextComponent("tooltip.rain_rocket.bad_weather"));
 				tooltip.add(new TranslationTextComponent("tooltip.rain_rocket.rain_duration")
-						.append(": " + multi + "/" + Config.rockets.getRainMaxMultiplier()));
+						.append(new StringTextComponent(": " + multi + "/" + Config.rockets.getRainMaxMultiplier())));
 				tooltip.add(new TranslationTextComponent("tooltip.rain_rocket.rain_duration")
-						.append(": " + (Config.rockets.getRainDuration() * multi) + " ticks"));
+						.append(new StringTextComponent(": " + (Config.rockets.getRainDuration() * multi) + " ticks")));
 			}
 		}
 	}
