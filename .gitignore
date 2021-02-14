@@ -3,6 +3,7 @@ build/
 .settings
 bin/
 libs
+logs
 run
 img/
 *.launch
