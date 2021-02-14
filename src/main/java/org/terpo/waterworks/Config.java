@@ -1,6 +1,7 @@
 package org.terpo.waterworks;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ForgeI18n;
 import net.minecraftforge.fml.common.Mod;
@@ -246,6 +247,8 @@ public class Config {
 		private final ForgeConfigSpec.BooleanValue fireworkRocketsJEIRecipes;
 		private final ForgeConfigSpec.BooleanValue fireworkChargeDescription;
 		private final ForgeConfigSpec.BooleanValue fireworksDescription;
+		private final ForgeConfigSpec.BooleanValue rocketDispenserCompatibility;
+
 
 		public Rockets() {
 
@@ -280,6 +283,9 @@ public class Config {
 			this.fireworksDescription = COMMON_BUILDER.comment("JEI: Adds a small description for fireworks.")
 					.define("fireworksDescription", true);
 
+			// Dispenser compat
+			this.rocketDispenserCompatibility = COMMON_BUILDER.comment("Enable Dispenser compatibility for weather rockets").define("rocketDispenserCompatibility", true);
+			
 			COMMON_BUILDER.pop();
 		}
 
@@ -317,6 +323,10 @@ public class Config {
 
 		public boolean getFireworksDescription() {
 			return get(this.fireworksDescription);
+		}
+		
+		public boolean getRocketDispenserCompatibility() {
+			return get(this.rocketDispenserCompatibility);
 		}
 	}
 

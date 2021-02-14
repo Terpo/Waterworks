@@ -1,5 +1,6 @@
 package org.terpo.waterworks.setup;
 
+import org.terpo.waterworks.Config;
 import org.terpo.waterworks.Waterworks;
 import org.terpo.waterworks.compat.minecraft.MinecraftCompatibility;
 import org.terpo.waterworks.compat.top.TOPCompatibility;
@@ -12,7 +13,9 @@ public class InterModEnqueueSetup {
 		Waterworks.LOGGER.info("Waterworks IMC to other mods starting");
 		TOPCompatibility.register();
 
-		MinecraftCompatibility.registerWeatherRocketDispenserBehavior();
+		if (Config.rockets.getRocketDispenserCompatibility()) {
+			MinecraftCompatibility.registerWeatherRocketDispenserBehavior();
+		}
 		Waterworks.LOGGER.info("Waterworks IMC to other mods complete");
 	}
 
